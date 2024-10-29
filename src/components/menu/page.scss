@@ -2,11 +2,6 @@
     display: flex;
     justify-content: space-between;
 
-    .nested {
-
-        border-left: 2px solid #ccc;
-        margin-inline: 30px;
-    }
 
     .btns {
         display: flex;
@@ -26,6 +21,7 @@ padding: 20px;
         top: 0px;
         left: 0px;
         height: 100vh;
+      
         position: relative;
 
         img {

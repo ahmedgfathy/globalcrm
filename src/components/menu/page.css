@@ -2,10 +2,7 @@
   display: flex;
   justify-content: space-between;
 }
-.container .nested {
-  border-left: 2px solid #ccc;
-  margin-inline: 30px;
-}
+
 .container .btns {
   display: flex;
   flex-direction: column;
