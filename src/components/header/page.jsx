@@ -1,3 +1,4 @@
+'use client'
 import { Box, Button } from '@mui/material';
 import React from 'react';
 import { FaCircle } from 'react-icons/fa';
