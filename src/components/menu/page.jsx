@@ -12,6 +12,7 @@ import { MdLeaderboard } from "react-icons/md";
 import { TbReportSearch } from "react-icons/tb";
 import { VscSymbolProperty } from "react-icons/vsc";
 
+
 export default function Page() {
     const [width, setWidth] = useState(280);
     const isExpanded = width > 100;
@@ -20,31 +21,82 @@ export default function Page() {
     const toggleWidth = () => {
         setWidth(isExpanded ? 80 : 280); // Collapsed width is 80, expanded is 280
     };
+
+    const [click, setClick] = useState(false);
+
+
     const data = [
 
         {
             link: "Users References",
             path: "/user-refrences",
-            icon: <FaRegCircleUser />
+            icon: <FaRegCircleUser />,
+            nested: [{
+                link: "one",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            {
+                link: "two",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            ]
 
 
         },
         {
             link: "Calendar",
             path: "/calendar",
-            icon: <SlCalender />
+            icon: <SlCalender />,
+            nested: [{
+                link: "one",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            {
+                link: "two",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            ]
+
 
         },
         {
             link: "Notes",
             path: "/notes",
-            icon: <MdEditNote />
+            icon: <MdEditNote />,
+            nested: [{
+                link: "one",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            {
+                link: "two",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            ]
+
 
         },
         {
             link: "Calls",
             path: "/calls",
-            icon: <LuPhoneCall />
+            icon: <LuPhoneCall />,
+            nested: [{
+                link: "one",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            {
+                link: "two",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            ]
+
 
 
         },
@@ -52,19 +104,55 @@ export default function Page() {
         {
             link: "Leads",
             path: "/leads",
-            icon: <MdLeaderboard />
+            icon: <MdLeaderboard />,
+            nested: [{
+                link: "one",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            {
+                link: "two",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            ]
+
 
         },
         {
             link: "Properties",
             path: "/properties",
-            icon:<VscSymbolProperty/>
-           
+            icon: <VscSymbolProperty />,
+            nested: [{
+                link: "one",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            {
+                link: "two",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            ]
+
+
         },
         {
             link: "Reports",
             path: "/reports",
-            icon: <TbReportSearch />
+            icon: <TbReportSearch />,
+            nested: [{
+                link: "one",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            {
+                link: "two",
+                path: "#",
+                icon: <FaRegCircleUser />,
+            },
+            ]
+
 
         },
 
@@ -82,14 +170,40 @@ export default function Page() {
                     <FaAngleRight className="angle" onClick={toggleWidth} />
                 )}
 
-                <Box className="btns" sx={{gap:"5px"}}>
+                <Box className="btns" sx={{ gap: "5px" }}>
                     {
-                        data.map((item , index)=>{
-                            return(
-                                <Button sx={{display:"flex",gap:"10px", padding:"10px"}} key={index}>
-                                    <span style={{color: "#637381" , fontSize:"20px"}}>{item.icon}</span>
-                                    <span style={{ color: "#637381" , textAlign:"justify" , textTransform:"capitalize" , flexGrow:"1"}} >{item.link}</span>
-                                </Button>
+                        data.map((item, index) => {
+                            return (
+                                <Box sx={{width:"100%"}}>
+                                    <Button sx={{ display: "flex", gap: "10px", padding: "10px" , width:"100%"}} key={index}>
+                                        <span style={{ color: "#637381", fontSize: "20px" }}>{item.icon}</span>
+                                        <span style={{ color: "#637381", textAlign: "justify", textTransform: "capitalize", flexGrow: "1" }} >{item.link}</span>
+                                        <FaAngleRight style={{ color: "#637381", transform: `rotate(${click ? "90deg" : "0deg"})` }} onClick={() => {
+
+                                            setClick(!click)
+                                        }} />
+
+                                    </Button>
+                                    <Box className="nested">
+
+                                        {
+                                            item.nested.map((itm, idx) => {
+                                                return (
+                                                    <Button sx={{ display: "flex", gap: "10px", padding: "10px" }} key={idx}>
+                                                        <span style={{ color: "#637381", fontSize: "20px" }}>{itm.icon}</span>
+                                                        <span style={{ color: "#637381", textAlign: "justify", textTransform: "capitalize", flexGrow: "1" }} >{itm.link}</span>
+                                                        <FaAngleRight style={{ color: "#637381", transform: `rotate(${click ? "90deg" : "0deg"})` }} onClick={() => {
+
+                                                            setClick(!click)
+                                                        }} />
+
+                                                    </Button>
+                                                )
+                                            })
+                                        }
+
+                                    </Box>
+                                </Box>
                             )
                         })
                     }
