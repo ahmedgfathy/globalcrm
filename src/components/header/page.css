@@ -1,0 +1,39 @@
+.header {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 20px;
+  height: -moz-fit-content;
+  height: fit-content;
+  flex-direction: row-reverse;
+}
+.header .stack {
+  cursor: pointer;
+  scale: 1.01;
+  transition: 0.4s;
+}
+.header .setting {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+.header .setting .icon {
+  width: 2rem;
+  height: 2rem;
+  color: #637381;
+  animation: rotate 10s infinite;
+}
+.header .setting .circle {
+  color: #FF5630;
+  position: absolute;
+  transform: translate(-140%, -140%);
+  font-size: 10px;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(350deg);
+  }
+}/*# sourceMappingURL=page.css.map */

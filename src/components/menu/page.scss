@@ -1,0 +1,36 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    .menu {
+        border-right: 1px solid rgb(145 158 171 / 12%) ;
+        border-left: 1px solid rgb(145 158 171 / 12%) ;
+    
+        
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        height: 100vh;
+        position: relative;
+        .angle {
+    
+            position: absolute;
+            right: 0px;
+            top: 40px;
+            transform: translate(50%);
+            padding: 6px;
+            font-size: 30px;
+            border-radius: 100%;
+            border: 1px solid rgb(145 158 171 / 12%) ;
+            z-index: 100 !important;
+            color: #637381;
+            background-color: white;
+            cursor: pointer;
+            &:hover {
+                background-color:  rgb(145 158 171 / 12%);
+                border: 1px solid #637381;
+                transition: 0.3s;
+            }
+        }
+        
+    }
+}
