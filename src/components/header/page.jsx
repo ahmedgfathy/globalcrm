@@ -11,7 +11,7 @@ export default function Page(props) {
     return (
         <Box className="header" sx={{ width: `calc(100% - ${props.menuWidth}px)` }}>
             <Box
-                className="rotate"
+                
                 sx={{
                     background: "conic-gradient(#5f942e, #FFAB00, #5f942e)",
                     padding: "2.2px 2.3px",
