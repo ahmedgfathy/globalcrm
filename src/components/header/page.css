@@ -7,10 +7,8 @@
   height: fit-content;
   flex-direction: row-reverse;
 }
-.header .stack {
-  cursor: pointer;
-  scale: 1.01;
-  transition: 0.4s;
+.header .rotate {
+  animation: rotate 10s infinite;
 }
 .header .setting {
   width: -moz-fit-content;
@@ -20,7 +18,7 @@
   width: 2rem;
   height: 2rem;
   color: #637381;
-  animation: rotate 10s infinite;
+  animation: rotate 5s infinite;
 }
 .header .setting .circle {
   color: #FF5630;

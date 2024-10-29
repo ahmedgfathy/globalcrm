@@ -11,9 +11,8 @@ import { LuPhoneCall } from "react-icons/lu";
 import { MdLeaderboard } from "react-icons/md";
 import { TbReportSearch } from "react-icons/tb";
 import { VscSymbolProperty } from "react-icons/vsc";
-
-
 export default function Page() {
+
     const [width, setWidth] = useState(280);
     const isExpanded = width > 100;
 
