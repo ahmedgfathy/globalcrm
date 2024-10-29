@@ -192,10 +192,7 @@ export default function Page() {
                                                     <Button sx={{ display: "flex", gap: "10px", padding: "10px" }} key={idx}>
                                                         <span style={{ color: "#637381", fontSize: "20px" }}>{itm.icon}</span>
                                                         <span style={{ color: "#637381", textAlign: "justify", textTransform: "capitalize", flexGrow: "1" }} >{itm.link}</span>
-                                                        <FaAngleRight style={{ color: "#637381", transform: `rotate(${click ? "90deg" : "0deg"})` }} onClick={() => {
-
-                                                            setClick(!click)
-                                                        }} />
+                                                        
 
                                                     </Button>
                                                 )
