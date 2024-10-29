@@ -18,7 +18,7 @@ export default function Page() {
     const isExpanded = width > 100;
 
     // Toggle menu width
-  
+
 
     const [click, setClick] = useState(false);
     const [isMenuVisible, setIsMenuVisible] = useState(false); // State for mobile menu visibility
@@ -28,9 +28,6 @@ export default function Page() {
         setWidth(isExpanded ? 80 : 280); // Collapsed width is 80, expanded is 280
     };
 
-    const toggleMenuVisibility = () => {
-        setIsMenuVisible(!isMenuVisible);
-    };
 
     const toggleNested = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -43,12 +40,12 @@ export default function Page() {
             path: "/user-refrences",
             icon: <FaRegCircleUser />,
             nested: [{
-                link: "one",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },
             {
-                link: "two",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },
@@ -61,12 +58,12 @@ export default function Page() {
             path: "/calendar",
             icon: <SlCalender />,
             nested: [{
-                link: "one",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },
             {
-                link: "two",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },
@@ -79,12 +76,12 @@ export default function Page() {
             path: "/notes",
             icon: <MdEditNote />,
             nested: [{
-                link: "one",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },
             {
-                link: "two",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },
@@ -95,16 +92,16 @@ export default function Page() {
         {
             link: "Calls",
             path: "/calls",
-            icon: <LuPhoneCall />,
+            icon: <LuPhoneCall ReferencesCall />,
             nested: [{
-                link: "one",
+                link: "Users References",
                 path: "#",
-                icon: <FaRegCircleUser />,
+                icon: <LuPhoneCall />,
             },
             {
-                link: "two",
+                link: "Users References",
                 path: "#",
-                icon: <FaRegCircleUser />,
+                icon: <LuPhoneCall />,
             },
             ]
 
@@ -117,12 +114,12 @@ export default function Page() {
             path: "/leads",
             icon: <MdLeaderboard />,
             nested: [{
-                link: "one",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },
             {
-                link: "two",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },
@@ -135,12 +132,12 @@ export default function Page() {
             path: "/properties",
             icon: <VscSymbolProperty />,
             nested: [{
-                link: "one",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },
             {
-                link: "two",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },
@@ -153,12 +150,12 @@ export default function Page() {
             path: "/reports",
             icon: <TbReportSearch />,
             nested: [{
-                link: "one",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },
             {
-                link: "two",
+                link: "Users References",
                 path: "#",
                 icon: <FaRegCircleUser />,
             },

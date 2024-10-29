@@ -4,6 +4,8 @@ import { FaCircle } from 'react-icons/fa';
 import './page.css';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
+import { FaBarsStaggered } from "react-icons/fa6";
+
 
 export default function Page(props) {
     return (
@@ -43,6 +45,11 @@ export default function Page(props) {
                 </svg>
                 <FaCircle className="circle" />
             </Button>
+            <Box sx={{ display: { xs: "flex", lg: "none", alignItems: "center" }, flexGrow: "1" }}>
+
+                <FaBarsStaggered style={{ color: "#666", fontSize: "24px", cursor: "pointer" }} />
+
+            </Box>
         </Box>
     );
 }
