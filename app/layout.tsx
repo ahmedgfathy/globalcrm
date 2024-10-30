@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Menu from "../src/components/menu/page";
 import { usePathname } from 'next/navigation';
 
 const geistSans = localFont({
@@ -34,7 +33,7 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        {pathname !== '/' ? <Menu /> : null}
+    
         {children}
       </body>
     </html>
