@@ -13,16 +13,10 @@ export default function Page(props) {
         <Box sx={{ width: `calc(100% - ${props.menuWidth}px)` }} >
             <Box className="header" >
                 <Box
-                    sx={{
-                        background: "conic-gradient(#5f942e, #FFAB00, #5f942e)",
-                        padding: "2.2px 2.3px",
-                        borderRadius: "100%",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center"
-                    }}
+                    className="stack"
                 >
-                    <Avatar alt="..." src="/assets/images/avatar.webp" />
+                    <span></span>
+                    <Avatar alt="..." src="/assets/images/avatar.webp" className='img'/>
                 </Box>
                 <Button className="setting">
                     <svg
