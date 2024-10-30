@@ -1,18 +1,56 @@
+@import "../../../public/assets/sass/shares";
+
 .header {
     display: flex;
     gap: 10px;
     align-items: center;
+    width: 100%;
     padding: 10px 20px;
-    height: fit-content;
+    height: fit-content !important;
     flex-direction: row-reverse;
 
+    .rotate {
+        animation: rotate 10s infinite;
+    }
 
     .stack {
+        position: relative;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
 
-        cursor: pointer;
-        scale: 1.01;
-        transition: 0.4s;
+        span {
+            animation: rotate 10s infinite;
+            position: absolute;
+            width: 43px;
+            height: 43px;
+            border-radius: 100%;
+            background: conic-gradient(#5f942e, #FFAB00, #5f942e);
+            mask: linear-gradient(rgb(255, 255, 255) 0px, rgb(255, 255, 255) 0px) content-box xor,
+                linear-gradient(rgb(255, 255, 255) 0px, rgb(255, 255, 255) 0px);
+            display: flex;
+            overflow: hidden;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .img {
+
+            border: 2px solid white;
+
+            &:hover {
+                cursor: pointer;
+                scale: 1.03;
+
+            }
+
+
+        }
+
     }
+
+
+
 
     .setting {
 
@@ -22,7 +60,7 @@
             width: 2rem;
             height: 2rem;
             color: #637381;
-            animation: rotate 10s infinite;
+            animation: rotate 5s infinite;
         }
 
         .circle {
@@ -30,7 +68,6 @@
             position: absolute;
             transform: translate(-140%, -140%);
             font-size: 10px;
-
         }
     }
 

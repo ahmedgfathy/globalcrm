@@ -1,18 +1,15 @@
+@import "../../../public/assets/sass/shares";
+
 .container {
     display: flex;
     justify-content: space-between;
 
-    .nested {
-
-        border-left: 2px solid #ccc;
-        margin-inline: 30px;
-    }
 
     .btns {
         display: flex;
         flex-direction: column;
 
-        
+
 
     }
 
@@ -21,17 +18,15 @@
         border-right: 1px solid rgb(145 158 171 / 12%);
         border-left: 1px solid rgb(145 158 171 / 12%);
 
-padding: 20px;
-        position: fixed;
-        top: 0px;
-        left: 0px;
+        
         height: 100vh;
-        position: relative;
+
 
         img {
 
             margin-bottom: 10px;
         }
+
         .angle {
 
             position: absolute;
