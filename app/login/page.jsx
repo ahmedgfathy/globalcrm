@@ -72,7 +72,7 @@ export default function Login() {
                                 </Box>
                                 <Button type='submit' onClick={() => {
 
-                                    router.push("/dashboard/page")
+                                    router.push("/dashboard")
                                 }} className='btn'>Login</Button>
                             </form>
                         </Grid>

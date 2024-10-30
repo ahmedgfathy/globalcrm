@@ -12,7 +12,7 @@ import { MdLeaderboard } from "react-icons/md";
 import { TbReportSearch } from "react-icons/tb";
 import { VscSymbolProperty } from "react-icons/vsc";
 
-export default function Page() {
+export default function Page(props) {
     const [width, setWidth] = useState(280);
     const isExpanded = width > 110;
     const [activeIndex, setActiveIndex] = useState(null);
@@ -38,15 +38,13 @@ export default function Page() {
 
     return (
         <Box className="container">
+
             <Box
                 className="menu"
                 sx={{
                     width: width,
                     transition: 'width 0.3s ease',
                     padding: isExpanded ? "20px" : "20px 5px",
-                    left: { xs: isExpanded ? "0px" : "-100%", lg: "0px" },
-                    position: "fixed",
-                    top: "0",
                     height: "100vh",
                     zIndex: 1000,
                     background: "white"
@@ -93,6 +91,7 @@ export default function Page() {
                                 />
                             </Button>
 
+
                             {activeIndex === index && (
                                 <Box className="nested" sx={{
                                     width: isExpanded ? "130px" : "auto",
@@ -128,7 +127,8 @@ export default function Page() {
                     ))}
                 </Box>
             </Box>
-            <Header menuWidth={width} />
+            <Header menuWidth={width} children={props.children} />
+
         </Box>
     );
 }

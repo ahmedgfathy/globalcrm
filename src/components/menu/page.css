@@ -9,9 +9,6 @@
 .container .menu {
   border-right: 1px solid rgba(145, 158, 171, 0.12);
   border-left: 1px solid rgba(145, 158, 171, 0.12);
-  position: fixed;
-  top: 0px;
-  left: 0px;
   height: 100vh;
   position: relative;
 }

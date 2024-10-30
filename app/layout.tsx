@@ -2,7 +2,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Menu from "../src/components/menu/page";
 import { usePathname } from 'next/navigation';
+import { Box } from "@mui/material";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,13 +30,19 @@ export default function RootLayout({
 }>) {
   const pathname = usePathname();
 
-  console.log(pathname)
+  // Check if the current path is the homepage ("/")
+  const isHomePage = pathname === "/";
 
   return (
     <html>
       <body>
-    
-        {children}
+        {!isHomePage && <Menu children={children} />}
+        {/* Conditionally render Menu only if not on the homepage */}
+        {
+          isHomePage && <Box >
+            {children}
+          </Box>
+        }
       </body>
     </html>
   );
