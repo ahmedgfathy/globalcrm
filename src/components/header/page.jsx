@@ -10,8 +10,8 @@ import { FaBarsStaggered } from "react-icons/fa6";
 
 export default function Page(props) {
     return (
-        <Box sx={{ width: `calc(100% - ${props.menuWidth}px)` }}>
-            <Box className="header">
+        <Box sx={{ width: `calc(100% - ${props.menuWidth}px)` }} >
+            <Box className="header" >
                 <Box
                     sx={{
                         background: "conic-gradient(#5f942e, #FFAB00, #5f942e)",

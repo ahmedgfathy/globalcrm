@@ -1,10 +1,10 @@
 'use client'
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
 import Menu from "../src/components/menu/page";
 import { usePathname } from 'next/navigation';
 import { Box } from "@mui/material";
+import "../public/assets/sass/shares.css"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
