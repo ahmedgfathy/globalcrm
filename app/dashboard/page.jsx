@@ -8,9 +8,9 @@ export default function page() {
 
   console.log(pathname)
   return (
-    <Box sx={{backgroundColor:"red", padding:"100px"}}>
+    <Box sx={{backgroundColor:"#f2f2f2", padding:"100px"}}>
 
-      <p>ldfljdmdanfdksdkjdsakjkjfekjwkjrjejwrlkjewkjrelkwjejwkjlerwjlewjjewljkrejklejwlkjweljeljew</p>
+      <p>welcome to our dashboard</p>
     </Box>
   )
 }

@@ -14,6 +14,7 @@
   width: 2rem;
   height: 2rem;
   color: #637381;
+  font-size: 18px;
   animation: rotate 10s infinite;
 }
 
@@ -122,7 +123,7 @@ body {
 .login form label {
   position: absolute;
   left: 15px;
-  top: 5px;
+  top: 7px;
   font-weight: 500;
   color: #637381;
   background-color: white;

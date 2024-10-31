@@ -1,6 +1,6 @@
 
 'use client'
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, FormControl, Grid, Typography, Link, Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import "./login.css"
@@ -8,13 +8,20 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { FaCircle } from "react-icons/fa";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-
+import Setting from "../../src/components/setting-drawer/page"
 export default function Login() {
     const router = useRouter()
+    let [close, setClose] = useState(true)
+
 
     return (
         <Box className="login" >
-            <Button className='setting'>
+            <Setting close={close} setClose={setClose} />
+            <Button className='setting' sx={{ zIndex: "10" }} onClick={() => {
+
+                setClose(false)
+
+            }}>
                 <svg
                     className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium rtl-10dohqv icon"
                     focusable="false"
@@ -40,7 +47,7 @@ export default function Login() {
                 <Grid item xs={12} lg={8} >
                     <Grid container className='inside-container'>
                         <Grid item xs={10} lg={5.5} className='left'>
-                            <Typography variant="h4" gutterBottom>
+                            <Typography variant="h4" gutterBottom sx={{ fontSize: { xs: "1.8rem", lg: "2rem" } }}>
                                 Account Login
 
                             </Typography>
@@ -49,7 +56,6 @@ export default function Login() {
                                 {' '}
                                 <Link to="/start">start</Link>
                             </p>
-
                             <form >
                                 <Box className="row">
                                     <label htmlFor="">
@@ -80,7 +86,7 @@ export default function Login() {
                 </Grid>
                 <Grid item lg={3.7} className='right' sx={{ display: { xs: "none", lg: "flex" }, padding: "20px" }}>
                     <h1>
-                        Vision Integration
+                        Global Marketing
                     </h1>
                     <p >
                         Provides the optimal solution for workflow with the highest levels of technology and analysis
@@ -88,7 +94,7 @@ export default function Login() {
 
                     </p>
                     <Image
-                        src="/assets/images/image.webp"  // Path to the image (in the "public" folder)
+                        src="/assets/images/image.png"  // Path to the image (in the "public" folder)
                         alt="My beautiful image"
                         width={400}                 // Desired width
                         height={300}                  // Desired height

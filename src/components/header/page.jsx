@@ -6,19 +6,25 @@ import './page.css';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { FaBarsStaggered } from "react-icons/fa6";
-
+import { useState } from 'react';
+import Setting from "../setting-drawer/page"
 
 export default function Page(props) {
+    let [close, setClose] = useState(true)
     return (
         <Box sx={{ width: `calc(100% - ${props.menuWidth}px)` }} >
+            <Setting close={close} setClose={setClose} />
             <Box className="header" >
                 <Box
                     className="stack"
                 >
                     <span></span>
-                    <Avatar alt="..." src="/assets/images/avatar.webp" className='img'/>
+                    <Avatar alt="..." src="/assets/images/avatar.webp" className='img' />
                 </Box>
-                <Button className="setting">
+                <Button className="setting" onClick={() => {
+
+                    setClose(false)
+                }}>
                     <svg
                         className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium rtl-10dohqv icon"
                         focusable="false"
