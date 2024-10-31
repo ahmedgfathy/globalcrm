@@ -56,7 +56,6 @@ export default function Login() {
                                 {' '}
                                 <Link to="/start">start</Link>
                             </p>
-
                             <form >
                                 <Box className="row">
                                     <label htmlFor="">
@@ -95,7 +94,7 @@ export default function Login() {
 
                     </p>
                     <Image
-                        src="/assets/images/image.jpg"  // Path to the image (in the "public" folder)
+                        src="/assets/images/image.png"  // Path to the image (in the "public" folder)
                         alt="My beautiful image"
                         width={400}                 // Desired width
                         height={300}                  // Desired height
