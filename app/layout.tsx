@@ -5,8 +5,10 @@ import Menu from "../src/components/menu/page";
 import { usePathname } from 'next/navigation';
 import { Box } from "@mui/material";
 import "../public/assets/sass/shares.css"
-
+import "./globals.css"
+import Setting from "../src/components/setting-drawer/page"
 const geistSans = localFont({
+
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
@@ -36,6 +38,7 @@ export default function RootLayout({
   return (
     <html>
       <body>
+        <Setting />
         {!isHomePage && <Menu children={children} />}
         {/* Conditionally render Menu only if not on the homepage */}
         {

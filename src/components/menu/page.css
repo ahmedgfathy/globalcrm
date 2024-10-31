@@ -1,3 +1,9 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
 .container {
   display: flex;
   justify-content: space-between;
@@ -10,7 +16,6 @@
   border-right: 1px solid rgba(145, 158, 171, 0.12);
   border-left: 1px solid rgba(145, 158, 171, 0.12);
   height: 100vh;
-  position: relative;
 }
 .container .menu img {
   margin-bottom: 10px;

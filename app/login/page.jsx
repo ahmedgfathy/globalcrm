@@ -80,7 +80,7 @@ export default function Login() {
                 </Grid>
                 <Grid item lg={3.7} className='right' sx={{ display: { xs: "none", lg: "flex" }, padding: "20px" }}>
                     <h1>
-                        Vision Integration
+                        Global Marketing
                     </h1>
                     <p >
                         Provides the optimal solution for workflow with the highest levels of technology and analysis
