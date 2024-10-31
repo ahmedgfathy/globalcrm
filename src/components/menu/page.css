@@ -7,6 +7,8 @@
 .container {
   display: flex;
   justify-content: space-between;
+  position: relative;
+  z-index: 1 !important;
 }
 .container .btns {
   display: flex;
@@ -15,6 +17,7 @@
 .container .menu {
   border-right: 1px solid rgba(145, 158, 171, 0.12);
   border-left: 1px solid rgba(145, 158, 171, 0.12);
+  position: relative;
   height: 100vh;
 }
 .container .menu img {

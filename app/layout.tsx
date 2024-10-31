@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <Setting />
+      
         {!isHomePage && <Menu children={children} />}
         {/* Conditionally render Menu only if not on the homepage */}
         {
