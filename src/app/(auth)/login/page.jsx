@@ -28,7 +28,11 @@ function Page() {
   return (
     <div className="login">
       <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
-        <FormComponent
+        <div className="grid lg:grid-cols-[1fr_2fr] max-sm:grid-cols-1 w-full">
+          <div className="bg-[#eee] min-h-screen w-full hidden lg:block"></div>
+          <div className="bg-[#fff] min-h-screen flex justify-center items-center">
+              <div className="description w-full flex justify-center items-center">
+              <FormComponent
           style={style}
           page="login"
           user={formData}
@@ -39,6 +43,10 @@ function Page() {
           //   handleSubmit={handleSubmit}
           disable={isSubmitting}
         />
+            </div>
+          </div>
+        </div>
+        
       </div>
     </div>
   );

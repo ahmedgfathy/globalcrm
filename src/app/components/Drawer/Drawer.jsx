@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/select";
 import React, { useState } from "react";
 import { FcSettings } from "react-icons/fc";
+import { SettingOutlined } from '@ant-design/icons';
 
 function Drawer() {
   const [showDrawer, setShowDrawer] = useState(false);
@@ -20,13 +21,13 @@ function Drawer() {
           <div className="text-center">
             <button
               onClick={() => setShowDrawer(!showDrawer)}
-              className="text-white bg-gray-400 focus:ring-4 focus:ring-blue-300 font-medium rounded-full p-3 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+              className=""
               type="button"
               data-drawer-target="drawer-example"
               data-drawer-show="drawer-example"
               aria-controls="drawer-example"
             >
-              <FcSettings className="text-2xl " />
+              <SettingOutlined className="text-2xl " spin/>
             </button>
           </div>
           <div
@@ -61,7 +62,7 @@ function Drawer() {
               </svg>
               <span className="sr-only">Close menu</span>
             </button>
-            <div className="change-lang ">
+            <div className="main">
               <Select onValueChange={(e) => changeLanguage(e)}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select language" />

@@ -1,4 +1,4 @@
-import { Input } from "@/components/ui/input";
+import  Input  from "./Input/Input";
 import React from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
@@ -14,7 +14,7 @@ function PasswordInput({
     <div className="password relative w-full">
       {name === "password" && (
         <span
-          className="absolute -translate-y-1/2 top-1/2 right-3 cursor-pointer w-6 h-6 rounded-full flex justify-center items-center bg-gray-200 hover:bg-gray-300 duration-200 "
+          className="absolute -translate-y-1/2 top-[65%] right-3 cursor-pointer w-6 h-6 rounded-full flex justify-center items-center bg-gray-200 hover:bg-gray-300 duration-200 "
           onClick={changeType}
         >
           {show ? <AiFillEye /> : <AiFillEyeInvisible />}
