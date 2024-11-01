@@ -1,4 +1,6 @@
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 * {
   padding: 0px;
   margin: 0px;
@@ -19,4 +21,8 @@ html.dark {
 body {
   background-color: var(--background-color);
   color: var(--text-color);
+}
+
+a{
+  text-decoration: none !important;
 }

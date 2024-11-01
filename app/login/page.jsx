@@ -7,12 +7,13 @@ import "./login.css"
 import { IoSettingsSharp } from "react-icons/io5";
 import { FaCircle } from "react-icons/fa";
 import Image from 'next/image';
+import { AiFillEye, AiFillEyeInvisible  } from "react-icons/ai";
 import { useRouter } from 'next/navigation';
 import Setting from "../../src/components/setting-drawer/page"
 export default function Login() {
     const router = useRouter()
     let [close, setClose] = useState(true)
-
+    const [showPassword, setShowPassword] = useState(false)
 
     return (
         <Box className="login" >
@@ -51,31 +52,50 @@ export default function Login() {
                                 Account Login
 
                             </Typography>
-                            <p className='p-1'>
-                                <Link to="/signup">Do you have an account ? </Link>
+                            {/* <p className='p-1'>
+                                <p>Do you have an account ? </p>
                                 {' '}
-                                <Link to="/start">start</Link>
-                            </p>
+                                <Link href="/start">start</Link>
+                            </p> */}
+                            <div className="register">
+                                <h1> Do you not have an account ? <Link href="/start" className="text-blue-500"> start </Link> </h1>
+                            </div>
                             <form >
                                 <Box className="row">
-                                    <label htmlFor="">
-                                        Email                                    </label>
+                                    <label htmlFor="email">
+                                        Email                                    
+                                        </label>
                                     <input
                                         required
                                         id="email"
                                         type='email'
+                                        placeholder="example@mail.com"
                                     />
                                 </Box>
-                                <p><Link>Forgot your password ? </Link></p>
-                                <Box className="row">
-                                    <label htmlFor="">password</label>
+
+                                
+                                    <div className="relative">
+                                    <label htmlFor="password">password</label>
                                     <input
                                         required
-                                        id="email"
-                                        placeholder='characters +6'
-                                        type='password'
+                                        id="password"
+                                        placeholder='Enter Your Password'
+                                        type={showPassword? "text":"password"}
                                     />
-                                </Box>
+                                    <span className="absolute right-4 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-gray-100 flex justify-center items-center" onClick={()=>setShowPassword(!showPassword)}>
+                                    {showPassword ? 
+                                    <AiFillEye className="text-xl cursor-pointer" />
+                                     :
+                                     <AiFillEyeInvisible className="text-xl cursor-pointer" />
+ 
+                                     }
+                                    </span>
+                                    <div className="forget-password w-full text-right mb-2">
+                                <Link href="/">Forgot your password ?</Link>
+                                </div>
+                                    </div>
+
+                               
                                 <Button type='submit' onClick={() => {
 
                                     router.push("/dashboard")
