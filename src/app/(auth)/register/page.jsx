@@ -1,13 +1,13 @@
 "use client";
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import style from "./page.module.css";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import FormComponent from "@/app/components/FormComponent/FormComponent";
 
 function Page() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const message = searchParams.get("msg");
+  // const searchParams = useSearchParams();
+  // const message = searchParams.get("msg");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -32,7 +32,7 @@ function Page() {
           style={style}
           page="register"
           user={formData}
-          msg={message}
+          // msg={message}
           show={showPassword}
           changeType={togglePasswordVisibility}
           handleChange={handleChange}
