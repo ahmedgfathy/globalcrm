@@ -74,7 +74,7 @@ function FormComponent({
                 />
                 {page === "login" ? (
                   <div className="text-right my-2">
-                    <Link href="/user/forget-password">forget password ?</Link>
+                    <Link href="/">forget password ?</Link>
                   </div>
                 ) : (
                   <PasswordInput
@@ -122,7 +122,7 @@ function FormComponent({
               {page == "login" && (
                 <div className="text-center mt-5">
                   <Link
-                    href="/user/register"
+                    href="/register"
                     className="text-gray-600 hover:text-gray-900"
                   >
                     Don&apos;t have an account? Sign up
