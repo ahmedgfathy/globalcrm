@@ -90,10 +90,10 @@ export default function Login() {
  
                                      }
                                     </span>
+                                    </div>
                                     <div className="forget-password w-full text-right mb-2">
                                 <Link href="/">Forgot your password ?</Link>
                                 </div>
-                                    </div>
 
                                
                                 <Button type='submit' onClick={() => {
