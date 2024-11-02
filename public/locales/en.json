@@ -1,5 +1,18 @@
 {
   "welcome": "welcome",
   "login": "Login",
-  "settings": "Settings"
+  "settings": "Settings",
+  "mode": "Mode",
+  "create_account": "Get started absolutely free",
+  "have_an_account": "Already have an account ?",
+  "sign_in": "Sign in",
+  "login_title": "Login to your account",
+  "not_have_an_account": "Don't have an account ?",
+  "sgn_up": "Sign up",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "email": "Email",
+  "password": "Password",
+  "confirm_password": "Confirm Password",
+  "forgot_password": "Forgot Password"
 }
