@@ -1,8 +1,11 @@
 import Drawer from "./components/Drawer/Drawer";
+import { ThemeProvider } from "./context/theme-provider";
 import { TranslationProvider } from "./context/TranslationContext";
 import "./globals.css";
 import { Cairo } from "next/font/google";
-import Link from "next/link"
+import Link from "next/link";
+import UserRouter from "./context/UserRouter";
+import NavBar from "./components/nav-bar/NavBar";
 const cairo = Cairo({
   subsets: ["arabic"],
   preload: true,
@@ -17,14 +20,21 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${cairo.className} antialiased min-h-screen`}>
-        <TranslationProvider>
-          <div className="bg-gray-100 relative h-14">
-            <Link href="/login" className="mx-6">Login</Link>
-            <Link href="/register">Register</Link>
-            <Drawer />
-          </div>
-          {children}
-        </TranslationProvider>
+        <UserRouter>
+          <TranslationProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div className="">
+                <NavBar />
+              </div>
+              {children}
+            </ThemeProvider>
+          </TranslationProvider>
+        </UserRouter>
       </body>
     </html>
   );

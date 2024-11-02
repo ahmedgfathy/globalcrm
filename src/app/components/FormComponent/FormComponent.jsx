@@ -1,5 +1,4 @@
-import  Input  from "../Input/Input";
-import { Label } from "@/components/ui/label";
+import Input from "../Input/Input";
 import Link from "next/link";
 import React from "react";
 import PasswordInput from "../PasswordInput";
@@ -17,81 +16,96 @@ export default function FormComponent({
   changeType,
   style,
 }) {
-  const { t, changeLanguage } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className="w-full m-0 sm:m-10 bg-white sm:rounded-lg flex justify-center flex-1">
-      <div className="w-3/4">
+      <div className="lg:w-3/4 max-sm:w-full lg:px-0 max-sm:px-3">
         <div>
           <h1 className="text-xl xl:text-2xl font-extrabold text-main ">
-            {page === "register" ? <h1 className="text-2xl font-bold">Get started absolutely free</h1> : ""}
-            {/* {t("welcome")} */}
+            {page === "register" ? (
+              <h1 className="text-2xl font-bold">{t("create_account")}</h1>
+            ) : (
+              <h1 className="text-2xl font-bold">{t("login_title")}</h1>
+            )}
           </h1>
         </div>
         <div className=" flex flex-col ">
           <h1 className="text-2xl xl:text-3xl font-extrabold">
-            {page === "register" ?  <h2 className="text-xl font-semibold">Already have an account ? <Link href="/login" className="text-blue-400">Sign in</Link></h2>: "Welcome back"}
+            {page === "register" ? (
+              <h2 className="text-xl font-semibold">
+                {t("have_an_account")}
+                <Link href="/login" className="text-blue-400">
+                  {t("sign_in")}
+                </Link>
+              </h2>
+            ) : (
+              <h2 className="text-xl font-semibold">
+                {t("not_have_an_account")}
+                <Link href="/register" className="text-blue-400">
+                  {t("sgn_up")}
+                </Link>
+              </h2>
+            )}
           </h1>
           <div className="w-full flex-1 mt-8">
             <div className="flex flex-col items-center"></div>
             <div className="">
-              <>
-                {page === "register" && (
-                  <div className="flex items-center justify-center gap-2">
-                    <Input
-                      name="firstName"
-                      onChange={handleChange}
-                      value={user.firstName}
-                      className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                      type="text"
-                      placeholder="First Name"
-                    />
-                    <Input
-                      name="lastName"
-                      value={user.lastName}
-                      onChange={handleChange}
-                      className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                      type="text"
-                      placeholder="Last Name"
-                    />
-                  </div>
-                )}
-                <Input
-                  name="email"
-                  value={user.email}
-                  onChange={handleChange}
-                  className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                  type="email"
-                  placeholder="Email"
-                />
+              {page === "register" && (
+                <div className="flex items-center justify-center gap-2">
+                  <Input
+                    name="firstName"
+                    onChange={handleChange}
+                    value={user.firstName}
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    type="text"
+                    placeholder={t("first_name")}
+                  />
+                  <Input
+                    name="lastName"
+                    value={user.lastName}
+                    onChange={handleChange}
+                    className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                    type="text"
+                    placeholder={t("last_name")}
+                  />
+                </div>
+              )}
+              <Input
+                name="email"
+                value={user.email}
+                onChange={handleChange}
+                className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                type="email"
+                placeholder={t("email")}
+              />
+              <PasswordInput
+                changeType={changeType}
+                placeholder={t("password")}
+                name="password"
+                val={user.password}
+                show={show}
+                handleChange={handleChange}
+              />
+              {page === "login" ? (
+                <div className="text-right my-2">
+                  <Link href="/">{t("forgot_password")}</Link>
+                </div>
+              ) : (
                 <PasswordInput
                   changeType={changeType}
-                  placeholder="Password"
-                  name="password"
-                  val={user.password}
+                  placeholder={t("confirm_password")}
+                  name="confirmPassword"
+                  val={user.confirmPassword}
                   show={show}
                   handleChange={handleChange}
                 />
-                {page === "login" ? (
-                  <div className="text-right my-2">
-                    <Link href="/">forget password ?</Link>
-                  </div>
-                ) : (
-                  <PasswordInput
-                    changeType={changeType}
-                    placeholder="Confirm Password"
-                    name="confirmPassword"
-                    val={user.confirmPassword}
-                    show={show}
-                    handleChange={handleChange}
-                  />
-                )}
-              </>
+              )}
 
               <Button
-                onClick={() => {}}
+                onClick={handleSubmit}
                 disabled={disable}
-                className="mt-5 tracking-wide font-black text-xl bg-[#333] py-2 text-gray-100 w-full py-5 rounded-lg hover:bg-[#444] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                className="mt-5 tracking-wide font-black text-xl bg-dark text-gray-100 w-full py-5 rounded-lg hover:bg-dark2 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
               >
                 {disable ? (
                   <>
@@ -99,35 +113,11 @@ export default function FormComponent({
                     Please wait
                   </>
                 ) : (
-                  <>
-                    <span className="ml-3">
-                      {page == "register" ? "Create Account" : "Login"}
-                    </span>
-                  </>
+                  <span className="ml-3">
+                    {page == "register" ? t("btn_register") : t("btn_login")}
+                  </span>
                 )}
               </Button>
-              {page == "login" && (
-                <div className="text-center mt-5">
-                  <Link
-                    href="/register"
-                    className="text-gray-600 hover:text-gray-900"
-                  >
-                    Don&apos;t have an account? Sign up
-                  </Link>
-                </div>
-              )}
-
-              {page === "register" && (
-                <p className="mt-6 text-xs text-gray-600 text-center">
-                  Already have an account?
-                  <Link
-                    href="/login"
-                    className="border-b border-gray-500 border-dotted"
-                  >
-                    login
-                  </Link>
-                </p>
-              )}
             </div>
           </div>
         </div>
@@ -135,4 +125,3 @@ export default function FormComponent({
     </div>
   );
 }
-
