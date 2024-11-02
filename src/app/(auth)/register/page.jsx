@@ -1,15 +1,12 @@
 "use client";
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import style from "./page.module.css";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import FormComponent from "@/app/components/FormComponent/FormComponent";
 import Image from "next/image";
 
 function Page() {
   const router = useRouter();
-  // const searchParams = useSearchParams();
-  // const message = searchParams.get("msg");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -57,11 +54,10 @@ function Page() {
                 style={style}
                 page="register"
                 user={formData}
-                // msg={message}
                 show={showPassword}
                 changeType={togglePasswordVisibility}
                 handleChange={handleChange}
-                //   handleSubmit={handleSubmit}
+                handleSubmit={() => router.push("/dashboard")}
                 disable={isSubmitting}
               />
             </div>

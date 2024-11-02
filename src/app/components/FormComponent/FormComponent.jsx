@@ -20,7 +20,7 @@ export default function FormComponent({
 
   return (
     <div className="w-full m-0 sm:m-10 bg-white sm:rounded-lg flex justify-center flex-1">
-      <div className="w-3/4">
+      <div className="lg:w-3/4 max-sm:w-full lg:px-0 max-sm:px-3">
         <div>
           <h1 className="text-xl xl:text-2xl font-extrabold text-main ">
             {page === "register" ? (
@@ -103,9 +103,9 @@ export default function FormComponent({
               )}
 
               <Button
-                onClick={() => {}}
+                onClick={handleSubmit}
                 disabled={disable}
-                className="mt-5 tracking-wide font-black text-xl bg-[#333] py-2 text-gray-100 w-full py-5 rounded-lg hover:bg-[#444] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                className="mt-5 tracking-wide font-black text-xl bg-dark text-gray-100 w-full py-5 rounded-lg hover:bg-dark2 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
               >
                 {disable ? (
                   <>
@@ -114,7 +114,7 @@ export default function FormComponent({
                   </>
                 ) : (
                   <span className="ml-3">
-                    {page == "register" ? "Create Account" : "Login"}
+                    {page == "register" ? t("btn_register") : t("btn_login")}
                   </span>
                 )}
               </Button>

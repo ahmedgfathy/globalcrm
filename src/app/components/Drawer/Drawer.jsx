@@ -31,7 +31,7 @@ function Drawer() {
   return (
     <div className="drawer">
       <div className="container mx-auto relative">
-        <button onClick={toggleDrawer} className="absolute top-4 left-4 ">
+        <button onClick={toggleDrawer} className=" ">
           <SettingTwoTone className="animate-spin text-xl duration-3000" />
         </button>
 
@@ -58,13 +58,13 @@ function Drawer() {
 
           <div className="flex gap-4 mb-4">
             <ControlCard
-              icon={<MdLanguage />}
+              icon={<MdLanguage className="text-xl" />}
               label={lang === "en" ? "English" : "العربية"}
               isChecked={lang === "ar"}
               onToggle={toggleLanguage}
             />
             <ControlCard
-              icon={<TiWeatherPartlySunny />}
+              icon={<TiWeatherPartlySunny className="text-xl" />}
               label={t("mode")}
               isChecked={mode === "dark"}
               onToggle={changeTheme}

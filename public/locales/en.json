@@ -14,5 +14,7 @@
   "email": "Email",
   "password": "Password",
   "confirm_password": "Confirm Password",
-  "forgot_password": "Forgot Password"
+  "forgot_password": "Forgot Password",
+  "btn_register": "Create Account",
+  "btn_login": "Login"
 }

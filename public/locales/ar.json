@@ -14,5 +14,7 @@
   "email": "البريد الالكتروني",
   "password": "كلمة المرور",
   "confirm_password": "تاكيد كلمة المرور",
-  "forgot_password": "نسيت كلمة المرور؟"
+  "forgot_password": "نسيت كلمة المرور؟",
+  "btn_register": "انشاء حساب",
+  "btn_login": "تسجيل الدخول"
 }
