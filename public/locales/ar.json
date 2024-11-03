@@ -23,5 +23,12 @@
   "subscription": "الاشراك",
   "security": "الأمان",
   "setting": "اعدادات الحساب",
-  "log_out": "تسجيل الخروج"
+  "log_out": "تسجيل الخروج",
+  "dashboard": "لوحة التحكم",
+  "calendar": "التقويم",
+  "notes": "ملاحظات",
+  "calls": "اتصالات",
+  "leads": "العملاء",
+  "properties": "المناطق",
+  "reports": "التقارير"
 }

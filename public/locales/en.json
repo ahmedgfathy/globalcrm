@@ -23,5 +23,12 @@
   "subscription": "Subscription",
   "security": "Security",
   "setting": "Account Setting",
-  "log_out": "Logout"
+  "log_out": "Logout",
+  "dashboard": "Dashboard",
+  "calendar": "Calendar",
+  "notes": "Notes",
+  "calls": "Calls",
+  "leads": "Leads",
+  "properties": "Properties",
+  "reports": "Reports"
 }

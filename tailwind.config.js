@@ -99,18 +99,6 @@ module.exports = {
           800: "#f8f9fa",
           900: "#fbfcfc",
         },
-        "anti-flash_white": {
-          DEFAULT: "#f4f6f8",
-          100: "#26313c",
-          200: "#4c6277",
-          300: "#7b93ab",
-          400: "#b7c4d1",
-          500: "#f4f6f8",
-          600: "#f5f7f9",
-          700: "#f8f9fa",
-          800: "#fafbfc",
-          900: "#fdfdfd",
-        },
         blue: {
           DEFAULT: "#0000ee",
           100: "#000030",
