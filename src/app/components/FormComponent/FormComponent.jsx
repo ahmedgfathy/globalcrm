@@ -31,23 +31,7 @@ export default function FormComponent({
           </h1>
         </div>
         <div className=" flex flex-col ">
-          <h1 className="text-2xl xl:text-3xl font-extrabold">
-            {page === "register" ? (
-              <h2 className="text-xl font-semibold">
-                {t("have_an_account")}
-                <Link href="/login" className="text-blue-400">
-                  {t("sign_in")}
-                </Link>
-              </h2>
-            ) : (
-              <h2 className="text-xl font-semibold">
-                {t("not_have_an_account")}
-                <Link href="/register" className="text-blue-400">
-                  {t("sgn_up")}
-                </Link>
-              </h2>
-            )}
-          </h1>
+          <h1 className="text-2xl xl:text-3xl font-extrabold"></h1>
           <div className="w-full flex-1 mt-8">
             <div className="flex flex-col items-center"></div>
             <div className="">
