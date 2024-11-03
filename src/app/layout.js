@@ -1,9 +1,7 @@
-import Drawer from "./components/Drawer/Drawer";
 import { ThemeProvider } from "./context/theme-provider";
 import { TranslationProvider } from "./context/TranslationContext";
 import "./globals.css";
 import { Cairo } from "next/font/google";
-import Link from "next/link";
 import UserRouter from "./context/UserRouter";
 import NavBar from "./components/nav-bar/NavBar";
 const cairo = Cairo({
@@ -28,10 +26,10 @@ export default function RootLayout({ children }) {
               enableSystem
               disableTransitionOnChange
             >
-              <div className="">
+              <div className="z-10 fixed top-0 left-0 right-0">
                 <NavBar />
               </div>
-              {children}
+              <main className="relative">{children}</main>
             </ThemeProvider>
           </TranslationProvider>
         </UserRouter>
