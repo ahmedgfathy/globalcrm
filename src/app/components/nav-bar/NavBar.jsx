@@ -8,9 +8,9 @@ import { usePathname } from "next/navigation";
 function NavBar() {
   const pathName = usePathname();
   return (
-    <nav className="fixed top-0 left-0 right-0">
+    <nav className="fixed top-0 left-0 right-0" dir="ltr">
       <div className="container mx-auto">
-        <div className="grid grid-cols-12 items-center h-20">
+        <div className="grid grid-cols-12 items-center h-20 justify-items-center">
           {pathName.split("/").includes("dashboard") && (
             <div className="avatar lg:col-span-1 max-sm:col-span-2">
               <Menu />

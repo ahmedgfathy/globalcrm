@@ -36,7 +36,7 @@ function SideBar() {
         } h-screen bg-white dark:bg-gray-800`}
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-800 border-s shadow-sm">
+        <div className="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-800 border-x shadow-sm">
           <ul className="space-y-2 font-medium">
             <li className="logo">
               <Image
@@ -54,17 +54,17 @@ function SideBar() {
                   <Link
                     type="button"
                     href={`/dashboard/${item.link}`}
-                    className={`flex items-center w-full ${
+                    className={`flex items-center w-full gap-3 ${
                       isOpen
                         ? "flex-row text-xl font-semibold"
-                        : "flex-col text-base font-medium"
+                        : "flex-col justify-center items-center text-base font-medium"
                     } ${
                       isActive(item.link) &&
-                      "bg-tea_green text-tea_green-200 hover:text-tea_green-100 hover:bg-tea_green-600 dark:text-tea_green-100"
-                    }  p-2 text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-100 dark:text-white dark:hover:bg-tea_green-700`}
+                      "bg-tea_green text-tea_green-200 hover:text-tea_green-100  hover:bg-tea_green-600 dark:bg-light_green dark:text-tea_green-100"
+                    }  p-2 text-gray-900 transition duration-75 rounded-lg group dark:hover:text-tea_green-100 hover:bg-gray-100 dark:text-white dark:hover:bg-tea_green-700`}
                   >
                     <span>{item.icon()}</span>
-                    <span className="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
+                    <span className="flex-1 text-left rtl:text-right whitespace-nowrap">
                       {t(item.title)}
                     </span>
                   </Link>
