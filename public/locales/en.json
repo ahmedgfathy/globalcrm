@@ -16,5 +16,19 @@
   "confirm_password": "Confirm Password",
   "forgot_password": "Forgot Password",
   "btn_register": "Create Account",
-  "btn_login": "Login"
+  "btn_login": "Login",
+  "home": "Home",
+  "profile": "Profile",
+  "projects": "Projects",
+  "subscription": "Subscription",
+  "security": "Security",
+  "setting": "Account Setting",
+  "log_out": "Logout",
+  "dashboard": "Dashboard",
+  "calendar": "Calendar",
+  "notes": "Notes",
+  "calls": "Calls",
+  "leads": "Leads",
+  "properties": "Properties",
+  "reports": "Reports"
 }

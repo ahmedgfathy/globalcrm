@@ -16,5 +16,19 @@
   "confirm_password": "تاكيد كلمة المرور",
   "forgot_password": "نسيت كلمة المرور؟",
   "btn_register": "انشاء حساب",
-  "btn_login": "تسجيل الدخول"
+  "btn_login": "تسجيل الدخول",
+  "home": "الرئسية",
+  "profile": "الملف الشخصي",
+  "projects": "المشاريع",
+  "subscription": "الاشراك",
+  "security": "الأمان",
+  "setting": "اعدادات الحساب",
+  "log_out": "تسجيل الخروج",
+  "dashboard": "لوحة التحكم",
+  "calendar": "التقويم",
+  "notes": "ملاحظات",
+  "calls": "اتصالات",
+  "leads": "العملاء",
+  "properties": "المناطق",
+  "reports": "التقارير"
 }

@@ -1,23 +1,22 @@
 "use client";
+import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
-import { MdLanguage } from "react-icons/md";
-import React, { useState } from "react";
-import { SettingTwoTone } from "@ant-design/icons";
-import { IoMdClose } from "react-icons/io";
-import { GrPowerReset } from "react-icons/gr";
-import { RiFullscreenFill } from "react-icons/ri";
-import { TiWeatherPartlySunny } from "react-icons/ti";
-import ControlCard from "../control-card/ControlCard";
 import { useTheme } from "next-themes";
-import "./drawer.css";
+import { IoMdClose } from "react-icons/io";
+import { MdLanguage } from "react-icons/md";
+import { TiWeatherPartlySunny } from "react-icons/ti";
+import { SettingsIcon } from "../../../../public/assets/icons";
+import ControlCard from "../control-card/ControlCard";
+
 function Drawer() {
   const { setTheme } = useTheme();
   const [showDrawer, setShowDrawer] = useState(false);
   const { t, changeLanguage } = useTranslation();
   const [lang, setLang] = useState("en");
   const [mode, setMode] = useState("light");
+  const drawerRef = useRef(null);
 
-  const toggleDrawer = () => setShowDrawer(!showDrawer);
+  const toggleDrawer = () => setShowDrawer((prev) => !prev);
   const toggleLanguage = () => {
     const newLang = lang === "en" ? "ar" : "en";
     setLang(newLang);
@@ -28,32 +27,40 @@ function Drawer() {
     setMode(newMode);
     setTheme(newMode);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (drawerRef.current && !drawerRef.current.contains(event.target)) {
+        setShowDrawer(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div className="drawer">
       <div className="container mx-auto relative">
-        <button onClick={toggleDrawer} className=" ">
-          <SettingTwoTone className="animate-spin text-xl duration-3000" />
+        <button
+          onClick={toggleDrawer}
+          className="w-8 h-8 rounded-full dark:bg-anti-flash_white-700 duration-200 flex dark:hover:bg-anti-flash_white justify-center items-center"
+        >
+          <SettingsIcon className="animate-spin w-6 h-6 duration-3000" />
         </button>
 
         <div
-          className={`fixed top-0 left-0 z-40 h-screen p-4 bg-white dark:bg-gray-800 shadow-xl w-80 transition-transform duration-600 menu ${
+          dir="rtl"
+          ref={drawerRef}
+          className={`fixed top-0 left-0 z-40 h-screen p-4 menu-drawer text:dark dark:text-anti-flash_white shadow-xl w-80 transition-transform duration-500 ${
             showDrawer ? "translate-x-0" : "-translate-x-full"
           }`}
           aria-labelledby="drawer-label"
         >
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-semibold">{t("settings")}</h1>
-            <div className="flex gap-4 flex-row-reverse">
-              <button onClick={toggleDrawer}>
-                <IoMdClose />
-              </button>
-              <button>
-                <GrPowerReset />
-              </button>
-              <button>
-                <RiFullscreenFill />
-              </button>
-            </div>
+            <button onClick={toggleDrawer}>
+              <IoMdClose />
+            </button>
           </div>
 
           <div className="flex gap-4 mb-4">

@@ -3,7 +3,7 @@ import React from "react";
 
 function Page() {
   return (
-    <div className="dashboard pt-20">
+    <div className="dashboard">
       <div className="container mx-auto">
         <div className="card w-full bg-dark flex justify-between items-center min-h-[300px] rounded-md text-white">
           <div className="px-6 min-h-full">
