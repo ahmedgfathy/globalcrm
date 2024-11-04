@@ -63,7 +63,11 @@ function Drawer() {
             </button>
           </div>
 
-          <div className="flex gap-4 mb-4">
+          <div
+            className={`flex gap-4 mb-4 ${
+              lang === "en" ? "text-left" : "text-right"
+            }`}
+          >
             <ControlCard
               icon={<MdLanguage className="text-xl" />}
               label={lang === "en" ? "English" : "العربية"}

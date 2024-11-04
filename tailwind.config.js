@@ -39,6 +39,9 @@ module.exports = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        dark_link_active: "#5f942e14",
+        text_link_active: "#5be49b",
+        text_link_active_l: "#5f942e",
         black: {
           DEFAULT: "#000000",
           100: "#000000",

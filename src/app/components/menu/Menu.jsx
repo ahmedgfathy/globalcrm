@@ -24,7 +24,7 @@ function Menu() {
   }, []);
 
   return (
-    <div className="drawer">
+    <div className="drawer" dir={locale === "ar" ? "rtl" : "ltr"}>
       <div className="container mx-auto relative">
         <button onClick={toggleDrawer} className=" ">
           <Avatar className="border border-red-600">
