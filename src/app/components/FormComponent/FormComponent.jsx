@@ -19,10 +19,10 @@ export default function FormComponent({
   const { t } = useTranslation();
 
   return (
-    <div className="w-full m-0 sm:m-10 bg-white sm:rounded-lg flex justify-center flex-1">
+    <div className="w-full m-0 sm:m-10 bg-white dark:bg-gray-900 sm:rounded-lg flex justify-center flex-1">
       <div className="lg:w-3/4 max-sm:w-full lg:px-0 max-sm:px-3">
         <div>
-          <h1 className="text-xl xl:text-2xl font-extrabold text-main ">
+          <h1 className="text-xl xl:text-2xl font-extrabold text-main dark:text-anti-flash_white">
             {page === "register" ? (
               <h1 className="text-2xl font-bold">{t("create_account")}</h1>
             ) : (
