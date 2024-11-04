@@ -1,7 +1,7 @@
-export const SettingsIcon = ({...props}) => {
+export const SettingsIcon = ({ ...props }) => {
   return (
     <svg
-    className={props.className}
+      className={props.className}
       xmlns="http://www.w3.org/2000/svg"
       width="20px"
       height="20px"
@@ -85,6 +85,46 @@ export const HomeIcon = () => {
         d="M9 17.25C8.58579 17.25 8.25 17.5858 8.25 18C8.25 18.4142 8.58579 18.75 9 18.75H15C15.4142 18.75 15.75 18.4142 15.75 18C15.75 17.5858 15.4142 17.25 15 17.25H9Z"
         fill="#1C274C"
       />
+    </svg>
+  );
+};
+export const ProjectIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20px"
+      height="20px"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M18.6 3H5.4A2.4 2.4 0 0 0 3 5.4v13.2A2.4 2.4 0 0 0 5.4 21h13.2a2.4 2.4 0 0 0 2.4-2.4V5.4A2.4 2.4 0 0 0 18.6 3Z"
+        fill="#000000"
+        fillOpacity=".16"
+        stroke="#000000"
+        strokeWidth="1.5"
+        strokeMiterlimit={10}
+      />
+      <path
+        d="M12 12V6M7 14V6M17 16V6"
+        stroke="#000000"
+        strokeWidth="1.5"
+        strokeMiterlimit={10}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+};
+export const SubscriptionIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20px"
+      height="20px"
+      viewBox="0 0 24 24"
+    >
+      <path d="M14,6a7.17,7.17,0,0,0-1,.08A4.49,4.49,0,0,0,4,6.5V7A2,2,0,0,0,2,9v9a1.94,1.94,0,0,0,2,2H8.73A8,8,0,1,0,14,6ZM6,6.5a2.51,2.51,0,0,1,5-.24V7H6ZM14,20a6,6,0,1,1,6-6A6,6,0,0,1,14,20Zm-1.5-8v1h4a1,1,0,0,1,1,1v3a1,1,0,0,1-1,1H15v1H13V18H10.5V16h5V15h-4a1,1,0,0,1-1-1V11a1,1,0,0,1,1-1H13V9h2v1h2.5v2Z" />
+      <rect width={24} height={24} fill="none" />
     </svg>
   );
 };

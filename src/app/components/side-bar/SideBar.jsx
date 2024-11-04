@@ -12,7 +12,7 @@ import { CiMenuFries } from "react-icons/ci";
 
 function SideBar() {
   const isMobile = useIsMobile();
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [isOpen, setIsOpen] = useState(!isMobile);
   const pathName = usePathname();
   const sidebarRef = useRef(null);
@@ -74,6 +74,7 @@ function SideBar() {
             isOpen ? styles.sidebarOpen : styles.sidebarClosed
           } h-screen bg-white dark:bg-gray-800`}
           aria-label="Sidebar"
+          dir={locale === "ar" ? "rtl" : "ltr"}
         >
           <div className="h-full px-3 py-4 overflow-y-auto bg-white dark:bg-dark border-x shadow-sm">
             <ul className="space-y-2 font-medium">

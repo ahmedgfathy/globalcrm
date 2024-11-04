@@ -1,3 +1,17 @@
-import { SettingsIcon, HomeIcon, SecurityIcon, ProfileIcon } from "./svgIcon";
+import {
+  SettingsIcon,
+  HomeIcon,
+  SecurityIcon,
+  ProfileIcon,
+  SubscriptionIcon,
+  ProjectIcon,
+} from "./svgIcon";
 
-export { SettingsIcon, HomeIcon, SecurityIcon, ProfileIcon };
+export {
+  SettingsIcon,
+  HomeIcon,
+  SecurityIcon,
+  ProfileIcon,
+  SubscriptionIcon,
+  ProjectIcon,
+};

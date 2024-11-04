@@ -26,9 +26,9 @@ function Page() {
 
   return (
     <div className="login">
-      <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
+      <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center ">
         <div className="grid lg:grid-cols-[1fr_2fr] max-sm:grid-cols-1 w-full">
-          <div className="bg-[#eee] min-h-screen w-full hidden lg:flex flex-col justify-evenly items-center">
+          <div className="bg-[#eee] dark:text-anti-flash_white dark:bg-dark min-h-screen w-full hidden lg:flex flex-col justify-evenly items-center">
             <div className="flex flex-col justify-evenly items-center h-[50vh]">
               <div className="title">
                 <h1 className="text-2xl font-bold">Vision Integration</h1>
@@ -48,7 +48,7 @@ function Page() {
               </div>
             </div>
           </div>
-          <div className="bg-[#fff] min-h-screen flex justify-center items-center">
+          <div className="bg-[#fff] dark:bg-gray-900 min-h-screen flex justify-center items-center">
             <div className="description w-full flex justify-center items-center">
               <FormComponent
                 style={style}
