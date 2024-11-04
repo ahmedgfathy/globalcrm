@@ -4,8 +4,8 @@ import React from "react";
 
 const ClientDetails = [
     { id: 1, name: "Ahmed", phone: "01011001105", href: "" },
-    { id: 1, name: "ALi", phone: "01011424232", href: "" },
-    { id: 1, name: "Khalid", phone: "01014303103", href: "" }
+    { id: 2, name: "ALi", phone: "01011424232", href: "" },
+    { id: 3, name: "Khalid", phone: "01014303103", href: "" }
 ]
 
 function Page() {
@@ -15,14 +15,14 @@ function Page() {
                 <div className="w-full h-[50px] flex justify-center items-center mb-5">
                     <input
                         type="text"
-                        className="rounded-lg border-transparent p-2 placeholder-[#1c252e] focus:outline-none focus:ring-0"
-                        placeholder="Search the docs…"
+                        className="w-1/3 rounded-lg border-transparent bg-[#eaeaea] dark:bg-[#222831] focus:outline-none px-2 py-2"
+                        placeholder="Search the client..."
                     />
                 </div>
 
                 <div className="w-full flex flex-wrap justify-between items-start gap-5 max-lg:gap-5 px-5 max-lg:px-2">
                     {ClientDetails.map((ele) => (
-                        <div key={ele.id} className="w-[30.5%] max-lg:w-[47%] max-sm:w-[95%] max-sm:mx-auto h-[400px] max-h-max flex flex-col justify-between items-center gap-4  rounded-2xl px-6 py-6 shadow-box_shadow hover:scale-105 duration-500 bg-[#FFF] dark:bg-[#1c252e] ">
+                        <div key={ele.id} className="w-[30.5%] max-lg:w-[47%] max-sm:w-[95%] max-sm:mx-auto h-[400px] max-h-max flex flex-col justify-between items-center gap-4  rounded-2xl px-6 py-6 shadow-box_shadow hover:scale-105 duration-500 bg-[#FFF] dark:bg-[#222831] ">
                             <div className="overflow-hidden w-full h-[140px]">
                                 <img
                                     className="block bg-cover w-full h-full rounded-xl hover:scale-125 duration-500"
@@ -35,7 +35,7 @@ function Page() {
                                 <p className="font-bold text-base capitalize">Mobile Phone: {ele.phone}</p>
                             </div>
                             <div className="w-full flex justify-between items-center">
-                                <Link href={`${ele.href}`} className="mx-auto px-5 py-2 font-bold rounded-xl hover:scale-105 duration-200 text-[#0fa439] hover:text-[#08521d] bg-[#c8fad6] dark:text-white dark:hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6]">Go To User</Link>
+                                <Link href={`${ele.href}`} className="mx-auto px-5 py-2 font-bold rounded-xl hover:scale-105 duration-200 text-[#0fa439] hover:text-[#08521d] bg-[#c8fad6] dark:text-white dark:hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6]">Go To Client</Link>
                             </div>
                         </div>
                     ))}
