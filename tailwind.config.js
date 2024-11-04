@@ -274,7 +274,9 @@ module.exports = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-      },
+      }, boxShadow: {
+        box_shadow: "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px"
+      }
     },
   },
   plugins: [require("tailwindcss-animate")],
