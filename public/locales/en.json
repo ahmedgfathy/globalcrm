@@ -30,5 +30,9 @@
   "calls": "Calls",
   "leads": "Leads",
   "properties": "Properties",
-  "reports": "Reports"
+  "reports": "Reports",
+  "name": "Name",
+  "mobile_phone": "Mobile Phone",
+  "search_client": "Search Client",
+  "button_to_client": "go to client"
 }

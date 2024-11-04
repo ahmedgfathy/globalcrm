@@ -1,4 +1,5 @@
 "use client";
+import { useTranslation } from "@/app/context/TranslationContext";
 import Link from "next/link";
 import React from "react";
 
@@ -9,6 +10,10 @@ const ClientDetails = [
 ]
 
 function Page() {
+
+    const { t } = useTranslation();
+
+
     return (
         <div className="py-10">
             <div className="w-full flex flex-wrap justify-between items-start gap-3 max-md:gap-7 px-2 pt-2 max-[1200px]:px-7">
@@ -16,7 +21,8 @@ function Page() {
                     <input
                         type="text"
                         className="w-1/3 rounded-lg border-transparent bg-[#eaeaea] dark:bg-[#222831] focus:outline-none px-2 py-2"
-                        placeholder="Search the client..."
+                        placeholder={`${t("search_client")}...`}
+
                     />
                 </div>
 
@@ -31,11 +37,11 @@ function Page() {
                                 />
                             </div>
                             <div className="w-full h-2/5 flex flex-col justify-center items-start gap-2">
-                                <p className="font-bold text-base capitalize">Name: {ele.name}</p>
-                                <p className="font-bold text-base capitalize">Mobile Phone: {ele.phone}</p>
+                                <p className="font-bold text-base capitalize">{t("name")}: {ele.name}</p>
+                                <p className="font-bold text-base capitalize">{t("mobile_phone")}: {ele.phone}</p>
                             </div>
                             <div className="w-full flex justify-between items-center">
-                                <Link href={`${ele.href}`} className="mx-auto px-5 py-2 font-bold rounded-xl hover:scale-105 duration-200 text-[#0fa439] hover:text-[#08521d] bg-[#c8fad6] dark:text-white dark:hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6]">Go To Client</Link>
+                                <Link href={`${ele.href}`} className="mx-auto px-5 py-2 font-bold rounded-xl hover:scale-105 duration-200 text-[#0fa439] hover:text-[#08521d] bg-[#c8fad6] dark:text-white dark:hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6] capitalize">{t("button_to_client")}</Link>
                             </div>
                         </div>
                     ))}
