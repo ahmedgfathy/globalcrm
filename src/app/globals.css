@@ -41,6 +41,8 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --menu-drawer-light-bg: rgba(255, 255, 255, 0.9);
+    --menu-drawer-dark-bg: rgba(30, 30, 30, 0.6);
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -75,6 +77,15 @@ body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --menu-drawer-bg: var(--menu-drawer-dark-bg);
+  }
+  .menu-drawer {
+    background: var(--menu-drawer-bg, var(--menu-drawer-light-bg));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--menu-drawer-bg, var(--menu-drawer-light-bg));
+    border-radius: 10px;
+    padding: 20px;
   }
 }
 
@@ -85,12 +96,4 @@ body {
   body {
     @apply bg-background text-foreground;
   }
-}
-.menu-drawer {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  padding: 20px;
 }

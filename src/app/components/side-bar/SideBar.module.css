@@ -1,0 +1,9 @@
+.sidebar {
+  transition: width 0.5s ease;
+}
+.sidebarOpen {
+  width: 16rem;
+}
+.sidebarClosed {
+  width: 10rem;
+}

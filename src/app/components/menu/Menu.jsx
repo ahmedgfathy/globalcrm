@@ -35,13 +35,10 @@ function Menu() {
 
         <div
           ref={drawerRef}
-          className={`fixed top-0 ${
-            locale === "ar" ? "right-0" : "left-0"
-          } z-40 h-screen p-4 bg-white dark:bg-gray-800 flex flex-col justify-between shadow-xl w-80 transition-transform duration-500 ${
-            showDrawer
-              ? "translate-x-0"
-              : `${locale === "ar" ? "translate-x-full" : "-translate-x-full"}`
-          }`}
+          className={`fixed top-0 left-0
+           z-40 h-screen p-4  menu-drawer flex flex-col justify-between shadow-xl w-80 transition-transform duration-500 ${
+             showDrawer ? "translate-x-0" : "-translate-x-full"
+           }`}
           aria-labelledby="drawer-label"
         >
           <div className="header border-b border-gray-200 pb-4 flex flex-col justify-center items-center">
@@ -62,7 +59,7 @@ function Menu() {
             {lists.map((list) => (
               <li
                 key={list.id}
-                className="hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer py-2 flex gap-3 items-center rounded-md text-gray-400"
+                className="hover:bg-gray-100 dark:hover:bg-gray-200 cursor-pointer py-2 flex gap-3 items-center rounded-md text-gray-400 dark:hover:text-dark"
               >
                 <span>{list.icon()}</span>
                 <span className="text-lg">{t(list.name)}</span>

@@ -1,5 +1,9 @@
 import React from 'react'
+<<<<<<< HEAD
 import ChartComponentTwo from './ChartTwo'
+=======
+import ChartComponentTwo from './ChartComponentTwo'
+>>>>>>> 0867a62225369c102cce9db5583ec8a1ed9526bc
 
 const CardInfo = [
     { id: 1, title: "عدد الموظفين", number: "١٬٥٠٠", time: "آخر 7 أيام", percent: "+٢٫٦%" },
@@ -12,11 +16,19 @@ export default function CardsComponentTwo() {
     return (
         <>
             {CardInfo.map((ele) => (
+<<<<<<< HEAD
                 <div key={ele.id} className="h-[179px] min-h-max w-[24%] max-[1200px]:w-[32%] max-[900px]:w-full min-w-max bg-[#1c252e] rounded-2xl flex justify-between items-center px-2 pt-2 shadow-box_shadow">
                     <div className="w-max h-full flex flex-col justify-between items-start gap-2 p-4">
                         <p className="text-xl">{ele.title}</p>
                         <p className="text-4xl max-sm:text-2xl">{ele.number}</p>
                         <div className="flex justify-between items-center gap-2" dir="rtl">
+=======
+                <div key={ele.id} className="h-[179px] min-h-max w-[22%] max-[1400px]:w-[30.5%] max-[1140px]:w-full min-w-max bg-[#1c252e] rounded-2xl flex justify-between items-center px-2 pt-2 shadow-box_shadow">
+                    <div className="w-max h-full flex flex-col justify-between items-start gap-2 p-4">
+                        <p className="text-xl">{ele.title}</p>
+                        <p className="text-4xl max-sm:text-2xl">{ele.number}</p>
+                        <div className="flex justify-between items-center gap-2">
+>>>>>>> 0867a62225369c102cce9db5583ec8a1ed9526bc
                             <span className="text-base w-max text-[#637381]">{ele.time}</span>
                             <div className="size-6">
                                 <svg
@@ -53,4 +65,8 @@ export default function CardsComponentTwo() {
 
         </>
     )
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 0867a62225369c102cce9db5583ec8a1ed9526bc

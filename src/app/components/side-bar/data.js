@@ -1,0 +1,52 @@
+import { AiFillDashboard } from "react-icons/ai";
+import { CiCalendar } from "react-icons/ci";
+import { FaNoteSticky } from "react-icons/fa6";
+import { LuTableProperties } from "react-icons/lu";
+import { SiGoogleads } from "react-icons/si";
+import { TbReportSearch } from "react-icons/tb";
+import { IoCallSharp } from "react-icons/io5";
+
+export const links = [
+  {
+    id: 1,
+    title: "dashboard",
+    link: "/",
+    icon: () => <AiFillDashboard className="text-2xl" />,
+  },
+  {
+    id: 2,
+    title: "calendar",
+    link: "calendar",
+    icon: () => <CiCalendar className="text-2xl" />,
+  },
+  {
+    id: 3,
+    title: "notes",
+    link: "notes",
+    icon: () => <FaNoteSticky className="text-2xl" />,
+  },
+  {
+    id: 4,
+    title: "calls",
+    link: "calls",
+    icon: () => <IoCallSharp className="text-2xl" />,
+  },
+  {
+    id: 5,
+    title: "leads",
+    link: "leads",
+    icon: () => <SiGoogleads className="text-2xl" />,
+  },
+  {
+    id: 6,
+    title: "properties",
+    link: "properties",
+    icon: () => <LuTableProperties className="text-2xl" />,
+  },
+  {
+    id: 7,
+    title: "reports",
+    link: "reports",
+    icon: () => <TbReportSearch className="text-2xl" />,
+  },
+];
