@@ -16,6 +16,8 @@ function NotFound() {
             <div>
               <svg
                 width={631}
+                className="not-found"
+                style={{margin:"auto"}}
                 height={379}
                 viewBox="0 0 631 379"
                 fill="none"
