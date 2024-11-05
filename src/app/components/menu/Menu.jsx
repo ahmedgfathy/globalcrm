@@ -36,9 +36,8 @@ function Menu() {
         <div
           ref={drawerRef}
           className={`fixed top-0 left-0
-           z-40 h-screen p-4  menu-drawer flex flex-col justify-between shadow-xl w-80 transition-transform duration-500 ${
-             showDrawer ? "translate-x-0" : "-translate-x-full"
-           }`}
+           z-40 h-screen p-4  menu-drawer flex flex-col justify-between shadow-xl w-80 transition-transform duration-500 ${showDrawer ? "translate-x-0" : "-translate-x-full"
+            }`}
           aria-labelledby="drawer-label"
         >
           <div className="header border-b border-gray-200 pb-4 flex flex-col justify-center items-center">
