@@ -46,5 +46,9 @@
   "Last_Follow_up": "Last Follow up",
   "Client_follow_up": "Client follow-up",
   "descriptions": "Descriptions",
-  "class": "Class"
+  "class": "Class",
+  "sure_delete": "Are you absolutely sure?",
+  "description_delete_dialog": "This action cannot be undone. This will permanently delete this",
+  "close_dialog": "Close",
+  "add_lead_description": "You can add a new lead "
 }

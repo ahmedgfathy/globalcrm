@@ -8,7 +8,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-     
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -281,13 +280,6 @@ module.exports = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-<<<<<<< HEAD
-      }, boxShadow: {
-        box_shadow: "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px"
-      }, screens: {
-        "1400": "1400px"
-      }
-=======
       },
       boxShadow: {
         box_shadow:
@@ -301,7 +293,6 @@ module.exports = {
       extend: {
         backgroundColor: ["aria-selected"],
       },
->>>>>>> 849143b583c699c959d2b4ef177376927eda62cd
     },
   },
   plugins: [require("tailwindcss-animate")],

@@ -6,11 +6,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineRightSquare } from "react-icons/ai";
+import TabButton from "../utils/TabButton";
 function Page({ params }) {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(!isMobile);
   const tabsRef = useRef(null);
   const { locale } = useTranslation();
+  const listTabs = [
+    { id: 1, title: "Lead Details", value: "details" },
+    { id: 2, title: "Updates", value: "updates" },
+  ];
   useEffect(() => {
     setIsOpen(!isMobile);
   }, [isMobile]);
@@ -56,33 +61,27 @@ function Page({ params }) {
           <TabsList
             dir={locale == "ar" ? "rtl" : "ltr"}
             ref={tabsRef}
-            className={`flex z-[1] gap-5 ${isMobile
+            className={`flex z-[1] gap-5 ${
+              isMobile
                 ? isOpen
                   ? "p-0 absolute top-0 left-0"
                   : "p-0 absolute top-0 -left-[250px]"
                 : "px-2"
-              } flex-col transition-all duration-200 bg-[#FFF] dark:bg-[#222831] min-h-full overflow-hidden`}
+            } flex-col transition-all duration-200 bg-[#FFF] dark:bg-[#222831] min-h-full overflow-hidden`}
             style={{ width: "250px" }}
           >
-            <TabsTrigger
-              value="details"
-              className="w-full py-3 dark:data-[state=active]:bg-dark_link_active data-[state=active]:text-text_link_active"
-            >
-              Lead Details
-            </TabsTrigger>
-            <TabsTrigger
-              value="updates"
-              className="w-full py-3 dark:data-[state=active]:bg-dark_link_active data-[state=active]:text-text_link_active"
-            >
-              Updates
-            </TabsTrigger>
+            <TabButton data={listTabs} />
           </TabsList>
           <TabsContent
             value="details"
             className="w-full max-md:pl-5"
             dir={locale == "ar" ? "rtl" : "ltr"}
           >
-            <Details />
+            <Details
+              page="view"
+              title={t("Lead_Details")}
+              description={t("Lead_descriptions")}
+            />
           </TabsContent>
           <TabsContent
             value="updates"

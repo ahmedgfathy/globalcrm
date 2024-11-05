@@ -4,7 +4,6 @@ import "./globals.css";
 import { Cairo } from "next/font/google";
 import UserRouter from "./context/UserRouter";
 import NavBar from "./components/nav-bar/NavBar";
-import Footer from "./components/Footer/Footer";
 const cairo = Cairo({
   subsets: ["arabic"],
   preload: true,
@@ -31,7 +30,6 @@ export default function RootLayout({ children }) {
                 <NavBar />
               </div>
               <main className="relative">{children}</main>
-
             </ThemeProvider>
           </TranslationProvider>
         </UserRouter>

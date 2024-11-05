@@ -47,11 +47,13 @@ function Page() {
             />
           </div>
           <div className="w-max max-[450px]:w-full">
-            <button className="w-max text-sm max-[450px]:text-xs mx-auto px-4 py-2 max-[450px]:p-2 font-bold rounded-xl  duration-200 text-[#0fa439] hover:text-[#08521d] bg-[#c8fad6] dark:text-white dark:hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6] capitalize flex justify-between items-center gap-1">
+            <Link
+              href="/dashboard/leads/add-lead"
+              className="w-max text-sm max-[450px]:text-xs mx-auto px-4 py-2 max-[450px]:p-2 font-bold rounded-xl  duration-200 text-[#0fa439] hover:text-[#08521d] bg-[#c8fad6] dark:text-white dark:hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6] capitalize flex justify-between items-center gap-1"
+            >
               <AiOutlineUserAdd /> {t("add_lead")}
-            </button>
+            </Link>
           </div>
-
         </div>
         <div className="w-full gap-2 gap-y-5 max-lg:gap-2 max-lg:gap-y-5 px-5 max-lg:px-2 grid grid-cols-5 max-lg:grid-cols-5 max-sm:grid-cols-2 max-[300px]:grid-cols-1">
           {ClientDetails.map((ele) => (

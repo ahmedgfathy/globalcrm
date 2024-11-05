@@ -8,7 +8,7 @@ function NavBar() {
   const pathName = usePathname();
   return (
     <nav className="fixed top-0 left-0 right-0 menu-drawer 10" dir="ltr">
-      <div className="container mx-auto">
+      <div className="">
         <div className="flex items-center h-10">
           {pathName.split("/").includes("dashboard") && (
             <div className="avatar mx-5">
