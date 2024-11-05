@@ -38,21 +38,26 @@ function Page() {
   return (
     <div className="py-2">
       <div className="w-full flex flex-wrap justify-between items-start gap-3 max-md:gap-7 px-2 pt-2 max-[1200px]:px-7">
-        <div className="w-full h-[50px] flex justify-evenly items-center mb-5 gap-3">
-          <input
-            type="text"
-            className="w-1/3 max-[450px]:w-full rounded-lg border-transparent bg-[#eaeaea] dark:bg-[#222831] focus:outline-none px-2 py-2"
-            placeholder={`${t("search_client")} ...`}
-          />
-          <Button className="bg-dark dark:bg-gray-700 dark:text-text_link_active hover:bg-gray-800 duration-100">
-            <AiOutlineUserAdd /> {t("add_lead")}
-          </Button>
+        <div className="bg-[#FFF] dark:bg-[#222831] rounded-xl w-full h-[50px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap justify-between max-[450px]:justify-center items-center mb-5 max-[450px]:mb-0 gap-3 px-3">
+          <div className="w-3/4 max-[450px]:w-full shadow-box_shadow rounded-xl">
+            <input
+              type="text"
+              className="w-full max-[450px]:w-full rounded-lg border-transparent bg-[#eaeaea] dark:bg-[#222831] focus:outline-none p-2 max-[450px]:py-1"
+              placeholder={`${t("search_client")} ...`}
+            />
+          </div>
+          <div className="w-max max-[450px]:w-full">
+            <button className="w-max text-sm max-[450px]:text-xs mx-auto px-4 py-2 max-[450px]:p-2 font-bold rounded-xl  duration-200 text-[#0fa439] hover:text-[#08521d] bg-[#c8fad6] dark:text-white dark:hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6] capitalize flex justify-between items-center gap-1">
+              <AiOutlineUserAdd /> {t("add_lead")}
+            </button>
+          </div>
+
         </div>
-        <div className="w-full  gap-2 gap-y-5 max-lg:gap-2 max-lg:gap-y-5 px-5 max-lg:px-2 grid lg:grid-cols-5 max-sm:grid-cols-2">
+        <div className="w-full gap-2 gap-y-5 max-lg:gap-2 max-lg:gap-y-5 px-5 max-lg:px-2 grid grid-cols-5 max-lg:grid-cols-5 max-sm:grid-cols-2 max-[300px]:grid-cols-1">
           {ClientDetails.map((ele) => (
             <div
               key={ele.id}
-              className="lg:h-[380px] max-sm:h-[300px] max-h-max flex flex-col justify-between items-center gap-4  rounded-2xl px-2 py-6 shadow-box_shadow hover:scale-105 duration-500 bg-[#FFF] dark:bg-[#222831] "
+              className="max-lg:h-[380px] max-sm:h-[300px] max-h-max flex flex-col justify-between items-center gap-4  rounded-2xl px-2 py-6 shadow-box_shadow hover:scale-105 duration-500 bg-[#FFF] dark:bg-[#222831] "
             >
               <div className="overflow-hidden w-full h-[140px]">
                 <img
@@ -69,7 +74,7 @@ function Page() {
                   {t("mobile_phone")}: {ele.phone}
                 </p>
               </div>
-              <div className="w-full flex justify-start items-center gap-3">
+              <div className="w-full flex justify-start items-center gap-2">
                 <Link href="">
                   <AiOutlineWhatsApp className="text-[#08521d] dark:text-white  hover:scale-125 duration-300" />
                 </Link>

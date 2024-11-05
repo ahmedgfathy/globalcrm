@@ -40,11 +40,11 @@ function Page({ params }) {
   }, [isMobile]);
 
   return (
-    <div className="page-user mini-h-screen ">
+    <div className="page-user min-h-screen h-max">
       <div className="container mx-auto py-4">
         <Tabs
           defaultValue="details"
-          className="w-full flex gap-5 h-[90vh] items-center relative"
+          className="w-full flex justify-between items-center gap-5 h-screen relative"
         >
           {isMobile && !isOpen && (
             <AiOutlineRightSquare
@@ -62,7 +62,7 @@ function Page({ params }) {
                   ? "p-0 absolute top-0 left-0"
                   : "p-0 absolute top-0 -left-[250px]"
                 : "px-2"
-            } flex-col transition-all duration-200 bg:gray-200 dark:bg-gray-900 min-h-full overflow-hidden`}
+            } flex-col transition-all duration-200 bg-[#FFF] dark:bg-[#222831] min-h-full overflow-hidden`}
             style={{ width: "250px" }}
           >
             <TabsTrigger
