@@ -50,5 +50,10 @@
   "sure_delete": "هل انت متأكد من حذف  هذا؟",
   "description_delete_dialog": "لا يمكن التراجع عن هذا الإجراء. سيؤدي هذا إلى حذف هذا الأمر نهائيا.",
   "close_dialog": "أغلاق",
-  "add_lead_description": "يمكنك اضافه بيانات العميل هنا"
+  "add_lead_description": "يمكنك اضافه بيانات العميل هنا",
+  "employee_count": "عدد الموظفين",
+  "last_s_days": "أخر 7 ايام",
+  "tasks": "المهام",
+  "according_to_achievement": "بحسب الانجاز",
+  "tasks_performed": "المهام المنفذه"
 }

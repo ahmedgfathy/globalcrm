@@ -50,5 +50,10 @@
   "sure_delete": "Are you absolutely sure?",
   "description_delete_dialog": "This action cannot be undone. This will permanently delete this",
   "close_dialog": "Close",
-  "add_lead_description": "You can add a new lead "
+  "add_lead_description": "You can add a new lead",
+  "employee_count": "Employee Count",
+  "last_s_days": "Last 7 days",
+  "tasks": "Tasks",
+  "according_to_achievement": "According to achievement",
+  "tasks_performed": "Tasks performed"
 }
