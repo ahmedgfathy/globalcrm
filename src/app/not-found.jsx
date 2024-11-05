@@ -10,7 +10,7 @@ function NotFound() {
   };
   return <div className="z-10 fixed w-screen ">
     <section>
-      <div className="bg-[#fff] dark:bg-gray-900 ">
+      <div className="bg-[#fff] dark:bg-gray-900  p-2">
         <div className="flex h-screen">
           <div className="m-auto text-center">
             <div>
