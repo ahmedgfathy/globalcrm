@@ -17,7 +17,7 @@ function NotFound() {
               <svg
                 width={631}
                 className="not-found"
-                style={{margin:"auto"}}
+                style={{ margin: "auto" }}
                 height={379}
                 viewBox="0 0 631 379"
                 fill="none"
@@ -50,15 +50,6 @@ function NotFound() {
                     stroke="#007867"
                     strokeMiterlimit={10}
                   />
-
-
-
-
-
-
-
-
-
 
 
                   <path
