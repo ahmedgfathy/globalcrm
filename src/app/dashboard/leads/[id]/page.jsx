@@ -40,8 +40,8 @@ function Page({ params }) {
   }, [isMobile]);
 
   return (
-    <div className="page-user min-h-screen h-max">
-      <div className="container mx-auto py-4">
+    <div className="page-user min-h-screen h-max mx-2">
+      <div className="container px-0 py-4 max-md:pb-20 max-md:pt-14 mx-auto">
         <Tabs
           defaultValue="details"
           className="w-full flex justify-between items-center gap-5 h-screen relative"
@@ -56,31 +56,30 @@ function Page({ params }) {
           <TabsList
             dir={locale == "ar" ? "rtl" : "ltr"}
             ref={tabsRef}
-            className={`flex z-[1] gap-5 ${
-              isMobile
+            className={`flex z-[1] gap-5 ${isMobile
                 ? isOpen
                   ? "p-0 absolute top-0 left-0"
                   : "p-0 absolute top-0 -left-[250px]"
                 : "px-2"
-            } flex-col transition-all duration-200 bg-[#FFF] dark:bg-[#222831] min-h-full overflow-hidden`}
+              } flex-col transition-all duration-200 bg-[#FFF] dark:bg-[#222831] min-h-full overflow-hidden`}
             style={{ width: "250px" }}
           >
             <TabsTrigger
               value="details"
-              className="w-[245px] py-3 dark:data-[state=active]:bg-dark_link_active data-[state=active]:text-text_link_active"
+              className="w-full py-3 dark:data-[state=active]:bg-dark_link_active data-[state=active]:text-text_link_active"
             >
               Lead Details
             </TabsTrigger>
             <TabsTrigger
               value="updates"
-              className="w-[245px] py-3 dark:data-[state=active]:bg-dark_link_active data-[state=active]:text-text_link_active"
+              className="w-full py-3 dark:data-[state=active]:bg-dark_link_active data-[state=active]:text-text_link_active"
             >
               Updates
             </TabsTrigger>
           </TabsList>
           <TabsContent
             value="details"
-            className="w-full"
+            className="w-full max-md:pl-5"
             dir={locale == "ar" ? "rtl" : "ltr"}
           >
             <Details />

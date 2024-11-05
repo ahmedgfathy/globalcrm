@@ -2,31 +2,31 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardHeader,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
+import SheetCalls from "./ SheetsCalls";
 
 function Details() {
   return (
-    <Card className="menu-drawer w-full min-h-screen h-max bg-[#FFF] dark:bg-[#222831] shadow-box_shadow py-20">
-      <CardHeader>
-        <div className="header flex justify-between items-center">
+    <Card className="menu-drawer w-full min-h-screen h-max bg-[#FFF] dark:bg-[#222831] shadow-box_shadow py-8 max-md:pt-4">
+      <div className="header w-full flex justify-between max-[450px]:justify-center items-center max-[450px]:flex-wrap gap-y-3">
+        <div>
           <p className="text-2xl font-bold">Lead Details</p>
-          <div className="w-max flex justify-between items-center gap-2 buttons">
-            <button className="text-sm max-[450px]:text-xs mx-auto px-4 py-2 max-[450px]:p-2 font-bold rounded-xl  duration-200 text-[#0fa439] hover:text-[#08521d] bg-[#c8fad6] dark:text-white dark:hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6] capitalize">
-              Update
-            </button>
-            <button className="text-sm max-[450px]:text-xs mx-auto px-4 py-2 max-[450px]:p-2 font-bold rounded-xl duration-200 text-white bg-[#e63946] hover:bg-[#c53030] dark:bg-[#ff6b6b] dark:hover:bg-[#c53030] capitalize">
-              Delete
-            </button>
-          </div>
+          <CardDescription className="">
+            Make changes to your account here.
+          </CardDescription>
         </div>
-        <CardDescription className="">
-          Make changes to your account here.
-        </CardDescription>
-      </CardHeader>
+        <div className="w-max flex justify-between items-center gap-2 buttons">
+          <button className="text-sm max-[450px]:text-xs mx-auto px-4 py-2 max-[450px]:p-2 font-bold rounded-xl  duration-200 text-[#0fa439] hover:text-[#08521d] bg-[#c8fad6] dark:text-white dark:hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6] capitalize">
+            Update
+          </button>
+          <button className="text-sm max-[450px]:text-xs mx-auto px-4 py-2 max-[450px]:p-2 font-bold rounded-xl duration-200 text-white bg-[#e63946] hover:bg-[#c53030] dark:bg-[#ff6b6b] dark:hover:bg-[#c53030] capitalize">
+            Delete
+          </button>
+        </div>
+      </div>
       <CardContent className="grid gap-2 md:grid-cols-2 md:gap-4">
         <div className="space-y-1 w-full">
           <Label htmlFor="name" className="capitalize">Name</Label>
@@ -48,7 +48,7 @@ function Details() {
           <Label htmlFor="descriptions" className="capitalize">Descriptions</Label>
           <textarea
             id="descriptions"
-            className="w-full h-[250px] bg-[#eaeaea] dark:bg-[#222831] p-2 rounded-md resize-none dark:border-[#263138]"
+            className="w-full h-[150px] bg-[#eaeaea] dark:bg-[#222831] py-1 px-2 focus:outline-none rounded-md resize-none border-[1px] dark:border-[#263138] focus:border-black dark:focus:border-white"
             defaultValue="..."
           />
         </div>
@@ -61,6 +61,7 @@ function Details() {
           <Input id="classType" className="bg-[#eaeaea] dark:bg-[#222831] dark:border-[#263138]" defaultValue="A" />
         </div>
       </CardContent>
+      {/* <SheetCalls /> */}
     </Card>
   );
 }
