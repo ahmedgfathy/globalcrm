@@ -268,6 +268,9 @@ module.exports = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        screens: {
+          1400: "1400px",
+        },
       },
       transitionDuration: {
         2000: "2000ms",
