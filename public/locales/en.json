@@ -35,5 +35,16 @@
   "mobile_phone": "Mobile Phone",
   "search_client": "Search Client",
   "button_to_client": "go to client",
-  "add_lead": "Add Lead"
+  "add_lead": "Add Lead",
+  "Lead_Details": "Lead Details",
+  "Lead_descriptions": "Make changes to your account here.",
+  "Update": "Update",
+  "Delete": "Delete",
+  "name_client": "Name",
+  "lead_number": "Lead Number",
+  "Number": "Number",
+  "Last_Follow_up": "Last Follow up",
+  "Client_follow_up": "Client follow-up",
+  "descriptions": "Descriptions",
+  "class": "Class"
 }
