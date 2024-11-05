@@ -34,5 +34,6 @@
   "name": "Name",
   "mobile_phone": "Mobile Phone",
   "search_client": "Search Client",
-  "button_to_client": "go to client"
+  "button_to_client": "go to client",
+  "add_lead": "Add Lead"
 }

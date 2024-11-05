@@ -25,7 +25,7 @@ export const TranslationProvider = ({ children }) => {
     <TranslationContext.Provider
       value={{ t: (key) => translations[key] || key, changeLanguage, locale }}
     >
-      <div>{children}</div>
+     <div dir={locale === "en" ? "ltr" : "rtl"}>{children}</div>
     </TranslationContext.Provider>
   );
 };

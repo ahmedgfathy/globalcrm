@@ -34,5 +34,6 @@
   "search_client": "البحث عن العميل",
   "name": "الاسم",
   "mobile_phone": "رقم الهاتف",
-  "button_to_client":"الذهاب الي العميل"
+  "button_to_client": "الذهاب الي العميل",
+  "add_lead": "أضافة عميل"
 }
