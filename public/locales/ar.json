@@ -35,5 +35,16 @@
   "name": "الاسم",
   "mobile_phone": "رقم الهاتف",
   "button_to_client": "الذهاب الي العميل",
-  "add_lead": "أضافة عميل"
+  "add_lead": "أضافة عميل",
+  "Lead_Details": "تفاصيل العميل",
+  "Lead_descriptions": "قم بإجراء التغييرات على حسابك هنا",
+  "Update": "تحديث",
+  "Delete": "حذف",
+  "name_client": "اسم العميل",
+  "lead_number": "رقم العميل",
+  "Number": "الموبايل",
+  "Last_Follow_up": "اخر تحديث",
+  "Client_follow_up": "متابعة العميل",
+  "descriptions": "الوصف",
+  "class": "المستوي"
 }
