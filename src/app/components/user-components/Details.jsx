@@ -9,11 +9,12 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import { Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import DeleteButton from "../delete-button/DeleteButton";
-import SheetCalls from "./ SheetsCalls";
+import SheetCalls from "./SheetsCalls";
 
 export default function Details({ page, ...props }) {
   const { t } = useTranslation();
   const [image, setImage] = useState("/");
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const handleImageChange = (event) => {
     const file = event.target.files?.[0];
@@ -26,9 +27,11 @@ export default function Details({ page, ...props }) {
     }
   };
   useEffect(() => {
-    page === "add"
-      ? setImage("/assets/images/default-user.jpg")
-      : setImage("/assets/home-images/form-image.png");
+    if (page === "add") {
+      setImage("/assets/images/default-user.jpg");
+      setIsDisabled(false);
+    }
+    setImage("/assets/home-images/form-image.png");
   }, [page]);
   const handleDeleteImage = () => {
     setImage("/assets/images/default-user.jpg");
@@ -46,17 +49,13 @@ export default function Details({ page, ...props }) {
             <Button> {t("add_lead")} </Button>
           ) : (
             <>
-              <button
-                className="GreenButton dark"
-              >
-                {t("Update")}
-              </button>
-              <button
+              <Button className="GreenButton dark" onClick={()=>setIsDisabled(false)}>{t("Update")}</Button>
+              <DeleteButton
                 handleDelete={() => console.log("deletes")}
                 className="DeleteButton dark"
               >
                 {t("Delete")}
-              </button>
+              </DeleteButton>
             </>
           )}
         </div>
@@ -67,6 +66,7 @@ export default function Details({ page, ...props }) {
             <div className="space-y-2">
               <Label htmlFor="name">{t("name_client")}</Label>
               <Input
+                disabled={isDisabled}
                 id="name"
                 className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="Pedro Duarte"
@@ -75,6 +75,7 @@ export default function Details({ page, ...props }) {
             <div className="space-y-2">
               <Label htmlFor="username">{t("lead_number")}</Label>
               <Input
+                disabled={isDisabled}
                 id="username"
                 className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="@peduarte"
@@ -83,6 +84,7 @@ export default function Details({ page, ...props }) {
             <div className="space-y-2">
               <Label htmlFor="number">{t("Number")}</Label>
               <Input
+                disabled={isDisabled}
                 id="number"
                 className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="1111"
@@ -91,6 +93,7 @@ export default function Details({ page, ...props }) {
             <div className="space-y-2">
               <Label htmlFor="LastFollowUp">{t("Last_Follow_up")}</Label>
               <Input
+                disabled={isDisabled}
                 id="LastFollowUp"
                 className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="30-08-2022"
@@ -99,6 +102,7 @@ export default function Details({ page, ...props }) {
             <div className="space-y-2 sm:col-span-2">
               <Label htmlFor="descriptions">{t("descriptions")}</Label>
               <textarea
+              disabled={isDisabled}
                 id="descriptions"
                 className="w-full h-[100px] py-2 px-3 resize-none dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="..."
@@ -107,6 +111,7 @@ export default function Details({ page, ...props }) {
             <div className="space-y-2">
               <Label htmlFor="clintFollowUp">{t("Client_follow_up")}</Label>
               <Input
+                disabled={isDisabled}
                 id="clientFollowUp"
                 className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="Ashor"
@@ -115,6 +120,7 @@ export default function Details({ page, ...props }) {
             <div className="space-y-2">
               <Label htmlFor="classType">{t("class")}</Label>
               <Input
+                disabled={isDisabled}
                 id="classType"
                 className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="A"
@@ -159,6 +165,7 @@ export default function Details({ page, ...props }) {
       </CardContent>
       <SheetCalls />
       <input
+        disabled={isDisabled}
         id="imageInput"
         type="file"
         accept="image/*"
