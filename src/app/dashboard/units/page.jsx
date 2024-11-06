@@ -65,7 +65,7 @@ function Page() {
         </Grid>
         <Grid container className="flex gap-5 justify-between p-6" style={{flexWrap:"wrap"}} >
           {ClientDetails.map((ele) => (
-            <Grid item xs={12} sm={5.7} lg={2.8}>
+            <Grid item xs={12} sm={5.7} lg={2.8} key={ele.id}>
               <div
                 key={ele.id}
                 className="rounded-t max-h-max hover:shadow duration-300 bg-Lightbg dark:bg-cardbgDark flex flex-col justify-between items-center gap-4 rounded-b "
