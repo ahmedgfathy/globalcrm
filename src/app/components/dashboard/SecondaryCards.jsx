@@ -8,9 +8,9 @@ function SecondaryCards({ data }) {
   return (
     <div
       key={data.id}
-      className="h-[179px] min-h-max bg-white dark:bg-[#1c252e] rounded-2xl flex justify-between items-center px-2 pt-2 shadow-box_shadow"
+      className="h-[179px] min-h-max bg-Lightbg dark:bg-cardbgDark rounded-2xl flex justify-between items-center px-2 pt-2 shadow-box_shadow dark:shadow-none overflow-x-auto"
     >
-      <div className="w-max h-full flex flex-col justify-between items-start gap-2 p-4">
+      <div className="w-11/12 h-full flex flex-col justify-between items-start gap-2 p-4">
         <p className="text-xl">{t(data.title)}</p>
         <p className="text-4xl max-sm:text-2xl">{data.number}</p>
         <div className="flex justify-between items-center gap-2">
@@ -22,7 +22,7 @@ function SecondaryCards({ data }) {
         </div>
       </div>
 
-      <div className="w-max pl-5 flex justify-between items-center text-end">
+      <div className="w-max flex justify-between items-center text-end">
         <ChartComponentTwo />
       </div>
     </div>

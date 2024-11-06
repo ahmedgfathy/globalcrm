@@ -11,7 +11,7 @@ function Page({ params }) {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(!isMobile);
   const tabsRef = useRef(null);
-  const { locale } = useTranslation();
+  const { locale , t} = useTranslation();
   const listTabs = [
     { id: 1, title: "Lead Details", value: "details" },
     { id: 2, title: "Updates", value: "updates" },
@@ -43,6 +43,7 @@ function Page({ params }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isMobile]);
+
 
   return (
     <div className="page-user min-h-screen h-max mx-2">

@@ -25,7 +25,7 @@ function Page() {
   return (
     <div className="dashboard pt-10">
       <div className="mx-auto container">
-        <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-6">
+        <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-2">
           <div className="main-card row-span-2">
             <MainCard dataForChart={dataForChart} />
           </div>

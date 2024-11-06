@@ -8,6 +8,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        cardbgDark:"#1c252e",
+        Lightbg:"#fff",
+        borderSearchInputLight:"#F6F7F8",
+        borderSearchInputDark:"#28333c",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

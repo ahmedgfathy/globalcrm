@@ -34,7 +34,7 @@ export default function Details({ page, ...props }) {
   };
 
   return (
-    <Card className="menu-drawer w-full min-h-screen h-max bg-[#FFF] dark:bg-[#222831] shadow-box_shadow py-8 max-md:pt-4">
+    <Card className="menu-drawer w-full min-h-screen h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-8 max-md:pt-4">
       <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-6">
         <div>
           <p className="text-2xl font-bold">{props.title}</p>
@@ -46,7 +46,6 @@ export default function Details({ page, ...props }) {
           ) : (
             <>
               <Button
-                variant="outline"
                 className="bg-[#c8fad6] hover:bg-[#a7f8c1] text-[#0fa439] hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6] dark:text-white dark:hover:text-[#08521d]"
               >
                 {t("Update")}
@@ -66,7 +65,7 @@ export default function Details({ page, ...props }) {
               <Label htmlFor="name">{t("name_client")}</Label>
               <Input
                 id="name"
-                className="bg-[#eaeaea] dark:bg-[#222831] dark:border-[#263138]"
+                className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="Pedro Duarte"
               />
             </div>
@@ -74,7 +73,7 @@ export default function Details({ page, ...props }) {
               <Label htmlFor="username">{t("lead_number")}</Label>
               <Input
                 id="username"
-                className="bg-[#eaeaea] dark:bg-[#222831] dark:border-[#263138]"
+                className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="@peduarte"
               />
             </div>
@@ -82,7 +81,7 @@ export default function Details({ page, ...props }) {
               <Label htmlFor="number">{t("Number")}</Label>
               <Input
                 id="number"
-                className="bg-[#eaeaea] dark:bg-[#222831] dark:border-[#263138]"
+                className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="1111"
               />
             </div>
@@ -90,7 +89,7 @@ export default function Details({ page, ...props }) {
               <Label htmlFor="LastFollowUp">{t("Last_Follow_up")}</Label>
               <Input
                 id="LastFollowUp"
-                className="bg-[#eaeaea] dark:bg-[#222831] dark:border-[#263138]"
+                className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="30-08-2022"
               />
             </div>
@@ -98,7 +97,7 @@ export default function Details({ page, ...props }) {
               <Label htmlFor="descriptions">{t("descriptions")}</Label>
               <textarea
                 id="descriptions"
-                className="w-full h-[100px] bg-[#eaeaea] dark:bg-[#222831] py-2 px-3 focus:outline-none rounded-md resize-none border border-input focus:border-ring"
+                className="w-full h-[100px] py-2 px-3 resize-none dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="..."
               />
             </div>
@@ -106,7 +105,7 @@ export default function Details({ page, ...props }) {
               <Label htmlFor="clintFollowUp">{t("Client_follow_up")}</Label>
               <Input
                 id="clientFollowUp"
-                className="bg-[#eaeaea] dark:bg-[#222831] dark:border-[#263138]"
+                className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="Ashor"
               />
             </div>
@@ -114,13 +113,13 @@ export default function Details({ page, ...props }) {
               <Label htmlFor="classType">{t("class")}</Label>
               <Input
                 id="classType"
-                className="bg-[#eaeaea] dark:bg-[#222831] dark:border-[#263138]"
+                className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
                 defaultValue="A"
               />
             </div>
           </div>
         </div>
-        <Card className="overflow-hidden lg:col-span-1 h-48 lg:h-40">
+        {/* <Card className="overflow-hidden lg:col-span-1 h-48 lg:h-40">
           <CardContent className="p-0">
             <div className="relative w-full h-48 lg:h-40">
               <Image
@@ -153,7 +152,7 @@ export default function Details({ page, ...props }) {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </CardContent>
       <input
         id="imageInput"

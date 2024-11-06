@@ -38,11 +38,11 @@ function Page() {
   return (
     <div className="py-2">
       <div className="w-full flex flex-wrap justify-between items-start gap-3 max-md:gap-7 px-2 pt-2 max-[1200px]:px-7">
-        <div className="bg-[#FFF] dark:bg-[#222831] rounded-xl w-full h-[50px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap justify-between max-[450px]:justify-center items-center mb-5 max-[450px]:mb-0 gap-3 px-3">
-          <div className="w-3/4 max-[450px]:w-full shadow-box_shadow rounded-xl">
+        <div className="bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap justify-between max-[450px]:justify-center items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
+          <div className="w-3/4 h-max max-[450px]:w-full shadow-box_shadow dark:shadow-none rounded-xl">
             <input
               type="text"
-              className="w-full max-[450px]:w-full rounded-lg border-transparent bg-[#eaeaea] dark:bg-[#222831] focus:outline-none p-2 max-[450px]:py-1"
+              className="w-full max-[450px]:w-full bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md p-2 max-[450px]:py-1"
               placeholder={`${t("search_client")} ...`}
             />
           </div>
@@ -59,7 +59,7 @@ function Page() {
           {ClientDetails.map((ele) => (
             <div
               key={ele.id}
-              className="max-lg:h-[380px] max-sm:h-[300px] max-h-max flex flex-col justify-between items-center gap-4  rounded-2xl px-2 py-6 shadow-box_shadow hover:scale-105 duration-500 bg-[#FFF] dark:bg-[#222831] "
+              className="max-lg:h-[380px] max-sm:h-[300px] max-h-max bg-Lightbg dark:bg-cardbgDark flex flex-col justify-between items-center gap-4 rounded-2xl px-2 py-6 shadow-box_shadow dark:shadow-none hover:scale-105 duration-500  "
             >
               <div className="overflow-hidden w-full h-[140px]">
                 <img

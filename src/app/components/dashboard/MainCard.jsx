@@ -6,7 +6,7 @@ import { Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 function MainCard({ dataForChart }) {
   const { t } = useTranslation();
   return (
-    <div className="h-max bg-white dark:bg-[#1c252e] rounded-2xl flex flex-col justify-between items-center gap-2 px-6 py-6 shadow-box_shadow">
+    <div className="h-max bg-Lightbg dark:bg-cardbgDark rounded-2xl flex flex-col justify-between items-center gap-2 px-6 py-6 shadow-box_shadow dark:shadow-none">
       <div className="flex flex-col w-full text-start">
         <p className="text-xl font-bold">{t("tasks")}</p>
         <p className="text-lg text-[#637381]">

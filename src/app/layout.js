@@ -17,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${cairo.className} antialiased min-h-screen`}>
+      <body className={`${cairo.className} antialiased min-h-screen bg-[#fff] dark:bg-[#141a21]`}>
         <UserRouter>
           <TranslationProvider>
             <ThemeProvider
