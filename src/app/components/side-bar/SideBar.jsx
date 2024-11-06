@@ -22,9 +22,6 @@ function SideBar() {
     if (pathName === "/dashboard" && href === "/") return true;
   };
 
-  // useEffect(() => {
-  //   setIsOpen(!isMobile);
-  // }, [isMobile]);
 
   useEffect(() => {
     if (isMobile) {
@@ -59,9 +56,9 @@ function SideBar() {
             onClick={() => setIsOpen(!isOpen)}
             aria-controls="sidebar-multi-level-sidebar"
             type="button"
-            className={`fixed  z-40 top-5 translate-x-1/2 flex  justify-center items-center rounded-full  w-10 h-10 text-sm text-gray-500 dark:text-white ${
+            className={`fixed  z-40 top-5 translate-x-1/2 flex  justify-center items-center rounded-full w-10 h-10 text-sm text-gray-500 dark:text-white ${
               isOpen ? "right-[16rem]" : "right-4"
-            }  `}
+            }`}
           >
             <span className="sr-only">Open sidebar</span>
             <CiMenuFries className="text-2xl" />

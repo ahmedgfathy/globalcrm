@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { IoMdClose } from "react-icons/io";
 import { lists } from "./data.js";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 function Menu() {
   const [showDrawer, setShowDrawer] = useState(false);
@@ -36,8 +37,9 @@ function Menu() {
         <div
           ref={drawerRef}
           className={`fixed top-0 left-0
-           z-40 h-screen p-4  menu-drawer flex flex-col justify-between shadow-xl w-80 transition-transform duration-500 ${showDrawer ? "translate-x-0" : "-translate-x-full"
-            }`}
+           z-40 h-screen p-4  menu-drawer flex flex-col justify-between shadow-xl w-80 transition-transform duration-500 ${
+             showDrawer ? "translate-x-0" : "-translate-x-full"
+           }`}
           aria-labelledby="drawer-label"
         >
           <div className="header border-b border-gray-200 pb-4 flex flex-col justify-center items-center">
@@ -60,8 +62,10 @@ function Menu() {
                 key={list.id}
                 className="hover:bg-gray-100 dark:hover:bg-gray-200 cursor-pointer py-2 flex gap-3 items-center rounded-md text-gray-400 dark:hover:text-dark"
               >
-                <span>{list.icon()}</span>
-                <span className="text-lg">{t(list.name)}</span>
+                <Link href={`/dashboard/user/${list.link}`} className="w-full flex items-center gap-2">
+                  <span>{list.icon()}</span>
+                  <span className="text-lg">{t(list.name)}</span>
+                </Link>
               </li>
             ))}
           </ul>

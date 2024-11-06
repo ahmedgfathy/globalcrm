@@ -11,7 +11,7 @@ function Page({ params }) {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(!isMobile);
   const tabsRef = useRef(null);
-  const { locale , t} = useTranslation();
+  const { locale, t } = useTranslation();
   const listTabs = [
     { id: 1, title: "Lead Details", value: "details" },
     { id: 2, title: "Updates", value: "updates" },
@@ -44,13 +44,12 @@ function Page({ params }) {
     };
   }, [isMobile]);
 
-
   return (
     <div className="page-user min-h-screen h-max mx-2">
       <div className="container px-0 py-4 max-md:pb-20 max-md:pt-14 mx-auto">
         <Tabs
           defaultValue="details"
-          className="w-full flex justify-between items-center gap-5 h-screen relative"
+          className="w-full flex justify-between items-center gap-5 min-h-screen relative"
         >
           {isMobile && !isOpen && (
             <AiOutlineRightSquare
@@ -68,7 +67,7 @@ function Page({ params }) {
                   ? "p-0 absolute top-0 left-0"
                   : "p-0 absolute top-0 -left-[250px]"
                 : "px-2"
-            } flex-col transition-all duration-200 bg-[#FFF] dark:bg-[#222831] min-h-full overflow-hidden`}
+            } flex-col transition-all duration-200 bg-[#FFF] min-h-screen dark:bg-[#222831] overflow-hidden`}
             style={{ width: "250px" }}
           >
             <TabButton data={listTabs} />

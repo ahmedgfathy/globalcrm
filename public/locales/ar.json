@@ -57,5 +57,8 @@
   "according_to_achievement": "بحسب الانجاز",
   "tasks_performed": "المهام المنفذه",
   "source": "المصدر",
-  "leads_List": "قائمه العملاء"
+  "leads_List": "قائمه العملاء",
+  "units": "الوحدات",
+  "action":"التحكم",
+  "more_details": "المزيد من التفاصيل"
 }
