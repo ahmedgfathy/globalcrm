@@ -57,5 +57,13 @@
   "according_to_achievement": "بحسب الانجاز",
   "tasks_performed": "المهام المنفذه",
   "source": "المصدر",
-  "leads_List": "قائمه العملاء"
+  "leads_List": "قائمه العملاء",
+<<<<<<<<< Temporary merge branch 1
+  "more_details"  : "تفاصيل اكثر"
 }
+=========
+  "units": "الوحدات",
+  "action":"التحكم",
+  "more_details": "المزيد من التفاصيل"
+}
+>>>>>>>>> Temporary merge branch 2
