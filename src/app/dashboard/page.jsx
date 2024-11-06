@@ -26,7 +26,7 @@ function Page() {
       number: "",
       time: "",
       percent: "",
-      icon: "",
+      icon: ()=>{},
       link: "",
       description: "",
     },
