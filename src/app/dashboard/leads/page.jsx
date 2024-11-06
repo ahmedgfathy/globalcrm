@@ -49,13 +49,13 @@ function Page() {
           <div className="w-max max-[450px]:w-full">
             <Link
               href="/dashboard/leads/add-lead"
-              className="w-max text-sm max-[450px]:text-xs mx-auto px-4 py-2 max-[450px]:p-2 font-bold rounded-xl  duration-200 text-[#0fa439] hover:text-[#08521d] bg-[#c8fad6] dark:text-white dark:hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6] capitalize flex justify-between items-center gap-1"
+              className="GreenButton dark flex justify-between items-center gap-1"
             >
               <AiOutlineUserAdd /> {t("add_lead")}
             </Link>
           </div>
         </div>
-        <div className="w-full gap-2 gap-y-5 max-lg:gap-2 max-lg:gap-y-5 px-5 max-lg:px-2 grid grid-cols-5 max-lg:grid-cols-5 max-sm:grid-cols-2 max-[300px]:grid-cols-1">
+        <div className="w-full gap-2 gap-y-5 max-lg:gap-2 max-lg:gap-y-5 px-5 max-lg:px-2 grid grid-cols-5 max-lg:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 max-[325px]:grid-cols-1">
           {ClientDetails.map((ele) => (
             <div
               key={ele.id}
@@ -105,7 +105,7 @@ function Page() {
               <div className="w-full flex justify-between items-center">
                 <Link
                   href={`/dashboard/leads/${ele.id}`}
-                  className="text-sm max-[450px]:text-xs mx-auto px-4 py-2 max-[450px]:p-2 font-bold rounded-xl hover:scale-105 duration-200 text-[#0fa439] hover:text-[#08521d] bg-[#c8fad6] dark:text-white dark:hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6] capitalize"
+                  className="GreenButton dark"
                 >
                   {t("button_to_client")}
                 </Link>

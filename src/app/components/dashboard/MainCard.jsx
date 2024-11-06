@@ -20,8 +20,8 @@ function MainCard({ dataForChart }) {
               <Pie
                 dataKey="value"
                 data={dataForChart}
-                innerRadius={65}
-                outerRadius={88}
+                innerRadius={55}
+                outerRadius={75}
                 fill="#007867"
               />
               <Tooltip />
