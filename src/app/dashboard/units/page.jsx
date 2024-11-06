@@ -79,7 +79,7 @@ function Page() {
                 </div>
                 <div className="w-full h-max flex flex-col justify-center items-start gap-2 p-3">
                   <p className="font-bold text-sm capitalize">
-                    Client Name : {ele.name}
+                    {t("name")} : {ele.name}
                   </p>
                   <p className="font-bold text-xs capitalize">
                     {t("mobile_phone")}: {ele.phone}
@@ -88,7 +88,7 @@ function Page() {
 
                 <div className="w-full flex justify-between items-center p-3">
                   <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border rounded border-gray-400 shadow">
-                    More Details
+                  {t("more_details")}
                   </button>
 
                   <div className="flex justify-start items-center gap-2">

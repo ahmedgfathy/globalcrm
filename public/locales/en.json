@@ -31,7 +31,7 @@
   "leads": "Leads",
   "properties": "Units",
   "reports": "Reports",
-  "name": "Name",
+  "name": "Client Name",
   "mobile_phone": "Mobile Phone",
   "search_client": "Search Client",
   "button_to_client": "go to client",
@@ -57,5 +57,6 @@
   "according_to_achievement": "According to achievement",
   "tasks_performed": "Tasks performed",
   "source": "Source",
-  "leads_List": "Leads List"
+  "leads_List": "Leads List",
+  "more_details" : "More Details"
 }

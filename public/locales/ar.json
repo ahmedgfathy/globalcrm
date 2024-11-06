@@ -32,7 +32,7 @@
   "properties": "الوحدات",
   "reports": "التقارير",
   "search_client": "البحث عن العميل",
-  "name": "الاسم",
+  "name": "اسم العميل",
   "mobile_phone": "رقم الهاتف",
   "button_to_client": "الذهاب الي العميل",
   "add_lead": "أضافة عميل",
@@ -57,5 +57,6 @@
   "according_to_achievement": "بحسب الانجاز",
   "tasks_performed": "المهام المنفذه",
   "source": "المصدر",
-  "leads_List": "قائمه العملاء"
+  "leads_List": "قائمه العملاء",
+  "more_details"  : "تفاصيل اكثر"
 }
