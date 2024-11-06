@@ -56,14 +56,22 @@ function Drawer() {
           }`}
           aria-labelledby="drawer-label"
         >
-          <div className="flex justify-between items-center mb-4">
+          <div
+            className={`flex justify-between items-center mb-4 ${
+              lang === "ar" ? "flex-row" : "flex-row-reverse"
+            }`}
+          >
             <h1 className="text-2xl font-semibold">{t("settings")}</h1>
             <button onClick={toggleDrawer}>
               <IoMdClose />
             </button>
           </div>
 
-          <div className="flex gap-4 mb-4">
+          <div
+            className={`flex gap-4 mb-4 ${
+              lang === "en" ? "text-left" : "text-right"
+            }`}
+          >
             <ControlCard
               icon={<MdLanguage className="text-xl" />}
               label={lang === "en" ? "English" : "العربية"}

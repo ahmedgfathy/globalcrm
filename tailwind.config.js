@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -9,6 +8,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        cardbgDark:"#1c252e",
+        Lightbg:"#fff",
+        borderSearchInputLight:"#F6F7F8",
+        borderSearchInputDark:"#28333c",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -39,6 +42,9 @@ module.exports = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        dark_link_active: "#5f942e14",
+        text_link_active: "#5be49b",
+        text_link_active_l: "#5f942e",
         black: {
           DEFAULT: "#000000",
           100: "#000000",
@@ -265,6 +271,9 @@ module.exports = {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        screens: {
+          1400: "1400px",
+        },
       },
       transitionDuration: {
         2000: "2000ms",
@@ -274,11 +283,19 @@ module.exports = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-      }, boxShadow: {
-        box_shadow: "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px"
-      },screens:{
-        "1400":"1400px"
-      }
+      },
+      boxShadow: {
+        box_shadow:
+          "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px",
+      },
+      screens: {
+        1400: "1400px",
+      },
+    },
+    variants: {
+      extend: {
+        backgroundColor: ["aria-selected"],
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

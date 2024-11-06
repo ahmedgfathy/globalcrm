@@ -5,6 +5,7 @@ import {
   ProfileIcon,
   SubscriptionIcon,
   ProjectIcon,
+  ToTop,
 } from "./svgIcon";
 
 export {
@@ -14,4 +15,5 @@ export {
   ProfileIcon,
   SubscriptionIcon,
   ProjectIcon,
+  ToTop,
 };

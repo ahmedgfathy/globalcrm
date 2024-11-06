@@ -42,7 +42,7 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
     --menu-drawer-light-bg: rgba(255, 255, 255, 0.9);
-    --menu-drawer-dark-bg: rgba(30, 30, 30, 0.6);
+    --menu-drawer-dark-bg: rgba(30, 30, 30, 0.9);
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -95,5 +95,12 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@media (max-width:500px) {
+
+  .not-found {
+    max-width: 300px !important;
   }
 }
