@@ -15,8 +15,8 @@ const data = [
 
 const ChartComponentTwo = () => {
     return (
-        <ResponsiveContainer width={70} height={60}>
-            <BarChart width={10} height={140} data={data}>
+        <ResponsiveContainer width={50} height={50}>
+            <BarChart width={30} height={140} data={data}>
                 <Bar dataKey="uv" fill="#007867" />
             </BarChart>
             <Tooltip />

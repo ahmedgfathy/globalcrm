@@ -40,18 +40,15 @@ function SideBar() {
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }
-      const handleClickOutside = (event) => {
-          setIsOpen(false);
-        
-      };
+    const handleClickOutside = (event) => {
+      setIsOpen(false);
+    };
 
-      document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    
-    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, [isMobile]);
 
   return (
@@ -89,7 +86,11 @@ function SideBar() {
           ref={sidebarRef}
           id="sidebar-multi-level-sidebar"
           className={`${styles.sidebar} ${
-            isOpen ? styles.sidebarOpen : styles.sidebarClosed
+            isOpen
+              ? !isMobile
+                ? styles.sidebarOpen
+                : "w-0"
+              : styles.sidebarClosed
           } h-screen bg-white dark:bg-gray-800`}
           aria-label="Sidebar"
         >
