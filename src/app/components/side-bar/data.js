@@ -39,8 +39,8 @@ export const links = [
   },
   {
     id: 6,
-    title: "properties",
-    link: "properties",
+    title: "units",
+    link: "units",
     icon: () => <LuTableProperties className="text-xl" />,
   },
   {
