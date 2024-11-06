@@ -1,3 +1,4 @@
+import { useTranslation } from "@/app/context/TranslationContext";
 import {
     CardContent,
     CardHeader,
@@ -7,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import React from "react";
 
 function SheetCalls() {
+    const { t } = useTranslation();
+
     return (
         <div className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark border-0">
             <div className="header w-full flex justify-between max-[450px]:justify-center items-center max-[450px]:flex-wrap gap-y-3">
@@ -15,10 +18,10 @@ function SheetCalls() {
                 </div>
                 <div className="w-max flex justify-between items-center gap-2 buttons">
                     <button className="GreenButton dark">
-                        Update
+                    {t("Update")}
                     </button>
                     <button className="DeleteButton">
-                        Delete
+                    {t("Delete")}
                     </button>
                 </div>
             </div>
