@@ -9,6 +9,7 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import { Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import DeleteButton from "../delete-button/DeleteButton";
+import SheetCalls from "./ SheetsCalls";
 
 export default function Details({ page, ...props }) {
   const { t } = useTranslation();
@@ -45,15 +46,17 @@ export default function Details({ page, ...props }) {
             <Button> {t("add_lead")} </Button>
           ) : (
             <>
-              <Button
-                className="bg-[#c8fad6] hover:bg-[#a7f8c1] text-[#0fa439] hover:text-[#08521d] dark:bg-[#5be49b] dark:hover:bg-[#ddfce6] dark:text-white dark:hover:text-[#08521d]"
+              <button
+                className="GreenButton dark"
               >
                 {t("Update")}
-              </Button>
-              <DeleteButton
-                title={t("Delete")}
+              </button>
+              <button
                 handleDelete={() => console.log("deletes")}
-              />
+                className="DeleteButton dark"
+              >
+                {t("Delete")}
+              </button>
             </>
           )}
         </div>
@@ -119,7 +122,7 @@ export default function Details({ page, ...props }) {
             </div>
           </div>
         </div>
-        {/* <Card className="overflow-hidden lg:col-span-1 h-48 lg:h-40">
+        <Card className="overflow-hidden lg:col-span-1 h-48 lg:h-40">
           <CardContent className="p-0">
             <div className="relative w-full h-48 lg:h-40">
               <Image
@@ -152,8 +155,9 @@ export default function Details({ page, ...props }) {
               </div>
             </div>
           </CardContent>
-        </Card> */}
+        </Card>
       </CardContent>
+      <SheetCalls />
       <input
         id="imageInput"
         type="file"
