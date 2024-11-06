@@ -29,7 +29,7 @@
   "notes": "Notes",
   "calls": "Calls",
   "leads": "Leads",
-  "properties": "Properties",
+  "properties": "Units",
   "reports": "Reports",
   "name": "Name",
   "mobile_phone": "Mobile Phone",
@@ -55,5 +55,7 @@
   "last_s_days": "Last 7 days",
   "tasks": "Tasks",
   "according_to_achievement": "According to achievement",
-  "tasks_performed": "Tasks performed"
+  "tasks_performed": "Tasks performed",
+  "source": "Source",
+  "leads_List": "Leads List"
 }

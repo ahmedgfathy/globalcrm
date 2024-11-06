@@ -153,18 +153,17 @@ body {
 .DeleteButton:hover {
   color: white; 
   background-color: #a11915;
-  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); Subtle shadow effect on hover */
 }
 
 .DeleteButton:dark {
   color: white;
-  background-color: #8d1915; /* Slightly darker red for dark mode */
+  background-color: #8d1915; 
   border-color: #751411;
 }
 
 .DeleteButton:hover:dark {
-  color: #ffebeb; /* Lighter hover text for dark mode */
-  background-color: #751411; /* Darker red for hover in dark mode */
+  color: #ffebeb;
+  background-color: #751411; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
