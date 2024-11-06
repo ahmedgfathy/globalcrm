@@ -45,7 +45,7 @@ function DeleteButton({ handleDelete, title }) {
         </DialogHeader>
         <DialogFooter className="sm:justify-start">
           <Button variant="destructive" onClick={onOk} className="">
-            {title}
+            {t('Delete')}
             <AiOutlineDelete className="mx-1 text-lg" />
           </Button>
           <DialogClose asChild>
