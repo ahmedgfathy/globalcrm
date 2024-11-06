@@ -1,6 +1,7 @@
 "use client";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { Button } from "@/components/ui/button";
+import { Grid } from "@mui/material";
 import Link from "next/link";
 import React from "react";
 import {
@@ -9,6 +10,11 @@ import {
   AiOutlineUserAdd,
   AiOutlineWhatsApp,
 } from "react-icons/ai";
+import { FaWhatsapp } from "react-icons/fa";
+import { FiPhoneCall } from "react-icons/fi";
+import { MdOutlineMail } from "react-icons/md";
+
+
 
 const ClientDetails = [
   { id: 1, name: "Ahmed", phone: "01011001105", href: "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600" },
@@ -37,85 +43,77 @@ function Page() {
   const { t } = useTranslation();
   return (
     <div className="py-2">
-      <div className="w-full flex flex-wrap justify-between items-start gap-3 max-md:gap-7 px-2 pt-2 max-[1200px]:px-7">
-        <div className="bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap justify-between max-[450px]:justify-center items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
-          <div className="w-3/4 h-max max-[450px]:w-full shadow-box_shadow dark:shadow-none rounded-xl">
+       
+       <Grid container className="p-6 w-full">
+          <Grid item className="flex gap-5 w-full ">
             <input
               type="text"
-              className="w-full max-[450px]:w-full bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md p-2 max-[450px]:py-1"
+              className=" bg-white  bg-Lightbg dark:bg-cardbgDark border border-[1px] hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md p-2 max-[450px]:py-1"
+              style={{ borderColor: '#ccc' , flexGrow:"1"}}
+              
               placeholder={`${t("search_client")} ...`}
             />
-          </div>
-          <div className="w-max max-[450px]:w-full">
             <Link
               href="/dashboard/leads/add-lead"
-              className="GreenButton dark flex justify-between items-center gap-1"
+              className="GreenButton dark md:w-[130px]  flex justify-between rounded items-center gap-1"
+              style={{ borderRadius: "3px" }}
             >
-              <AiOutlineUserAdd /> {t("add_lead")}
+              <AiOutlineUserAdd className="text-xl" /> {t("add_lead")}
             </Link>
-          </div>
-        </div>
-        <div className="w-full gap-2 gap-y-5 max-lg:gap-2 max-lg:gap-y-5 px-5 max-lg:px-2 grid grid-cols-5 max-lg:grid-cols-4 max-md:grid-cols-3 max-sm:grid-cols-2 max-[325px]:grid-cols-1">
+
+          </Grid>
+        </Grid>
+        <Grid container className="flex gap-5 justify-between p-6" style={{flexWrap:"wrap"}} >
           {ClientDetails.map((ele) => (
-            <div
-              key={ele.id}
-              className="max-lg:h-[380px] max-sm:h-[300px] max-h-max bg-Lightbg dark:bg-cardbgDark flex flex-col justify-between items-center gap-4 rounded-2xl px-2 py-6 shadow-box_shadow dark:shadow-none hover:scale-105 duration-500  "
-            >
-              <div className="overflow-hidden w-full h-[140px]">
-                <img
-                  className="block bg-cover w-full h-full rounded-xl hover:scale-125 duration-500"
-                  src={ele.href}
-                  alt="Bold typography"
-                />
+            <Grid item xs={12} sm={5.7} lg={2.8}>
+              <div
+                key={ele.id}
+                className="rounded-t max-h-max hover:shadow duration-300 bg-Lightbg dark:bg-cardbgDark flex flex-col justify-between items-center gap-4 rounded-b "
+              >
+                <div className="overflow-hidden w-full lg:h-[200px] sm:h-[230px]">
+                  <img
+                    className="rounded-t block bg-cover w-full h-full hover:scale-105 duration-500"
+                    src={ele.href}
+                    alt="Bold typography"
+                  />
+                </div>
+                <div className="w-full h-max flex flex-col justify-center items-start gap-2 p-3">
+                  <p className="font-bold text-sm capitalize">
+                    {t("name")} : {ele.name}
+                  </p>
+                  <p className="font-bold text-xs capitalize">
+                    {t("mobile_phone")}: {ele.phone}
+                  </p>
+                </div>
+
+                <div className="w-full flex justify-between items-center p-3">
+                  <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border rounded border-gray-400 shadow">
+                  {t("more_details")}
+                  </button>
+
+                  <div className="flex justify-start items-center gap-2">
+                    <Link href="">
+                      <FaWhatsapp className="text-[#08521d] text-xl dark:text-white hover:scale-125 duration-300" />
+                    </Link>
+                    <Link href="">
+                      <FiPhoneCall className="text-[#08521d] dark:text-white text-xl hover:scale-125 duration-300" />
+                    </Link>
+                    <Link href="">
+                      <MdOutlineMail className="text-[#08521d] dark:text-white text-xl hover:scale-125 duration-300" />
+                    </Link>
+                  </div>
+                </div>
               </div>
-              <div className="w-full h-max flex flex-col justify-center items-start gap-2">
-                <p className="font-bold text-sm capitalize">
-                  {t("name")}: {ele.name}
-                </p>
-                <p className="font-bold text-xs capitalize">
-                  {t("mobile_phone")}: {ele.phone}
-                </p>
-              </div>
-              <div className="w-full flex justify-start items-center gap-2">
-                <Link href="">
-                  <AiOutlineWhatsApp className="text-[#08521d] dark:text-white  hover:scale-125 duration-300" />
-                </Link>
-                <Link href="">
-                  <AiOutlineMail className="text-[#08521d] dark:text-white  hover:scale-125 duration-300" />
-                </Link>
-                <Link href="">
-                  <AiOutlinePhone className="text-[#08521d] dark:text-white  hover:scale-125 duration-300" />
-                </Link>
-                <Link href="">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 52 52"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    className="text-[#08521d] dark:text-white  hover:scale-125 duration-300"
-                  >
-                    <path
-                      d="m9.9 27.41a4.29 4.29 0 0 1 4.29 4.29v.38a4.47 4.47 0 0 1 -1.42 3.35 2.48 2.48 0 0 0 -.94 1.81c0 .58.24 1.16 1.5 1.81l1.29.58c1.81.89 3.39 1.81 3.44 3.62a2.39 2.39 0 0 1 -2.06 2.27h-11.95a2.39 2.39 0 0 1 -2.3-2.45c0-1.72 1.59-2.73 3.44-3.62l.67-.29.33-.16c1.57-.65 1.81-1.22 1.81-1.8a2.73 2.73 0 0 0 -.94-1.81 4.46 4.46 0 0 1 -1.42-3.39 4.3 4.3 0 0 1 3.94-4.62zm36.23-19.93a3.62 3.62 0 0 1 3.62 3.62v27.17a3.63 3.63 0 0 1 -3.62 3.63h-25.49a5.43 5.43 0 0 0 -2.64-3.63h27.15a.9.9 0 0 0 .9-.9v-23.55a.9.9 0 0 0 -.9-.9h-36.23a.9.9 0 0 0 -.9.9h-.02v11.09a6.51 6.51 0 0 0 -3.63 2.37v-16.18a3.63 3.63 0 0 1 3.63-3.62z"
-                      fillRule="evenodd"
-                    />
-                  </svg>
-                </Link>
-              </div>
-              <div className="w-full flex justify-between items-center">
-                <Link
-                  href={`/dashboard/leads/${ele.id}`}
-                  className="GreenButton dark"
-                >
-                  {t("button_to_client")}
-                </Link>
-              </div>
-            </div>
+            </Grid>
+
           ))}
-        </div>
+
+        </Grid>
+
+
+
         <div className="footer"></div>
       </div>
-    </div>
   );
 }
 
