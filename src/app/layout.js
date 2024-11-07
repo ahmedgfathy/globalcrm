@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 import Drawer from "./components/Drawer/Drawer";
+=======
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
 import { ThemeProvider } from "./context/theme-provider";
 import { TranslationProvider } from "./context/TranslationContext";
 import "./globals.css";
 import { Cairo } from "next/font/google";
+<<<<<<< HEAD
 import Link from "next/link";
+=======
+import UserRouter from "./context/UserRouter";
+import NavBar from "./components/nav-bar/NavBar";
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
 const cairo = Cairo({
   subsets: ["arabic"],
   preload: true,
@@ -17,6 +25,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+<<<<<<< HEAD
       <body className={`${cairo.className} antialiased min-h-screen`}>
         <TranslationProvider>
           <ThemeProvider
@@ -31,6 +40,24 @@ export default function RootLayout({ children }) {
             {children}
           </ThemeProvider>
         </TranslationProvider>
+=======
+      <body className={`${cairo.className} antialiased min-h-screen bg-[#fff] dark:bg-[#141a21]`}>
+        <UserRouter>
+          <TranslationProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <div className="z-10 fixed top-0 left-0 right-0">
+                <NavBar />
+              </div>
+              <main className="relative">{children}</main>
+            </ThemeProvider>
+          </TranslationProvider>
+        </UserRouter>
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
       </body>
     </html>
   );

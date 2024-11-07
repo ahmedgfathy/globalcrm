@@ -33,6 +33,19 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+<<<<<<< HEAD
+=======
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --menu-drawer-light-bg: rgba(255, 255, 255, 0.9);
+    --menu-drawer-dark-bg: rgba(30, 30, 30, 0.9);
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -59,6 +72,26 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+<<<<<<< HEAD
+=======
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --menu-drawer-bg: var(--menu-drawer-dark-bg);
+  }
+  .menu-drawer {
+    background: var(--menu-drawer-bg, var(--menu-drawer-light-bg));
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--menu-drawer-bg, var(--menu-drawer-light-bg));
+    border-radius: 10px;
+    padding: 20px;
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
   }
 }
 
@@ -70,3 +103,83 @@ body {
     @apply bg-background text-foreground;
   }
 }
+<<<<<<< HEAD
+=======
+
+@media (max-width:500px) {
+
+  .not-found {
+    max-width: 300px !important;
+  }
+}
+
+.GreenButton {
+  font-size: 0.875rem; 
+  max-width: 450px;
+  text-align: center;
+  padding: 0.5rem 1rem; 
+  font-weight: bold;
+  margin: 0 auto;
+  border-radius: 0.75rem; 
+  transition: transform 0.2s ease-in-out;
+  color: #0fa439; 
+  background-color: #c8fad6; 
+  text-transform: capitalize;
+}
+.GreenButton:hover {
+  color: #08521d; 
+}
+.GreenButton:dark {
+  color: white;
+  background-color: #5be49b;
+}
+.GreenButton:hover:dark {
+  color: #08521d;
+  background-color: #ddfce6;
+}
+@media (max-width: 450px) {
+  .GreenButton {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
+}
+
+
+.DeleteButton {
+  font-size: 0.875rem;
+  max-width: 450px;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  margin: 0 auto;
+  border-radius: 0.75rem;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  color: white; 
+  background-color: #cc1a14; 
+  text-transform: capitalize;
+}
+
+.DeleteButton:hover {
+  color: white; 
+  background-color: #a11915;
+}
+
+.DeleteButton:dark {
+  color: white;
+  background-color: #8d1915; 
+  border-color: #751411;
+}
+
+.DeleteButton:hover:dark {
+  color: #ffebeb;
+  background-color: #751411; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 450px) {
+  .DeleteButton {
+    font-size: 0.75rem;
+    padding: 0.5rem;
+  }
+}
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
