@@ -1,0 +1,18 @@
+{
+  "welcome": "مرحبًا بك",
+  "login": "تسجيل الدخول",
+  "settings": "الاعدادات",
+  "mode": "الوضع",
+  "create_account": "ابدأ مجانا",
+  "have_an_account": "هل لديك حساب؟",
+  "sign_in": "ادخل",
+  "login_title": "تسجيل الدخول إلى الحساب",
+  "not_have_an_account": "ليس لديك حساب؟",
+  "sgn_up": "اشترك",
+  "first_name": "الاسم الاول",
+  "last_name": "اسم العائلة",
+  "email": "البريد الالكتروني",
+  "password": "كلمة المرور",
+  "confirm_password": "تاكيد كلمة المرور",
+  "forgot_password": "نسيت كلمة المرور؟"
+}
