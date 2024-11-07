@@ -1,0 +1,37 @@
+import { Button } from '@/components/ui/button';
+import { CardDescription } from '@/components/ui/card';
+import React from 'react'
+import DeleteButton from '../../delete-button/DeleteButton';
+
+function CardHeader({ title, description, page, setIsDisabled, t }) {
+    return (
+        <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-6">
+          <div>
+            <p className="text-2xl font-bold">{title}</p>
+            <CardDescription>{description}</CardDescription>
+          </div>
+          <div className="w-max flex justify-between items-center gap-2 buttons">
+            {page === "add" ? (
+              <Button> {t("add_lead")} </Button>
+            ) : (
+              <>
+                <Button
+                  className="GreenButton dark"
+                  onClick={() => setIsDisabled(false)}
+                >
+                  {t("Update")}
+                </Button>
+                <DeleteButton
+                  handleDelete={() => console.log("deletes")}
+                  className="DeleteButton dark"
+                >
+                  {t("Delete")}
+                </DeleteButton>
+              </>
+            )}
+          </div>
+        </div>
+  );
+}
+
+export default CardHeader
