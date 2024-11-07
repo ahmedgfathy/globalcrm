@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { FaWhatsapp } from 'react-icons/fa6';
 import { MdOutlineMail } from 'react-icons/md';
-import { FiPhoneCall } from 'react-icons/fi'; // Import the missing FiPhoneCall
+import { FiPhoneCall } from 'react-icons/fi'; 
 
 const ClientDetails = [
   { id: 1, href: '/path/to/image.jpg', name: 'Client 1', phone: '+123456789' },
@@ -16,7 +16,7 @@ const ClientDetails = [
 ];
 
 export default function Page() {
-  const t = useTranslation(); // Properly call useTranslation
+  const { t } = useTranslation();  
 
   return (
     <div className="py-2">
@@ -45,7 +45,7 @@ export default function Page() {
               <div className="overflow-hidden w-full lg:h-[200px] sm:h-[230px]">
                 <img
                   className="rounded-t block bg-cover w-full h-full hover:scale-105 duration-500"
-                  src={ele.href || '/path/to/default-image.jpg'} // Use fallback
+                  src={ele.href || '/path/to/default-image.jpg'} 
                   alt="Bold typography"
                 />
               </div>
