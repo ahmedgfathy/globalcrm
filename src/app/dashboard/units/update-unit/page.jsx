@@ -4,7 +4,7 @@ import React from 'react'
 import AddUnits from '../../../components/units/AddUnits'
 import { useTranslation } from '@/app/context/TranslationContext';
 import UpdateUnits from "../../../components/units/UpdateUnits"
-export default function page() {
+export default function Page() {
   const { t } = useTranslation();
 
   return (

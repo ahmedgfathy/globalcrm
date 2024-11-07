@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslation } from '@/app/context/TranslationContext';
 import AddUnits from "../../../components/units/AddUnits"
 
-export default function page() {
+export default function Page() {
     const { t } = useTranslation();
     return (
     <div>
