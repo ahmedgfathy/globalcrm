@@ -14,8 +14,8 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-export function DatePopover() {
-    const [date, setDate] = useState()
+export function DatePopover({ defaultValue }) {
+    const [date, setDate] = useState(defaultValue || null);
 
     return (
         <Popover>

@@ -9,7 +9,7 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import { Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import DeleteButton from "../delete-button/DeleteButton";
-import SheetCalls from "./SheetsCalls";
+import SheetCalls from "../user-components/SheetsCalls";
 
 export default function AddUnits({ page, ...props }) {
   const { t } = useTranslation();
