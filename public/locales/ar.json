@@ -59,7 +59,7 @@
   "source": "المصدر",
   "leads_List": "قائمه العملاء",
   "units": "الوحدات",
-  "action":"التحكم",
+  "action": "التحكم",
   "more_details": "المزيد من التفاصيل",
   "calendar_card_description": "جدول الأحداث القادمة والمواعيد الإضافية",
   "recent_card_description": "أحدث الأنشطة والمشاركات في النظام",
@@ -67,5 +67,9 @@
   "recent_activities": "الأنشطة الأخيرة",
   "add_event": "أضافة حدث",
   "more": "المزيد",
-  "administration": "الإداره"
+  "administration": "الإداره",
+  "add_unit": "اضافة وحدة",
+  "add_unit_description": "وصف الوحدة",
+  "update_unit": " تعديل بيانات الوحدة",
+  "update_unit_description": "تعديل وصف الوحدة"
 }

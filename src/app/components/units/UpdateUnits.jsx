@@ -13,7 +13,7 @@ import SheetCalls from "./SheetsCalls";
 
 import { Select } from "@mui/material";
 
-export default function AddUnits({ page, ...props }) {
+export default function Create({ page, ...props }) {
   const { t } = useTranslation();
   const [image, setImage] = useState("/");
   const [isDisabled, setIsDisabled] = useState(true);
