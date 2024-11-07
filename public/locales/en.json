@@ -58,12 +58,19 @@
   "tasks_performed": "Tasks performed",
   "source": "Source",
   "leads_List": "Leads List",
-<<<<<<<<< Temporary merge branch 1
-  "more_details" : "More Details"
-}
-=========
   "units": "Units",
   "action": "Actions",
-  "more_details": "More Details"
+  "more_details": "More Details",
+  "calendar_card_description": "Schedule of upcoming events and additional dates",
+  "recent_card_description": "Latest activities and posts in the system",
+  "events": "Events",
+  "recent_activities": "Recent Activities",
+  "add_event": "Add Event",
+  "more": "More",
+  "administration": "Administration",
+  "add_unit" :"Add Unit",
+  "add_unit_description" : "Add Unit Description",
+  "update_unit" :"Update Unit",
+  "update_unit_description" : "Update Unit Description"
+
 }
->>>>>>>>> Temporary merge branch 2

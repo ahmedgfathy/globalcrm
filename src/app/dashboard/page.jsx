@@ -5,6 +5,7 @@ import SecondaryCards from "../components/dashboard/SecondaryCards";
 import ActionsCard from "../components/dashboard/ActionsCard";
 import { FaCalendarAlt } from "react-icons/fa";
 import { MdOutlineRecentActors } from "react-icons/md";
+import RecentChart from "../components/dashboard/RecentChart";
 
 function Page() {
   const dataForChart = [
@@ -32,25 +33,28 @@ function Page() {
     },
     {
       id: 2,
-      title: "Recent Activities",
+      title: "recent_activities",
       number: "1,200",
-      time: "Last 5 days",
-      percent: "+٣٫٥%",
+      subTitle:"",
+      time: "",
+      percent: "",
       icon: ()=><MdOutlineRecentActors />,
+      chart: ()=> <RecentChart />,
       link: "/details/activities",
-      description: "أحدث الأنشطة والمشاركات في النظام",
+      description: "recent_card_description",
     },
     {
       id: 3,
-      title: "Calendar",
-      number: "Events",
-      time: "Upcoming",
+      title: "calendar",
+      subTitle:"events",
+      number: "",
+      time: "",
       percent: "",
       icon: ()=><FaCalendarAlt />,
       link: "/calendar",
-      description: "جدولة الأحداث القادمة والمواعيد الهامة",
+      description: "calendar_card_description",
       actions: [
-        { name: "Add Event", onClick: () => {/* إضافة حدث */} },
+        { name: "add_event", onClick: () => {} },
       ],
     },
   ];
@@ -69,7 +73,7 @@ function Page() {
               return (
                 <div className="actions-card" key={index}>
                   <ActionsCard card={card} />
-                </div>
+                </div> 
               );
             })}
           </div>

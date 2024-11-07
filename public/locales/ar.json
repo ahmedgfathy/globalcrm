@@ -58,12 +58,18 @@
   "tasks_performed": "المهام المنفذه",
   "source": "المصدر",
   "leads_List": "قائمه العملاء",
-<<<<<<<<< Temporary merge branch 1
-  "more_details"  : "تفاصيل اكثر"
-}
-=========
   "units": "الوحدات",
-  "action":"التحكم",
-  "more_details": "المزيد من التفاصيل"
+  "action": "التحكم",
+  "more_details": "المزيد من التفاصيل",
+  "calendar_card_description": "جدول الأحداث القادمة والمواعيد الإضافية",
+  "recent_card_description": "أحدث الأنشطة والمشاركات في النظام",
+  "events": "الأحداث",
+  "recent_activities": "الأنشطة الأخيرة",
+  "add_event": "أضافة حدث",
+  "more": "المزيد",
+  "administration": "الإداره",
+  "add_unit": "اضافة وحدة",
+  "add_unit_description": "وصف الوحدة",
+  "update_unit": " تعديل بيانات الوحدة",
+  "update_unit_description": "تعديل وصف الوحدة"
 }
->>>>>>>>> Temporary merge branch 2

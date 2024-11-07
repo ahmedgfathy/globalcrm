@@ -1,3 +1,4 @@
+"use client"
 import { useTranslation } from "@/app/context/TranslationContext";
 import { CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
