@@ -1,11 +1,54 @@
+"use client";
 import { useTranslation } from "@/app/context/TranslationContext";
-import { CardContent, CardHeader } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
+import SelectInput from "./utils/SelectInput";
+import DateInput from "./utils/DateInput";
 
-function SheetCalls({ isDisabled}) {
+function SheetCalls({ isDisabled }) {
   const { t } = useTranslation();
+
+  const AssignedData = [
+    { value: "A", label: "Users" },
+    { value: "B", label: "Group" },
+  ];
+
+  const CustomerSourceData = [
+    { value: "A", label: "Ahmed" },
+    { value: "B", label: "Khalid" },
+    { value: "C", label: "Yaser" },
+    { value: "D", label: "Ali" },
+  ];
+
+  const LeadStatus = [
+    { value: "قفل خارج الشركه", label: "قفل خارج الشركه" },
+    { value: "قفل داخل الشركه", label: "قفل داخل الشركه" },
+    { value: "مؤجل حاليا", label: "مؤجل حاليا" },
+    { value: "لا يرد", label: "لا يرد" },
+    { value: "not interested", label: "not interested" },
+    { value: "very interested", label: "very interested" },
+    { value: "متابع معاينات", label: "متابع معاينات" },
+    { value: "interested", label: "interested" },
+  ];
+
+  const Type = [
+    { value: "داخل الكومباوند", label: "داخل الكومباوند" },
+    { value: "محل تجاري", label: "محل تجاري" },
+    { value: "اداري مرخص", label: "اداري مرخص" },
+    { value: "اداري غير مرخص", label: "اداري غير مرخص" },
+    { value: "سكني خارج الكومباوند", label: "سكني خارج الكومباوند" },
+  ];
+
+  const defaultValues = {
+    assignedTo: "A",
+    customerSource: "A",
+    type: "سكني خارج الكومباوند",
+    leadStatus: "قفل خارج الشركه",
+    modifiedTime: "28-10-2024 11:15 PM",
+    createdTime: "30-08-2022 2:43 PM",
+  };
 
   return (
     <div className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark border-0">
@@ -16,69 +59,55 @@ function SheetCalls({ isDisabled}) {
       </div>
       <CardContent className="grid gap-2 md:grid-cols-2 md:gap-4 pt-3">
         <div className="space-y-1 w-full">
-          <Label htmlFor="assigned" className="capitalize">
-            Assigned To
-          </Label>
-          <Input
-            id="assigned"
-            disabled={isDisabled}
-            className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
-            defaultValue="Pedro Duarte"
+          <SelectInput
+            label={t("Assigned To")}
+            id="Assigned To"
+            defaultValue={defaultValues.assignedTo}
+            data={AssignedData}
+            isDisabled={isDisabled}
           />
         </div>
         <div className="space-y-1 w-full">
-          <Label htmlFor="username" className="capitalize">
-            مصدر العميل
-          </Label>
-          <Input
-          disabled={isDisabled}
-            id="username"
-            className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
-            defaultValue="Pedro Duarte"
+          <SelectInput
+            label={t("Customer Source")}
+            id="Customer Source"
+            defaultValue={defaultValues.customerSource}
+            data={CustomerSourceData}
+            isDisabled={isDisabled}
           />
         </div>
         <div className="space-y-1 w-full">
-          <Label htmlFor="type" className="capitalize">
-            Type
-          </Label>
-          <Input
-          disabled={isDisabled}
-            id="type"
-            className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
-            defaultValue="سكني خارج كمبوند"
+          <SelectInput
+            label={t("Type")}
+            id="Type"
+            defaultValue={defaultValues.type}
+            data={Type}
+            isDisabled={isDisabled}
           />
         </div>
         <div className="space-y-1 w-full">
-          <Label htmlFor="leadStatus" className="capitalize">
-            Lead Status
-          </Label>
-          <Input
-          disabled={isDisabled}
-            id="leadStatus"
-            className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
-            defaultValue="Very interested"
+          <SelectInput
+            label={t("Lead Status")}
+            id="LeadStatus"
+            defaultValue={defaultValues.leadStatus}
+            data={LeadStatus}
+            isDisabled={isDisabled}
           />
         </div>
         <div className="space-y-1 w-full">
-          <Label htmlFor="modifiedTime" className="capitalize">
-            Modified Time
-          </Label>
-          <Input
-          disabled={isDisabled}
-            id="modifiedTime"
-            className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
-            defaultValue="28-10-2024 11:15 PM"
+          <DateInput
+            label={t("ModifiedTime")}
+            id="ModifiedTime"
+            defaultValue="2022-08-30"
+            isDisabled={isDisabled}
           />
         </div>
         <div className="space-y-1 w-full">
-          <Label htmlFor="createdTime" className="capitalize">
-            Created Time
-          </Label>
-          <Input
-          disabled={isDisabled}
-            id="createdTime"
-            className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
-            defaultValue="30-08-2022 2:43 PM"
+          <DateInput
+            label={t("CreatedTime")}
+            id="CreatedTime"
+            defaultValue="2022-08-30"
+            isDisabled={isDisabled}
           />
         </div>
       </CardContent>

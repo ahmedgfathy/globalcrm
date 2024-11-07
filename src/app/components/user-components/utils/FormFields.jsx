@@ -1,14 +1,21 @@
 import React from 'react'
 import InputField from './InputField';
-import { Label } from '@/components/ui/label';
 import ClintFollowUp from './ClintFollowUp';
 import TextAreaField from './TextAreaField';
-import DateInput from './DateInput'
+import DateInput from './DateInput';
+import SelectInput from './SelectInput';
+
 function FormFields({ isDisabled, t }) {
   const data = [
     { id: 1, value: "ahmed", label: "Ahmed" },
     { id: 2, value: "mohamed", label: "Mohamed" },
     { id: 3, value: "ali", label: "Ali" },
+  ];
+
+  const classTypeData = [
+    { value: "A", label: "Class A" },
+    { value: "B", label: "Class B" },
+    { value: "C", label: "Class C" },
   ];
 
   return (
@@ -23,13 +30,13 @@ function FormFields({ isDisabled, t }) {
         <InputField
           label={t("lead_number")}
           id="username"
-          defaultValue="@peduarte"
+          defaultValue="111"
           isDisabled={isDisabled}
         />
         <InputField
           label={t("Number")}
           id="number"
-          defaultValue="1111"
+          defaultValue="01147484754"
           isDisabled={isDisabled}
         />
         <DateInput
@@ -45,13 +52,20 @@ function FormFields({ isDisabled, t }) {
           isDisabled={isDisabled}
         />
         <div className="space-y-2 flex flex-col justify-center">
-          <Label htmlFor="clintFollowUp">{t("Client_follow_up")}</Label>
-          <ClintFollowUp data={data} isDisabled={isDisabled} />
+          <SelectInput
+            label={t("Client_follow_up")}
+            id="clintFollowUp"
+            defaultValue="mohamed"
+            data={data}
+            isDisabled={isDisabled}
+          />
         </div>
-        <InputField
+
+        <SelectInput
           label={t("class")}
           id="classType"
-          defaultValue="A"
+          defaultValue="B"
+          data={classTypeData}
           isDisabled={isDisabled}
         />
       </div>
