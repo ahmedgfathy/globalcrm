@@ -12,7 +12,6 @@ import { FiPhoneCall } from 'react-icons/fi';
 const ClientDetails = [
   { id: 1, href: '/path/to/image.jpg', name: 'Client 1', phone: '+123456789' },
   { id: 2, href: '/path/to/image2.jpg', name: 'Client 2', phone: '+987654321' },
-  // Add more client data here
 ];
 
 export default function Page() {
