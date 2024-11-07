@@ -60,5 +60,12 @@
   "leads_List": "قائمه العملاء",
   "units": "الوحدات",
   "action":"التحكم",
-  "more_details": "المزيد من التفاصيل"
+  "more_details": "المزيد من التفاصيل",
+  "calendar_card_description": "جدول الأحداث القادمة والمواعيد الإضافية",
+  "recent_card_description": "أحدث الأنشطة والمشاركات في النظام",
+  "events": "الأحداث",
+  "recent_activities": "الأنشطة الأخيرة",
+  "add_event": "أضافة حدث",
+  "more": "المزيد",
+  "administration": "الإداره"
 }

@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
 
-function SheetCalls() {
+function SheetCalls({ isDisabled}) {
   const { t } = useTranslation();
 
   return (
@@ -21,6 +21,7 @@ function SheetCalls() {
           </Label>
           <Input
             id="assigned"
+            disabled={isDisabled}
             className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
             defaultValue="Pedro Duarte"
           />
@@ -30,6 +31,7 @@ function SheetCalls() {
             مصدر العميل
           </Label>
           <Input
+          disabled={isDisabled}
             id="username"
             className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
             defaultValue="Pedro Duarte"
@@ -40,6 +42,7 @@ function SheetCalls() {
             Type
           </Label>
           <Input
+          disabled={isDisabled}
             id="type"
             className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
             defaultValue="سكني خارج كمبوند"
@@ -50,6 +53,7 @@ function SheetCalls() {
             Lead Status
           </Label>
           <Input
+          disabled={isDisabled}
             id="leadStatus"
             className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
             defaultValue="Very interested"
@@ -60,6 +64,7 @@ function SheetCalls() {
             Modified Time
           </Label>
           <Input
+          disabled={isDisabled}
             id="modifiedTime"
             className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
             defaultValue="28-10-2024 11:15 PM"
@@ -70,6 +75,7 @@ function SheetCalls() {
             Created Time
           </Label>
           <Input
+          disabled={isDisabled}
             id="createdTime"
             className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
             defaultValue="30-08-2022 2:43 PM"

@@ -60,7 +60,7 @@ function Menu() {
             {lists.map((list) => (
               <li
                 key={list.id}
-                className="hover:bg-gray-100 dark:hover:bg-gray-200 cursor-pointer py-2 flex gap-3 items-center rounded-md text-gray-400 dark:hover:text-dark"
+                className="hover:bg-gray-100 dark:hover:bg-gray-200 cursor-pointer py-2 flex gap-3 items-center rounded-md text-gray-900 dark:text-gray-200  dark:hover:text-dark"
               >
                 <Link href={`/dashboard/user/${list.link}`} className="w-full flex items-center gap-2">
                   <span>{list.icon()}</span>

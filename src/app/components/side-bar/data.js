@@ -5,6 +5,7 @@ import { LuTableProperties } from "react-icons/lu";
 import { SiGoogleads } from "react-icons/si";
 import { TbReportSearch } from "react-icons/tb";
 import { IoCallSharp } from "react-icons/io5";
+import { RiAdminLine } from "react-icons/ri";
 
 export const links = [
   {
@@ -48,5 +49,11 @@ export const links = [
     title: "reports",
     link: "reports",
     icon: () => <TbReportSearch className="text-xl" />,
+  },
+  {
+    id: 8,
+    title: "administration",
+    link: "administration",
+    icon: () => <RiAdminLine className="text-xl" />,
   },
 ];

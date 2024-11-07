@@ -60,5 +60,13 @@
   "leads_List": "Leads List",
   "units": "Units",
   "action": "Actions",
-  "more_details": "More Details"
+  "more_details": "More Details",
+  "calendar_card_description": "Schedule of upcoming events and additional dates",
+  "recent_card_description": "Latest activities and posts in the system",
+  "events": "Events",
+  "recent_activities": "Recent Activities",
+  "add_event": "Add Event",
+  "more": "More",
+  "administration": "Administration"
+
 }
