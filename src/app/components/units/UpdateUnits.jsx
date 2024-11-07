@@ -11,7 +11,6 @@ import Image from "next/image";
 import DeleteButton from "../delete-button/DeleteButton";
 import SheetCalls from "./SheetsCalls";
 
-import { Select } from "@mui/material";
 
 export default function Create({ page, ...props }) {
   const { t } = useTranslation();
@@ -30,13 +29,13 @@ export default function Create({ page, ...props }) {
   };
   useEffect(() => {
     if (page === "add") {
-      setImage("/assets/images/default-user.jpg");
+      // setImage("/assets/images/default-user.jpg");
       setIsDisabled(false);
     }
     setImage("/assets/home-images/form-image.png");
   }, [page]);
   const handleDeleteImage = () => {
-    setImage("/assets/images/default-user.jpg");
+    // setImage("/assets/images/default-user.jpg");
   };
 
   const handleChange = (event) => {

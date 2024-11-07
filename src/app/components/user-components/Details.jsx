@@ -8,18 +8,18 @@ import "./style.css"
 
 
 
-const App = () => {
+const App = ({page}) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const items = [
     {
       key: "1",
       label: "Lead Details",
-      children: <LoadDetails isDisabled={isDisabled} setIsDisabled={setIsDisabled} />,
+      children: <LoadDetails isDisabled={isDisabled} setIsDisabled={setIsDisabled} page={page} />,
     },
     {
       key: "2",
       label: "Sheets Calls",
-      children: <SheetCalls isDisabled={isDisabled} setIsDisabled={setIsDisabled} />,
+      children: <SheetCalls isDisabled={isDisabled} setIsDisabled={setIsDisabled} page={page} />,
     },
   ];
   return (

@@ -17,7 +17,7 @@ function Page() {
             {t("leads_List")}
           </h1>
           <Button>
-            <Link href="/dashboard/leads/add-lead" className="w-full h-full">
+            <Link href="/leads/add-lead" className="w-full h-full">
               {t("add_lead")}
             </Link>
           </Button>

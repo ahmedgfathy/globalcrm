@@ -1,7 +1,7 @@
 "use client";
-import Footer from "../components/Footer/Footer";
-import SideBar from "../components/side-bar/SideBar";
-import { useTranslation } from "../context/TranslationContext";
+import Footer from "@/app/components/Footer/Footer";
+import SideBar from "@/app/components/side-bar/SideBar";
+import { useTranslation } from "@/app/context/TranslationContext";
 export default function RootLayout({ children }) {
   const { locale } = useTranslation();
   return (

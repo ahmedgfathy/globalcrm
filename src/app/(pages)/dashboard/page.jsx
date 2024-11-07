@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import MainCard from "../components/dashboard/MainCard";
-import SecondaryCards from "../components/dashboard/SecondaryCards";
-import ActionsCard from "../components/dashboard/ActionsCard";
+import MainCard from "@/app/components/dashboard/MainCard";
+import SecondaryCards from "@/app/components/dashboard/SecondaryCards";
+import ActionsCard from "@/app/components/dashboard/ActionsCard";
 import { FaCalendarAlt } from "react-icons/fa";
 import { MdOutlineRecentActors } from "react-icons/md";
-import RecentChart from "../components/dashboard/RecentChart";
+import RecentChart from "@/app/components/dashboard/RecentChart";
 
 function Page() {
   const dataForChart = [

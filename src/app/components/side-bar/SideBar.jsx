@@ -110,7 +110,7 @@ function SideBar() {
               {links.map((item) => (
                 <li key={item.id}>
                   <Link
-                    href={`/dashboard/${item.link}`}
+                    href={`/${item.link}`}
                     className={`flex items-center w-full gap-3 p-2 text-gray-900 transition duration-100 rounded-lg group ${
                       isOpen
                         ? "flex-row text-xl font-semibold"
