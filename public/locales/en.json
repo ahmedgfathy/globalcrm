@@ -58,5 +58,7 @@
   "tasks_performed": "Tasks performed",
   "source": "Source",
   "leads_List": "Leads List",
-  "more_details" : "More Details"
+  "units": "Units",
+  "action": "Actions",
+  "more_details": "More Details"
 }
