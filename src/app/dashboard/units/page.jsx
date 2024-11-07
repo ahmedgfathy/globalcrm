@@ -8,6 +8,7 @@ import { AiOutlineUserAdd } from 'react-icons/ai';
 import { FaWhatsapp } from 'react-icons/fa6';
 import { MdOutlineMail } from 'react-icons/md';
 import { FiPhoneCall } from 'react-icons/fi'; 
+// import imgg from "@/puplic/assets/images/default-user.jpg"
 
 const ClientDetails = [
   { id: 1, href: '/path/to/image.jpg', name: 'Client 1', phone: '+123456789' },
@@ -42,11 +43,18 @@ export default function Page() {
           <Grid item xs={12} sm={5.7} lg={2.8} key={ele.id}>
             <div className="rounded-t max-h-max hover:shadow duration-300 bg-Lightbg dark:bg-cardbgDark flex flex-col justify-between items-center gap-4 rounded-b">
               <div className="overflow-hidden w-full lg:h-[200px] sm:h-[230px]">
-                <img
+              <img className="rounded-t block bg-cover w-full h-full hover:scale-105 duration-500" src="/assets/images/default-user.jpg" alt="User Image" />
+
+                {/* <img
+                  className="rounded-t block bg-cover w-full h-full hover:scale-105 duration-500"
+                  src={imgg.src} 
+                  alt="Bold typography"
+                /> */}
+                {/* <img
                   className="rounded-t block bg-cover w-full h-full hover:scale-105 duration-500"
                   src={ele.href || '/path/to/default-image.jpg'} 
                   alt="Bold typography"
-                />
+                /> */}
               </div>
               <div className="w-full h-max flex flex-col justify-center items-start gap-2 p-3">
                 <p className="font-bold text-sm capitalize">{t("name")} : {ele.name}</p>
