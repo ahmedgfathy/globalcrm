@@ -11,7 +11,7 @@ export const links = [
   {
     id: 1,
     title: "dashboard",
-    link: "/",
+    link: "dashboard",
     icon: () => <AiFillDashboard className="text-xl" />,
   },
   {
