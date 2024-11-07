@@ -1,8 +1,8 @@
-import { ThemeProvider } from "./context/theme-provider";
-import { TranslationProvider } from "./context/TranslationContext";
+import { ThemeProvider } from "@/app/context/theme-provider";
+import { TranslationProvider } from "@/app/context/TranslationContext";
 import "./globals.css";
 import { Cairo } from "next/font/google";
-import UserRouter from "./context/UserRouter";
+import UserRouter from "@/app/context/UserRouter";
 import NavBar from "./components/nav-bar/NavBar";
 const cairo = Cairo({
   subsets: ["arabic"],

@@ -1,7 +1,7 @@
 import Input from "./Input/Input";
 import React from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { useTranslation } from "../context/TranslationContext";
+import { useTranslation } from "@/app/context/TranslationContext";
 
 function PasswordInput({
   show,

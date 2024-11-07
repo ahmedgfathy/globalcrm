@@ -71,6 +71,7 @@
   "add_unit" :"Add Unit",
   "add_unit_description" : "Add Unit Description",
   "update_unit" :"Update Unit",
-  "update_unit_description" : "Update Unit Description"
+  "update_unit_description" : "Update Unit Description",
+  "search_unit": "Search Unit"
 
 }
