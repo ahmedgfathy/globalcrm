@@ -1,12 +1,23 @@
 "use client";
+<<<<<<< HEAD
+import React, { useContext, useEffect, useState, useCallback } from "react";
+import style from "./page.module.css";
+import Link from "next/link";
+=======
 import React, { useState, useCallback } from "react";
 import style from "./page.module.css";
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
 import { useRouter } from "next/navigation";
 import FormComponent from "@/app/components/FormComponent/FormComponent";
 import Image from "next/image";
 
 function Page() {
   const router = useRouter();
+<<<<<<< HEAD
+  // const searchParams = useSearchParams();
+  // const message = searchParams.get("msg");
+=======
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -54,10 +65,18 @@ function Page() {
                 style={style}
                 page="register"
                 user={formData}
+<<<<<<< HEAD
+                // msg={message}
+                show={showPassword}
+                changeType={togglePasswordVisibility}
+                handleChange={handleChange}
+                //   handleSubmit={handleSubmit}
+=======
                 show={showPassword}
                 changeType={togglePasswordVisibility}
                 handleChange={handleChange}
                 handleSubmit={() => router.push("/dashboard")}
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
                 disable={isSubmitting}
               />
             </div>

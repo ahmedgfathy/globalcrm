@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+/** @type {import('tailwindcss').Config} */
+=======
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -8,10 +12,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+<<<<<<< HEAD
+=======
         cardbgDark:"#1c252e",
         Lightbg:"#fff",
         borderSearchInputLight:"#F6F7F8",
         borderSearchInputDark:"#28333c",
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
@@ -42,6 +49,8 @@ module.exports = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+<<<<<<< HEAD
+=======
         dark_link_active: "#5f942e14",
         text_link_active: "#5be49b",
         text_link_active_l: "#5f942e",
@@ -249,6 +258,7 @@ module.exports = {
           800: "#ffbbab",
           900: "#ffddd5",
         },
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -259,6 +269,8 @@ module.exports = {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+<<<<<<< HEAD
+=======
         dark: "#222831",
         dark2: "#393E46",
         sidebar: {
@@ -274,6 +286,7 @@ module.exports = {
         screens: {
           1400: "1400px",
         },
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
       },
       transitionDuration: {
         2000: "2000ms",
@@ -284,6 +297,8 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+<<<<<<< HEAD
+=======
       boxShadow: {
         box_shadow:
           "rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px",
@@ -296,6 +311,7 @@ module.exports = {
       extend: {
         backgroundColor: ["aria-selected"],
       },
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
     },
   },
   plugins: [require("tailwindcss-animate")],

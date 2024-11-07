@@ -25,7 +25,11 @@ export const TranslationProvider = ({ children }) => {
     <TranslationContext.Provider
       value={{ t: (key) => translations[key] || key, changeLanguage, locale }}
     >
+<<<<<<< HEAD
+      <div dir={locale === "ar" ? "rtl" : "ltr"}>{children}</div>
+=======
      <div dir={locale === "en" ? "ltr" : "rtl"}>{children}</div>
+>>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
     </TranslationContext.Provider>
   );
 };
