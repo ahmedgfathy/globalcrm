@@ -14,10 +14,6 @@
   "email": "البريد الالكتروني",
   "password": "كلمة المرور",
   "confirm_password": "تاكيد كلمة المرور",
-<<<<<<< HEAD
-  "forgot_password": "نسيت كلمة المرور؟"
-}
-=======
   "forgot_password": "نسيت كلمة المرور؟",
   "btn_register": "انشاء حساب",
   "btn_login": "تسجيل الدخول",
@@ -77,4 +73,3 @@
   "update_unit": " تعديل بيانات الوحدة",
   "update_unit_description": "تعديل وصف الوحدة"
 }
->>>>>>> aee03c118f7949eea3560d62351b461e661c0d8e
