@@ -7,6 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineRightSquare } from "react-icons/ai";
 import TabButton from "../utils/TabButton";
+
 function Page({ params }) {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(!isMobile);
@@ -16,9 +17,11 @@ function Page({ params }) {
     { id: 1, title: "Lead Details", value: "details" },
     { id: 2, title: "Updates", value: "updates" },
   ];
+
   useEffect(() => {
     setIsOpen(!isMobile);
   }, [isMobile]);
+
   useEffect(() => {
     if (isMobile) {
       const handleClickOutside = (event) => {
@@ -26,30 +29,19 @@ function Page({ params }) {
           setIsOpen(false);
         }
       };
-
       document.addEventListener("mousedown", handleClickOutside);
-
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }
-    const handleClickOutside = (event) => {
-      setIsOpen(false);
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, [isMobile]);
 
   return (
     <div className="page-user min-h-screen h-max mx-2">
-      <div className="container px-0 py-4 max-md:pb-20 max-md:pt-14 mx-auto">
+      <div className="container px-0 py-4 max-md:pb-20 max-md:pt-14 mx-auto flex">
         <Tabs
           defaultValue="details"
-          className="w-full flex justify-between items-center gap-5 min-h-screen relative"
+          className="flex w-full h-full relative"
         >
           {isMobile && !isOpen && (
             <AiOutlineRightSquare
@@ -61,35 +53,37 @@ function Page({ params }) {
           <TabsList
             dir={locale == "ar" ? "rtl" : "ltr"}
             ref={tabsRef}
-            className={`flex z-[1] gap-5 ${
+            className={`flex-shrink-0 flex flex-col gap-5 transition-all duration-200 bg-[#FFF] dark:bg-[#222831] min-h-screen overflow-hidden ${
               isMobile
                 ? isOpen
-                  ? "p-0 absolute top-0 left-0"
-                  : "p-0 absolute top-0 -left-[250px]"
-                : "px-2"
-            } flex-col transition-all duration-200 bg-[#FFF] min-h-screen dark:bg-[#222831] overflow-hidden`}
-            style={{ width: "250px" }}
+                  ? "absolute top-0 left-0 w-64"
+                  : "absolute top-0 -left-64"
+                : "w-64"
+            }`}
           >
             <TabButton data={listTabs} />
           </TabsList>
-          <TabsContent
-            value="details"
-            className="w-full max-md:pl-5"
-            dir={locale == "ar" ? "rtl" : "ltr"}
-          >
-            <Details
-              page="view"
-              title={t("Lead_Details")}
-              description={t("Lead_descriptions")}
-            />
-          </TabsContent>
-          <TabsContent
-            value="updates"
-            className="w-full "
-            dir={locale == "ar" ? "rtl" : "ltr"}
-          >
-            <Update />
-          </TabsContent>
+
+          <div className="flex-1 pl-5">
+            <TabsContent
+              value="details"
+              className="w-full"
+              dir={locale == "ar" ? "rtl" : "ltr"}
+            >
+              <Details
+                page="view"
+                title={t("Lead_Details")}
+                description={t("Lead_descriptions")}
+              />
+            </TabsContent>
+            <TabsContent
+              value="updates"
+              className="w-full"
+              dir={locale == "ar" ? "rtl" : "ltr"}
+            >
+              <Update />
+            </TabsContent>
+          </div>
         </Tabs>
       </div>
     </div>

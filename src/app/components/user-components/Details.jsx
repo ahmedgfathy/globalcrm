@@ -1,34 +1,25 @@
-"use client";
-
-import React, { useState } from "react";
-import { Collapse } from "antd";
+// App.js
+import React from "react";
 import LoadDetails from "./LeadDetails";
 import SheetCalls from "./SheetsCalls";
-import "./style.css"
+import CollapsibleComponent from "../CollapsibleComponent";
+import "./style.css";
 
-
-
-const App = ({page}) => {
-  const [isDisabled, setIsDisabled] = useState(true);
+const App = ({ page }) => {
   const items = [
     {
       key: "1",
       label: "Lead Details",
-      children: <LoadDetails isDisabled={isDisabled} setIsDisabled={setIsDisabled} page={page} />,
+      children: <LoadDetails page={page} />,
     },
     {
       key: "2",
       label: "Sheets Calls",
-      children: <SheetCalls isDisabled={isDisabled} setIsDisabled={setIsDisabled} page={page} />,
+      children: <SheetCalls page={page} />,
     },
   ];
-  return (
-    <Collapse
-      className={`dark:bg-red-50`}
-      items={items}
-      defaultActiveKey={["1"]}
-    />
-  );
+
+  return <CollapsibleComponent items={items} />;
 };
 
 export default App;

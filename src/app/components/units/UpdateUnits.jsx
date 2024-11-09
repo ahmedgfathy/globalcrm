@@ -13,7 +13,7 @@ import SheetCalls from "./SheetsCalls";
 
 
 export default function Create({ page, ...props }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [image, setImage] = useState("/");
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -68,11 +68,11 @@ export default function Create({ page, ...props }) {
 
   return (
     <Card className="menu-drawer w-full min-h-screen h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-8 max-md:pt-4">
-      <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-6">
-        <div>
+      <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-6" dir="ltr">
+        {/* <div>
           <p className="text-2xl font-bold mb-2">{props.title}</p>
           <CardDescription className="">{props.description}</CardDescription>
-        </div>
+        </div> */}
         <div className="w-max flex justify-between items-center gap-2 buttons">
           {page === "add" ? (
             <Button> {t("add_unit")} </Button>
@@ -89,8 +89,8 @@ export default function Create({ page, ...props }) {
           )}
         </div>
       </div>
-      <CardContent className="lg:grid gap-6 lg:grid-cols-4 md:gap-8 max-sm:flex max-sm:flex-col-reverse">
-        <div className="space-y-4 lg:col-span-3">
+      <CardContent className="lg:grid gap-6 lg:grid-cols-4 md:gap-8 max-sm:flex max-sm:flex-col-reverse" dir="rtl">
+        <div className="space-y-4 lg:col-span-3" dir={locale === "ar" ? "rtl" : "ltr"}>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="name" className="mb-2">Last Follow in  </Label>
