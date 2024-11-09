@@ -2,9 +2,10 @@
 import { useTranslation } from "@/app/context/TranslationContext";
 import Link from "next/link";
 import React from "react";
-import { ClientDetails } from "./data";
+import { ClientDetails, filterData } from "./data";
 import { CardUnitComponent } from "@/app/components/units-components/CardComponent";
 import { IoMdAddCircle } from "react-icons/io";
+import Filter from "@/app/components/Filter";
 function Page() {
     
   const { t } = useTranslation();
@@ -28,6 +29,9 @@ function Page() {
               {t("add_unit")}
             </Link>
           </div>
+        </div>
+        <div className="filter bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
+          <Filter data={filterData} />
         </div>
         <div className="w-full gap-2 gap-y-5 justify-items-center max-lg:px-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
   {ClientDetails.map((ele) => <CardUnitComponent key={ele.id} ele={ele} /> )}

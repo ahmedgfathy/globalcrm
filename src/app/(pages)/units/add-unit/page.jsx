@@ -11,5 +11,13 @@ export default function Page() {
           title={t("add_unit")}
           description={t("add_unit_description")}/>
     </div>
+// {/* <div className="add-unit">
+//   <div className="container mx-auto">
+//     <div className="property-information">
+
+//     </div>
+
+//   </div>
+// </div> */}
   )
 }

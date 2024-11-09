@@ -4,7 +4,7 @@ import TableRowComponent from "./TableRowComponent";
 
 const ClientTable = ({ clients, t }) => {
   return (
-    <Table className="min-w-full text-start">
+    <Table className="min-w-full text-start" >
       <TableHeader>
         <TableRow className="bg-gray-100 dark:bg-gray-700">
           <TableHead className="p-3 text-start">{t("name_client")}</TableHead>
