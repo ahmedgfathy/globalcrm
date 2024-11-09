@@ -5,7 +5,8 @@ import React from "react";
 import { Pagination } from "antd";
 import { Button } from "@/components/ui/button";
 import ClientTable from "@/app/components/ClientTable";
-import { ClientDetails } from "./data";
+import { ClientDetails, filterData } from "./data";
+import Filter from "@/app/components/Filter";
 
 function Page() {
   const { t } = useTranslation();
@@ -22,7 +23,10 @@ function Page() {
             </Link>
           </Button>
         </div>
-        <div className="menu-drawer w-full bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
+        <div className="filter bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
+          <Filter data={filterData} />
+        </div>
+        <div className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden" dir="rtl">
           <ClientTable clients={ClientDetails} t={t} />
         </div>
         <div className="flex justify-center mt-4">
