@@ -13,7 +13,7 @@ function Drawer() {
   const [showDrawer, setShowDrawer] = useState(false);
   const { t, changeLanguage } = useTranslation();
   const [lang, setLang] = useState("en");
-  const [mode, setMode] = useState("light");
+  const [mode, setMode] = useState(() => localStorage.getItem("theme") || "light");
   const drawerRef = useRef(null);
 
   const toggleDrawer = () => setShowDrawer((prev) => !prev);
@@ -26,6 +26,7 @@ function Drawer() {
     const newMode = mode === "light" ? "dark" : "light";
     setMode(newMode);
     setTheme(newMode);
+    localStorage.setItem("theme", newMode);
   };
 
   useEffect(() => {

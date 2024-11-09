@@ -5,7 +5,7 @@ import DeleteButton from '../../delete-button/DeleteButton';
 
 function CardHeader({ title, description, page, setIsDisabled, t }) {
     return (
-        <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-6">
+        <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-6" dir="rtl">
           <div>
             <p className="text-2xl font-bold">{title}</p>
             <CardDescription>{description}</CardDescription>
