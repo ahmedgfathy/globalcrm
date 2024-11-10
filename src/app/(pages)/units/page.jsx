@@ -7,8 +7,9 @@ import { CardUnitComponent } from "@/app/components/units-components/CardCompone
 import { IoMdAddCircle } from "react-icons/io";
 import Filter from "@/app/components/Filter";
 import { Pagination } from "antd";
+import { Grid } from "@mui/material";
 function Page() {
-    
+
   const { t } = useTranslation();
   return (
     <div className="py-2">
@@ -35,12 +36,26 @@ function Page() {
           <Filter data={filterData} />
         </div>
         <div className="w-full gap-2 gap-y-5 justify-items-center max-lg:px-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-  {ClientDetails.map((ele) => <CardUnitComponent key={ele.id} ele={ele} /> )}
-</div>
+        </div>
 
 <div className="flex justify-center mt-4 w-full">
           <Pagination className="dark:bg-gray-800 px-3 py-2 rounded-md" defaultCurrent={1} total={500} />
         </div>
+
+        <Grid container className="flex justify-center gap-5">
+          {ClientDetails.map((ele, index) => {
+
+            return (
+              <Grid item xs={12} sm={7} md={5.5} lg={3.7} key={index}>
+                <CardUnitComponent key={ele.id} ele={ele} />
+              </Grid>
+
+            )
+
+          })}
+
+        </Grid>
+        <div className="footer"></div>
       </div>
     </div>
   );
@@ -73,7 +88,7 @@ export default Page;
 // ];
 
 // export default function Page() {
-//   const { t } = useTranslation();  
+//   const { t } = useTranslation();
 
 //   const ClientDetails = [
 //     { id: 1, name: "Ahmed", phone: "01011001105", href: "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600" },
@@ -126,12 +141,12 @@ export default Page;
 
 //                 {/* <img
 //                   className="rounded-t block bg-cover w-full h-full hover:scale-105 duration-500"
-//                   src={imgg.src} 
+//                   src={imgg.src}
 //                   alt="Bold typography"
 //                 /> */}
 //                 {/* <img
 //                   className="rounded-t block bg-cover w-full h-full hover:scale-105 duration-500"
-//                   src={ele.href || '/path/to/default-image.jpg'} 
+//                   src={ele.href || '/path/to/default-image.jpg'}
 //                   alt="Bold typography"
 //                 /> */}
 //               </div>
