@@ -6,6 +6,7 @@ import { ClientDetails, filterData } from "./data";
 import { CardUnitComponent } from "@/app/components/units-components/CardComponent";
 import { IoMdAddCircle } from "react-icons/io";
 import Filter from "@/app/components/Filter";
+import { Pagination } from "antd";
 function Page() {
     
   const { t } = useTranslation();
@@ -37,7 +38,9 @@ function Page() {
   {ClientDetails.map((ele) => <CardUnitComponent key={ele.id} ele={ele} /> )}
 </div>
 
-        <div className="footer"></div>
+<div className="flex justify-center mt-4 w-full">
+          <Pagination className="dark:bg-gray-800 px-3 py-2 rounded-md" defaultCurrent={1} total={500} />
+        </div>
       </div>
     </div>
   );
