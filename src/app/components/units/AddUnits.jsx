@@ -10,7 +10,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import DeleteButton from "../delete-button/DeleteButton";
 
 export default function AddUnits({ page, ...props }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const [image, setImage] = useState("/assets/home-images/form-image.png");
   const [isDisabled, setIsDisabled] = useState(page !== "add");
   const [haveVal, setHaveVal] = useState(page !== "add");
@@ -48,7 +48,7 @@ export default function AddUnits({ page, ...props }) {
   ];
 
   return (
-    <Card className="menu-drawer w-full min-h-screen bg-Lightbg dark:bg-cardbgDark shadow-box_shadow py-8">
+    <Card className="menu-drawer w-full min-h-screen bg-Lightbg dark:bg-cardbgDark shadow-box_shadow py-8" dir="rtl">
       <div className="header w-full flex justify-between items-center gap-2 pb-2 px-6">
         <div>
           <p className="text-2xl font-bold mb-2">{props.title}</p>
@@ -72,8 +72,8 @@ export default function AddUnits({ page, ...props }) {
           )}
         </div>
       </div>
-      <CardContent className="lg:grid gap-6 lg:grid-cols-4">
-        <div className="lg:col-span-3 space-y-4">
+      <CardContent className="lg:grid gap-6 lg:grid-cols-4" >
+        <div className="lg:col-span-3 space-y-4" dir={locale === "ar" ? "rtl": "ltr"}>
           <div className="grid gap-4 sm:grid-cols-2">
             <InputWithLabel
               id="name"
