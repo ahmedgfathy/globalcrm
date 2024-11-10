@@ -26,20 +26,18 @@ function Menu() {
 
   return (
     <div className="drawer" dir={locale === "ar" ? "rtl" : "ltr"}>
-      <div className="container mx-auto relative">
+      <div className="container mx-auto relative flex items-center">
         <button onClick={toggleDrawer} className=" ">
-          <Avatar className="border border-red-600">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+
+          <img class="w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="Bordered avatar" />
+
         </button>
 
         <div
           ref={drawerRef}
           className={`fixed top-0 left-0
-           z-40 h-screen p-4  menu-drawer flex flex-col justify-between shadow-xl w-80 transition-transform duration-500 ${
-             showDrawer ? "translate-x-0" : "-translate-x-full"
-           }`}
+           z-40 h-screen p-4  menu-drawer flex flex-col justify-between shadow-xl w-80 transition-transform duration-500 ${showDrawer ? "translate-x-0" : "-translate-x-full"
+            }`}
           aria-labelledby="drawer-label"
         >
           <div className="header border-b border-gray-200 pb-4 flex flex-col justify-center items-center">

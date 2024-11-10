@@ -6,9 +6,8 @@ export default function RootLayout({ children }) {
   const { locale } = useTranslation();
   return (
     <main
-      className={`flex gap-2 w-full  ${
-        locale === "en" ? "flex-row-reverse" : "flex-row"
-      }`}
+      className={`flex w-full  ${locale === "en" ? "flex-row-reverse" : "flex-row"
+        }`}
     >
       <div className="nav">
         <SideBar />

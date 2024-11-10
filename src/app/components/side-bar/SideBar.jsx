@@ -88,11 +88,11 @@ function SideBar() {
                 ? styles.sidebarOpen
                 : "w-0"
               : styles.sidebarClosed
-          } h-screen bg-white dark:bg-cardbgDark`}
+          } h-screen bg-white dark:bg-dark`}
           aria-label="Sidebar"
         >
           <div
-            className={`h-full px-3 py-4 overflow-y-auto bg-white dark:bg-cardbgDark border-x shadow-sm fixed right-0 ${
+            className={`h-full px-3 py-4 overflow-y-auto bg-white dark:bg-dark border-x shadow-sm fixed right-0 ${
               styles.sidebar
             } ${isOpen ? styles.sidebarOpen : styles.sidebarClosed} `}
           >

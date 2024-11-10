@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,6 +19,7 @@ import { IoMdPerson } from "react-icons/io";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { useState } from "react";
 import "./style.css"
+import { useRouter } from "next/navigation";
 export function CardUnitComponent({ ele }) {
   const { t } = useTranslation();
   const iconCard = [
@@ -25,11 +27,14 @@ export function CardUnitComponent({ ele }) {
     { icon: FiPhoneCall, href: "", color: "#08521d" },
   ];
   let [favourite, setfavourite] = useState(false)
+  let router = useRouter()
 
   return (
-    <Card className="duration-300 cursor-pointer  border shadow-none hover:shadow" style={{ borderColor: '#ccc' }}>
+    <Card className="duration-300 cursor-pointer  rounded-xl    border shadow-none hover:shadow" style={{ borderColor: '#ccc' }} onClick={() => {
+      router.push(`units/${ele.id}`);
+    }}>
       <CardHeader className="overflow-hidden p-0 rounded-t-xl relative ">
-        <div className="layer  absolute top-0 left-0 flex flex-col items-end justify-between w-full h-[230px] z-20">
+        <div className="layer  absolute top-0 left-0 flex flex-col items-end justify-between w-full h-[230px]" style={{zIndex:"1"}}>
           <div className="icons flex gap-3 p-3 items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -134,7 +139,7 @@ export function CardUnitComponent({ ele }) {
         </div>
       </CardHeader>
 
-      <CardContent className="p-4 space-y-2">
+      <CardContent className="p-4 space-y-2 bg-white dark:bg-dark rounded-b-xl ">
         <p className="font-bold text-sm capitalize text-base">{`${ele.name}`}</p>
         <p className="text-xs capitalize  text-gray-600 mb-5">{ele.address}</p>
         <div className="flex gap-3 align-center">
@@ -233,7 +238,7 @@ export function CardUnitComponent({ ele }) {
           <div className="flex items-end gap-2 ">
             {iconCard.map((link, index) => (
               <Link href={link.href} key={index} aria-label="social link">
-                <link.icon className="text-2xl" style={{ color: link.color }} />
+                <link.icon className="text-2xl"  />
               </Link>
             ))}
           </div>
