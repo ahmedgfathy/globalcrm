@@ -9,7 +9,7 @@ function InputField({ label, id, defaultValue, isDisabled }) {
     <Input
       disabled={isDisabled}
       id={id}
-      className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md"
+      className="dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md w-[180px]"
       defaultValue={defaultValue}
     />
   </div>

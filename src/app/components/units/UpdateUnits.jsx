@@ -9,10 +9,9 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import { Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import DeleteButton from "../delete-button/DeleteButton";
-import SheetCalls from "./SheetsCalls";
 
 
-export default function Create({ page, ...props }) {
+export default function UpdateUnits({ page, ...props }) {
   const { t, locale } = useTranslation();
   const [image, setImage] = useState("/");
   const [isDisabled, setIsDisabled] = useState(true);
@@ -67,7 +66,7 @@ export default function Create({ page, ...props }) {
 
 
   return (
-    <Card className="menu-drawer w-full min-h-screen h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-8 max-md:pt-4">
+    <Card className="menu-drawer w-full min-h-screen h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-8 max-md:pt-4 overflow-x-auto">
       <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-6" dir="ltr">
         {/* <div>
           <p className="text-2xl font-bold mb-2">{props.title}</p>

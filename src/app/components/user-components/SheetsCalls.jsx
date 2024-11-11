@@ -51,7 +51,7 @@ function SheetCalls({ isDisabled }) {
   };
 
   return (
-    <div className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark border-0 text-cardbgDark dark:text-Lightbg">
+    <div className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark border-0 text-cardbgDark dark:text-Lightbg pb-4 pt-2">
       <div className="header w-full flex justify-between max-[450px]:justify-center items-center max-[450px]:flex-wrap gap-y-3">
         <div>
           <p className="text-2xl font-bold">sheets calls</p>

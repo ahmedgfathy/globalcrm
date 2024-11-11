@@ -73,7 +73,7 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
         t={t}
       />
 
-      <CardContent className="lg:grid gap-6 lg:grid-cols-4 md:gap-8 max-sm:flex max-sm:flex-col-reverse" dir="rtl">
+      <CardContent className="lg:grid gap-6 lg:grid-cols-4 md:gap-8 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
         <FormFields fields={fieldsData} isDisabled={isDisabled}  />
         <ImageSection
           image={image}
