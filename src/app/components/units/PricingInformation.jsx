@@ -17,7 +17,7 @@ export default function PricingInformation({ page, setIsDisabled, isDisabled, ..
             <div className="header w-full flex justify-between items-center pb-4">
                 <p className="text-xl font-bold">Pricing Information</p>
             </div>
-            <CardContent className="w-full min-w-max overflow-x-auto" dir="rtl">
+            <CardContent className="w-5/6 min-w-max overflow-x-auto" dir="rtl">
                 <FormFields fields={fieldsData} isDisabled={isDisabled} />
             </CardContent>
         </Card>
