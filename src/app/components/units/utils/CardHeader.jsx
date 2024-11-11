@@ -15,7 +15,7 @@ function CardHeader({ title, description, page, setIsDisabled, t }) {
         {page === "add" ? (
           <Button className="GreenButton dark p-1  flex justify-between items-center gap-1">
             <IoMdAddCircle />
-            {t("add_lead")}
+            {t("add_unit")}
           </Button>
         ) : (
           <>
