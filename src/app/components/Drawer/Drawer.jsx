@@ -52,26 +52,23 @@ function Drawer() {
         <div
           dir="rtl"
           ref={drawerRef}
-          className={`fixed top-0 left-0 z-40 h-screen p-4 menu-drawer text:dark dark:text-anti-flash_white shadow-xl w-80 transition-transform duration-500 ${
-            showDrawer ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={`fixed top-0 left-0 z-40 h-screen p-4 menu-drawer text:dark dark:text-anti-flash_white shadow-xl w-80 transition-transform duration-500 ${showDrawer ? "translate-x-0" : "-translate-x-full"
+            }`}
           aria-labelledby="drawer-label"
         >
           <div
-            className={`flex justify-between items-center mb-4 ${
-              lang === "ar" ? "flex-row" : "flex-row-reverse"
-            }`}
+            className={`flex justify-between items-center mb-4 ${lang === "ar" ? "flex-row" : "flex-row-reverse"
+              }`}
           >
             <h1 className="text-2xl font-semibold">{t("settings")}</h1>
             <button onClick={toggleDrawer}>
-              <IoMdClose />
+              <IoMdClose className="text-xl font-bold" />
             </button>
           </div>
 
           <div
-            className={`flex gap-4 mb-4 ${
-              lang === "en" ? "text-left" : "text-right"
-            }`}
+            className={`flex gap-4 mb-4 ${lang === "en" ? "text-left" : "text-right"
+              }`}
           >
             <ControlCard
               icon={<MdLanguage className="text-xl" />}

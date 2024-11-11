@@ -4,6 +4,7 @@ import style from "./page.module.css";
 import { useRouter } from "next/navigation";
 import FormComponent from "@/app/components/FormComponent/FormComponent";
 import Image from "next/image";
+import { Grid } from "@mui/material";
 
 function Page() {
   const router = useRouter();
@@ -49,18 +50,23 @@ function Page() {
             </div>
           </div>
           <div className="bg-[#fff] dark:bg-gray-900 min-h-screen flex justify-center items-center">
-            <div className="description w-full flex justify-center items-center">
-              <FormComponent
-                style={style}
-                page="login"
-                user={formData}
-                show={showPassword}
-                changeType={togglePasswordVisibility}
-                handleChange={handleChange}
-                handleSubmit={() => router.push("/dashboard")}
-                disable={isSubmitting}
-              />
-            </div>
+            <Grid container className="flex justify-center">
+              <Grid item xs={10} md={8.5}>
+                <div className="description w-full flex justify-center items-center">
+                  <FormComponent
+                    style={style}
+                    page="login"
+                    user={formData}
+                    show={showPassword}
+                    changeType={togglePasswordVisibility}
+                    handleChange={handleChange}
+                    handleSubmit={() => router.push("/dashboard")}
+                    disable={isSubmitting}
+                  />
+                </div>
+
+              </Grid>
+            </Grid>
           </div>
         </div>
       </div>
