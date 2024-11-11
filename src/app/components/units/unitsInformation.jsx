@@ -2,8 +2,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
-import CardHeader from "../user-components/utils/CardHeader";
 import FormFields from "../user-components/utils/FormFields";
+import CardHeader from "./utils/CardHeader";
 
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
