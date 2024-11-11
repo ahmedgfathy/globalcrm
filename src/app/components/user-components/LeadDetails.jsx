@@ -64,7 +64,7 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
   ];
   
   return (
-    <Card className="menu-drawer w-full min-h-screen h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-8 max-md:pt-4">
+    <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-8 max-md:pt-4">
       <CardHeader
         title={props.title}
         description={props.description}
