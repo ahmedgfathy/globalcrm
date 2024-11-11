@@ -1,7 +1,7 @@
 {
   "welcome": "welcome",
   "login": "Login",
-  "settings": "Settings",
+  "settings": "settings",
   "mode": "Mode",
   "create_account": "Get started absolutely free",
   "have_an_account": "Already have an account ?",
@@ -14,7 +14,7 @@
   "email": "Email",
   "password": "Password",
   "confirm_password": "Confirm Password",
-  "forgot_password": "Forgot Password",
+  "forgot_password": "Forgot Password ?",
   "btn_register": "Create Account",
   "btn_login": "Login",
   "home": "Home",

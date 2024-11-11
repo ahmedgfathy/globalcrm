@@ -8,40 +8,54 @@ import { IoMdAddCircle } from "react-icons/io";
 import Filter from "@/app/components/Filter";
 import { Pagination } from "antd";
 import { Grid } from "@mui/material";
+import { useRouter } from "next/navigation";
 function Page() {
 
   const { t } = useTranslation();
   return (
     <div className="py-2">
       <div className="w-full flex flex-wrap justify-between items-start gap-3 max-md:gap-7 px-2 pt-2 max-[1200px]:px-7">
-        <div className="bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap justify-between max-[450px]:justify-center items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
-          <div className="w-3/4 h-max max-[450px]:w-full shadow-box_shadow dark:shadow-none rounded-xl">
-            <input
-              type="text"
-              className="w-full max-[450px]:w-full bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md p-2 max-[450px]:py-1"
-              placeholder={`${t("search_unit")} ...`}
-            />
-          </div>
-          <div className="w-max max-[450px]:w-full">
-            <Link
-              href="/units/add-unit"
-              className="GreenButton dark flex justify-between items-center gap-1"
-            >
-              <IoMdAddCircle />
-              {t("add_unit")}
-            </Link>
-          </div>
-        </div>
-        <div className="filter bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
-          <Filter data={filterData} />
-        </div>
-        <div className="w-full gap-2 gap-y-5 justify-items-center max-lg:px-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        </div>
+        {/*<div className="bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap justify-between max-[450px]:justify-center items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
 
-<div className="flex justify-center mt-4 w-full">
-          <Pagination className="dark:bg-gray-800 px-3 py-2 rounded-md" defaultCurrent={1} total={500} />
         </div>
+        <div className="filter bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3  dark:shadow-none">
+        </div>*/}
+        {/* <div className="w-full gap-2 gap-y-5 justify-items-center max-lg:px-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        </div>*/}
 
+
+
+
+        <Grid container className="flex justify-center gap-5 w-full mt-5 mb-3 ">
+
+          <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex items-center justify-between " >
+            <div className="w-3/4 h-max max-[450px]:w-full  dark:shadow-none rounded-xl">
+              <input
+                type="text"
+                className="w-full  bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md p-2 max-[450px]:py-1"
+                placeholder={`${t("search_unit")} ...`}
+              />
+            </div>
+            <div className="w-max max-[450px]:w-full">
+              <Link
+                href="/units/add-unit"
+                className="GreenButton dark p-1  flex justify-between items-center gap-1"
+                style={{borderRadius:"4px" , paddingBlock:"9.5px"}}
+              >
+                <IoMdAddCircle />
+                {t("add_unit")}
+              </Link>
+            </div>
+          </Grid>
+        </Grid>
+
+
+        <Grid container className="flex justify-center gap-5 w-full mb-7 ">
+
+          <Grid item xs={12} sm={7} md={11.3} lg={11.4} >
+            <Filter data={filterData} />
+          </Grid>
+        </Grid>
         <Grid container className="flex justify-center gap-5">
           {ClientDetails.map((ele, index) => {
 
@@ -55,6 +69,10 @@ function Page() {
           })}
 
         </Grid>
+
+        <div className="flex justify-center mt-4 w-full">
+          <Pagination className="dark:bg-gray-800 px-3 py-2 rounded-md" defaultCurrent={1} total={500} />
+        </div>
         <div className="footer"></div>
       </div>
     </div>

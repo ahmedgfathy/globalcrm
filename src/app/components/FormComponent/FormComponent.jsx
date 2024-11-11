@@ -59,7 +59,7 @@ export default function FormComponent({
                 name="email"
                 value={user.email}
                 onChange={handleChange}
-                className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                className="w-full px-8 py-4 rounded-lg font-medium bg-white dark:bg-dark border border-gray-200 dark:border-gray-600 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white dark:focus:bg-dark mt-5"
                 type="email"
                 placeholder={t("email")}
               />
@@ -70,7 +70,9 @@ export default function FormComponent({
                 val={user.password}
                 show={show}
                 handleChange={handleChange}
+                className="w-full px-8 py-4 rounded-lg font-medium bg-white dark:bg-dark border border-gray-200 dark:border-gray-600 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white dark:focus:bg-dark mt-5"
               />
+
               {page === "login" ? (
                 <div className="text-right my-2">
                   <Link href="/">{t("forgot_password")}</Link>
@@ -89,8 +91,8 @@ export default function FormComponent({
               <Button
                 onClick={handleSubmit}
                 disabled={disable}
-                className="mt-5 tracking-wide font-black text-xl bg-dark text-gray-100 w-full py-5 rounded-lg hover:bg-dark2 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-              >
+                className="mt-5 tracking-wide font-black text-xl bg-dark text-gray-100 dark:bg-white dark:text-dark w-full py-5 rounded-lg hover:bg-dark2 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                >
                 {disable ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

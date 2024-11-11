@@ -7,6 +7,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      extend: {
+        zIndex: {
+          '100': '100',
+          '200': '200',
+          '500': '500',
+        },
+      },
       colors: {
         cardbgDark:"#1c252e",
         Lightbg:"#fff",
