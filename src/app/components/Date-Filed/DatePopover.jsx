@@ -34,7 +34,7 @@ export function DatePopover({ defaultValue, isDisabled }) {
                 <Button
                     variant="outline"
                     className={cn(
-                        "dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md w-full",
+                        "dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md w-[180px] ",
                         !date && "text-muted-foreground"
                     )}
                     disabled={isDisabled}

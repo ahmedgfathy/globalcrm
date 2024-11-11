@@ -1,0 +1,25 @@
+.ant-collapse {
+    background-color: #f0f0f0;
+    color: #1c252e;
+  }
+  
+  .ant-collapse-header {
+    background-color: #d3d3d3;
+    color: #000;
+  }
+  
+  .dark .ant-collapse {
+    background-color: #1e1e1e;
+    color: #fff;
+  }
+  
+  .dark .ant-collapse-header {
+    background-color: #1c252e;
+    color: #eee !important;
+
+  }
+  
+
+  .dark .ant-collapse-content-box{
+    background-color: #1c252e;
+  }
