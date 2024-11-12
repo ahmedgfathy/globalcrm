@@ -134,6 +134,11 @@ function Page({ params }) {
     // </div>
     <Box className="add-unit min-h-screen flex justify-center items-center px-0 md:px-2">
 
+          <div className="flex-1 px-5">
+            <TabsContent
+              value="details"
+              className="w-full"
+              dir={locale == "ar" ? "rtl" : "ltr"}
     <Grid container direction="row" dir="ltr" className="flex-nowrap gap-6">
         <Grid item xs={3} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md">
             <Tabs

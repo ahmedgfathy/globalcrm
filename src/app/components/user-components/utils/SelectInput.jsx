@@ -5,7 +5,7 @@ import { SelectFiled } from '../../Select-Filed/SelectFiled';
 function SelectInput({ label, id, isDisabled, data, defaultValue, handleChange,section }) {
   return (
     <div className="space-y-2">
-      <Label htmlFor={id}>{label}</Label>
+      <Label htmlFor={id} className="font-semibold">{label}</Label>
       <SelectFiled
         handleChange={handleChange}
         section={section}

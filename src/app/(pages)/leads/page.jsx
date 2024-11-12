@@ -21,6 +21,11 @@ function Page() {
             {t("leads_List")}
           </h1>
           <div className="flex justify-end items-center">
+            <Link href="/leads/add-lead" className="GreenButton dark p-1 flex justify-between items-center gap-1">
+              <IoMdAddCircle />
+              {t("add_lead")}
+            </Link>
+          </div>
             <CustomButton
             title={t("add_lead")}
             icon={()=><IoMdAddCircle />}

@@ -41,6 +41,12 @@ const CollapsibleComponent = ({ items }) => {
 
   return (
     <div>
+      <Collapse
+        className="dark:border-transparent overflow-hidden"
+        items={updatedItems}
+        defaultActiveKey={["1"]}
+      />
+
       {updatedItems.map((item) => (
         <div key={item.key}>{item.children}</div>
       ))}
