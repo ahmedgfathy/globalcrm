@@ -147,7 +147,7 @@ function Page({ params }) {
                       backgroundColor: "#4CAF50",
                   }
               }}
-                style={{ minHeight: '90vh', paddingTop: 16 }}
+                style={{ height: '100%', paddingTop: 16 }}
             >
                 <Tab label="Lead Details" sx={{
             color: selectedTab === 0 ? "text.text_link_active" : "text.gray",
