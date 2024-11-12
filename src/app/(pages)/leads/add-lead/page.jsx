@@ -48,8 +48,8 @@ function Page({ params }) {
 
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center px-0 md:px-2">
-      <Grid container direction="row" className="flex-nowrap gap-6">
-        <Grid item xs={3} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md">
+      <Grid container direction="row" wrap="nowrap" className="gap-6">
+        <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md">
           <Tabs
             orientation="vertical"
             value={selectedTab}
@@ -60,13 +60,15 @@ function Page({ params }) {
                 backgroundColor: "#4CAF50",
               },
             }}
-            style={{ height: '100%', paddingTop: 16 }}
+            style={{  height: '100%', paddingTop: 16 }}
           >
             <Tab
               label="Lead Details"
               sx={{
-                color: selectedTab === 0 ? "#5be49b" : "text.gray",
-              }}
+                "&.Mui-selected": {
+                    color: "#5be49b", 
+                },
+            }}
             />
           </Tabs>
         </Grid>

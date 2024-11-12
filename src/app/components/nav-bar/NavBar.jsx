@@ -12,7 +12,14 @@ function NavBar() {
   const { t } = useTranslation();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 p-6 bg-white dark:bg-dark " style={{ zIndex:"200",  backgroundColor: pathName === "/login" ?  "transparent" : undefined }} dir="ltr">
+    <nav
+      className="fixed top-0 left-0 right-0 p-6 bg-white dark:bg-dark"
+      style={{
+        zIndex: "200",
+        backgroundColor: pathName === "/login" ? "transparent" : undefined,
+      }}
+      dir="ltr"
+    >
       <div className="">
         <div className="flex items-center h-10">
           <div className="avatar">
@@ -21,9 +28,9 @@ function NavBar() {
           <div className="setting mx-3">
             <Drawer />
           </div>
-          {pathName !== "/login" || pathName !== "/" ? (
+          {pathName !== "/login" && pathName !== "/" ? (
             <div className="links sm:mx-auto">
-              <ul className="flex justify-evenly gap-3">
+              <ul className="flex justify-evenly gap-3 md:-ml-[72px]">
                 {data.map((item) => (
                   <li key={item.id}>
                     <Link
@@ -44,7 +51,6 @@ function NavBar() {
       </div>
     </nav>
   );
-  
 }
 
 export default NavBar;
