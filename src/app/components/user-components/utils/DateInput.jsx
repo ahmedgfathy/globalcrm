@@ -17,6 +17,7 @@ function DateInput({ label, id, defaultValue, isDisabled,handleChange, section }
                 id={id}
             />
         </div>
+        </div>
     )
 }
 

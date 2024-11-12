@@ -4,14 +4,10 @@ import DeleteButton from "@/app/components/delete-button/DeleteButton";
 import { TableCell, TableRow } from "@/components/ui/table";
 
 const TableRowComponent = ({ client, t }) => (
-  <TableRow className="hover:bg-gray-50 dark:hover:bg-gray-500">
+  <TableRow className="hover:bg-gray-50 dark:hover:bg-gray-700">
     <TableCell className="p-3 font-bold w-max">{client.name}</TableCell>
     <TableCell className="p-3 font-semibold">{client.email}</TableCell>
-  <TableRow className="hover:bg-gray-50 dark:hover:bg-gray-700">
-    <TableCell className="p-3">{client.name}</TableCell>
     <TableCell className="p-3 hidden md:table-cell">{client.phone}</TableCell>
-    <TableCell className="p-3">{client.email}</TableCell>
-    <TableCell className="p-3">{client.source}</TableCell>
     <TableCell className="p-3">{client.source}</TableCell>
     <TableCell className="p-3 hidden md:table-cell">{client.DESC}</TableCell>
     <TableCell className="p-3 flex gap-3">
