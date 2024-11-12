@@ -13,14 +13,6 @@ const ClientTable = ({ clients, t }) => {
           <TableHead className="p-3 text-start font-bold">{t("source")}</TableHead>
           <TableHead className="p-3 hidden md:table-cell text-start font-bold">{t("DESC")}</TableHead>
           <TableHead className="p-3 text-start max-md:text-center font-bold">{t("action")}</TableHead>
-
-          <TableHead className="p-3 text-start">{t("name_client")}</TableHead>
-          <TableHead className="p-3 text-start hidden md:table-cell">{t("mobile_phone")}</TableHead>
-          <TableHead className="p-3 text-start">{t("request_type")}</TableHead>
-          <TableHead className="p-3 hidden md:table-cell text-start">{t("status")}</TableHead>
-          <TableHead className="p-3 text-start">{t("source")}</TableHead>
-          <TableHead className="p-3 text-start">{t("class")}</TableHead>
-          <TableHead className="p-3 text-start">{t("action")}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

@@ -25,6 +25,7 @@
 
 "use client";
 
+import { Collapse } from "antd";
 import React, { useState } from "react";
 
 const CollapsibleComponent = ({ items }) => {
@@ -47,9 +48,9 @@ const CollapsibleComponent = ({ items }) => {
         defaultActiveKey={["1"]}
       />
 
-      {updatedItems.map((item) => (
+      {/* {updatedItems.map((item) => (
         <div key={item.key}>{item.children}</div>
-      ))}
+      ))} */}
     </div>
   );
 };
