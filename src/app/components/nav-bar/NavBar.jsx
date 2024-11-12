@@ -21,8 +21,8 @@ function NavBar() {
           <div className="setting mx-3">
             <Drawer />
           </div>
-          {pathName !== "/login" ? (
-            <div className="links mx-auto">
+          {pathName !== "/login" || pathName !== "/" ? (
+            <div className="links sm:mx-auto">
               <ul className="flex justify-evenly gap-3">
                 {data.map((item) => (
                   <li key={item.id}>

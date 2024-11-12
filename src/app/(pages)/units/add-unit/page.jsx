@@ -40,7 +40,7 @@ function Page({ params }) {
       <div className="container px-0 py-4 max-md:pb-20 max-md:pt-14 mx-auto flex">
         <Tabs
           defaultValue="details"
-          className="flex w-full h-full relative"
+          className="flex w-full h-full relative  "
         >
           {isMobile && !isOpen && (
             <AiOutlineRightSquare
@@ -52,7 +52,7 @@ function Page({ params }) {
           <TabsList
             dir={locale == "ar" ? "rtl" : "ltr"}
             ref={tabsRef}
-            className={`flex-shrink-0 flex flex-col gap-5 transition-all duration-200 bg-[#FFF] dark:bg-[#222831] min-h-screen overflow-hidden ${
+            className={`flex-shrink-0 flex flex-col gap-5 transition-all z-10 duration-200 bg-[#FFF] dark:bg-[#222831] min-h-screen overflow-hidden ${
               isMobile
                 ? isOpen
                   ? "absolute top-0 left-0 w-64"

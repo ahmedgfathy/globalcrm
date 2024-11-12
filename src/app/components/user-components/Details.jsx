@@ -1,21 +1,20 @@
-// App.js
 import React from "react";
 import LoadDetails from "./LeadDetails";
 import SheetCalls from "./SheetsCalls";
 import CollapsibleComponent from "../CollapsibleComponent";
 import "./style.css";
 
-const App = ({ page }) => {
+const App = ({ page, handleChange,handleSubmit, title }) => {
   const items = [
     {
       key: "1",
       label: "Lead Details",
-      children: <LoadDetails page={page} />,
+      children: <LoadDetails page={page} handleSubmit={handleSubmit} handleChange={handleChange} section="leadDetails" title={title} />,
     },
     {
       key: "2",
       label: "Sheets Calls",
-      children: <SheetCalls page={page} />,
+      children: <SheetCalls page={page} handleChange={handleChange} section="sheetsCalls" />,
     },
   ];
 
