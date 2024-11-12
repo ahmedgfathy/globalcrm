@@ -1,39 +1,42 @@
-import React, { useEffect } from 'react';
-import InputField from './InputField';
-import TextAreaField from './TextAreaField';
-import DateInput from './DateInput';
-import SelectInput from './SelectInput';
-import { useTranslation } from '@/app/context/TranslationContext';
+import React, { useEffect } from "react";
+import InputField from "./InputField";
+import TextAreaField from "./TextAreaField";
+import DateInput from "./DateInput";
+import SelectInput from "./SelectInput";
+import { useTranslation } from "@/app/context/TranslationContext";
 
-function FormFields({ fields, isDisabled, handleChange, section}) {
+function FormFields({ fields, isDisabled, handleChange, section }) {
   const { t, locale } = useTranslation();
   return (
-    <div className="space-y-4 lg:col-span-3" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
+    <div
+      className="space-y-4 lg:col-span-3"
+      dir={locale === "ar" ? "rtl" : "ltr"}
+    >
       <div className="grid gap-4 sm:grid-cols-2">
-        {fields.map((field) => {
-          const commonProps = {
-            key: field.id,
-            label: t(field.label),
-            id: field.idField,
-            defaultValue: field.defaultValue,
-            isDisabled,
-            handleChange,
-            section
-          };
+      {fields.map((field) => {
+  const commonProps = {
+    label: t(field.label),
+    id: field.idField,
+    defaultValue: field.defaultValue,
+    isDisabled,
+    handleChange,
+    section
+  };
 
-          switch (field.type) {
-            case 'input':
-              return <InputField key={field.id} {...commonProps} />;
-            case 'textarea':
-              return <TextAreaField key={field.id} {...commonProps} />;
-            case 'date':
-              return <DateInput key={field.id} {...commonProps} />;
-            case 'select':
-              return <SelectInput key={field.id} {...commonProps} data={field.options} />;
-            default:
-              return null;
-          }
-        })}
+  switch (field.type) {
+    case 'input':
+      return <InputField key={field.id} {...commonProps} />;
+    case 'textarea':
+      return <TextAreaField key={field.id} {...commonProps} />;
+    case 'date':
+      return <DateInput key={field.id} {...commonProps} />;
+    case 'select':
+      return <SelectInput key={field.id} {...commonProps} data={field.options} />;
+    default:
+      return null;
+  }
+})}
+
       </div>
     </div>
   );

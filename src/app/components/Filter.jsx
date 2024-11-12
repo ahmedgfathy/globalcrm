@@ -11,11 +11,11 @@ import {
 } from "@/components/ui/select";
 function Filter({ data }) {
   return (
-      <div className="grid lg:grid-cols-4 max-sm:grid-cols-2 gap-3">
+      <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-3">
         {data?.map((ele, i) => {
           return (
             <Select key={i}>
-              <SelectTrigger className="w-[165px] md:w-[150px] lg:w-[200px] dark:bg-gray-900 dark:text-white">
+              <SelectTrigger className="w-full md:w-[150px] lg:w-[200px] dark:bg-gray-900 dark:text-white">
                 <SelectValue placeholder={ele.filterName} />
               </SelectTrigger>
               <SelectContent className="dark:bg-gray-900 dark:text-white">

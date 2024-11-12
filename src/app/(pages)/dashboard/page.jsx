@@ -10,9 +10,9 @@ import RecentChart from "@/app/components/dashboard/RecentChart";
 function Page() {
   const dataForChart = [
     { name: "A", value: 14, fill: "#007867" },
-    { name: "B", value: 6, fill: "#007867" },
-    { name: "C", value: 4, fill: "#007867" },
-    { name: "D", value: 3, fill: "#007867" },
+    { name: "B", value: 6, fill: "#ff5630" },
+    { name: "C", value: 4, fill: "#5f942e" },
+    { name: "D", value: 3, fill: "#ffc107" },
   ];
   const commonInfo = [
     { id: 1, title: "employee_count", number: "15_00", time: "last_s_days", percent: "+٢٫٦%" , color:"#007867"},

@@ -9,7 +9,6 @@ import { IoMdAddCircle } from "react-icons/io";
 import CustomButton from "@/app/components/CustomButton";
 import { useRouter } from "next/navigation";
 import { FaFileExport, FaFileImport } from "react-icons/fa";
-import Link from "next/link";
 
 function Page() {
   const router = useRouter()
@@ -28,8 +27,8 @@ function Page() {
           />
         </div>
       </div>
-      <div className="filter bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
-        <div className="filter md:w-3/4">
+      <div className="filter bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none" dir="ltr">
+        <div className="filter w-full md:w-3/4">
           <Filter data={filterData} />
         </div>
         <div className="actions w-full md:w-1/4 flex justify-between items-center">
