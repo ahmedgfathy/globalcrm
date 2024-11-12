@@ -194,10 +194,17 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
     ];
 
     return (
-        <Card className="menu-drawer w-full min-h-screen h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-8 max-md:pt-4 overflow-x-auto">
-            <CardContent className="w-full min-w-[500px] max-sm:min-w-[300px] overflow-x-auto lg:grid gap-6 gap-y-8 lg:grid-cols-4 md:gap-8 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
+        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-4 overflow-x-auto">
+            <CardHeader
+                title={props.title}
+                description={props.description}
+                page={page}
+                setIsDisabled={setIsDisabled}
+                t={t}
+            />
+            <CardContent className="w-full min-w-[500px] max-sm:min-w-[300px] overflow-x-auto lg:grid gap-3 gap-y-8 lg:grid-cols-4 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
                 <FormFields fields={fieldsData} isDisabled={isDisabled} className="w-full" />
-                <Card className="h-max bg-transparent pt-2">
+                <Card className="h-max bg-transparent pt-5">
                     <CardContent className="p-0 space-y-2">
                         <div className="relative w-full h-48 lg:h-40">
                             <iframe

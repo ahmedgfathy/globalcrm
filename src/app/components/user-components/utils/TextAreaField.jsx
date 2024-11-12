@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 export default function TextAreaField({ label, id, defaultValue, isDisabled }) {
     return (
       <div className="space-y-2 sm:col-span-2">
-        <Label htmlFor={id}>{label}</Label>
+        <Label htmlFor={id} className="font-semibold">{label}</Label>
         <textarea
           disabled={isDisabled}
           id={id}

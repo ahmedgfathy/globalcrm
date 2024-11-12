@@ -13,11 +13,11 @@ const data = [
     { name: 'Page G', uv: 30, pv: 90, amt: 22 },
 ];
 
-const ChartComponentTwo = () => {
+const ChartComponentTwo = ({ color }) => {
     return (
         <ResponsiveContainer width={50} height={50}>
             <BarChart width={30} height={140} data={data}>
-                <Bar dataKey="uv" fill="#007867" />
+                <Bar dataKey="uv" fill={color} />
             </BarChart>
             <Tooltip />
         </ResponsiveContainer>

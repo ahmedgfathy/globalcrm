@@ -4,8 +4,8 @@ import React from 'react'
 
 function DateInput({ label, id, defaultValue, isDisabled }) {
     return (
-        <div className="space-y-2 flex flex-col">
-            <Label htmlFor={id}>{label}</Label>
+        <div className="flex flex-col">
+            <Label htmlFor={id} className="font-semibold pb-4">{label}</Label>
             <DatePopover
                 defaultValue={defaultValue}
                 isDisabled={isDisabled}

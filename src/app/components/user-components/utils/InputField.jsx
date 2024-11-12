@@ -5,7 +5,7 @@ import React from 'react'
 function InputField({ label, id, defaultValue, isDisabled }) {
   return (
     <div className="space-y-2">
-    <Label htmlFor={id}>{label}</Label>
+    <Label htmlFor={id} className="font-semibold">{label}</Label>
     <Input
       disabled={isDisabled}
       id={id}

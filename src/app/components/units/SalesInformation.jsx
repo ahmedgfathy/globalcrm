@@ -60,7 +60,7 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
     ];
 
     return (
-        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-4 pt-2 overflow-x-auto">
+        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-auto">
             <div className="header w-full flex justify-between items-center pb-4">
                 <p className="text-xl font-bold">Sales Information</p>
             </div>

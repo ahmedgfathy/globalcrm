@@ -17,7 +17,7 @@ const CollapsibleComponent = ({ items }) => {
   return (
     <div>
       <Collapse
-        className="dark:bg-red-50"
+        className="dark:border-transparent overflow-hidden"
         items={updatedItems}
         defaultActiveKey={["1"]}
       />
