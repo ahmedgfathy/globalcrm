@@ -2,6 +2,7 @@
 import React from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import PieChartActive from "./PieChartActive";
 
 function MainCard({ dataForChart }) {
   const { t } = useTranslation();
@@ -15,7 +16,8 @@ function MainCard({ dataForChart }) {
       </div>
       <div className="w-full flex justify-between items-center border-dashed border-b-2 border-[#2e3942] ">
         <div className="pb-5 w-full h-60">
-          <ResponsiveContainer>
+          <PieChartActive />
+          {/* <ResponsiveContainer>
             <PieChart>
               <Pie
                 dataKey="value"
@@ -26,7 +28,7 @@ function MainCard({ dataForChart }) {
               />
               <Tooltip />
             </PieChart>
-          </ResponsiveContainer>
+          </ResponsiveContainer> */}
         </div>
       </div>
       <ul className="w-full h-20 min-h-max flex flex-wrap justify-center items-center gap-x-2">
