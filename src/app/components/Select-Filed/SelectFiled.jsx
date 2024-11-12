@@ -9,11 +9,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export function SelectFiled({ data, label, id, isDisabled, defaultValue }) {
+export function SelectFiled({ data, label, id, isDisabled, defaultValue, handleChange,section }) {
   return (
     <div className="space-y-2">
-      <Select id={id} defaultValue={defaultValue}>
-        <SelectTrigger className="w-[180px]">
+      <Select id={id} defaultValue={defaultValue} onValueChange={(e) => handleChange(section, id, e)}>
+        <SelectTrigger className="lg:w-[220px] max-sm:w-full">
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>
         <SelectContent>

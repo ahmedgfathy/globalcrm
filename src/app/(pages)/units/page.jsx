@@ -1,6 +1,5 @@
 "use client";
 import { useTranslation } from "@/app/context/TranslationContext";
-import Link from "next/link";
 import React from "react";
 import { ClientDetails, filterData } from "./data";
 import { CardUnitComponent } from "@/app/components/units-components/CardComponent";
@@ -9,26 +8,15 @@ import Filter from "@/app/components/Filter";
 import { Pagination } from "antd";
 import { Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
+import CustomButton from "@/app/components/CustomButton";
 function Page() {
-
+  const router = useRouter()
   const { t } = useTranslation();
   return (
     <div className="py-2">
       <div className="w-full flex flex-wrap justify-between items-start gap-3 max-md:gap-7 px-2 pt-2 max-[1200px]:px-7">
-        {/*<div className="bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap justify-between max-[450px]:justify-center items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
-
-        </div>
-        <div className="filter bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3  dark:shadow-none">
-        </div>*/}
-        {/* <div className="w-full gap-2 gap-y-5 justify-items-center max-lg:px-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        </div>*/}
-
-
-
-
         <Grid container className="flex justify-center gap-5 w-full mt-5 mb-3 ">
-
-          <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex items-center justify-between " >
+          <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex items-center justify-between gap-2" >
             <div className="w-3/4 h-max max-[450px]:w-full  dark:shadow-none rounded-xl">
               <input
                 type="text"
@@ -36,15 +24,12 @@ function Page() {
                 placeholder={`${t("search_unit")} ...`}
               />
             </div>
-            <div className="w-max max-[450px]:w-full">
-              <Link
-                href="/units/add-unit"
-                className="GreenButton dark p-1  flex justify-between items-center gap-1"
-                style={{borderRadius:"4px" , paddingBlock:"9.5px"}}
-              >
-                <IoMdAddCircle />
-                {t("add_unit")}
-              </Link>
+            <div className="">
+              <CustomButton
+              fun={()=>router.push("/units/add-unit")}
+              title={t("add_unit")}
+              icon={()=><IoMdAddCircle />}
+              />
             </div>
           </Grid>
         </Grid>

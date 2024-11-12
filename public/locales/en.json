@@ -75,6 +75,8 @@
   "add_unit_description" : "Add Unit Description",
   "update_unit" :"Update Unit",
   "update_unit_description" : "Update Unit Description",
-  "search_unit": "Search Unit"
+  "search_unit": "Search Unit",
+  "request_type": "Request Type",
+  "status": "Status"
 
 }
