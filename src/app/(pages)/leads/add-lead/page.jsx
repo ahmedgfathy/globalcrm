@@ -13,10 +13,42 @@ function Page({ params }) {
   const [isOpen, setIsOpen] = useState(!isMobile);
   const tabsRef = useRef(null);
   const { locale, t } = useTranslation();
+  const [lead, setLead] = useState({
+    leadDetails: {
+      name: "",
+      leadNumber: "", 
+      number: "", 
+      lastFollowUp: "",
+      description: "",
+      clientFollowUp:"",
+      class: ""
+    },
+    sheetsCalls: {
+      assignedTo: "",
+      customerSource: "",
+      type: "",
+      leadStatus: "",
+      modifiedTime: "",
+      createdTime: ""
+    }
+  })
   const listTabs = [
     { id: 1, title: "Lead Details", value: "details" },
     { id: 2, title: "Updates", value: "updates" },
   ];
+  const handleChange = (section, field, value) => {
+    setLead((prevLead) => ({
+      ...prevLead,
+      [section]: {
+        ...prevLead[section],
+        [field]: value,
+      },
+    }));
+  };
+  
+  const handleSubmit= ()=>{
+    console.log(lead)
+  } 
 
   useEffect(() => {
     setIsOpen(!isMobile);
@@ -71,6 +103,8 @@ function Page({ params }) {
               dir={locale == "ar" ? "rtl" : "ltr"}
             >
               <Details
+                handleChange={handleChange}
+                handleSubmit={handleSubmit}
                 page="add"
                 title={t("Lead_Details")}
                 description={t("Lead_descriptions")}

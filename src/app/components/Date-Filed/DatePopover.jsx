@@ -14,7 +14,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 
-export function DatePopover({ defaultValue, isDisabled }) {
+export function DatePopover({ defaultValue, isDisabled, handleChange,section, id }) {
     const [date, setDate] = useState(null)
 
     useEffect(() => {
@@ -34,7 +34,7 @@ export function DatePopover({ defaultValue, isDisabled }) {
                 <Button
                     variant="outline"
                     className={cn(
-                        "dark:bg-[#141a21] border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md w-[180px] ",
+                        "dark:bg-[#141a21] border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md lg:w-[220px] max-sm:w-full ",
                         !date && "text-muted-foreground"
                     )}
                     disabled={isDisabled}
@@ -50,7 +50,7 @@ export function DatePopover({ defaultValue, isDisabled }) {
                     <Calendar
                         mode="single"
                         selected={date}
-                        onSelect={(selectedDate) => setDate(selectedDate)}
+                        onSelect={(selectedDate) => {setDate(selectedDate); handleChange(section, id, selectedDate) }}
                         initialFocus
                         disabled={isDisabled}
                     />

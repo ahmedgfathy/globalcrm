@@ -72,5 +72,7 @@
   "add_unit_description": "وصف الوحدة",
   "update_unit": " تعديل بيانات الوحدة",
   "update_unit_description": "تعديل وصف الوحدة",
-  "search_unit": "بحث عن وحده"
+  "search_unit": "بحث عن وحده",
+  "request_type": "نوع الطلب",
+  "status": "الحاله"
 }

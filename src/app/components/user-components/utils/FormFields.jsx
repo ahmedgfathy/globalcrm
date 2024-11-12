@@ -5,11 +5,8 @@ import DateInput from './DateInput';
 import SelectInput from './SelectInput';
 import { useTranslation } from '@/app/context/TranslationContext';
 
-function FormFields({ fields, isDisabled }) {
+function FormFields({ fields, isDisabled, handleChange, section}) {
   const { t, locale } = useTranslation();
-  useEffect(()=>{
-    console.log(isDisabled)
-  }, [isDisabled])
   return (
     <div className="space-y-4 lg:col-span-3" dir={locale === 'ar' ? 'rtl' : 'ltr'}>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -20,22 +17,19 @@ function FormFields({ fields, isDisabled }) {
             id: field.idField,
             defaultValue: field.defaultValue,
             isDisabled,
+            handleChange,
+            section
           };
 
           switch (field.type) {
             case 'input':
-              return <InputField {...commonProps} />;
+              return <InputField key={field.id} {...commonProps} />;
             case 'textarea':
-              return <TextAreaField {...commonProps} />;
+              return <TextAreaField key={field.id} {...commonProps} />;
             case 'date':
-              return <DateInput {...commonProps} />;
+              return <DateInput key={field.id} {...commonProps} />;
             case 'select':
-              return (
-                <SelectInput
-                  {...commonProps}
-                  data={field.options}
-                />
-              );
+              return <SelectInput key={field.id} {...commonProps} data={field.options} />;
             default:
               return null;
           }

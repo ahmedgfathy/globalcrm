@@ -8,10 +8,11 @@ const ClientTable = ({ clients, t }) => {
       <TableHeader>
         <TableRow className="bg-gray-100 dark:bg-gray-700">
           <TableHead className="p-3 text-start">{t("name_client")}</TableHead>
-          <TableHead className="p-3 text-start">{t("email")}</TableHead>
           <TableHead className="p-3 text-start hidden md:table-cell">{t("mobile_phone")}</TableHead>
+          <TableHead className="p-3 text-start">{t("request_type")}</TableHead>
+          <TableHead className="p-3 hidden md:table-cell text-start">{t("status")}</TableHead>
           <TableHead className="p-3 text-start">{t("source")}</TableHead>
-          <TableHead className="p-3 hidden md:table-cell text-start">{t("DESC")}</TableHead>
+          <TableHead className="p-3 text-start">{t("class")}</TableHead>
           <TableHead className="p-3 text-start">{t("action")}</TableHead>
         </TableRow>
       </TableHeader>

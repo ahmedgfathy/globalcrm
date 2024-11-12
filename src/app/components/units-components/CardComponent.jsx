@@ -129,7 +129,7 @@ export function CardUnitComponent({ ele }) {
       </CardHeader>
 
       <CardContent className="p-4 space-y-2 bg-white dark:bg-dark rounded-b-xl ">
-        <p className="font-bold text-sm capitalize text-base">{`${ele.name}`}</p>
+        <p className="font-bold capitalize text-base">{`${ele.name}`}</p>
         <p className="text-xs capitalize  text-gray-600 mb-5">{ele.address}</p>
         <div className="flex gap-3 align-center">
           <div className="bg-gray-100 relative p-1 h-[25px] flex flex-col justify-between">
@@ -176,9 +176,9 @@ export function CardUnitComponent({ ele }) {
               />
             </svg>
           </div>
-          <div>  |</div>
+          <div>  | </div>
 
-          <div className="area-details flex items-center  gap-3 ">
+          <div className="area-details flex items-center gap-3 ">
             <svg
               width={18}
               height={17}
