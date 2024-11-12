@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button'
 import React from 'react'
 
-function CustomButton({title, icon, fun}) {
+function CustomButton({title, icon, fun, className = "GreenButton"}) {
   return (
-    <Button className="GreenButton dark p-1 gap-1" onClick={fun}>
+    <Button className={`${className} dark p-1 gap-1`} onClick={fun}>
     {icon()}
     {title}
   </Button>

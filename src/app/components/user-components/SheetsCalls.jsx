@@ -1,14 +1,12 @@
 "use client";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import React from "react";
 import SelectInput from "./utils/SelectInput";
 import DateInput from "./utils/DateInput";
 
 function SheetCalls({ isDisabled,handleChange }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
 
   const AssignedData = [
     { value: "A", label: "Users" },
@@ -51,10 +49,10 @@ function SheetCalls({ isDisabled,handleChange }) {
   };
 
   return (
-    <div className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark border-0 text-cardbgDark dark:text-Lightbg pb-4 pt-2 rounded-none rounded-b-lg">
-      <CardContent className="grid gap-4 md:grid-cols-4 max-sm:grid-cols-1 pt-3">
-        <div className="md:col-start-2 grid w-full lg:grid-cols-2 max-sm:grid-cols-1 md:col-span-3 gap-y-3">
-        <div className="space-y-1 w-full">
+    <div className="w-full h-max bg-Lightbg dark:bg-cardbgDark border-0 text-cardbgDark dark:text-Lightbg pb-4 pt-2 rounded-none rounded-b-lg">
+      <CardContent className="grid gap-4 md:grid-cols-4 max-sm:grid-cols-1 pt-3" >
+        <div className="md:col-start-2 grid w-full lg:grid-cols-2 max-sm:grid-cols-1 md:col-span-3 gap-y-3" dir={locale=="ar"? "rtl": "ltr"}>
+        <div className="space-y-1 w-full" >
     <SelectInput
       label={t("Assigned To")}
       id="assignedTo"

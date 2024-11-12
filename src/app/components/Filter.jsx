@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/select";
 function Filter({ data }) {
   return (
-    <div className="filter w-full">
       <div className="grid lg:grid-cols-4 max-sm:grid-cols-2 gap-3">
         {data?.map((ele, i) => {
           return (
@@ -35,7 +34,6 @@ function Filter({ data }) {
           );
         })}
       </div>
-    </div>
   );
 }
 

@@ -6,9 +6,9 @@ import { IoMdAddCircle } from 'react-icons/io';
 
 function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit }) {
   return (
-    <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-6" dir="rtl">
+    <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-2 md:px-6" dir="rtl">
       <div>
-        <p className="text-2xl font-bold">{title}</p>
+        <p className="text-2xl md:text-2xl font-semibold md:font-bold ">{title}</p>
         <CardDescription>{description}</CardDescription>
       </div>
       <div className="w-max flex justify-between items-center gap-2 buttons">

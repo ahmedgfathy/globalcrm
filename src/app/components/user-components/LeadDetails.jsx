@@ -62,7 +62,7 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
   ];
   
   return (
-    <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-8 max-md:pt-4 rounded-none rounded-t-lg ">
+    <Card className="w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-none py-8 max-md:pt-4 rounded-none rounded-t-lg border-none">
       <CardHeader
       handleSubmit={props.handleSubmit}
         title={props.title}

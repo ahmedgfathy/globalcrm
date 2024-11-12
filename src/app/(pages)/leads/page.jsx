@@ -8,6 +8,7 @@ import Filter from "@/app/components/Filter";
 import { IoMdAddCircle } from "react-icons/io";
 import CustomButton from "@/app/components/CustomButton";
 import { useRouter } from "next/navigation";
+import { FaFileExport, FaFileImport } from "react-icons/fa";
 
 function Page() {
   const router= useRouter()
@@ -28,7 +29,13 @@ function Page() {
           </div>            
         </div>
         <div className="filter bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
+        <div className="filter md:w-3/4">
           <Filter data={filterData} />
+          </div>
+          <div className="actions w-full md:w-1/4 flex justify-between items-center">
+            <CustomButton title={t("import")} fun={() => alert("Importing...")} icon={()=><FaFileImport />} className="max-sm:w-1/3 GreenButton" />
+            <CustomButton title={t("export")} fun={() => alert("Exporting...")} icon={()=><FaFileExport  />} className="max-sm:w-1/3 GreenButton" />
+          </div>
         </div>
         <div className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden" dir="rtl">
           <ClientTable clients={ClientDetails} t={t} />
