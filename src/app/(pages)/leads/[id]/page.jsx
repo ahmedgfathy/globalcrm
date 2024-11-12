@@ -64,7 +64,7 @@ function Page({ params }) {
             <TabButton data={listTabs} />
           </TabsList>
 
-          <div className="flex-1 pl-5">
+          <div className="flex-1 px-5">
             <TabsContent
               value="details"
               className="w-full"
