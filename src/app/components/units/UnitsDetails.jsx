@@ -7,7 +7,7 @@ import FormFields from "../user-components/utils/FormFields";
 
 export default function UnitsDetails({ page, setIsDisabled, isDisabled, ...props }) {
     const { t } = useTranslation();
-    
+
     const fieldsData = [
         { id: 1, type: 'input', label: 'Created Time', idField: 'createdTime', defaultValue: page !== "add" ? "26-10-2024 5:29 PM" : "" },
         { id: 2, type: 'input', label: 'Modified Time', idField: 'modifiedTime', defaultValue: page !== "add" ? "10-11-2024 9:01 PM" : "" },
@@ -29,12 +29,12 @@ export default function UnitsDetails({ page, setIsDisabled, isDisabled, ...props
     ];
 
     return (
-        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-auto">
+        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden">
             <div className="header w-full flex justify-between items-center pb-4">
                 <p className="text-xl font-bold">Unit Details</p>
             </div>
             <CardContent className="w-full overflow-x-auto" dir="rtl">
-                <FormFields fields={fieldsData} isDisabled={isDisabled} />
+                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} />
             </CardContent>
         </Card>
     );

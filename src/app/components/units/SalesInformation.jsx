@@ -24,7 +24,7 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             id: 2,
             type: 'select',
             label: 'Sales',
-            idField: 'handeler',
+            idField: 'sales',
             defaultValue: page !== "add" ? 'alaa zaki' : "",
             options: [
                 { value: 'basma', label: 'بسماء' },
@@ -60,12 +60,12 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
     ];
 
     return (
-        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-auto">
+        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden">
             <div className="header w-full flex justify-between items-center pb-4">
                 <p className="text-xl font-bold">Sales Information</p>
             </div>
             <CardContent className="w-full min-w-max overflow-x-auto" dir="rtl">
-                <FormFields fields={fieldsData} isDisabled={isDisabled} />
+                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} />
             </CardContent>
         </Card>
     );

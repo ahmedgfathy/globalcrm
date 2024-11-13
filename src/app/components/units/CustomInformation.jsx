@@ -57,12 +57,12 @@ export default function CustomInformation({ page, setIsDisabled, isDisabled, ...
     ];
 
     return (
-        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-auto">
+        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden">
             <div className="header w-full flex justify-between items-center pb-4">
                 <p className="text-xl font-bold">Custom Information</p>
             </div>
             <CardContent className="w-full min-w-max overflow-x-auto" dir="rtl">
-                <FormFields fields={fieldsData} isDisabled={isDisabled} />
+                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} />
             </CardContent>
         </Card>
     );
