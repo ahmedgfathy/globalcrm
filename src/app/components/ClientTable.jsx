@@ -2,7 +2,7 @@ import React from "react";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import TableRowComponent from "./TableRowComponent";
 
-const ClientTable = ({ clients, t }) => {
+const ClientTable = ({ clients, t, afterDel }) => {
   return (
     <Table className="min-w-full text-start" >
       <TableHeader>
@@ -18,7 +18,7 @@ const ClientTable = ({ clients, t }) => {
       </TableHeader>
       <TableBody>
         {clients.map((client) => (
-          <TableRowComponent key={client.id} client={client} t={t} />
+          <TableRowComponent key={client.$id} client={client} t={t} afterDel={afterDel} />
         ))}
       </TableBody>
     </Table>

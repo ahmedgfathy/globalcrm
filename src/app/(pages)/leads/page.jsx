@@ -15,17 +15,16 @@ function Page() {
   const { t } = useTranslation();
   const [leads, setLeads] = useState([]);
 
+  const fetchLeads = async () => {
+    try {
+      const leadsData = await getAllLeads();
+      setLeads(leadsData);
+      console.log(leadsData)
+    } catch (error) {
+      console.error('Error fetching leads:', error);
+    }
+  };
   useEffect(() => {
-    const fetchLeads = async () => {
-      try {
-        const leadsData = await getAllLeads();
-        setLeads(leadsData);
-        console.log(leadsData)
-      } catch (error) {
-        console.error('Error fetching leads:', error);
-      }
-    };
-
     fetchLeads();
   }, []);
 
@@ -53,7 +52,7 @@ function Page() {
         </div>
       </div>
       <div className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden" dir="rtl">
-        <ClientTable clients={ClientDetails} t={t} />
+        <ClientTable clients={leads} t={t} afterDel={fetchLeads} />
       </div>
       <div className="flex justify-center mt-4">
         <Pagination className="dark:bg-gray-800 px-3 py-2 rounded-md" defaultCurrent={1} total={500} />
