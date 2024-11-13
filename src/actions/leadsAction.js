@@ -1,6 +1,7 @@
 import { databases, ID } from '@/services/appwrite/client'
 
 export const addLead = async (lead) => {
+  console.log(lead)
   try {
     const response = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
@@ -17,13 +18,19 @@ export const addLead = async (lead) => {
 
 // Mock data for testing
 const mockLead = {
-  name: 'John Doe',
-  leadNumber: 'LN123456',
-  number: 1234567890,
-  lastFollowUp: new Date().toISOString(),
-  description: 'This is a test lead',
-  clientFollowUp: 'Pending',
-  class: 'A',
+    name: "Example Name",
+    leadNumber: "12345",
+    number: 1,
+    lastFollowUp: "2024-11-12T10:30:00Z",
+    description: "Lead description",
+    clientFollowUp: "Follow-up notes",
+    class: "Class type",
+    assignedTo: "Assigned person",
+    customerSource: "Source of customer",
+    type: "Lead type",
+    leadStatus: "Status of lead",
+    modifiedTime: "2024-11-12T10:30:00Z",
+    createdTime: "2024-11-12T09:00:00Z"
 }
 
 // Example usage

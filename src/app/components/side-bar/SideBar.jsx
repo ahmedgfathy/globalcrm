@@ -65,17 +65,7 @@ function SideBar() {
           </button>
         )
       ) : (
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          aria-controls="sidebar-multi-level-sidebar"
-          type="button"
-          className={`fixed duration-200 z-40 top-5 ${
-            isOpen ? "right-[16rem]" : "right-[10rem]"
-          } translate-x-1/2 flex justify-center items-center bg-white dark:bg-gray-600 w-10 h-10 rounded-full text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600`}
-        >
-          <span className="sr-only">Open sidebar</span>
-          <IoArrowBackCircleOutline className="text-2xl" />
-        </button>
+        ""
       )}
 
       {(isOpen || !isMobile) && (
