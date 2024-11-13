@@ -3,11 +3,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
-import CardHeader from "./utils/CardHeader";
-
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 import ImageSection from "../user-components/utils/ImageSection";
+import CardHeader from "./utils/CardHeader";
+
 
 
 export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...props }) {
@@ -15,9 +15,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
     const [image, setImage] = useState("/");
 
     useEffect(() => {
-        const defaultImage = page === "add"
-            ? "/assets/images/unit-image.jpeg"
-            : "/assets/images/unit-image.jpeg";
+        const defaultImage = "/assets/images/unit-image.jpeg"
         setImage(defaultImage);
         setIsDisabled(page === "add" ? false : isDisabled);
     }, [page, setIsDisabled, isDisabled]);
@@ -165,7 +163,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             id: 11,
             type: 'select',
             label: 'Inside / Outside the compound',
-            idField: 'Inside/Outside',
+            idField: 'Inside_Outside',
             defaultValue: page !== "add" ? 'داخل كمبوند' : "",
             options: [
                 { value: 'داخل كمبوند', label: 'داخل كمبوند' },
@@ -180,7 +178,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             id: 15,
             type: 'select',
             label: 'النشاط',
-            idField: 'Activity',
+            idField: 'activity',
             defaultValue: page !== "add" ? 'سكني' : "",
             options: [
                 { value: 'سكني', label: 'سكني' },
@@ -196,14 +194,16 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
     return (
         <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-4 overflow-x-auto">
             <CardHeader
+                handleSubmit={props.handleSubmit}
                 title={props.title}
                 description={props.description}
                 page={page}
                 setIsDisabled={setIsDisabled}
                 t={t}
             />
-            <CardContent className="w-full min-w-[500px] max-sm:min-w-[300px] overflow-x-auto lg:grid gap-3 gap-y-8 lg:grid-cols-4 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
-                <FormFields fields={fieldsData} isDisabled={isDisabled} className="w-full" />
+
+            <CardContent className="w-full min-w-[500px] max-sm:min-w-[300px] overflow-x-hidden lg:grid gap-3 gap-y-8 lg:grid-cols-4 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
+                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} />
                 <Card className="h-max bg-transparent pt-5">
                     <CardContent className="p-0 space-y-2">
                         <div className="relative w-full h-48 lg:h-40">
