@@ -32,83 +32,83 @@ export function CardUnitComponent({ ele }) {
   let router = useRouter()
 
   return (
-    <Card className="duration-300 cursor-pointer  rounded-xl    border shadow-none hover:shadow" style={{ borderColor: '#ccc' }} onClick={() => {
+    <Card className="duration-300 cursor-pointer rounded-xl border border-[#ccc] dark:border-dark shadow-none hover:shadow" onClick={() => {
       router.push(`units/${ele.id}`);
     }}>
       <CardHeader className="overflow-hidden p-0 rounded-t-xl relative ">
-        <div className="layer  absolute top-0 left-0 flex flex-col items-end justify-between w-full h-[230px]" style={{zIndex:"1"}}>
-        <div className="icons flex gap-3 p-3 items-center">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="icon cursor-pointer bg-black-200 p-2 rounded-full text-white flex items-center justify-center"
-    viewBox="0 0 22 18"
-    fill="none"
-  >
-    <path
-      d="M11.1638 4.00635C11.908 4.67805 12.6619 5.34115 13.4061 6.01286C15.2716 7.68351 17.137 9.34556 18.9831 11.0248C19.1474 11.1798 19.2731 11.4382 19.2731 11.6535C19.2924 13.4016 19.2924 15.1498 19.2827 16.9066C19.2827 17.7161 18.9638 18.0002 18.0649 18.0002C13.4448 18.0002 8.82472 18.0002 4.20464 18.0002C3.29609 18.0002 2.98679 17.7247 2.98679 16.9152C2.98679 15.1498 2.97713 13.3844 2.99646 11.619C2.99646 11.4554 3.06411 11.2401 3.18977 11.1282C5.78977 8.77719 8.40911 6.44344 11.0188 4.10969C11.0574 4.06663 11.0961 4.04941 11.1638 4.00635ZM17.9489 16.8291C17.9682 16.7602 17.9876 16.7257 17.9876 16.6827C17.9876 15.1067 17.9972 13.5308 17.9876 11.9549C17.9876 11.8085 17.8619 11.6363 17.7363 11.5243C15.6485 9.63835 13.5415 7.76102 11.4441 5.88368C11.3667 5.81479 11.2604 5.76312 11.1444 5.677C11.1444 9.43167 11.1444 13.1174 11.1444 16.8377C13.4255 16.8291 15.6679 16.8291 17.9489 16.8291Z"
-      fill="#fff"
-    />
-    <path
-      d="M11.0815 2.02401C9.47702 3.43632 7.94988 4.77112 6.42273 6.11453C5.15656 7.23405 3.90005 8.37078 2.64354 9.49891C2.31492 9.7917 1.91863 9.89504 1.50302 9.7142C1.1164 9.55057 0.913427 9.24917 1.00042 8.87026C1.04874 8.67219 1.17439 8.46551 1.33871 8.31911C4.306 5.64951 7.28296 2.9799 10.2696 0.31891C10.7625 -0.120283 11.2651 -0.10306 11.7774 0.353356C14.7254 2.98851 17.6637 5.62367 20.602 8.25883C21.1142 8.71525 21.1529 9.20611 20.7276 9.57641C20.312 9.9381 19.7901 9.89504 19.2875 9.43862C16.6584 7.08765 14.0391 4.73667 11.4198 2.3857C11.2845 2.27375 11.1878 2.14457 11.0815 2.02401Z"
-      fill="#fff"
-    />
-  </svg>
+        <div className="layer  absolute top-0 left-0 flex flex-col items-end justify-between w-full h-[230px]" style={{ zIndex: "1" }}>
+          <div className="icons flex gap-3 p-3 items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="icon cursor-pointer bg-black-200 p-2 rounded-full text-white flex items-center justify-center"
+              viewBox="0 0 22 18"
+              fill="none"
+            >
+              <path
+                d="M11.1638 4.00635C11.908 4.67805 12.6619 5.34115 13.4061 6.01286C15.2716 7.68351 17.137 9.34556 18.9831 11.0248C19.1474 11.1798 19.2731 11.4382 19.2731 11.6535C19.2924 13.4016 19.2924 15.1498 19.2827 16.9066C19.2827 17.7161 18.9638 18.0002 18.0649 18.0002C13.4448 18.0002 8.82472 18.0002 4.20464 18.0002C3.29609 18.0002 2.98679 17.7247 2.98679 16.9152C2.98679 15.1498 2.97713 13.3844 2.99646 11.619C2.99646 11.4554 3.06411 11.2401 3.18977 11.1282C5.78977 8.77719 8.40911 6.44344 11.0188 4.10969C11.0574 4.06663 11.0961 4.04941 11.1638 4.00635ZM17.9489 16.8291C17.9682 16.7602 17.9876 16.7257 17.9876 16.6827C17.9876 15.1067 17.9972 13.5308 17.9876 11.9549C17.9876 11.8085 17.8619 11.6363 17.7363 11.5243C15.6485 9.63835 13.5415 7.76102 11.4441 5.88368C11.3667 5.81479 11.2604 5.76312 11.1444 5.677C11.1444 9.43167 11.1444 13.1174 11.1444 16.8377C13.4255 16.8291 15.6679 16.8291 17.9489 16.8291Z"
+                fill="#fff"
+              />
+              <path
+                d="M11.0815 2.02401C9.47702 3.43632 7.94988 4.77112 6.42273 6.11453C5.15656 7.23405 3.90005 8.37078 2.64354 9.49891C2.31492 9.7917 1.91863 9.89504 1.50302 9.7142C1.1164 9.55057 0.913427 9.24917 1.00042 8.87026C1.04874 8.67219 1.17439 8.46551 1.33871 8.31911C4.306 5.64951 7.28296 2.9799 10.2696 0.31891C10.7625 -0.120283 11.2651 -0.10306 11.7774 0.353356C14.7254 2.98851 17.6637 5.62367 20.602 8.25883C21.1142 8.71525 21.1529 9.20611 20.7276 9.57641C20.312 9.9381 19.7901 9.89504 19.2875 9.43862C16.6584 7.08765 14.0391 4.73667 11.4198 2.3857C11.2845 2.27375 11.1878 2.14457 11.0815 2.02401Z"
+                fill="#fff"
+              />
+            </svg>
 
-  <svg
-    className="icon cursor-pointer bg-black-200 p-2 rounded-full text-white flex items-center justify-center"
-    viewBox="0 0 16 16"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M14.75 5.75001L14.75 1.25001M14.75 1.25001H10.25M14.75 1.25001L8 8M6.5 1.25H4.85C3.58988 1.25 2.95982 1.25 2.47852 1.49524C2.05516 1.71095 1.71095 2.05516 1.49524 2.47852C1.25 2.95982 1.25 3.58988 1.25 4.85V11.15C1.25 12.4101 1.25 13.0402 1.49524 13.5215C1.71095 13.9448 2.05516 14.289 2.47852 14.5048C2.95982 14.75 3.58988 14.75 4.85 14.75H11.15C12.4101 14.75 13.0402 14.75 13.5215 14.5048C13.9448 14.289 14.289 13.9448 14.5048 13.5215C14.75 13.0402 14.75 12.4101 14.75 11.15V9.5"
-      stroke="white"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
+            <svg
+              className="icon cursor-pointer bg-black-200 p-2 rounded-full text-white flex items-center justify-center"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14.75 5.75001L14.75 1.25001M14.75 1.25001H10.25M14.75 1.25001L8 8M6.5 1.25H4.85C3.58988 1.25 2.95982 1.25 2.47852 1.49524C2.05516 1.71095 1.71095 2.05516 1.49524 2.47852C1.25 2.95982 1.25 3.58988 1.25 4.85V11.15C1.25 12.4101 1.25 13.0402 1.49524 13.5215C1.71095 13.9448 2.05516 14.289 2.47852 14.5048C2.95982 14.75 3.58988 14.75 4.85 14.75H11.15C12.4101 14.75 13.0402 14.75 13.5215 14.5048C13.9448 14.289 14.289 13.9448 14.5048 13.5215C14.75 13.0402 14.75 12.4101 14.75 11.15V9.5"
+                stroke="white"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
 
-  {favourite ? (
-    <svg
-      className="icon cursor-pointer bg-black-200 p-2 rounded-full text-white items-center justify-center"
-      viewBox="0 0 24 24"
-      fill="red"
-      stroke="red"
-      xmlns="http://www.w3.org/2000/svg"
-      onClick={() => setfavourite(!favourite)}
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
-        stroke="red"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ) : (
-    <svg
-      className="icon cursor-pointer bg-black-200 p-2 rounded-full text-white items-center justify-center"
-      viewBox="0 0 24 24"
-      fill="transparent"
-      stroke="#fff"
-      xmlns="http://www.w3.org/2000/svg"
-      onClick={() => setfavourite(!favourite)}
-    >
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
-        stroke="#fff"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )}
-</div>
+            {favourite ? (
+              <svg
+                className="icon cursor-pointer bg-black-200 p-2 rounded-full text-white items-center justify-center"
+                viewBox="0 0 24 24"
+                fill="red"
+                stroke="red"
+                xmlns="http://www.w3.org/2000/svg"
+                onClick={() => setfavourite(!favourite)}
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
+                  stroke="red"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="icon cursor-pointer bg-black-200 p-2 rounded-full text-white items-center justify-center"
+                viewBox="0 0 24 24"
+                fill="transparent"
+                stroke="#fff"
+                xmlns="http://www.w3.org/2000/svg"
+                onClick={() => setfavourite(!favourite)}
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z"
+                  stroke="#fff"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
+          </div>
 
 
           <div className="p-2">
@@ -129,7 +129,7 @@ export function CardUnitComponent({ ele }) {
       </CardHeader>
 
       <CardContent className="p-4 space-y-2 bg-white dark:bg-dark rounded-b-xl ">
-        <p className="font-bold text-sm capitalize text-base">{`${ele.name}`}</p>
+        <p className="font-bold capitalize text-base">{`${ele.name}`}</p>
         <p className="text-xs capitalize  text-gray-600 mb-5">{ele.address}</p>
         <div className="flex gap-3 align-center">
           <div className="bg-gray-100 relative p-1 h-[25px] flex flex-col justify-between">
@@ -176,9 +176,9 @@ export function CardUnitComponent({ ele }) {
               />
             </svg>
           </div>
-          <div>  |</div>
+          <div>  | </div>
 
-          <div className="area-details flex items-center  gap-3 ">
+          <div className="area-details flex items-center gap-3 ">
             <svg
               width={18}
               height={17}
@@ -227,7 +227,7 @@ export function CardUnitComponent({ ele }) {
           <div className="flex items-end gap-2 ">
             {iconCard.map((link, index) => (
               <Link href={link.href} key={index} aria-label="social link">
-                <link.icon className="text-2xl"  />
+                <link.icon className="text-2xl" />
               </Link>
             ))}
           </div>

@@ -1,14 +1,12 @@
 "use client";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import React from "react";
 import SelectInput from "./utils/SelectInput";
 import DateInput from "./utils/DateInput";
 
-function SheetCalls({ isDisabled }) {
-  const { t } = useTranslation();
+function SheetCalls({ isDisabled, handleChange }) {
+  const { t, locale } = useTranslation();
 
   const AssignedData = [
     { value: "A", label: "Users" },
@@ -51,66 +49,69 @@ function SheetCalls({ isDisabled }) {
   };
 
   return (
-    <div className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark border-0 text-cardbgDark dark:text-Lightbg pb-4 pt-2">
-      <div className="header w-full flex justify-between max-[450px]:justify-center items-center max-[450px]:flex-wrap gap-y-3">
-        <div>
-          <p className="text-2xl font-bold">sheets calls</p>
-        </div>
-      </div>
-      <CardContent className="grid gap-2 md:grid-cols-2 md:gap-4 pt-3">
-        <div className="space-y-1 w-full">
+    <div className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden">
+      <CardContent className="w-full min-w-max overflow-x-auto" >
+        <div className="grid gap-1 grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1" dir={locale == "ar" ? "rtl" : "ltr"}>
           <SelectInput
             label={t("Assigned To")}
-            id="Assigned To"
+            id="assignedTo"
             defaultValue={defaultValues.assignedTo}
             data={AssignedData}
             isDisabled={isDisabled}
+            section="sheetsCalls"
+            handleChange={handleChange}
           />
-        </div>
-        <div className="space-y-1 w-full">
+
           <SelectInput
             label={t("Customer Source")}
-            id="Customer Source"
+            id="customerSource"
             defaultValue={defaultValues.customerSource}
             data={CustomerSourceData}
             isDisabled={isDisabled}
+            section="sheetsCalls"
+            handleChange={handleChange}
           />
-        </div>
-        <div className="space-y-1 w-full">
+
           <SelectInput
             label={t("Type")}
-            id="Type"
+            id="type"
             defaultValue={defaultValues.type}
             data={Type}
             isDisabled={isDisabled}
+            section="sheetsCalls"
+            handleChange={handleChange}
           />
-        </div>
-        <div className="space-y-1 w-full">
+
           <SelectInput
             label={t("Lead Status")}
-            id="LeadStatus"
+            id="leadStatus"
             defaultValue={defaultValues.leadStatus}
             data={LeadStatus}
             isDisabled={isDisabled}
+            section="sheetsCalls"
+            handleChange={handleChange}
           />
-        </div>
-        <div className="space-y-1 w-full">
+
           <DateInput
             label={t("ModifiedTime")}
-            id="ModifiedTime"
+            id="modifiedTime"
             defaultValue="2022-08-30"
             isDisabled={isDisabled}
+            section="sheetsCalls"
+            handleChange={handleChange}
           />
-        </div>
-        <div className="space-y-1 w-full">
+
           <DateInput
             label={t("CreatedTime")}
-            id="CreatedTime"
+            id="createdTime"
             defaultValue="2022-08-30"
             isDisabled={isDisabled}
+            section="sheetsCalls"
+            handleChange={handleChange}
           />
         </div>
       </CardContent>
+
     </div>
   );
 }
