@@ -62,7 +62,7 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
   ];
   
   return (
-    <Card className="w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-none py-8 max-md:pt-4 rounded-none rounded-t-lg border-none">
+    <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-4 overflow-x-hidden">
       <CardHeader
       handleSubmit={props.handleSubmit}
         title={props.title}
@@ -72,8 +72,8 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
         t={t}
       />
 
-      <CardContent className="lg:grid gap-6 lg:grid-cols-4 md:gap-8 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
-        <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} />
+      <CardContent className="lg:grid gap-6 lg:grid-cols-4 md:gap-8 max-sm:flex max-sm:flex-col-reverse pt-4 gap-y-4" dir="rtl">
+        <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} className="mb-4"/>
         <ImageSection
           image={image}
           handleImageChange={handleImageChange}
