@@ -12,8 +12,8 @@ function Page({ params }) {
   const [lead, setLead] = useState({
     leadDetails: {
       name: "",
-      leadNumber: "", 
-      number: "", 
+      leadNumber: "",
+      number: "",
       lastFollowUp: "",
       description: "",
       clientFollowUp: "",
@@ -28,6 +28,7 @@ function Page({ params }) {
       createdTime: ""
     }
   });
+  console.log(setLead);
 
   const handleChange = (section, field, value) => {
     setLead((prevLead) => ({
@@ -67,9 +68,9 @@ function Page({ params }) {
   };
 
   return (
-    <Box className="add-unit min-h-screen flex justify-center items-center px-0 md:px-2">
-      <Grid container direction="row" wrap="nowrap" className="gap-6">
-        <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md">
+    <Box className="add-unit min-h-screen flex justify-center items-center">
+      <Grid container direction="row" wrap="nowrap" className="gap-6 max-sm:gap-1 py-6 px-4">
+      <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md">
           <Tabs
             orientation="vertical"
             value={selectedTab}
@@ -80,20 +81,20 @@ function Page({ params }) {
                 backgroundColor: "#4CAF50",
               },
             }}
-            style={{  height: '100%', paddingTop: 16 }}
+            style={{ height: '100%', paddingTop: 16 }}
           >
             <Tab
               label="Lead Details"
               sx={{
                 "&.Mui-selected": {
-                    color: "#5be49b", 
+                  color: "#5be49b",
                 },
-            }}
+              }}
             />
           </Tabs>
         </Grid>
-        
-        <Grid item xs={9} className="bg-Lightbg dark:bg-cardbgDark rounded-md">
+
+        <Grid item xs={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
           {selectedTab === 0 && (
             <Details
               handleChange={handleChange}

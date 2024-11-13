@@ -4,7 +4,7 @@ import React from 'react'
 import DeleteButton from '../../delete-button/DeleteButton';
 import { IoMdAddCircle } from 'react-icons/io';
 
-function CardHeader({ title, description, page, setIsDisabled, t }) {
+function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit }) {
   return (
     <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-6" dir="rtl">
       <div>
@@ -13,9 +13,9 @@ function CardHeader({ title, description, page, setIsDisabled, t }) {
       </div>
       <div className="w-max flex justify-between items-center gap-2 buttons">
         {page === "add" ? (
-          <Button className="GreenButton dark p-1  flex justify-between items-center gap-1">
+          <Button className="GreenButton dark p-1  flex justify-between items-center gap-1" onClick={handleSubmit}>
             <IoMdAddCircle />
-            {t("add_unit")}
+            {t("save")}
           </Button>
         ) : (
           <>
