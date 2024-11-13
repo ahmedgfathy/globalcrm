@@ -16,6 +16,37 @@ export const addLead = async (lead) => {
   }
 }
 
+export const getAllLeads = async () => {
+  try {
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_LEADS 
+    );
+
+    // Exclude collectionId and databaseId from each document
+    const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+
+    return leads;
+  } catch (error) {
+    console.error('Error fetching leads:', error);
+    throw error;
+  }
+}
+
+export const deleteLead = async (leadId) => {
+  try {
+    const response = await databases.deleteDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
+      process.env.NEXT_PUBLIC_LEADS, // Collection ID
+      leadId // Document ID
+    );
+    return response;
+  } catch (error) {
+    console.error('Error deleting lead:', error);
+    throw error;
+  }
+};
+
 // Mock data for testing
 const mockLead = {
     name: "Example Name",
