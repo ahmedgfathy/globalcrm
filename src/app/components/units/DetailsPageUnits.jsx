@@ -2,44 +2,45 @@ import React from "react";
 import "./Style.css"
 
 import UnitsInformation from "./unitsInformation";
-import CollapsibleComponent from "../CollapsibleComponent";
 import CustomInformation from "./CustomInformation";
 import SalesInformation from "./SalesInformation";
 import UnitsDetails from "./UnitsDetails";
 import PricingInformation from "./PricingInformation";
 import UnitImageInformation from "./UnitImageInformation";
 
-const DetailsPageUnits = ({ page }) => {
+import CollapsibleComponent from "../CollapsibleComponent";
+
+const DetailsPageUnits = ({ page, handleChange, handleSubmit, title }) => {
     const items = [
         {
             key: "1",
             label: "Unit Informations",
-            children: <UnitsInformation page={page} />,
+            children: <UnitsInformation page={page} handleSubmit={handleSubmit} handleChange={handleChange} section="unitsInformation" title={title} />,
         },
         {
             key: "2",
             label: "Custom Information",
-            children: <CustomInformation page={page} />,
+            children: <CustomInformation page={page} handleChange={handleChange} section="customInformation" />,
         },
         {
             key: "3",
             label: "Sales Information",
-            children: <SalesInformation page={page} />,
+            children: <SalesInformation page={page} handleChange={handleChange} section="salesInformation" />,
         },
         {
             key: "4",
             label: "Unit Details",
-            children: <UnitsDetails page={page} />,
+            children: <UnitsDetails page={page} handleChange={handleChange} section="unitDetails" />,
         },
         {
             key: "5",
             label: "Pricing Information",
-            children: <PricingInformation page={page} />,
+            children: <PricingInformation page={page} handleChange={handleChange} section="pricingInformation" />,
         },
         {
             key: "6",
             label: "Unit Image Information",
-            children: <UnitImageInformation page={page} />,
+            children: <UnitImageInformation page={page} handleChange={handleChange} section="unitImageInformation" />,
         },
     ];
 
