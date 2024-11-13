@@ -51,7 +51,7 @@ function SheetCalls({ isDisabled, handleChange }) {
   return (
     <div className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden">
       <CardContent className="w-full min-w-max overflow-x-auto" >
-        <div className="lg:grid gap-6 lg:grid-cols-2 md:gap-8" dir={locale == "ar" ? "rtl" : "ltr"}>
+        <div className="grid gap-1 grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1" dir={locale == "ar" ? "rtl" : "ltr"}>
           <SelectInput
             label={t("Assigned To")}
             id="assignedTo"

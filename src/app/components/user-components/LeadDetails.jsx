@@ -13,7 +13,7 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
   const [image, setImage] = useState("/");
 
   useEffect(() => {
-    const defaultImage = "/assets/images/default-user.jpg" 
+    const defaultImage = "/assets/images/default-user.jpg"
     setImage(defaultImage);
     setIsDisabled(page === "add" ? false : isDisabled);
   }, [page, setIsDisabled, isDisabled]);
@@ -30,11 +30,11 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
   const handleDeleteImage = () => setImage("/assets/images/default-user.jpg");
 
   const fieldsData = [
-    { id: 1, type: 'input', label: 'name_client', idField: 'name',  defaultValue: page !== "add" ? "Pedro Duarte" : ""},
+    { id: 1, type: 'input', label: 'name_client', idField: 'name', defaultValue: page !== "add" ? "Pedro Duarte" : "" },
     { id: 2, type: 'input', label: 'lead_number', idField: 'leadNumber', defaultValue: page !== "add" ? '111' : "" },
-    { id: 3, type: 'input', label: 'Number', idField: 'number', defaultValue: page !== "add" ? '01147484754': "" },
-    { id: 4, type: 'date', label: 'Last_Follow_up', idField: 'lastFollowUp', defaultValue: page !== "add" ? '2022-08-30' : "" },
+    { id: 3, type: 'input', label: 'Number', idField: 'number', defaultValue: page !== "add" ? '01147484754' : "" },
     { id: 5, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: page !== "add" ? '...' : "" },
+    { id: 4, type: 'date', label: 'Last_Follow_up', idField: 'lastFollowUp', defaultValue: page !== "add" ? '2022-08-30' : "" },
     {
       id: 6,
       type: 'select',
@@ -60,11 +60,11 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
       ],
     },
   ];
-  
+
   return (
     <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-4 overflow-x-hidden">
       <CardHeader
-      handleSubmit={props.handleSubmit}
+        handleSubmit={props.handleSubmit}
         title={props.title}
         description={props.description}
         page={page}
@@ -73,7 +73,7 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
       />
 
       <CardContent className="lg:grid gap-6 lg:grid-cols-4 md:gap-8 max-sm:flex max-sm:flex-col-reverse pt-4 gap-y-4" dir="rtl">
-        <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} className="mb-4"/>
+        <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} className="mb-4" />
         <ImageSection
           image={image}
           handleImageChange={handleImageChange}

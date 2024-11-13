@@ -12,7 +12,7 @@ function FormFields({ fields, isDisabled, handleChange, section }) {
       className="space-y-4 lg:col-span-3"
       dir={locale === "ar" ? "rtl" : "ltr"}
     >
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-1 grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
       {fields.map((field) => {
   const commonProps = {
     label: t(field.label),

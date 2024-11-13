@@ -158,7 +158,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
 
             ],
         },
-        { id: 10, type: 'input', label: 'مميزات الوحده', idField: 'propsOfUnit', defaultValue: page !== "add" ? "غاز طبيعي" : "" },
+        { id: 10, type: 'input', label: 'Props of unit', idField: 'propsOfUnit', defaultValue: page !== "add" ? "غاز طبيعي" : "" },
         {
             id: 11,
             type: 'select',
@@ -177,7 +177,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
         {
             id: 15,
             type: 'select',
-            label: 'النشاط',
+            label: 'Activity',
             idField: 'activity',
             defaultValue: page !== "add" ? 'سكني' : "",
             options: [
