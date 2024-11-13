@@ -9,12 +9,12 @@ const App = ({ page, handleChange,handleSubmit, title }) => {
     {
       key: "1",
       label: "Lead Details",
-      children: <LoadDetails page={page} handleSubmit={handleSubmit} handleChange={handleChange} section="leadDetails" title={title} />,
+      children: <LoadDetails page={page} handleSubmit={handleSubmit} handleChange={handleChange} title={title} />,
     },
     {
       key: "2",
       label: "Sheets Calls",
-      children: <SheetCalls page={page} handleChange={handleChange} section="sheetsCalls" />,
+      children: <SheetCalls page={page} handleChange={handleChange} />,
     },
   ];
 

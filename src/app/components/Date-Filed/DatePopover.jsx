@@ -50,7 +50,7 @@ export function DatePopover({ defaultValue, isDisabled, handleChange,section, id
                     <Calendar
                         mode="single"
                         selected={date}
-                        onSelect={(selectedDate) => {setDate(selectedDate); handleChange(section, id, selectedDate) }}
+                        onSelect={(selectedDate) => {setDate(selectedDate); handleChange(section || null, id, selectedDate) }}
                         initialFocus
                         disabled={isDisabled}
                     />
