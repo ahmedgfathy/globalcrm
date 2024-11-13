@@ -120,7 +120,7 @@ function Page({ params }) {
               handleChange={handleChange}
               handleSubmit={handleSubmit}
               page="add"
-              title="Add Unit"
+              title={t("unit_details")}
               description="Add Unit"
             />
           )}
