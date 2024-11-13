@@ -66,7 +66,7 @@ function Page({ params }) {
           <div className="flex-1 px-5 overflow-x-hidden">
             <TabsContent
               value="details"
-              className="w-full overflow-x-scroll"
+              className="w-full overflow-x-hidden"
               dir={locale == "ar" ? "rtl" : "ltr"}
             >
               <DetailsPageUnits

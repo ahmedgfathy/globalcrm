@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Box, Grid, Tab, Tabs } from "@mui/material";
 import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
 
-  function Page({ params }) {
+function Page({ params }) {
   const { locale, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -56,9 +56,7 @@ import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
       linksPDFDetails: "",
     }
   });
-  console.log(unit , '1');
 
-  console.log(setUnit)
   const handleChange = (section, field, value) => {
     setUnit((prevLead) => ({
       ...prevLead,
@@ -72,17 +70,15 @@ import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-  console.log(unit , '2');
 
   const handleSubmit = () => {
-    console.log(unit , "submit");
+    console.log(unit);
   };
-  console.log(unit , '3');
 
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center">
-      <Grid container direction="row" wrap="nowrap" className="gap-6 max-sm:gap-1 py-6 pl-2 pr-4">
-        <Grid item xs={3} md={1} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md">
+      <Grid container direction="row" wrap="nowrap" className="gap-6 max-sm:gap-1 py-6 px-4">
+        <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md">
           <Tabs
             orientation="vertical"
             value={selectedTab}
@@ -93,8 +89,7 @@ import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
                 backgroundColor: "#4CAF50",
               },
             }}
-            className="h-[100vh]"
-            style={{ paddingTop: 16 }}
+            style={{ height: '100%', paddingTop: 16 }}
           >
             <Tab
               label="Unit Details"
@@ -107,7 +102,7 @@ import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
           </Tabs>
         </Grid>
 
-        <Grid item xs={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
+        {/* <Grid item xs={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
           {selectedTab === 0 && (
             <DetailsPageUnits
               handleChange={handleChange}
@@ -117,7 +112,20 @@ import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
               description="add unit page"
             />
           )}
+        </Grid> */}
+
+        <Grid item xs={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
+          {selectedTab === 0 && (
+            <DetailsPageUnits
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              page="add"
+              title="Add Unit"
+              description="Add Unit"
+            />
+          )}
         </Grid>
+
       </Grid>
     </Box>
   );
