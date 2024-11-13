@@ -3,6 +3,7 @@ import Details from "@/app/components/user-components/Details";
 import React, { useState } from 'react';
 import { useTranslation } from '@/app/context/TranslationContext';
 import { Grid, Tab, Tabs, Box } from '@mui/material';
+import { addLead } from '@/actions/leadsAction'
 
 function Page({ params }) {
   const { locale, t } = useTranslation();
@@ -34,17 +35,36 @@ function Page({ params }) {
       ...prevLead,
       [section]: {
         ...prevLead[section],
-        [field]: value,
+        [field]: field === 'number' ? parseInt(value, 10) : value, // Ensure number is parsed as an integer
       },
-    }));
-  };
+    }))
+  }
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
 
   const handleSubmit = () => {
-    console.log(lead);
+    addLead(lead.leadDetails)
+      .then((response) => {
+        console.log('Lead created successfully:', response);
+        // Reset leadDetails to empty
+        setLead((prevLead) => ({
+          ...prevLead,
+          leadDetails: {
+            name: "",
+            leadNumber: "",
+            number: "",
+            lastFollowUp: "",
+            description: "",
+            clientFollowUp: "",
+            class: ""
+          }
+        }));
+      })
+      .catch((error) => {
+        console.error('Error creating lead:', error);
+      });
   };
 
   return (
