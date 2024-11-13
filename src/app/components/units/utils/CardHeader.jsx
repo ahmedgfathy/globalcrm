@@ -15,7 +15,7 @@ function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit }
         {page === "add" ? (
           <Button className="GreenButton dark p-1  flex justify-between items-center gap-1" onClick={handleSubmit}>
             <IoMdAddCircle />
-            Save
+            {t("save")}
           </Button>
         ) : (
           <>
