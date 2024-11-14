@@ -91,7 +91,7 @@ function Page() {
   };
 
   return (
-    <Box className="add-unit min-h-screen flex justify-center items-center">
+    <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
       <Grid
         container
         direction="row"

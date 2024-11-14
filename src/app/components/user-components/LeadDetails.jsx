@@ -66,6 +66,7 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
       <CardHeader
         handleSubmit={props.handleSubmit}
         title={props.title}
+        lead={props.lead}
         description={props.description}
         page={page}
         setIsDisabled={setIsDisabled}

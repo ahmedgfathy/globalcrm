@@ -3,12 +3,15 @@ import { CardDescription } from '@/components/ui/card';
 import React from 'react'
 import DeleteButton from '../../delete-button/DeleteButton';
 import { IoMdAddCircle } from 'react-icons/io';
+import { useRouter } from 'next/navigation';
+import { deleteLead } from '@/actions/leadsAction';
 
-function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit, isDisabled }) {
+function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit, isDisabled, lead }) {
+  const router = useRouter()
   return (
     <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-2 md:px-6" dir="rtl">
       <div>
-        <p className="text-2xl md:text-2xl font-semibold md:font-bold ">{title}</p>
+        <p className="text-2xl md:text-2xl font-semibold md:font-bold hidden md:block ">{title}</p>
         <CardDescription>{description}</CardDescription>
       </div>
       <div className="w-max flex justify-between items-center gap-2 buttons">
@@ -26,7 +29,7 @@ function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit, 
               {t("Update")}
             </Button>
             <DeleteButton
-              handleDelete={() => console.log("deletes")}
+              handleDelete={() => deleteLead(lead.$id)} afterDel={()=>router.push("/leads")}
               className="DeleteButton dark"
             >
               {t("Delete")}

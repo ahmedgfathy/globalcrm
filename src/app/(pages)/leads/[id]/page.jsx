@@ -89,7 +89,7 @@ function Page({ params }) {
   };
 
   return (
-    <Box className="add-unit min-h-screen flex justify-center items-center">
+    <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
       <Grid container direction="row" wrap="nowrap" className="gap-6 max-sm:gap-1 py-6 px-4">
         <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md">
           <Tabs
@@ -103,7 +103,7 @@ function Page({ params }) {
             style={{ height: "100%", paddingTop: 16 }}
           >
             <Tab
-              label={t("Lead_Details")} // Translated tab label
+              label={t("Lead_Details")} 
               sx={{
                 "&.Mui-selected": {
                   color: "#5be49b",
