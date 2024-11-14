@@ -1,7 +1,3 @@
-/*
-Delete Button to use confirm on delete, control messages in confirm  dialog
-handleDelete function have id of data to be deleted
-*/
 import React from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Button } from "@/components/ui/button";
@@ -17,17 +13,23 @@ import {
 } from "@/components/ui/dialog";
 import { useTranslation } from "@/app/context/TranslationContext";
 
-function DeleteButton({ handleDelete, title }) {
+function DeleteButton({ handleDelete, title, afterDel }) {
   const { locale, t } = useTranslation();
+
   const onOk = () => {
-    return new Promise((resolve, reject) => {
-      handleDelete().then(resolve).catch(reject);
-    }).catch(() => console.log("Oops, errors occurred!"));
+    return handleDelete()
+      .then(() => {
+        afterDel();
+      })
+      .catch(() => {
+        console.log("Oops, errors occurred!");
+      });
   };
+
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="destructive" className="">
+        <Button variant="destructive" aria-label={t("delete")}>
           {title}
           <AiOutlineDelete className="mx-1 text-lg" />
         </Button>
@@ -37,15 +39,15 @@ function DeleteButton({ handleDelete, title }) {
         dir={locale === "ar" ? "rtl" : "ltr"}
         className="text-start"
       >
-        <DialogHeader className="text-start sm:text-start">
+        <DialogHeader>
           <DialogTitle>{t("sure_delete")}</DialogTitle>
           <DialogDescription>
             {t("description_delete_dialog")}
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="sm:justify-start">
-          <Button variant="destructive" onClick={onOk} className="">
-            {t('Delete')}
+        <DialogFooter>
+          <Button variant="destructive" onClick={onOk}>
+            {t("Delete")}
             <AiOutlineDelete className="mx-1 text-lg" />
           </Button>
           <DialogClose asChild>
