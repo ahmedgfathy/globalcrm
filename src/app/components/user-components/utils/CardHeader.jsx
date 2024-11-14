@@ -4,7 +4,7 @@ import React from 'react'
 import DeleteButton from '../../delete-button/DeleteButton';
 import { IoMdAddCircle } from 'react-icons/io';
 
-function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit }) {
+function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit, isDisabled }) {
   return (
     <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-2 md:px-6" dir="rtl">
       <div>
@@ -21,7 +21,7 @@ function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit }
           <>
             <Button
               className="GreenButton dark"
-              onClick={() => setIsDisabled(false)}
+              onClick={() => {isDisabled ?  setIsDisabled(false) : handleSubmit()}}
             >
               {t("Update")}
             </Button>

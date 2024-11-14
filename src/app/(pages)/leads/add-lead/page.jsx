@@ -45,18 +45,21 @@ function Page() {
       const response = await addLead(lead);
       console.log("Lead created successfully:", response);
       console.log(response.$id);
-      setLead((prevLead) => ({
-        ...prevLead,
-        leadDetails: {
-          name: "",
-          leadNumber: "",
-          number: "",
-          lastFollowUp: "",
-          description: "",
-          clientFollowUp: "",
-          class: "",
-        },
-      }));
+      setLead({
+        name: "",
+        leadNumber: "",
+        number: "",
+        lastFollowUp: "",
+        description: "",
+        clientFollowUp: "",
+        class: "",
+        assignedTo: "",
+        customerSource: "",
+        type: "",
+        leadStatus: "",
+        modifiedTime: "",
+        createdTime: "",
+      });
 
       toast({
         title: "Lead Created",
