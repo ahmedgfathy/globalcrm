@@ -1,68 +1,79 @@
 import { databases, ID } from '@/services/appwrite/client'
 
-
-const handleDatabaseOperation = async (operation, ...args) => {
+export const addLead = async (lead) => {
+  console.log(lead)
   try {
-    const response = await operation(...args);
+    const response = await databases.createDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
+      process.env.NEXT_PUBLIC_LEADS, // Collection ID
+      ID.unique(), // Unique document ID
+      lead // Data
+    )
+    return response
+  } catch (error) {
+    console.error('Error creating lead:', error)
+    throw error
+  }
+}
+
+export const getAllLeads = async () => {
+  try {
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_LEADS 
+    );
+
+    // Exclude collectionId and databaseId from each document
+    const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+
+    return leads;
+  } catch (error) {
+    console.error('Error fetching leads:', error);
+    throw error;
+  }
+}
+
+export const deleteLeadById = async (leadId) => {
+  try {
+    const response = await databases.deleteDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
+      process.env.NEXT_PUBLIC_LEADS, // Collection ID
+      leadId // Document ID
+    );
     return response;
   } catch (error) {
-    console.error(`Error during database operation:`, error);
+    console.error('Error deleting lead:', error);
     throw error;
   }
 };
 
-
-export const addLead = async (lead) => {
-  return handleDatabaseOperation(
-    databases.createDocument,
-    process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
-    process.env.NEXT_PUBLIC_LEADS, // Collection ID
-    ID.unique(), // Unique document ID
-    lead // Data
-  );
-};
-
-export const getAllLeads = async () => {
-  const response = await handleDatabaseOperation(
-    databases.listDocuments,
-    process.env.NEXT_PUBLIC_DATABASE_ID,
-    process.env.NEXT_PUBLIC_LEADS
-  );
-
-  // Exclude collectionId and databaseId from each document
-  const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
-  return leads;
-};
-
-export const deleteLead = async (leadId) => {
-  return handleDatabaseOperation(
-    databases.deleteDocument,
-    process.env.NEXT_PUBLIC_DATABASE_ID, 
-    process.env.NEXT_PUBLIC_LEADS, 
-    leadId 
-  );
-};
-
-/*
-provide the fields you want to change and the provided fields only
-*/ 
 export const updateLeadByID = async (leadId, updatedData) => {
-  return handleDatabaseOperation(
-    databases.updateDocument,
-    process.env.NEXT_PUBLIC_DATABASE_ID,
-    process.env.NEXT_PUBLIC_LEADS,
-    leadId,
-    updatedData
-  );
+  try {
+    const response = await databases.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_LEADS, 
+      leadId, 
+      updatedData 
+    );
+    return response;
+  } catch (error) {
+    console.error('Error updating lead:', error);
+    throw error;
+  }
 };
 
 export const getLeadById = async (leadId) => {
-  return handleDatabaseOperation(
-    databases.getDocument,
-    process.env.NEXT_PUBLIC_DATABASE_ID,
-    process.env.NEXT_PUBLIC_LEADS,
-    leadId
-  );
+  try {
+    const response = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      leadId
+    );
+    return response;
+  } catch (error) {
+    console.error('Error fetching lead:', error);
+    throw error;
+  }
 };
 
 // Mock data for testing
