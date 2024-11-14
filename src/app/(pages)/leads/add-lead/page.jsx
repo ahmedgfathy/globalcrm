@@ -45,18 +45,21 @@ function Page() {
       const response = await addLead(lead);
       console.log("Lead created successfully:", response);
       console.log(response.$id);
-      setLead((prevLead) => ({
-        ...prevLead,
-        leadDetails: {
-          name: "",
-          leadNumber: "",
-          number: "",
-          lastFollowUp: "",
-          description: "",
-          clientFollowUp: "",
-          class: "",
-        },
-      }));
+      setLead({
+        name: "",
+        leadNumber: "",
+        number: "",
+        lastFollowUp: "",
+        description: "",
+        clientFollowUp: "",
+        class: "",
+        assignedTo: "",
+        customerSource: "",
+        type: "",
+        leadStatus: "",
+        modifiedTime: "",
+        createdTime: "",
+      });
 
       toast({
         title: "Lead Created",
@@ -88,7 +91,7 @@ function Page() {
   };
 
   return (
-    <Box className="add-unit min-h-screen flex justify-center items-center">
+    <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
       <Grid
         container
         direction="row"

@@ -1,7 +1,6 @@
 import { databases, ID } from '@/services/appwrite/client'
 
 export const addLead = async (lead) => {
-  console.log(lead)
   try {
     const response = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
@@ -33,7 +32,7 @@ export const getAllLeads = async () => {
   }
 }
 
-export const deleteLeadById = async (leadId) => {
+export const deleteLead = async (leadId) => {
   try {
     const response = await databases.deleteDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
@@ -49,11 +48,15 @@ export const deleteLeadById = async (leadId) => {
 
 export const updateLeadByID = async (leadId, updatedData) => {
   try {
+    const sanitizedData = { ...updatedData };
+    delete sanitizedData.$collectionId;
+    delete sanitizedData.$databaseId; 
+    delete sanitizedData.$id; 
     const response = await databases.updateDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, 
       process.env.NEXT_PUBLIC_LEADS, 
       leadId, 
-      updatedData 
+      sanitizedData 
     );
     return response;
   } catch (error) {
@@ -61,6 +64,7 @@ export const updateLeadByID = async (leadId, updatedData) => {
     throw error;
   }
 };
+
 
 export const getLeadById = async (leadId) => {
   try {

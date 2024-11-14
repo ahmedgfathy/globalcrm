@@ -30,17 +30,17 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
   const handleDeleteImage = () => setImage("/assets/images/default-user.jpg");
 
   const fieldsData = [
-    { id: 1, type: 'input', label: 'name_client', idField: 'name', defaultValue: page !== "add" ? "Pedro Duarte" : "" },
-    { id: 2, type: 'input', label: 'lead_number', idField: 'leadNumber', defaultValue: page !== "add" ? '111' : "" },
-    { id: 3, type: 'input', label: 'Number', idField: 'number', defaultValue: page !== "add" ? '01147484754' : "" },
-    { id: 5, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: page !== "add" ? '...' : "" },
-    { id: 4, type: 'date', label: 'Last_Follow_up', idField: 'lastFollowUp', defaultValue: page !== "add" ? '2022-08-30' : "" },
+    { id: 1, type: 'input', label: 'name_client', idField: 'name', defaultValue: props.lead?.name },
+    { id: 2, type: 'input', label: 'lead_number', idField: 'leadNumber', defaultValue: props.lead?.leadNumber },
+    { id: 3, type: 'input', label: 'Number', idField: 'number', defaultValue: props.lead?.number },
+    { id: 5, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props.lead?.description},
+    { id: 4, type: 'date', label: 'Last_Follow_up', idField: 'lastFollowUp', defaultValue: props.lead?.lastFollowUp },
     {
       id: 6,
       type: 'select',
       label: 'Client_follow_up',
       idField: 'clientFollowUp',
-      defaultValue: page !== "add" ? 'mohamed' : "",
+      defaultValue: props.lead?.clientFollowUp,
       options: [
         { value: 'ahmed', label: 'Ahmed' },
         { value: 'mohamed', label: 'Mohamed' },
@@ -52,7 +52,7 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
       type: 'select',
       label: 'class',
       idField: 'class',
-      defaultValue: page !== "add" ? 'B' : "",
+      defaultValue: props.lead?.class,
       options: [
         { value: 'A', label: 'Class A' },
         { value: 'B', label: 'Class B' },
@@ -66,9 +66,11 @@ export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props 
       <CardHeader
         handleSubmit={props.handleSubmit}
         title={props.title}
+        lead={props.lead}
         description={props.description}
         page={page}
         setIsDisabled={setIsDisabled}
+        isDisabled={isDisabled}
         t={t}
       />
 
