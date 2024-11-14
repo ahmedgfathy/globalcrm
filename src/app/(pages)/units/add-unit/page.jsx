@@ -78,7 +78,7 @@ function Page({ params }) {
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
       <Grid container direction="row" wrap="nowrap" className="gap-6 max-sm:gap-1 py-6 px-4">
-        <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md">
+        <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md max-sm:hidden">
           <Tabs
             orientation="vertical"
             value={selectedTab}
@@ -102,7 +102,7 @@ function Page({ params }) {
           </Tabs>
         </Grid>
 
-        <Grid item xs={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
+        <Grid item xs={12} sm={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
           {selectedTab === 0 && (
             <DetailsPageUnits
               handleChange={handleChange}

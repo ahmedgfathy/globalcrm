@@ -14,9 +14,9 @@ function Page() {
   const { t } = useTranslation();
   return (
     <div className="py-2">
-      <div className="w-full flex flex-wrap justify-between items-start gap-3 max-md:gap-7 px-2 pt-2 max-[1200px]:px-7">
-        <Grid container className="flex justify-center gap-5 w-full mt-5 mb-3 ">
-          <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex items-center justify-between gap-2" >
+      <div className="w-full flex flex-wrap justify-between items-start gap-3 px-2 pt-2 max-[1200px]:px-7">
+        <Grid container className="flex justify-center gap-1 w-full mt-5 mb-3 " dir="ltr">
+          <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex items-center justify-end gap-2" >
             <div className="w-3/4 h-max max-[450px]:w-full  dark:shadow-none rounded-xl">
               <input
                 type="text"
@@ -35,12 +35,12 @@ function Page() {
         </Grid>
 
 
-        <Grid container className="flex justify-center gap-5 w-full mb-7 ">
-
-          <Grid item xs={12} sm={7} md={11.3} lg={11.4} >
+        <Grid container className="flex justify-start gap-1 w-max mb-2 px-7" dir="rtl">
+          <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex justify-start items-center gap-1 w-max mb-2">
             <Filter data={filterData} />
           </Grid>
         </Grid>
+
         <Grid container className="flex justify-center gap-5">
           {ClientDetails.map((ele, index) => {
 
