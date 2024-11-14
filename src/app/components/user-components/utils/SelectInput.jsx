@@ -2,7 +2,7 @@ import { Label } from '@/components/ui/label';
 import React from 'react';
 import { SelectFiled } from '../../Select-Filed/SelectFiled';
 
-function SelectInput({ label, id, isDisabled, data, defaultValue, handleChange,section }) {
+function SelectInput({ label, id, isDisabled, data, defaultValue, handleChange,section, value }) {
   return (
     <div className="space-y-2">
       <Label htmlFor={id} className="font-semibold">{label}</Label>
@@ -11,7 +11,7 @@ function SelectInput({ label, id, isDisabled, data, defaultValue, handleChange,s
         section={section}
         id={id}
         data={data}
-        value={defaultValue}
+        defaultValue={value}
         isDisabled={isDisabled}
       />
     </div>

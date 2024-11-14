@@ -3,7 +3,7 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import React,{ useEffect, useState } from "react";
 import { Pagination } from "antd";
 import ClientTable from "@/app/components/ClientTable";
-import { ClientDetails, filterData } from "./data";
+import { filterData } from "./data";
 import Filter from "@/app/components/Filter";
 import { IoMdAddCircle } from "react-icons/io";
 import CustomButton from "@/app/components/CustomButton";
@@ -31,7 +31,7 @@ function Page() {
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="container mx-auto p-4 space-y-4">
-        <div className="w-full flex items-center justify-between">
+        <div className="w-full flex items-center justify-between" dir="ltr">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
             {t("leads_List")}
           </h1>
