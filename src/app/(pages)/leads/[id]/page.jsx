@@ -103,10 +103,22 @@ function Page({ params }) {
             style={{ height: "100%", paddingTop: 16 }}
           >
             <Tab
-              label={t("Lead_Details")} 
+              label="Lead Details"
               sx={{
+                color: "#5be49b",
                 "&.Mui-selected": {
                   color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
+                },
+              }}
+            />
+            <Tab
+              label="Lead History"
+              sx={{
+                color: "#5be49b",
+                "&.Mui-selected": {
+                  color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
                 },
               }}
             />
@@ -115,6 +127,16 @@ function Page({ params }) {
 
         <Grid item xs={12} sm={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
           {selectedTab === 0 && (
+            <Details
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              lead={lead}
+              page="view"
+              title={t("Lead_Details")}
+              description={t("Lead_descriptions")}
+            />
+          )}
+          {selectedTab === 1 && (
             <Details
               handleChange={handleChange}
               handleSubmit={handleSubmit}

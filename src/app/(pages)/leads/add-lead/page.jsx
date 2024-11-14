@@ -35,7 +35,7 @@ function Page() {
     }));
   };
 
-  const handleTabChange = (newValue) => {
+  const handleTabChange = (_, newValue) => {
     setSelectedTab(newValue);
   };
 
@@ -119,8 +119,20 @@ function Page() {
             <Tab
               label="Lead Details"
               sx={{
+                color: "#5be49b",
                 "&.Mui-selected": {
                   color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
+                },
+              }}
+            />
+            <Tab
+              label="Lead History"
+              sx={{
+                color: "#5be49b",
+                "&.Mui-selected": {
+                  color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
                 },
               }}
             />
@@ -133,6 +145,15 @@ function Page() {
           className="bg-Lightbg dark:bg-transparent rounded-md px-2"
         >
           {selectedTab === 0 && (
+            <Details
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              page="add"
+              title={t("Lead_Details")}
+              description={t("Lead_descriptions")}
+            />
+          )}
+          {selectedTab === 1 && (
             <Details
               handleChange={handleChange}
               handleSubmit={handleSubmit}

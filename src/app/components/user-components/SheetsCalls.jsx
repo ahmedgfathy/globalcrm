@@ -96,7 +96,7 @@ function SheetCalls({ isDisabled, handleChange, lead }) {
             label={t("ModifiedTime")}
             id="modifiedTime"
             defaultValue={lead?.modifiedTime}
-            isDisabled={isDisabled}
+            isDisabled={true}
             section="sheetsCalls"
             handleChange={handleChange}
           />
@@ -105,7 +105,7 @@ function SheetCalls({ isDisabled, handleChange, lead }) {
             label={t("CreatedTime")}
             id="createdTime"
             defaultValue={lead?.createdTime}
-            isDisabled={isDisabled}
+            isDisabled={true}
             section="sheetsCalls"
             handleChange={handleChange}
           />
