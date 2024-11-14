@@ -42,11 +42,6 @@ function Page() {
         </div>
         <DropdownMenImportExport />
       </div>
-        {/* <Grid container className="flex justify-start gap-1 w-max mb-2 px-7" dir="rtl">
-          <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex justify-start items-center gap-1 w-max mb-2">
-            <Filter data={filterData} />
-          </Grid>
-        </Grid> */}
 
         <Grid container className="flex justify-center gap-5">
           {ClientDetails.map((ele, index) => {
