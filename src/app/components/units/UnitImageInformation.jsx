@@ -12,7 +12,7 @@ export default function UnitImageInformation({ page, setIsDisabled, isDisabled, 
     ];
 
     return (
-        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden">
+        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden" dir="rtl">
             <div className="header w-full flex justify-between items-center pb-4">
                 <p className="text-xl font-bold">{t("unit_image_information")}</p>
             </div>

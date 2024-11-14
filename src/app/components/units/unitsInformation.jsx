@@ -7,30 +7,43 @@ import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
 import ImageSection from "../user-components/utils/ImageSection";
 import CardHeader from "./utils/CardHeader";
+import VideoSection from "./utils/VideoSection";
 
 
 
 export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...props }) {
     const { t } = useTranslation();
-    const [image, setImage] = useState("/");
-
+    const [image, setImage] = useState("/assets/images/unit-image.jpeg");
+    const [video, setVideo] = useState("/assets/videos/units-video.mp4");  // Default video path
+  
     useEffect(() => {
-        const defaultImage = "/assets/images/unit-image.jpeg"
-        setImage(defaultImage);
-        setIsDisabled(page === "add" ? false : isDisabled);
+      const defaultImage = "/assets/images/unit-image.jpeg";
+      setImage(defaultImage);
+      setIsDisabled(page === "add" ? false : isDisabled);
     }, [page, setIsDisabled, isDisabled]);
-
+  
     const handleImageChange = (event) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => setImage(e.target.result);
-            reader.readAsDataURL(file);
-        }
+      const file = event.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => setImage(e.target.result);
+        reader.readAsDataURL(file);
+      }
     };
-
+  
     const handleDeleteImage = () => setImage("/assets/images/unit-image.jpeg");
-
+  
+    const handleVideoChange = (event) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        setVideo(URL.createObjectURL(file));
+      }
+    };
+  
+    const handleDeleteVideo = () => {
+      setVideo("/assets/videos/units-video.mp4");  // Reset to default video
+    };
+  
     const fieldsData = [
         { id: 1, type: 'input', label: 'property_number', idField: 'propertyNumber', defaultValue: page !== "add" ? "PRO11760" : "" },
         {
@@ -242,6 +255,12 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                             image={image}
                             handleImageChange={handleImageChange}
                             handleDeleteImage={handleDeleteImage}
+                            isDisabled={isDisabled}
+                        />
+                        <VideoSection
+                            video={video}
+                            handleVideoChange={handleVideoChange}
+                            handleDeleteVideo={handleDeleteVideo}
                             isDisabled={isDisabled}
                         />
                     </CardContent>
