@@ -9,22 +9,36 @@ import { getAllLeads } from "@/actions/leadsAction";
 import { Grid } from "@mui/material";
 import { Input } from "@/components/ui/input";
 import EmptyPage from "@/app/components/EmptyPage";
+import "./pagination.css"
+
 function Page() {
-  const router = useRouter()
+  const router = useRouter();
   const { t } = useTranslation();
   const [leads, setLeads] = useState([]);
+  console.log(leads)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalLeads, setTotalLeads] = useState(0);
+  const leadsPerPage = 10; 
 
-  const fetchLeads = async () => {
+  const fetchLeads = async (page = 1) => {
+    const offset = (page - 1) * leadsPerPage;
     try {
-      const leadsData = await getAllLeads();
-      setLeads(leadsData);
+      const { leads, totalLeads } = await getAllLeads(leadsPerPage, offset);
+      setLeads(leads);
+      setTotalLeads(totalLeads);
     } catch (error) {
-      console.error('Error fetching leads:', error);
+      console.error("Error fetching leads:", error);
     }
   };
+
   useEffect(() => {
-    fetchLeads();
-  }, []);
+    fetchLeads(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
        <Grid className="w-full my-2" dir="ltr">
@@ -38,13 +52,22 @@ function Page() {
             </div>
           </Grid>
         </Grid>
-      {/* {leads && leads.length > 0 ? ( */}
         <div className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden" dir="rtl">
         <ClientTable clients={leads} t={t} afterDel={fetchLeads} onAddLead={()=>router.push("/leads/add-lead")} filterData={filterData} />
       </div>
-      {/* ) : ( <EmptyPage /> )} */}
-      <div className="flex justify-center mt-4" dir="ltr">
-        <Pagination className="dark:bg-gray-800 px-3 py-2 rounded-md" defaultCurrent={1} total={500} />
+      <div className="filter bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none" dir="ltr">
+      </div>
+      <div className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden" dir="rtl">
+        <ClientTable clients={leads} t={t} afterDel={() => fetchLeads(currentPage)} />
+      </div>
+      <div className="flex justify-center mt-4">
+        <Pagination
+          current={currentPage}
+          total={totalLeads}
+          pageSize={leadsPerPage}
+          onChange={handlePageChange}
+          className="custom-pagination"
+        />
       </div>
     </div>
   );
