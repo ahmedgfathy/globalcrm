@@ -44,7 +44,7 @@ function Page() {
             </div>
             <div className="">
               <CustomButton
-              fun={()=>router.push("/units/add-unit")}
+              fun={()=>router.push("/leads/add-lead")}
               title={t("add_lead")}
               icon={()=><IoMdAddCircle />}
               />
