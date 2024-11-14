@@ -9,6 +9,7 @@ import { Pagination } from "antd";
 import { Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import CustomButton from "@/app/components/CustomButton";
+import { DropdownMenImportExport } from "@/app/components/leadImport-Export/ImportExport";
 function Page() {
   const router = useRouter()
   const { t } = useTranslation();
@@ -35,11 +36,17 @@ function Page() {
         </Grid>
 
 
-        <Grid container className="flex justify-start gap-1 w-max mb-2 px-7" dir="rtl">
+        <div className="filter bg-Lightbg dark:bg-transparent rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex justify-end max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none" dir="ltr">
+        <div className="filter w-full md:w-3/4">
+          <Filter data={filterData} />
+        </div>
+        <DropdownMenImportExport />
+      </div>
+        {/* <Grid container className="flex justify-start gap-1 w-max mb-2 px-7" dir="rtl">
           <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex justify-start items-center gap-1 w-max mb-2">
             <Filter data={filterData} />
           </Grid>
-        </Grid>
+        </Grid> */}
 
         <Grid container className="flex justify-center gap-5">
           {ClientDetails.map((ele, index) => {
