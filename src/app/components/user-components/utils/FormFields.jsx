@@ -31,7 +31,7 @@ function FormFields({ fields, isDisabled, handleChange, section }) {
     case 'date':
       return <DateInput key={field.id} {...commonProps} />;
     case 'select':
-      return <SelectInput key={field.id} {...commonProps} data={field.options} />;
+      return <SelectInput key={field.id} {...commonProps} data={field.options} value={field.defaultValue} />;
     default:
       return null;
   }

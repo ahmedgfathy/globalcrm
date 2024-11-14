@@ -42,6 +42,7 @@
   "Delete": "حذف",
   "name_client": "اسم العميل",
   "lead_number": "رقم العميل",
+  "lead_no": "رقم العميل",
   "Number": "الموبايل",
   "Last_Follow_up": "اخر تحديث",
   "Client_follow_up": "متابعة العميل",
@@ -96,7 +97,7 @@
 "currency": "العملة",
 "rent_from": "الإيجار من",
 "rent_to": "الإيجار إلى",
-
+"import":"",
 "property_number": "رقم العقار",
 "unit_for": "الوحدة لـ",
 "area": "المنطقة",

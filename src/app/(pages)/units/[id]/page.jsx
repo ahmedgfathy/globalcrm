@@ -1,91 +1,56 @@
 "use client";
 import { useTranslation } from "@/app/context/TranslationContext";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useEffect, useRef, useState } from "react";
-import { AiOutlineRightSquare } from "react-icons/ai";
-import TabButton from "../../leads/utils/TabButton";
+import React, { useState } from 'react';
 import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
-import Update from "@/app/components/user-components/Update";
+import { Box, Grid, Tab ,Tabs } from "@mui/material";
 function Page({ params }) {
-  const isMobile = useIsMobile();
-  const [isOpen, setIsOpen] = useState(!isMobile);
-  const tabsRef = useRef(null);
   const { locale, t } = useTranslation();
-  const listTabs = [
-    { id: 1, title: "Unit Details", value: "details" },
-    { id: 2, title: "Updates", value: "updates" },
-  ];
+  const [selectedTab, setSelectedTab] = useState(0);
 
-  useEffect(() => {
-    setIsOpen(!isMobile);
-  }, [isMobile]);
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
 
-  useEffect(() => {
-    if (isMobile) {
-      const handleClickOutside = (event) => {
-        if (tabsRef.current && !tabsRef.current.contains(event.target)) {
-          setIsOpen(false);
-        }
-      };
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }
-  }, [isMobile]);
 
   return (
-    <div className="page-user min-h-screen h-max mx-2">
-      <div className="container px-0 py-4 max-md:pb-20 max-md:pt-14 mx-auto flex">
+    <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
+    <Grid container direction="row" wrap="nowrap" className="gap-6 max-sm:gap-1 py-6 px-4">
+      <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md max-sm:hidden">
         <Tabs
-          defaultValue="details"
-          className="flex w-full h-full relative"
+          orientation="vertical"
+          value={selectedTab}
+          onChange={handleTabChange}
+          aria-label="Vertical tabs"
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: "#4CAF50",
+            },
+          }}
+          style={{ height: '100%', paddingTop: 16 }}
         >
-          {isMobile && !isOpen && (
-            <AiOutlineRightSquare
-              className="text-xl absolute left-5 top-0 z-[2]"
-              onClick={() => setIsOpen(true)}
-            />
-          )}
-
-          <TabsList
-            dir={locale == "ar" ? "rtl" : "ltr"}
-            ref={tabsRef}
-            className={`flex-shrink-0 flex flex-col gap-5 transition-all duration-200 bg-[#FFF] dark:bg-[#222831] min-h-screen overflow-hidden ${
-              isMobile
-                ? isOpen
-                  ? "absolute top-0 left-0 w-64"
-                  : "absolute top-0 -left-64"
-                : "w-64"
-            }`}
-          >
-            <TabButton data={listTabs} />
-          </TabsList>
-
-          <div className="flex-1 px-5 overflow-x-hidden">
-            <TabsContent
-              value="details"
-              className="w-full overflow-x-hidden"
-              dir={locale == "ar" ? "rtl" : "ltr"}
-            >
-              <DetailsPageUnits
-                page="view"
-                title={t("Lead_Details")}
-                description={t("Lead_descriptions")}
-              />
-            </TabsContent>
-            <TabsContent
-              value="updates"
-              className="w-full"
-              dir={locale == "ar" ? "rtl" : "ltr"}
-            >
-              <Update />
-            </TabsContent>
-          </div>
+          <Tab
+            label={t("unit_details")}
+            sx={{
+              "&.Mui-selected": {
+                color: "#5be49b",
+              },
+            }}
+          />
         </Tabs>
-      </div>
-    </div>
+      </Grid>
+
+      <Grid item xs={12} sm={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
+        {selectedTab === 0 && (
+          <DetailsPageUnits
+            page="view"
+            title={t("unit_details")}
+            description="Add Unit"
+          />
+        )}
+      </Grid>
+
+    </Grid>
+  </Box>
   );
 }
 

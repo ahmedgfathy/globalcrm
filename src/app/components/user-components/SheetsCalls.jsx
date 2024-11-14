@@ -5,7 +5,7 @@ import React from "react";
 import SelectInput from "./utils/SelectInput";
 import DateInput from "./utils/DateInput";
 
-function SheetCalls({ isDisabled, handleChange }) {
+function SheetCalls({ isDisabled, handleChange, lead }) {
   const { t, locale } = useTranslation();
 
   const AssignedData = [
@@ -55,7 +55,7 @@ function SheetCalls({ isDisabled, handleChange }) {
           <SelectInput
             label={t("Assigned To")}
             id="assignedTo"
-            defaultValue={defaultValues.assignedTo}
+            value={lead?.assignedTo}
             data={AssignedData}
             isDisabled={isDisabled}
             section="sheetsCalls"
@@ -65,7 +65,7 @@ function SheetCalls({ isDisabled, handleChange }) {
           <SelectInput
             label={t("Customer Source")}
             id="customerSource"
-            defaultValue={defaultValues.customerSource}
+            value={lead?.customerSource}
             data={CustomerSourceData}
             isDisabled={isDisabled}
             section="sheetsCalls"
@@ -75,7 +75,7 @@ function SheetCalls({ isDisabled, handleChange }) {
           <SelectInput
             label={t("Type")}
             id="type"
-            defaultValue={defaultValues.type}
+            value={lead?.type}
             data={Type}
             isDisabled={isDisabled}
             section="sheetsCalls"
@@ -85,7 +85,7 @@ function SheetCalls({ isDisabled, handleChange }) {
           <SelectInput
             label={t("Lead Status")}
             id="leadStatus"
-            defaultValue={defaultValues.leadStatus}
+            value={lead?.leadStatus}
             data={LeadStatus}
             isDisabled={isDisabled}
             section="sheetsCalls"
@@ -95,7 +95,7 @@ function SheetCalls({ isDisabled, handleChange }) {
           <DateInput
             label={t("ModifiedTime")}
             id="modifiedTime"
-            defaultValue="2022-08-30"
+            defaultValue={lead?.modifiedTime}
             isDisabled={isDisabled}
             section="sheetsCalls"
             handleChange={handleChange}
@@ -104,7 +104,7 @@ function SheetCalls({ isDisabled, handleChange }) {
           <DateInput
             label={t("CreatedTime")}
             id="createdTime"
-            defaultValue="2022-08-30"
+            defaultValue={lead?.createdTime}
             isDisabled={isDisabled}
             section="sheetsCalls"
             handleChange={handleChange}
