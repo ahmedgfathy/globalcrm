@@ -1,6 +1,6 @@
 "use client";
 import { useTranslation } from "@/app/context/TranslationContext";
-import React,{ useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pagination } from "antd";
 import ClientTable from "@/app/components/ClientTable";
 import { filterData } from "./data";
@@ -10,23 +10,35 @@ import CustomButton from "@/app/components/CustomButton";
 import { useRouter } from "next/navigation";
 import { FaFileExport, FaFileImport } from "react-icons/fa";
 import { getAllLeads } from "@/actions/leadsAction";
+import "./pagination.css"
+
 function Page() {
-  const router = useRouter()
+  const router = useRouter();
   const { t } = useTranslation();
   const [leads, setLeads] = useState([]);
+  console.log(leads)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalLeads, setTotalLeads] = useState(0);
+  const leadsPerPage = 10; // Number of leads per page
 
-  const fetchLeads = async () => {
+  const fetchLeads = async (page = 1) => {
+    const offset = (page - 1) * leadsPerPage;
     try {
-      const leadsData = await getAllLeads();
-      setLeads(leadsData);
-      console.log(leadsData)
+      const { leads, totalLeads } = await getAllLeads(leadsPerPage, offset);
+      setLeads(leads);
+      setTotalLeads(totalLeads);
     } catch (error) {
-      console.error('Error fetching leads:', error);
+      console.error("Error fetching leads:", error);
     }
   };
+
   useEffect(() => {
-    fetchLeads();
-  }, []);
+    fetchLeads(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -52,10 +64,16 @@ function Page() {
         </div>
       </div>
       <div className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden" dir="rtl">
-        <ClientTable clients={leads} t={t} afterDel={fetchLeads} />
+        <ClientTable clients={leads} t={t} afterDel={() => fetchLeads(currentPage)} />
       </div>
       <div className="flex justify-center mt-4">
-        <Pagination className="dark:bg-gray-800 px-3 py-2 rounded-md" defaultCurrent={1} total={500} />
+        <Pagination
+          current={currentPage}
+          total={totalLeads}
+          pageSize={leadsPerPage}
+          onChange={handlePageChange}
+          className="custom-pagination"
+        />
       </div>
     </div>
   );
