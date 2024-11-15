@@ -15,7 +15,6 @@ function Page() {
   const router = useRouter();
   const { t } = useTranslation();
   const [leads, setLeads] = useState([]);
-  console.log(leads)
   const [currentPage, setCurrentPage] = useState(1);
   const [totalLeads, setTotalLeads] = useState(0);
   const leadsPerPage = 10; 
@@ -55,12 +54,7 @@ function Page() {
         <div className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden" dir="rtl">
         <ClientTable clients={leads} t={t} afterDel={fetchLeads} onAddLead={()=>router.push("/leads/add-lead")} filterData={filterData} />
       </div>
-      <div className="filter bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none" dir="ltr">
-      </div>
-      <div className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden" dir="rtl">
-        <ClientTable clients={leads} t={t} afterDel={() => fetchLeads(currentPage)} />
-      </div>
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center mt-4" dir="ltr">
         <Pagination
           current={currentPage}
           total={totalLeads}
