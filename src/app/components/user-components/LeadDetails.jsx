@@ -5,30 +5,43 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import CardHeader from "./utils/CardHeader";
 import FormFields from "./utils/FormFields";
 import ImageSection from "./utils/ImageSection";
+import { uploadImageToBucket } from "@/actions/leadsAction";
 
 
 
-export default function LoadDetails({ page, setIsDisabled, isDisabled, ...props }) {
+export default function LeadDetails({ page, setIsDisabled, isDisabled, ...props }) {
   const { t } = useTranslation();
   const [image, setImage] = useState("/");
+  const [imageFile, setImageFile] = useState(null); // State to store the selected image file
 
   useEffect(() => {
-    const defaultImage = "/assets/images/default-user.jpg"
+    const defaultImage = "/assets/images/default-user.jpg";
     setImage(defaultImage);
     setIsDisabled(page === "add" ? false : isDisabled);
   }, [page, setIsDisabled, isDisabled]);
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => setImage(e.target.result);
       reader.readAsDataURL(file);
+      setImageFile(file); // Store the selected image file
+
+      // Upload the image and print the response
+      try {
+        const response = await uploadImageToBucket(file);
+        console.log("Image uploaded successfully:", response);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
     }
   };
 
-  const handleDeleteImage = () => setImage("/assets/images/default-user.jpg");
-
+  const handleDeleteImage = () => {
+    setImage("/assets/images/default-user.jpg");
+    setImageFile(null); // Reset the image file
+  };
   const fieldsData = [
     { id: 1, type: 'input', label: 'name_client', idField: 'name', defaultValue: props.lead?.name },
     { id: 2, type: 'input', label: 'lead_number', idField: 'leadNumber', defaultValue: props.lead?.leadNumber },
