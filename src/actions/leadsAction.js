@@ -1,4 +1,4 @@
-import { databases, ID } from '@/services/appwrite/client';
+import { databases, ID ,storage } from '@/services/appwrite/client';
 import {Query} from "appwrite"
 export const addLead = async (lead) => {
   try {
@@ -94,6 +94,29 @@ export const getLeadById = async (leadId) => {
     throw error;
   }
 };
+
+export const uploadImageToBucket = async (file) => {
+  try {
+    const response = await storage.createFile(
+      process.env.NEXT_PUBLIC_LEADS_BUCKET, // Bucket ID
+      ID.unique(), // Unique file ID
+      file // File to upload
+    );
+
+    // Get the view URL
+    const fileUrl = storage.getFileView(
+      process.env.NEXT_PUBLIC_LEADS_BUCKET, // Bucket ID
+      response.$id // File ID
+    );
+
+    return { id: response.$id, fileUrl: fileUrl.href };
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    throw error;
+  }
+};
+
+
 
 // Mock data for testing
 // const mockLead = {
