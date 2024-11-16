@@ -11,36 +11,19 @@ import { uploadImageToBucket } from "@/actions/leadsAction";
 
 export default function LeadDetails({ page, setIsDisabled, isDisabled, ...props }) {
   const { t } = useTranslation();
-  const [image, setImage] = useState("/");
-  const [imageFile, setImageFile] = useState(null); // State to store the selected image file
 
   useEffect(() => {
-    const defaultImage = "/assets/images/default-user.jpg";
-    setImage(defaultImage);
+    const defaultImage = props.lead?.leadImage || "/assets/images/default-user.jpg";
+    props?.setImage(defaultImage);
+    console.log(defaultImage)
     setIsDisabled(page === "add" ? false : isDisabled);
-  }, [page, setIsDisabled, isDisabled]);
+  }, [page, setIsDisabled, isDisabled, props]);
 
-  const handleImageChange = async (event) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => setImage(e.target.result);
-      reader.readAsDataURL(file);
-      setImageFile(file); // Store the selected image file
 
-      // Upload the image and print the response
-      try {
-        const response = await uploadImageToBucket(file);
-        console.log("Image uploaded successfully:", response);
-      } catch (error) {
-        console.error("Error uploading image:", error);
-      }
-    }
-  };
 
   const handleDeleteImage = () => {
-    setImage("/assets/images/default-user.jpg");
-    setImageFile(null); // Reset the image file
+    props?.setImage("/assets/images/default-user.jpg");
+    props?.setImageFile(null); // Reset the image file
   };
   const fieldsData = [
     { id: 1, type: 'input', label: 'name_client', idField: 'name', defaultValue: props.lead?.name },
@@ -90,8 +73,8 @@ export default function LeadDetails({ page, setIsDisabled, isDisabled, ...props 
       <CardContent className="lg:grid gap-6 lg:grid-cols-4 md:gap-8 max-sm:flex max-sm:flex-col-reverse pt-4 gap-y-4" dir="rtl">
         <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} className="mb-4" />
         <ImageSection
-          image={image}
-          handleImageChange={handleImageChange}
+          image={props.image}
+          handleImageChange={props.handleImageChange}
           handleDeleteImage={handleDeleteImage}
           isDisabled={isDisabled}
         />
