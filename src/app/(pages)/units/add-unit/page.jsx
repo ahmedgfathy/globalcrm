@@ -4,66 +4,52 @@ import React, { useState } from 'react';
 import { Box, Grid, Tab, Tabs } from "@mui/material";
 import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
 
-function Page({ params }) {
+function Page() {
   const { locale, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(0);
 
   const [unit, setUnit] = useState({
-    unitsInformation: {
-      propertyNumber: "",
-      unitFor: "",
-      area: "",
-      rooms: "",
-      phase: "",
-      type: "",
-      building: "",
-      theFloors: "",
-      finished: "",
-      propsOfUnit: "",
-      Inside_Outside: "",
-      totalPrice: "",
-      descriptions: "",
-      LastFollowUp: "",
-      activity: "",
-      status: "",
-    },
-    customInformation: {
-      propertyOfferedBy: "",
-      name: "",
-      unitNo: "",
-      update: "",
-      mobileNo: "",
-      tel: "",
-      updateCalls: "",
-    },
-    salesInformation: {
-      handeler: "",
-      sales: "",
-      category: "",
-    },
-    unitDetails: {
-      createdTime: "",
-      modifiedTime: "",
-      landArea: "",
-      currency: "",
-      rentFrom: "",
-      rentTo: "",
-    },
-    pricingInformation: {
-      propertyNameCompoundName: "",
-    },
-    unitImageInformation: {
-      linksPDFDetails: "",
-    }
+  building: "",
+  unitFor: "",
+  propertyNumber: "",
+  theFloors: "",
+  area: "",
+  finished: "",
+  rooms: 0,
+  unitFeatures: "",
+  phase: "",
+  note: "",
+  totalPrice: 0,
+  inOrOutSideCompound: "",
+  description: "",
+  lastFollowIn: 0,
+  status: "",
+  activity: "",
+  propertyOfferedBy: "",
+  mobileNo: 0,
+  name: "",
+  tel: 0,
+  unitNo: "",
+  callUpdate: "",
+  forUpdate: "",
+  handler: "",
+  sales: "",
+  category: "",
+  createdTime: 0,
+  modifiedTime: 0,
+  landArea: "",
+  currency: "",
+  rentFrom: 0,
+  rentTo: 0,
+  compoundName: "",
+  propertyImage: [],
+  links: []
   });
 
-  const handleChange = (section, field, value) => {
+  const handleChange = (_, field, value) => {
     setUnit((prevLead) => ({
       ...prevLead,
-      [section]: {
-        ...prevLead[section],
-        [field]: value,
-      },
+      [field]: field === "number" ? parseInt(value, 10) : value,
     }));
   };
 
@@ -107,6 +93,7 @@ function Page({ params }) {
             <DetailsPageUnits
               handleChange={handleChange}
               handleSubmit={handleSubmit}
+              unit={unit}
               page="add"
               title={t("unit_details")}
               description="Add Unit"

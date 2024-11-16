@@ -45,13 +45,13 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
     };
   
     const fieldsData = [
-        { id: 1, type: 'input', label: 'property_number', idField: 'propertyNumber', defaultValue: page !== "add" ? "PRO11760" : "" },
+        { id: 1, type: 'input', label: 'property_number', idField: 'propertyNumber', defaultValue: props?.unit?.propertyNumber },
         {
             id: 2,
             type: 'select',
             label: 'unit_for',
             idField: 'unitFor',
-            defaultValue: page !== "add" ? 'New rented' : "",
+            defaultValue: props?.unit?.unitFor,
             options: [
                 { value: 'New rented', label: 'New rented' },
                 { value: 'Hold now', label: 'Hold now' },
@@ -65,7 +65,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             type: 'select',
             label: 'area',
             idField: 'area',
-            defaultValue: page !== "add" ? '' : "",
+            defaultValue: props?.unit?.area,
             options: [
                 { value: 'الرحاب', label: 'الرحاب' },
                 { value: 'المعادي', label: 'المعادي' },
@@ -78,7 +78,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             type: 'select',
             label: 'rooms',
             idField: 'rooms',
-            defaultValue: page !== "add" ? '3' : "",
+            defaultValue: props?.unit?.rooms,
             options: [
                 { value: '1', label: '1' },
                 { value: '2', label: '2' },
@@ -96,7 +96,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             type: 'select',
             label: 'phase',
             idField: 'phase',
-            defaultValue: page !== "add" ? '3' : "",
+            defaultValue: props?.unit?.phase,
             options: [
                 { value: '1', label: '1' },
                 { value: '2', label: '2' },
@@ -121,7 +121,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             type: 'select',
             label: 'type',
             idField: 'type',
-            defaultValue: page !== "add" ? 'Twin House' : "",
+            defaultValue: props?.unit?.type,
             options: [
                 { value: 'Stand alone Compound', label: 'Stand alone Compound' },
                 { value: 'Twin House', label: 'Twin House' },
@@ -154,14 +154,14 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                 { value: 'دوبلكس متكرر', label: 'دوبلكس متكرر' }
             ],
         },
-        { id: 7, type: 'input', label: 'building', idField: 'building', defaultValue: page !== "add" ? "" : "" },
-        { id: 8, type: 'input', label: 'the_floors', idField: 'theFloors', defaultValue: page !== "add" ? "أول" : "" },
+        { id: 7, type: 'input', label: 'building', idField: 'building', defaultValue: props?.unit?.building },
+        { id: 8, type: 'input', label: 'the_floors', idField: 'theFloors', defaultValue: props?.unit?.theFloors },
         {
             id: 9,
             type: 'select',
             label: 'finished',
             idField: 'finished',
-            defaultValue: page !== "add" ? 'SEMI FINISHED' : "",
+            defaultValue: props?.unit?.finished,
             options: [
                 { value: 'SEMI FINISHED', label: 'SEMI FINISHED' },
                 { value: 'FULLY FINISHED', label: 'FULLY FINISHED' },
@@ -171,28 +171,28 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
 
             ],
         },
-        { id: 10, type: 'input', label: 'props_of_unit', idField: 'propsOfUnit', defaultValue: page !== "add" ? "غاز طبيعي" : "" },
+        { id: 10, type: 'input', label: 'props_of_unit', idField: 'propsOfUnit', defaultValue: props?.unit?.propertyNumber },
         {
             id: 11,
             type: 'select',
             label: 'inside_outside',
-            idField: 'Inside_Outside',
-            defaultValue: page !== "add" ? 'داخل كمبوند' : "",
+            idField: 'inOrOutSideCompound',
+            defaultValue: props?.unit?.inOrOutSideCompound,
             options: [
                 { value: 'داخل كمبوند', label: 'داخل كمبوند' },
                 { value: 'خارج كمبوند', label: 'خارج كمبوند' },
                 { value: 'مناطق تجاريه', label: 'مناطق تجاريه' }
             ],
         },
-        { id: 12, type: 'input', label: 'total_price', idField: 'totalPrice', defaultValue: page !== "add" ? "20000" : "" },
-        { id: 13, type: 'textarea', label: 'descriptions', idField: 'descriptions', defaultValue: page !== "add" ? '...' : "" },
-        { id: 14, type: 'date', label: 'last_follow_up', idField: 'LastFollowUp', defaultValue: page !== "add" ? '2022-08-30' : "" },
+        { id: 12, type: 'input', label: 'total_price', idField: 'totalPrice', defaultValue: props?.unit?.totalPrice },
+        { id: 13, type: 'textarea', label: 'descriptions', idField: 'descriptions', defaultValue: props?.unit?.description },
+        { id: 14, type: 'date', label: 'last_follow_up', idField: 'LastFollowUp', defaultValue: props?.unit?.lastFollowIn },
         {
             id: 15,
             type: 'select',
             label: 'activity',
             idField: 'activity',
-            defaultValue: page !== "add" ? 'سكني' : "",
+            defaultValue: props?.unit?.activity,
             options: [
                 { value: 'سكني', label: 'سكني' },
                 { value: 'اداري مرخص', label: 'اداري مرخص' },
@@ -201,7 +201,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                 { value: 'طبي', label: 'طبي' }
             ],
         },
-        { id: 16, type: 'input', label: 'status', idField: 'status', defaultValue: page !== "add" ? 'Clinics' : "" },
+        { id: 16, type: 'input', label: 'status', idField: 'status', defaultValue: props?.unit?.status },
     ];
 
     return (
