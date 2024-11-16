@@ -91,7 +91,7 @@ function Page({ params }) {
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
       <Grid container direction="row" wrap="nowrap" className="gap-6 max-sm:gap-1 py-6 px-4">
-        <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md">
+        <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md max-sm:hidden">
           <Tabs
             orientation="vertical"
             value={selectedTab}
@@ -103,18 +103,40 @@ function Page({ params }) {
             style={{ height: "100%", paddingTop: 16 }}
           >
             <Tab
-              label={t("Lead_Details")} 
+              label="Lead Details"
               sx={{
+                color: "#5be49b",
                 "&.Mui-selected": {
                   color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
+                },
+              }}
+            />
+            <Tab
+              label="Lead History"
+              sx={{
+                color: "#5be49b",
+                "&.Mui-selected": {
+                  color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
                 },
               }}
             />
           </Tabs>
         </Grid>
 
-        <Grid item xs={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
+        <Grid item xs={12} sm={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
           {selectedTab === 0 && (
+            <Details
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              lead={lead}
+              page="view"
+              title={t("Lead_Details")}
+              description={t("Lead_descriptions")}
+            />
+          )}
+          {selectedTab === 1 && (
             <Details
               handleChange={handleChange}
               handleSubmit={handleSubmit}

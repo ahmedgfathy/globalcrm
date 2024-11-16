@@ -47,7 +47,7 @@ export default function LeadDetails({ page, setIsDisabled, isDisabled, ...props 
     { id: 2, type: 'input', label: 'lead_number', idField: 'leadNumber', defaultValue: props.lead?.leadNumber },
     { id: 3, type: 'input', label: 'Number', idField: 'number', defaultValue: props.lead?.number },
     { id: 5, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props.lead?.description},
-    { id: 4, type: 'date', label: 'Last_Follow_up', idField: 'lastFollowUp', defaultValue: props.lead?.lastFollowUp },
+    { id: 4, type: 'date', label: 'Last_Follow_up', idField: 'lastFollowUp', defaultValue: props.lead?.lastFollowUp || 0 },
     {
       id: 6,
       type: 'select',

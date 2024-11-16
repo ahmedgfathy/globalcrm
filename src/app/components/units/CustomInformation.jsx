@@ -14,7 +14,7 @@ export default function CustomInformation({ page, setIsDisabled, isDisabled, ...
             type: 'select',
             label: 'property_offered_by',
             idField: 'propertyOfferedBy',
-            defaultValue: page !== "add" ? 'مالك' : "",
+            defaultValue: props?.unit?.propertyOfferedBy,
             options: [
                 { value: 'مالك', label: 'مالك' },
                 { value: 'مسؤول طرف المالك', label: 'مسؤول طرف المالك' },
@@ -22,27 +22,27 @@ export default function CustomInformation({ page, setIsDisabled, isDisabled, ...
                 { value: 'حارس العقار', label: 'حارس العقار' }
             ],
         },
-        { id: 2, type: 'input', label: 'name', idField: 'name', defaultValue: page !== "add" ? "khalid" : "" },
-        { id: 3, type: 'input', label: 'unit_no', idField: 'unitNo', defaultValue: page !== "add" ? "1010" : "" },
+        { id: 2, type: 'input', label: 'name', idField: 'name', defaultValue: props?.unit?.name },
+        { id: 3, type: 'input', label: 'unit_no', idField: 'unitNo', defaultValue: props?.unit?.unitNo },
         {
             id: 4,
             type: 'select',
             label: 'update',
-            idField: 'update',
-            defaultValue: page !== "add" ? 'New rented' : "",
+            idField: 'forUpdate',
+            defaultValue: props?.unit?.forUpdate,
             options: [
                 { value: 'Want Upadate', label: 'Want Upadate' },
                 { value: 'Hidden', label: 'Hidden' }
             ],
         },
-        { id: 5, type: 'input', label: 'mobile_no', idField: 'mobileNo', defaultValue: page !== "add" ? "01087559165" : "" },
-        { id: 6, type: 'input', label: 'tel', idField: 'tel', defaultValue: page !== "add" ? "" : "" },
+        { id: 5, type: 'input', label: 'mobile_no', idField: 'mobileNo', defaultValue: props?.unit?.mobileNo },
+        { id: 6, type: 'input', label: 'tel', idField: 'tel', defaultValue: props?.unit?.tel },
         {
             id: 7,
             type: 'select',
             label: 'update_calls',
-            idField: 'updateCalls',
-            defaultValue: page !== "add" ? 'تم الرد' : "",
+            idField: 'callUpdate',
+            defaultValue: props?.unit?.callUpdate,
             options: [
                 { value: 'تم الرد', label: 'تم الرد' },
                 { value: 'لا يرد', label: 'لا يرد' },
@@ -57,7 +57,7 @@ export default function CustomInformation({ page, setIsDisabled, isDisabled, ...
     ];
 
     return (
-        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden">
+        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden" dir="rtl">
             <div className="header w-full flex justify-between items-center pb-4">
                 <p className="text-xl font-bold"> {t("custom_information")}</p>
             </div>

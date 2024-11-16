@@ -13,8 +13,8 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             id: 1,
             type: 'select',
             label: 'handler',
-            idField: 'handeler',
-            defaultValue: page !== "add" ? 'Group' : "",
+            idField: 'handler',
+            defaultValue: props?.unit?.handler,
             options: [
                 { value: 'Group', label: 'Group' },
                 { value: 'Users', label: 'Users' },
@@ -25,7 +25,7 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             type: 'select',
             label: 'sales',
             idField: 'sales',
-            defaultValue: page !== "add" ? 'alaa zaki' : "",
+            defaultValue: props?.unit?.sales,
             options: [
                 { value: 'basma', label: 'بسماء' },
                 { value: 'EMAN', label: ' إيمان' },
@@ -52,7 +52,7 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             type: 'select',
             label: 'category',
             idField: 'category',
-            defaultValue: page !== "add" ? 'Stars' : "",
+            defaultValue: props?.unit?.category,
             options: [
                 { value: 'Stars', label: 'Stars' },
             ],
@@ -60,7 +60,7 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
     ];
 
     return (
-        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden">
+        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden" dir="rtl">
             <div className="header w-full flex justify-between items-center pb-4">
                 <p className="text-xl font-bold">{t("sales_information")}</p>
             </div>

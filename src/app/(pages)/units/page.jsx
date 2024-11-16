@@ -9,14 +9,15 @@ import { Pagination } from "antd";
 import { Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import CustomButton from "@/app/components/CustomButton";
+import { DropdownMenImportExport } from "@/app/components/leadImport-Export/ImportExport";
 function Page() {
   const router = useRouter()
   const { t } = useTranslation();
   return (
-    <div className="py-2">
-      <div className="w-full flex flex-wrap justify-between items-start gap-3 max-md:gap-7 px-2 pt-2 max-[1200px]:px-7">
-        <Grid container className="flex justify-center gap-5 w-full mt-5 mb-3 ">
-          <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex items-center justify-between gap-2" >
+    <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="w-full flex flex-wrap justify-between items-start gap-3 px-2 pt-2 max-[1200px]:px-7">
+        <Grid container className="flex justify-center gap-1 w-full mt-5 mb-3 " dir="ltr">
+          <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex items-center justify-end gap-2" >
             <div className="w-3/4 h-max max-[450px]:w-full  dark:shadow-none rounded-xl">
               <input
                 type="text"
@@ -35,12 +36,13 @@ function Page() {
         </Grid>
 
 
-        <Grid container className="flex justify-center gap-5 w-full mb-7 ">
+        <div className="filter bg-Lightbg dark:bg-transparent rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex justify-end max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none" dir="ltr">
+        <div className="filter w-full md:w-full">
+          <Filter data={filterData} />
+        </div>
+        <DropdownMenImportExport />
+      </div>
 
-          <Grid item xs={12} sm={7} md={11.3} lg={11.4} >
-            <Filter data={filterData} />
-          </Grid>
-        </Grid>
         <Grid container className="flex justify-center gap-5">
           {ClientDetails.map((ele, index) => {
 
