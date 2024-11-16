@@ -13,8 +13,8 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             id: 1,
             type: 'select',
             label: 'handler',
-            idField: 'handeler',
-            defaultValue: page !== "add" ? 'Group' : "",
+            idField: 'handler',
+            defaultValue: props?.unit?.handler,
             options: [
                 { value: 'Group', label: 'Group' },
                 { value: 'Users', label: 'Users' },
@@ -25,7 +25,7 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             type: 'select',
             label: 'sales',
             idField: 'sales',
-            defaultValue: page !== "add" ? 'alaa zaki' : "",
+            defaultValue: props?.unit?.sales,
             options: [
                 { value: 'basma', label: 'بسماء' },
                 { value: 'EMAN', label: ' إيمان' },
@@ -52,7 +52,7 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             type: 'select',
             label: 'category',
             idField: 'category',
-            defaultValue: page !== "add" ? 'Stars' : "",
+            defaultValue: props?.unit?.category,
             options: [
                 { value: 'Stars', label: 'Stars' },
             ],

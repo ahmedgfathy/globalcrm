@@ -171,7 +171,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
 
             ],
         },
-        { id: 10, type: 'input', label: 'props_of_unit', idField: 'propsOfUnit', defaultValue: props?.unit?.propertyNumber },
+        { id: 10, type: 'input', label: 'props_of_unit', idField: 'unitFeatures', defaultValue: props?.unit?.unitFeatures},
         {
             id: 11,
             type: 'select',
@@ -179,14 +179,14 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             idField: 'inOrOutSideCompound',
             defaultValue: props?.unit?.inOrOutSideCompound,
             options: [
-                { value: 'داخل كمبوند', label: 'داخل كمبوند' },
-                { value: 'خارج كمبوند', label: 'خارج كمبوند' },
+                { value: 'inside', label: 'داخل كمبوند' },
+                { value: 'outside', label: 'خارج كمبوند' },
                 { value: 'مناطق تجاريه', label: 'مناطق تجاريه' }
             ],
         },
         { id: 12, type: 'input', label: 'total_price', idField: 'totalPrice', defaultValue: props?.unit?.totalPrice },
-        { id: 13, type: 'textarea', label: 'descriptions', idField: 'descriptions', defaultValue: props?.unit?.description },
-        { id: 14, type: 'date', label: 'last_follow_up', idField: 'LastFollowUp', defaultValue: props?.unit?.lastFollowIn },
+        { id: 13, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props?.unit?.description },
+        { id: 14, type: 'date', label: 'last_follow_up', idField: 'lastFollowIn', defaultValue: props?.unit?.lastFollowIn },
         {
             id: 15,
             type: 'select',

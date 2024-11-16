@@ -3,10 +3,14 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import React, { useState } from 'react';
 import { Box, Grid, Tab, Tabs } from "@mui/material";
 import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import { addProperty } from "@/actions/propertiesAction";
 
 function Page() {
   const { locale, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(0);
+  const { toast } = useToast();
 
   const [unit, setUnit] = useState({
   building: "",
@@ -20,9 +24,9 @@ function Page() {
   phase: "",
   note: "",
   totalPrice: 0,
-  inOrOutSideCompound: "",
+  inOrOutSideCompound: "", 
   description: "",
-  lastFollowIn: 0,
+  lastFollowIn: "",
   status: "",
   activity: "",
   propertyOfferedBy: "",
@@ -39,8 +43,8 @@ function Page() {
   modifiedTime: 0,
   landArea: "",
   currency: "",
-  rentFrom: 0,
-  rentTo: 0,
+  rentFrom: "",
+  rentTo: "",
   compoundName: "",
   propertyImage: [],
   links: []
@@ -57,9 +61,85 @@ function Page() {
     setSelectedTab(newValue);
   };
 
-  const handleSubmit = () => {
-    console.log(unit);
+  const handleSubmit = async () => {
+    const currentDateTime = new Date().toLocaleString();
+    const modifiedUnit = { ...unit };
+    modifiedUnit.rooms = parseInt(modifiedUnit.rooms, 10)
+    modifiedUnit.totalPrice = parseInt(modifiedUnit.totalPrice, 10)
+    modifiedUnit.mobileNo = parseInt(modifiedUnit.mobileNo, 10)
+    modifiedUnit.tel = parseInt(modifiedUnit.tel, 10)
+    modifiedUnit.links = modifiedUnit.links.split(" ")
+    try {
+      const response = await addProperty(modifiedUnit);
+      console.log("Unit created successfully:", response);
+      console.log(response.$id);
+      setUnit({
+        building: "",
+        unitFor: "",
+        propertyNumber: "",
+        theFloors: "",
+        area: "",
+        finished: "",
+        rooms: 0,
+        unitFeatures: "",
+        phase: "",
+        note: "",
+        totalPrice: 0,
+        inOrOutSideCompound: "", 
+        description: "",
+        lastFollowIn: "",
+        status: "",
+        activity: "",
+        propertyOfferedBy: "",
+        mobileNo: 0,
+        name: "",
+        tel: 0,
+        unitNo: "",
+        callUpdate: "",
+        forUpdate: "",
+        handler: "",
+        sales: "",
+        category: "",
+        createdTime: 0,
+        modifiedTime: 0,
+        landArea: "",
+        currency: "",
+        rentFrom: "",
+        rentTo: "",
+        compoundName: "",
+        propertyImage: [],
+        links: []
+      });
+
+      toast({
+        title: "Unit Created",
+        description: `Unit created successfully on ${currentDateTime}`,
+        action: (
+          <ToastAction
+            altText="ok"
+            onClick={() => router.push(`/units/${response.$id}`)}
+          >
+            Show Details
+          </ToastAction>
+        ),
+      });
+    } catch (error) {
+      console.error("Error creating unit:", error);
+
+      toast({
+        variant: "destructive",
+        title: "Error Creating Unit",
+        description: error.message || "There was an issue creating the unit.",
+        status: "error",
+        action: (
+          <ToastAction altText="ok" onClick={() => router.push(`/units`)}>
+            Try Again
+          </ToastAction>
+        ),
+      });
+    }
   };
+;
 
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">

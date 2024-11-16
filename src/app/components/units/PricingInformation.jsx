@@ -9,7 +9,7 @@ export default function PricingInformation({ page, setIsDisabled, isDisabled, ..
     const { t } = useTranslation();
 
     const fieldsData = [
-        { id: 1, type: 'textarea', label: 'property_name_compound_name', idField: 'propertyNameCompoundName', defaultValue: page !== "add" ? "عماره رقم ٨ اللوتس الشماليه" : "" },
+        { id: 1, type: 'textarea', label: 'property_name_compound_name', idField: 'compoundName', defaultValue: props?.unit?.compoundName },
     ];
 
     return (

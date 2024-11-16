@@ -8,7 +8,7 @@ import FormFields from "../user-components/utils/FormFields";
 export default function UnitImageInformation({ page, setIsDisabled, isDisabled, ...props }) {
     const { t } = useTranslation();
     const fieldsData = [
-        { id: 1, type: 'textarea', label: 'links_pdf_details', idField: 'linksPDFDetails', defaultValue: page !== "add" ? "Link" : "" },
+        { id: 1, type: 'textarea', label: 'links_pdf_details', idField: 'links', defaultValue: props?.unit?.links },
     ];
 
     return (

@@ -2,6 +2,7 @@ import { databases, ID,  } from '@/services/appwrite/client';
 import {Query} from "appwrite"
 
 export const addProperty = async (property) => {
+  console.log(property)
   try {
     const response = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
