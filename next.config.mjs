@@ -27,6 +27,11 @@ const nextConfig = {
         hostname: "media.gettyimages.com",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "cloud.appwrite.io",
+        pathname: "/**",
+      },
     ],
   },
 };

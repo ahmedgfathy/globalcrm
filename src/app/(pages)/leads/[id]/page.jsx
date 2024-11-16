@@ -3,7 +3,7 @@ import Details from "@/app/components/user-components/Details";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { Tabs, Tab, Box, Grid } from "@mui/material";
-import { getLeadById, updateLeadByID } from "@/actions/leadsAction";
+import { getLeadById, updateLeadByID, uploadImageToBucket } from "@/actions/leadsAction";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
@@ -14,6 +14,8 @@ function Page({ params }) {
   const [selectedTab, setSelectedTab] = useState(0);
   const [lead, setLead] = useState({}); 
   const router = useRouter();
+  const [image, setImage] = useState("/");
+  const [imageFile, setImageFile] = useState(null); 
   const handleChange = (_, field, value) => {
     setLead((prevLead) => ({
       ...prevLead,
@@ -37,7 +39,22 @@ function Page({ params }) {
   useEffect(() => {
     if (params.id) fetchLead(); 
   }, [params]);
-
+  const handleImageChange = async (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setImage(e.target.result);
+      reader.readAsDataURL(file);
+      setImageFile(file);
+      try {
+        const response = await uploadImageToBucket(file);
+        setLead({...lead, leadImage: response.fileUrl});
+        console.log("Image uploaded successfully:", response);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
   const handleSubmit = async () => {
     const currentDateTime = new Date().toLocaleString();
     try {
@@ -130,6 +147,11 @@ function Page({ params }) {
             <Details
               handleChange={handleChange}
               handleSubmit={handleSubmit}
+              setImage={setImage}
+              imageFile={imageFile}
+              image={image}
+              setImageFile={setImageFile}
+              handleImageChange={handleImageChange}
               lead={lead}
               page="view"
               title={t("Lead_Details")}
@@ -140,6 +162,10 @@ function Page({ params }) {
             <Details
               handleChange={handleChange}
               handleSubmit={handleSubmit}
+              setImage={setImage}
+              imageFile={imageFile}
+              setImageFile={setImageFile}
+              handleImageChange={handleImageChange}
               lead={lead}
               page="view"
               title={t("Lead_Details")}

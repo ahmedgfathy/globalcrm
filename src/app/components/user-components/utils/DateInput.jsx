@@ -17,6 +17,7 @@ function DateInput({
     : null;
 
   const onChange = (date, dateString) => {
+    console.log(date)
     if (date && date.isValid()) {
       if (handleChange) {
         handleChange(section || null, id, dateString);
