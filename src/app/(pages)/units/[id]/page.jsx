@@ -6,7 +6,9 @@ import { Box, Grid, Tab ,Tabs } from "@mui/material";
 import { getPropertyById, updatePropertyByID } from "@/actions/propertiesAction";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 function Page({ params }) {
+  const router = useRouter();
   const {toast} = useToast()
   const { locale, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(0);
@@ -57,7 +59,7 @@ function Page({ params }) {
           </ToastAction>
         ),
       });
-      router.push("/unit")
+      router.push("/units")
     } catch (error) {
       console.error("Error Updating unit:", error);
 
