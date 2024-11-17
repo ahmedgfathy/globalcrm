@@ -33,7 +33,7 @@ export function CardUnitComponent({ ele }) {
 
   return (
     <Card className="duration-300 cursor-pointer rounded-xl border border-[#ccc] dark:border-dark shadow-none hover:shadow" onClick={() => {
-      router.push(`units/${ele.id}`);
+      router.push(`units/${ele.$id}`);
     }}>
       <CardHeader className="overflow-hidden p-0 rounded-t-xl relative ">
         <div className="layer  absolute top-0 left-0 flex flex-col items-end justify-between w-full h-[230px]" style={{ zIndex: "1" }}>
