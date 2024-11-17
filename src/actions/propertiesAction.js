@@ -40,7 +40,6 @@ export const getAllProperties = async (limit = 10, offset = 0) => {
 
     // Exclude collectionId and databaseId from each document
     const properties = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
-    console.log(properties)
     return { properties, totalProperties };
   } catch (error) {
     console.error('Error fetching properties:', error);
@@ -78,7 +77,7 @@ export const updatePropertyByID = async (propertyId, updatedData) => {
   } catch (error) {
     console.error('Error updating property:', error);
     throw error;
-  }
+  } 
 };
 
 export const getPropertyById = async (propertyId) => {

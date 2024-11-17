@@ -1,6 +1,6 @@
 "use client";
 import { useTranslation } from "@/app/context/TranslationContext";
-import React from "react";
+import React, {useState ,useEffect} from "react";
 import { ClientDetails, filterData } from "./data";
 import { CardUnitComponent } from "@/app/components/units-components/CardComponent";
 import { IoMdAddCircle } from "react-icons/io";
@@ -10,9 +10,24 @@ import { Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import CustomButton from "@/app/components/CustomButton";
 import { DropdownMenImportExport } from "@/app/components/leadImport-Export/ImportExport";
+import { getAllProperties } from "@/actions/propertiesAction";
 function Page() {
   const router = useRouter()
+  const [units, setUnits] = useState([])
   const { t } = useTranslation();
+  const fetchLeads = async () => {
+     try {
+      const {properties} = await getAllProperties();
+      setUnits(properties);
+      console.log(properties)
+    } catch (error) {
+      console.error("Error fetching leads:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLeads();
+  }, []);
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full flex flex-wrap justify-between items-start gap-3 px-2 pt-2 max-[1200px]:px-7">
@@ -20,7 +35,7 @@ function Page() {
           <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex items-center justify-end gap-2" >
             <div className="w-3/4 h-max max-[450px]:w-full  dark:shadow-none rounded-xl">
               <input
-                type="text"
+                type="text" 
                 className="w-full  bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md p-2 max-[450px]:py-1"
                 placeholder={`${t("search_unit")} ...`}
               />

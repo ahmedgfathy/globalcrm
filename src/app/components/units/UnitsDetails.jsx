@@ -9,8 +9,8 @@ export default function UnitsDetails({ page, setIsDisabled, isDisabled, ...props
     const { t } = useTranslation();
 
     const fieldsData = [
-        { id: 1, type: 'input', label: 'created_time', idField: 'createdTime', defaultValue: props?.unit?.createdTime },
-        { id: 2, type: 'input', label: 'modified_time', idField: 'modifiedTime', defaultValue: props?.unit?.modifiedTime },
+        { id: 1, type: 'date', label: 'created_time', idField: 'createdTime', defaultValue: props?.unit?.createdTime },
+        { id: 2, type: 'date', label: 'modified_time', idField: 'modifiedTime', defaultValue: props?.unit?.modifiedTime },
         { id: 3, type: 'input', label: 'land_area', idField: 'landArea', defaultValue: props?.unit?.landArea },
         {
             id: 4,

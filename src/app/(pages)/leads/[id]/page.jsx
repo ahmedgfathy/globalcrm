@@ -55,6 +55,10 @@ function Page({ params }) {
       }
     }
   };
+  const handleDeleteImage = () => {
+    setImage("/assets/images/default-user.jpg");
+    setImageFile(null); // Reset the image file
+  };
   const handleSubmit = async () => {
     const currentDateTime = new Date().toLocaleString();
     try {
@@ -147,6 +151,7 @@ function Page({ params }) {
             <Details
               handleChange={handleChange}
               handleSubmit={handleSubmit}
+              handleDeleteImage={handleDeleteImage}
               setImage={setImage}
               imageFile={imageFile}
               image={image}
@@ -162,6 +167,7 @@ function Page({ params }) {
             <Details
               handleChange={handleChange}
               handleSubmit={handleSubmit}
+              handleDeleteImage={handleDeleteImage}
               setImage={setImage}
               imageFile={imageFile}
               setImageFile={setImageFile}

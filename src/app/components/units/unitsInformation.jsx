@@ -209,7 +209,9 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             <CardHeader
                 handleSubmit={props.handleSubmit}
                 title={props.title}
+                isDisabled={isDisabled}
                 description={props.description}
+                unit={props.unit}
                 page={page}
                 setIsDisabled={setIsDisabled}
                 t={t}
