@@ -10,27 +10,29 @@ import { uploadImageToBucket } from "@/actions/leadsAction";
 
 
 export default function LeadDetails({ page, setIsDisabled, isDisabled, ...props }) {
+  const [defaultImage, setDefaultImage] = useState("/assets/images/default-user.jpg");
   const { t } = useTranslation();
 
   useEffect(() => {
-    const defaultImage = props.lead?.leadImage || "/assets/images/default-user.jpg";
+    // const defaultImage = props.lead?.leadImage || "/assets/images/default-user.jpg";
+    setDefaultImage(props.lead?.leadImage || "/assets/images/default-user.jpg")
     props?.setImage(defaultImage);
     console.log(defaultImage)
     setIsDisabled(page === "add" ? false : isDisabled);
-  }, [page, setIsDisabled, isDisabled, props]);
+  }, [page, setIsDisabled, isDisabled, props, defaultImage]);
 
 
 
   const handleDeleteImage = () => {
     props?.setImage("/assets/images/default-user.jpg");
-    props?.setImageFile(null); // Reset the image file
+    props?.setImageFile(null);
   };
   const fieldsData = [
     { id: 1, type: 'input', label: 'name_client', idField: 'name', defaultValue: props.lead?.name },
     { id: 2, type: 'input', label: 'lead_number', idField: 'leadNumber', defaultValue: props.lead?.leadNumber },
     { id: 3, type: 'input', label: 'Number', idField: 'number', defaultValue: props.lead?.number },
     { id: 5, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props.lead?.description},
-    { id: 4, type: 'date', label: 'Last_Follow_up', idField: 'lastFollowUp', defaultValue: props.lead?.lastFollowUp || 0 },
+    { id: 4, type: 'date', label: 'Last_Follow_up', idField: 'lastFollowUp', defaultValue: props.lead?.lastFollowUp},
     {
       id: 6,
       type: 'select',
@@ -75,7 +77,7 @@ export default function LeadDetails({ page, setIsDisabled, isDisabled, ...props 
         <ImageSection
           image={props.image}
           handleImageChange={props.handleImageChange}
-          handleDeleteImage={handleDeleteImage}
+          handleDeleteImage={props.handleDeleteImage}
           isDisabled={isDisabled}
         />
       </CardContent>

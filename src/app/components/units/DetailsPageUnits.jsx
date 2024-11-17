@@ -7,7 +7,6 @@ import SalesInformation from "./SalesInformation";
 import UnitsDetails from "./UnitsDetails";
 import PricingInformation from "./PricingInformation";
 import UnitImageInformation from "./UnitImageInformation";
-
 import CollapsibleComponent from "../CollapsibleComponent";
 
 const DetailsPageUnits = ({ page, handleChange, handleSubmit, title, unit }) => {
