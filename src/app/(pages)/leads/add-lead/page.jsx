@@ -1,6 +1,6 @@
 "use client";
 import Details from "@/app/components/user-components/Details";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { Grid, Tab, Tabs, Box } from "@mui/material";
 import { addLead, uploadImageToBucket } from "@/actions/leadsAction";
@@ -37,7 +37,11 @@ function Page() {
       [field]: field === "number" ? parseInt(value, 10) : value,
     }));
   };
-
+  const handleDeleteImage = () => {
+    setImage("/assets/images/default-user.jpg");
+    setLead({...lead, leadImage: "/assets/images/default-user.jpg"})
+    setImageFile(null); 
+  };
   const handleTabChange = (_, newValue) => {
     setSelectedTab(newValue);
   };
@@ -165,11 +169,12 @@ function Page() {
           {selectedTab === 0 && (
             <Details
               handleChange={handleChange}
-              image={image}
+              image={lead.leadImage || image}
               setImage={setImage}
               imageFile={imageFile}
               setImageFile={setImageFile}
               handleSubmit={handleSubmit}
+              handleDeleteImage={handleDeleteImage}
               handleImageChange={handleImageChange}
               page="add"
               title={t("Lead_Details")}
@@ -185,6 +190,7 @@ function Page() {
               imageFile={imageFile}
               setImageFile={setImageFile}
               handleImageChange={handleImageChange}
+              handleDeleteImage={handleDeleteImage}
               page="add"
               title={t("Lead_Details")}
               description={t("Lead_descriptions")}

@@ -9,7 +9,7 @@ import { DropdownMenImportExport } from "./leadImport-Export/ImportExport";
 const ClientTable = ({ clients, t, afterDel, onAddLead, filterData }) => {
   return (
     <div className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden" dir="rtl">
-      <div className="filter p-3 bg-gray-100 dark:bg-gray-700 flex justify-between items-center rounded-t-lg" dir="ltr">
+      <div className="filter p-3 bg-gray-100 dark:bg-gray-700 flex justify-end items-center rounded-t-lg" dir="ltr">
         <Filter data={filterData} />
       </div>
       <Table className="min-w-full text-start">

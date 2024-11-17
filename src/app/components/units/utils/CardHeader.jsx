@@ -3,8 +3,11 @@ import { CardDescription } from '@/components/ui/card';
 import React from 'react'
 import DeleteButton from '../../delete-button/DeleteButton';
 import { IoMdAddCircle } from 'react-icons/io';
+import { deleteProperty } from '@/actions/propertiesAction';
+import { useRouter } from 'next/navigation';
 
-function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit }) {
+function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit, isDisabled, unit }) {
+  const router = useRouter()
   return (
     <div className="header w-full flex justify-between items-center max-[450px]:flex-wrap gap-y-3 pb-2 px-6" dir="rtl">
       <div>
@@ -12,21 +15,21 @@ function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit }
         <CardDescription>{description}</CardDescription>
       </div>
       <div className="w-max flex justify-between items-center gap-2 buttons">
-        {page === "add" ? (
+        {page === "add" ? ( 
           <Button className="GreenButton dark p-1  flex justify-between items-center gap-1" onClick={handleSubmit}>
             <IoMdAddCircle />
             {t("save")}
           </Button>
         ) : (
           <>
-            <Button
+                        <Button
               className="GreenButton dark"
-              onClick={() => setIsDisabled(false)}
+              onClick={() => {isDisabled ?  setIsDisabled(false) : handleSubmit()}}
             >
-              {t("Update")}
+              {isDisabled ?  t("Update") : t("save")}
             </Button>
             <DeleteButton
-              handleDelete={() => console.log("deletes")}
+              handleDelete={() => deleteProperty(unit.$id)} afterDel={()=>router.push("/units")}
               className="DeleteButton dark"
             >
               {t("Delete")}

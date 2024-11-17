@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 function Filter({ data }) {
   return (
-      <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-3 w-full md:w-3/4">
+      <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-3 w-full md:w-3/4 justify-items-end">
         {data?.map((ele, i) => {
           return (
             <Select key={i}>
