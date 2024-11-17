@@ -93,7 +93,31 @@ export const getPropertyById = async (propertyId) => {
     throw error;
   }
 };
+export const uploadPropertyImages = async (files) => {
+  try {
+    const uploadPromises = files.map(async (file) => {
+      const response = await storage.createFile(
+        process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, 
+        ID.unique(), 
+        file 
+      );
 
+      // Get the view URL
+      const fileUrl = storage.getFileView(
+        process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, // Bucket ID
+        response.$id // File ID
+      );
+
+      return { id: response.$id, fileUrl: fileUrl.href };
+    });
+
+    const uploadedFiles = await Promise.all(uploadPromises);
+    return uploadedFiles;
+  } catch (error) {
+    console.error('Error uploading property images:', error);
+    throw error;
+  }
+};
 // Mock data for testing
 // const mockProperty = {
 //   name: "Example Property",
