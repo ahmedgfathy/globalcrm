@@ -4,7 +4,7 @@ import SheetCalls from "./SheetsCalls";
 import CollapsibleComponent from "../CollapsibleComponent";
 import "./style.css";
 
-const App = ({ page, handleChange,handleSubmit, title, lead, handleImageChange, image, setImage,imageFile, setImageFile }) => {
+const App = ({ page, handleChange,handleSubmit, title, lead, handleImageChange, image, setImage,imageFile, setImageFile, handleDeleteImage }) => {
   const items = [
     {
       key: "1",
@@ -12,6 +12,7 @@ const App = ({ page, handleChange,handleSubmit, title, lead, handleImageChange, 
       children: <LoadDetails
        page={page} 
        handleSubmit={handleSubmit} 
+       handleDeleteImage={handleDeleteImage}
        handleChange={handleChange} 
        title={title} 
        lead={lead} 

@@ -41,7 +41,7 @@ function Page() {
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
        <Grid className="w-full my-2" dir="ltr">
-          <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex items-center justify-between gap-2" >
+          <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex items-center justify-end gap-2" >
             <div className="w-3/4 h-max max-[450px]:w-full dark:shadow-none rounded-xl">
               <Input
                 type="text"
