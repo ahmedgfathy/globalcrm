@@ -3,7 +3,7 @@ import Details from "@/app/components/user-components/Details";
 import React, { useState } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { Grid, Tab, Tabs, Box } from "@mui/material";
-import { addLead } from "@/actions/leadsAction";
+import { addLead, uploadImageToBucket } from "@/actions/leadsAction";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
@@ -13,6 +13,8 @@ function Page() {
   const { toast } = useToast();
   const [selectedTab, setSelectedTab] = useState(0);
   const router = useRouter();
+  const [image, setImage] = useState("/");
+  const [imageFile, setImageFile] = useState(null); 
   const [lead, setLead] = useState({
     name: "",
     leadNumber: "",
@@ -27,6 +29,7 @@ function Page() {
     leadStatus: "",
     modifiedTime: "",
     createdTime: "",
+    leadImage:""
   });
   const handleChange = (_, field, value) => {
     setLead((prevLead) => ({
@@ -89,7 +92,22 @@ function Page() {
       });
     }
   };
-
+  const handleImageChange = async (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setImage(e.target.result);
+      reader.readAsDataURL(file);
+      setImageFile(file);
+      try {
+        const response = await uploadImageToBucket(file);
+        setLead({...lead, leadImage: response.fileUrl});
+        console.log("Image uploaded successfully:", response);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
       <Grid
@@ -147,7 +165,12 @@ function Page() {
           {selectedTab === 0 && (
             <Details
               handleChange={handleChange}
+              image={image}
+              setImage={setImage}
+              imageFile={imageFile}
+              setImageFile={setImageFile}
               handleSubmit={handleSubmit}
+              handleImageChange={handleImageChange}
               page="add"
               title={t("Lead_Details")}
               description={t("Lead_descriptions")}
@@ -157,6 +180,11 @@ function Page() {
             <Details
               handleChange={handleChange}
               handleSubmit={handleSubmit}
+              image={image}
+              setImage={setImage}
+              imageFile={imageFile}
+              setImageFile={setImageFile}
+              handleImageChange={handleImageChange}
               page="add"
               title={t("Lead_Details")}
               description={t("Lead_descriptions")}
