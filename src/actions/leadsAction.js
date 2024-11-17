@@ -116,6 +116,26 @@ export const uploadImageToBucket = async (file) => {
   }
 };
 
+export const searchLeadsByName = async (name) => {
+  try {
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_LEADS,
+      [
+        Query.search('name', name)
+      ]
+    );
+
+    // Exclude collectionId and databaseId from each document
+    const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log(leads)
+    return leads;
+  } catch (error) {
+    console.error('Error searching for leads:', error);
+    throw error;
+  }
+};
+
 
 
 // Mock data for testing
