@@ -10,3 +10,7 @@
 :where(.css-dev-only-do-not-override-apn68).ant-picker .ant-picker-input >input[disabled]{
   color : inherit !important;
 }
+
+.ant-image.css-dev-only-do-not-override-apn68{
+  height: 100% !important;
+}

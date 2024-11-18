@@ -1,9 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
-import Image from "next/image";
+import {Image} from "antd";
 import { Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import PropTypes from "prop-types";
-
+import "./style.css"
 export default function ImageSection({ image, handleImageChange, handleDeleteImage, isDisabled }) {
   return (
     <Card className="overflow-hidden lg:col-span-1 h-48 lg:h-40">
@@ -15,7 +15,8 @@ export default function ImageSection({ image, handleImageChange, handleDeleteIma
             className="object-cover w-full h-full"
             src={image}
           />
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+          {!isDisabled && (
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
             <div className="flex space-x-2 gap-2">
               <Button
                 size="icon"
@@ -37,6 +38,7 @@ export default function ImageSection({ image, handleImageChange, handleDeleteIma
               </Button>
             </div>
           </div>
+          )}
         </div>
       </CardContent>
       <input

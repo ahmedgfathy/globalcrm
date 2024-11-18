@@ -14,7 +14,6 @@ export const addLead = async (lead) => {
     throw error;
   }
 };
-
 export const getAllLeads = async (limit = 10, offset = 0) => {
   try {
     const response = await databases.listDocuments(
@@ -22,10 +21,10 @@ export const getAllLeads = async (limit = 10, offset = 0) => {
       process.env.NEXT_PUBLIC_LEADS,
       [
         Query.limit(limit),
-        Query.offset(offset)
+        Query.offset(offset),
+        Query.orderDesc('$createdAt')
       ]
     );
-
 
     const totalResponse = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID, 
@@ -38,15 +37,16 @@ export const getAllLeads = async (limit = 10, offset = 0) => {
 
     const totalLeads = totalResponse.total;
 
-    // Exclude collectionId and databaseId from each document
     const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
-    console.log(leads)
+
+    console.log(leads);
     return { leads, totalLeads };
   } catch (error) {
     console.error('Error fetching leads:', error);
     throw error;
   }
 };
+
 
 export const deleteLead = async (leadId) => {
   try {
