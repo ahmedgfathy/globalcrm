@@ -9,13 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-function Filter({ data }) {
+function Filter({ data, onFilterChange }) {
   return (
       <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-3 w-full md:w-3/4 justify-items-end">
         {data?.map((ele, i) => {
           return (
-            <Select key={i}>
-              <SelectTrigger className="w-full font-bold text-green-600  bg-green-200 dark:bg-gray-900 dark:text-white">
+            <Select key={i} onValueChange={(value)=>onFilterChange(value, data[i].filterName)}>
+              <SelectTrigger className="w-full font-bold bg-dark_link_active text-text_link_active_l dark:bg-gray-900 dark:text-white">
                 <SelectValue placeholder={ele.filterName} />
               </SelectTrigger>
               <SelectContent className="dark:bg-gray-900 dark:text-white">
