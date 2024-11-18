@@ -19,7 +19,7 @@ function Page({ params }) {
   const handleChange = (_, field, value) => {
     setLead((prevLead) => ({
       ...prevLead,
-      [field]: field === "number" ? parseInt(value, 10) : value,
+      [field] : value,
     }));
   };
 
@@ -57,7 +57,7 @@ function Page({ params }) {
   };
   const handleDeleteImage = () => {
     setImage("/assets/images/default-user.jpg");
-    setImageFile(null); // Reset the image file
+    setImageFile(null);
   };
   const handleSubmit = async () => {
     const currentDateTime = new Date().toLocaleString();
@@ -76,8 +76,6 @@ function Page({ params }) {
         customerSource: "",
         type: "",
         leadStatus: "",
-        modifiedTime: "",
-        createdTime: "",
       });
       toast({
         title: "Lead Updated",
