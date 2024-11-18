@@ -14,10 +14,10 @@ function SheetCalls({ isDisabled, handleChange, lead }) {
   ];
 
   const CustomerSourceData = [
-    { value: "A", label: "Ahmed" },
-    { value: "B", label: "Khalid" },
-    { value: "C", label: "Yaser" },
-    { value: "D", label: "Ali" },
+    { value: "Ahmed", label: "Ahmed" },
+    { value: "khalid", label: "Khalid" },
+    { value: "Yaser", label: "Yaser" },
+    { value: "Ali", label: "Ali" },
   ];
 
   const LeadStatus = [

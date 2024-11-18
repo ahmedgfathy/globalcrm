@@ -18,6 +18,8 @@ function Page() {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalLeads, setTotalLeads] = useState(0)
   const [searchTerm, setSearchTerm] = useState('')
+  const [typeFilter, setTypeFilter] = useState('')
+  const [customerSourceFilter, setCustomerSourceFilter] = useState('')
   const leadsPerPage = 10
 
   const fetchLeads = async (page = 1, search = '') => {

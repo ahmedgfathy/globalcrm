@@ -127,7 +127,9 @@ export const searchLeads = async (searchTerm) => {
       [
         Query.or([
           Query.contains('name', searchTerm),
-          Query.contains('leadNumber', searchTerm)
+          Query.contains('leadNumber', searchTerm),
+          Query.contains('number', searchTerm),
+
         ])
       ]
     );
@@ -144,6 +146,51 @@ export const searchLeads = async (searchTerm) => {
   }
 };
 
+export const searchLeadsByType = async (searchTerm) => {
+  try {
+    console.log('Searching for leads with type:', searchTerm);
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      [
+        Query.contains('type', searchTerm)
+      ]
+    );
+
+    console.log('Raw response:', response);
+
+    // Exclude collectionId and databaseId from each document
+    const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log('Processed leads:', leads);
+    return leads;
+  } catch (error) {
+    console.error('Error searching for leads by type:', error);
+    throw error;
+  }
+};
+
+export const searchLeadsByCustomerSource = async (searchTerm) => {
+  try {
+    console.log('Searching for leads with type:', searchTerm);
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      [
+        Query.contains('customerSource', searchTerm)
+      ]
+    );
+
+    console.log('Raw response:', response);
+
+    // Exclude collectionId and databaseId from each document
+    const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log('Processed leads:', leads);
+    return leads;
+  } catch (error) {
+    console.error('Error searching for leads by type:', error);
+    throw error;
+  }
+};
 
 
 
