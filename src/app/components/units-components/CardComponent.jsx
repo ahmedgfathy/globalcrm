@@ -33,7 +33,7 @@ export function CardUnitComponent({ ele }) {
 
   return (
     <Card className="duration-300 cursor-pointer rounded-xl border border-[#ccc] dark:border-dark shadow-none hover:shadow" onClick={() => {
-      router.push(`units/${ele.id}`);
+      router.push(`units/${ele.$id}`);
     }}>
       <CardHeader className="overflow-hidden p-0 rounded-t-xl relative ">
         <div className="layer  absolute top-0 left-0 flex flex-col items-end justify-between w-full h-[230px]" style={{ zIndex: "1" }}>
@@ -118,7 +118,7 @@ export function CardUnitComponent({ ele }) {
         </div>
         <div className="relative w-full top-0 h-[230px] overflow-hidden rounded-t">
           <Image
-            src={ele.href}
+            src={ele.href || "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600"}
             alt={`${ele.name} profile picture`}
             layout="fill"
             objectFit="cover"
