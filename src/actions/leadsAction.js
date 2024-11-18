@@ -116,25 +116,34 @@ export const uploadImageToBucket = async (file) => {
   }
 };
 
-export const searchLeadsByName = async (name) => {
+
+
+export const searchLeads = async (searchTerm) => {
   try {
+    console.log('Searching for leads with term:', searchTerm);
     const response = await databases.listDocuments(
-      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_LEADS,
       [
-        Query.search('name', name)
+        Query.or([
+          Query.contains('name', searchTerm),
+          Query.contains('leadNumber', searchTerm)
+        ])
       ]
     );
 
+    console.log('Raw response:', response);
+
     // Exclude collectionId and databaseId from each document
     const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
-    console.log(leads)
+    console.log('Processed leads:', leads);
     return leads;
   } catch (error) {
     console.error('Error searching for leads:', error);
     throw error;
   }
 };
+
 
 
 

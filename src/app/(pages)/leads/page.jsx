@@ -5,7 +5,7 @@ import { Pagination } from 'antd'
 import ClientTable from '@/app/components/ClientTable'
 import { filterData } from './data'
 import { useRouter } from 'next/navigation'
-import { getAllLeads, searchLeadsByName } from '@/actions/leadsAction'
+import { getAllLeads, searchLeads } from '@/actions/leadsAction'
 import { Grid } from '@mui/material'
 import { Input } from '@/components/ui/input'
 import EmptyPage from '@/app/components/EmptyPage'
@@ -24,10 +24,12 @@ function Page() {
     const offset = (page - 1) * leadsPerPage
     try {
       if (search) {
-        const leads = await searchLeadsByName(search)
+        console.log('Fetching leads with search term:', search);
+        const leads = await searchLeads(search)
         setLeads(leads)
         setTotalLeads(leads.length)
       } else {
+        console.log('Fetching all leads');
         const { leads, totalLeads } = await getAllLeads(leadsPerPage, offset)
         setLeads(leads)
         setTotalLeads(totalLeads)
