@@ -118,7 +118,7 @@ export const uploadImageToBucket = async (file) => {
 
 
 
-export const searchLeads = async (searchTerm) => {
+export const searchLeads = async (searchTerm) => {                                                                       
   try {
     console.log('Searching for leads with term:', searchTerm);
     const response = await databases.listDocuments(
