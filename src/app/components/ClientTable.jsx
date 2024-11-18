@@ -51,7 +51,7 @@ const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData }) => {
         <CustomButton
           title="Clear Filter"
           icon={() => <CiFilter />}
-          className="GreenButton w-full md:w-fit mt-3 md:mt-0 hidden md:block"
+          className="GreenButton w-full md:w-fit mt-3 md:mt-0 hidden md:flex"
           fun={() => {
             handleClearFilters();
             afterDel(1, "");
