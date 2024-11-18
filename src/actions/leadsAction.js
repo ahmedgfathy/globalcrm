@@ -47,38 +47,6 @@ export const getAllLeads = async (limit = 10, offset = 0) => {
   }
 };
 
-// export const getAllLeads = async (limit = 10, offset = 0) => {
-//   try {
-//     const response = await databases.listDocuments(
-//       process.env.NEXT_PUBLIC_DATABASE_ID, 
-//       process.env.NEXT_PUBLIC_LEADS,
-//       [
-//         Query.limit(limit),
-//         Query.offset(offset)
-//       ]
-//     );
-
-
-//     const totalResponse = await databases.listDocuments(
-//       process.env.NEXT_PUBLIC_DATABASE_ID, 
-//       process.env.NEXT_PUBLIC_LEADS,
-//       [
-//         Query.limit(1),
-//         Query.offset(0)
-//       ]
-//     );
-
-//     const totalLeads = totalResponse.total;
-
-//     // Exclude collectionId and databaseId from each document
-//     const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
-//     console.log(leads)
-//     return { leads, totalLeads };
-//   } catch (error) {
-//     console.error('Error fetching leads:', error);
-//     throw error;
-//   }
-// };
 
 export const deleteLead = async (leadId) => {
   try {
