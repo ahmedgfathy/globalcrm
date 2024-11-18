@@ -5,7 +5,7 @@ import { Pagination } from 'antd'
 import ClientTable from '@/app/components/ClientTable'
 import { filterData } from './data'
 import { useRouter } from 'next/navigation'
-import { getAllLeads, searchLeadsByName } from '@/actions/leadsAction'
+import { getAllLeads, searchLeads } from '@/actions/leadsAction'
 import { Grid } from '@mui/material'
 import { Input } from '@/components/ui/input'
 import EmptyPage from '@/app/components/EmptyPage'
@@ -13,7 +13,7 @@ import './pagination.css'
 
 function Page() {
   const router = useRouter()
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [leads, setLeads] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [totalLeads, setTotalLeads] = useState(0)
@@ -24,10 +24,12 @@ function Page() {
     const offset = (page - 1) * leadsPerPage
     try {
       if (search) {
-        const leads = await searchLeadsByName(search)
+        console.log('Fetching leads with search term:', search);
+        const leads = await searchLeads(search)
         setLeads(leads)
         setTotalLeads(leads.length)
       } else {
+        console.log('Fetching all leads');
         const { leads, totalLeads } = await getAllLeads(leadsPerPage, offset)
         setLeads(leads)
         setTotalLeads(totalLeads)
@@ -63,6 +65,7 @@ function Page() {
         >
           <div className='w-3/4 h-max max-[450px]:w-full dark:shadow-none rounded-xl'>
             <Input
+            dir={locale== "ar"? "rtl" : "ltr"}
               type='text'
               className='w-full bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md p-2 max-[450px]:py-1'
               placeholder={`${t('search_client')} ...`}
