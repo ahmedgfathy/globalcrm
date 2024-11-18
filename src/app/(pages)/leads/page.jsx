@@ -44,7 +44,7 @@ function Page() {
     }
   };
   const onFilterChange = async (e, data) => {
-    // console.log(data)
+    console.log(e,data)
     if (data === "Request type") {
       const documents = await searchLeadsByType(e)
       setLeads(documents)
