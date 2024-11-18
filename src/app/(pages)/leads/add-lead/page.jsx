@@ -27,14 +27,12 @@ function Page() {
     customerSource: "",
     type: "",
     leadStatus: "",
-    modifiedTime: "",
-    createdTime: "",
     leadImage:""
   });
   const handleChange = (_, field, value) => {
     setLead((prevLead) => ({
       ...prevLead,
-      [field]: field === "number" ? parseInt(value, 10) : value,
+      [field]:  value,
     }));
   };
   const handleDeleteImage = () => {
@@ -64,8 +62,6 @@ function Page() {
         customerSource: "",
         type: "",
         leadStatus: "",
-        modifiedTime: "",
-        createdTime: "",
       });
 
       toast({

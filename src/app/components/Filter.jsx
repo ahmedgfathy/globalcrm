@@ -15,7 +15,7 @@ function Filter({ data }) {
         {data?.map((ele, i) => {
           return (
             <Select key={i}>
-              <SelectTrigger className="w-full md:w-[150px] lg:w-[200px] font-bold text-green-600  bg-green-200 dark:bg-gray-900 dark:text-white">
+              <SelectTrigger className="w-full font-bold text-green-600  bg-green-200 dark:bg-gray-900 dark:text-white">
                 <SelectValue placeholder={ele.filterName} />
               </SelectTrigger>
               <SelectContent className="dark:bg-gray-900 dark:text-white">

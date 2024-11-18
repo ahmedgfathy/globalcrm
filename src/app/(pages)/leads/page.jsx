@@ -13,7 +13,7 @@ import './pagination.css'
 
 function Page() {
   const router = useRouter()
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [leads, setLeads] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [totalLeads, setTotalLeads] = useState(0)
@@ -65,6 +65,7 @@ function Page() {
         >
           <div className='w-3/4 h-max max-[450px]:w-full dark:shadow-none rounded-xl'>
             <Input
+            dir={locale== "ar"? "rtl" : "ltr"}
               type='text'
               className='w-full bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md p-2 max-[450px]:py-1'
               placeholder={`${t('search_client')} ...`}
