@@ -10,29 +10,10 @@ import TableRowComponent from "./TableRowComponent";
 import { CiFilter } from "react-icons/ci";
 import CustomButton from "@/app/components/CustomButton";
 import Filter from "./Filter";
-import { DropdownMenImportExport } from "./leadImport-Export/ImportExport";
+import  DropdownMenImportExport  from "./leadImport-Export/ImportExport";
 
-const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData }) => {
-  const [filterValues, setFilterValues] = useState(
-    filterData.reduce((acc, ele) => {
-      acc[ele.filterName] = ""; 
-      return acc;
-    }, {})
-  );
-  const handleFilterChange = (value, filterName) => {
-    const updatedFilters = { ...filterValues, [filterName]: value };
-    console.log(updatedFilters)
-    setFilterValues(updatedFilters);
-    // onFilterChange(updatedFilters);
-  };
-  const handleClearFilters = () => {
-    const resetFilters = Object.keys(filterValues).reduce((acc, key) => {
-      acc[key] = ""; 
-      return acc;
-    }, {});
-    setFilterValues(resetFilters); 
-    // onFilterChange(resetFilters); 
-  };
+const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterValues,handleFilterChange }) => {
+
   return (
     <div
       className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden"
@@ -48,15 +29,7 @@ const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData }) => {
           filterChange={onFilterChange}
           filterValues={filterValues}
         />
-        <CustomButton
-          title="Clear Filter"
-          icon={() => <CiFilter />}
-          className="GreenButton w-full md:w-fit mt-3 md:mt-0 hidden md:flex"
-          fun={() => {
-            handleClearFilters();
-            afterDel(1, "");
-          }}
-        />
+
       </div>
       <Table className="min-w-full text-start">
         <TableHeader>
@@ -83,7 +56,7 @@ const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData }) => {
               {t("action")}
             </TableHead>
             <TableHead className="min-w-fit text-nowrap p-3 text-end flex h-auto justify-around items-center">
-              <DropdownMenImportExport />
+              <DropdownMenImportExport t={t} />
             </TableHead>
           </TableRow>
         </TableHeader>

@@ -5,17 +5,24 @@ import { Pagination } from "antd";
 import ClientTable from "@/app/components/ClientTable";
 import { filterData } from "./data";
 import { useRouter } from "next/navigation";
-import { getAllLeads, searchLeads, searchLeadsByCustomerSource, searchLeadsByType } from "@/actions/leadsAction";
+import {
+  getAllLeads,
+  searchLeads,
+  searchLeadsByCustomerSource,
+  searchLeadsByType,
+} from "@/actions/leadsAction";
 import { Grid } from "@mui/material";
 import { Input } from "@/components/ui/input";
 import EmptyPage from "@/app/components/EmptyPage";
 import "./pagination.css";
-import { CiSearch } from "react-icons/ci";
+import { CiFilter, CiSearch } from "react-icons/ci";
 import CustomButton from "@/app/components/CustomButton";
 import { IoMdAddCircle } from "react-icons/io";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 function Page() {
   const router = useRouter();
+  const isMobile = useIsMobile()
   const { t, locale } = useTranslation();
   const [leads, setLeads] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,16 +51,16 @@ function Page() {
     }
   };
   const onFilterChange = async (e, data) => {
-    console.log(e,data)
+    console.log(e, data);
     if (data === "Request type") {
-      const documents = await searchLeadsByType(e)
-      setLeads(documents)
-      console.log(documents)
+      const documents = await searchLeadsByType(e);
+      setLeads(documents);
+      console.log(documents);
     }
     if (data === "Leads Source") {
-      const documents = await searchLeadsByCustomerSource(e)
-      setLeads(documents)
-      console.log(documents)
+      const documents = await searchLeadsByCustomerSource(e);
+      setLeads(documents);
+      console.log(documents);
     }
   };
   useEffect(() => {
@@ -67,6 +74,26 @@ function Page() {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+  const [filterValues, setFilterValues] = useState(
+    filterData.reduce((acc, ele) => {
+      acc[ele.filterName] = "";
+      return acc;
+    }, {})
+  );
+  const handleFilterChange = (value, filterName) => {
+    const updatedFilters = { ...filterValues, [filterName]: value };
+    console.log(updatedFilters);
+    setFilterValues(updatedFilters);
+    // onFilterChange(updatedFilters);
+  };
+  const handleClearFilters = () => {
+    const resetFilters = Object.keys(filterValues).reduce((acc, key) => {
+      acc[key] = "";
+      return acc;
+    }, {});
+    setFilterValues(resetFilters);
+    // onFilterChange(resetFilters);
   };
 
   return (
@@ -100,12 +127,23 @@ function Page() {
                 onChange={handleSearchChange}
               />
             </div>
-            <CustomButton
-              fun={() => router.push("/leads/add-lead")}
-              title={t("add_lead")}
-              className="GreenButton p-2"
-              icon={() => <IoMdAddCircle />}
-            />
+            <div className="flex gap-2 items-center">
+              <CustomButton
+                fun={() => router.push("/leads/add-lead")}
+                title={!isMobile && t("add_lead")}
+                className="GreenButton p-2"
+                icon={() => <IoMdAddCircle />}
+              />
+              <CustomButton
+                title={ !isMobile && "Clear Filter"}
+                icon={() => <CiFilter />}
+                className="GreenButton w-full md:w-fit"
+                fun={() => {
+                  handleClearFilters();
+                  fetchLeads(1, "");
+                }}
+              />
+            </div>
           </div>
         </Grid>
       </Grid>
@@ -120,6 +158,8 @@ function Page() {
           afterDel={fetchLeads}
           onAddLead={() => router.push("/leads/add-lead")}
           filterData={filterData}
+          filterValues={filterValues}
+          handleFilterChange={handleFilterChange}
         />
       </div>
       <div className="flex justify-center mt-4" dir="ltr">
