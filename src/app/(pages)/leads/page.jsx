@@ -59,7 +59,7 @@ function Page() {
           sm={7}
           md={11.3}
           lg={11.4}
-          className='flex items-center justify-between gap-2'
+          className='flex items-center justify-end gap-2'
         >
           <div className='w-3/4 h-max max-[450px]:w-full dark:shadow-none rounded-xl'>
             <Input

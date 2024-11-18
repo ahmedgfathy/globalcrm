@@ -181,7 +181,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             options: [
                 { value: 'inside', label: 'داخل كمبوند' },
                 { value: 'outside', label: 'خارج كمبوند' },
-                { value: 'مناطق تجاريه', label: 'مناطق تجاريه' }
+                { value: 'another', label: 'مناطق تجاريه' }
             ],
         },
         { id: 12, type: 'input', label: 'total_price', idField: 'totalPrice', defaultValue: props?.unit?.totalPrice },
