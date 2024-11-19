@@ -12,7 +12,7 @@ import CustomButton from "@/app/components/CustomButton";
 import Filter from "./Filter";
 import  DropdownMenImportExport  from "./leadImport-Export/ImportExport";
 
-const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterValues,handleFilterChange }) => {
+const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterValues,handleFilterChange, handleImportCSV, handleExportCSV }) => {
 
   return (
     <div
@@ -56,7 +56,7 @@ const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterV
               {t("action")}
             </TableHead>
             <TableHead className="min-w-fit text-nowrap p-3 text-end flex h-auto justify-around items-center">
-              <DropdownMenImportExport t={t} />
+              <DropdownMenImportExport t={t} handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />
             </TableHead>
           </TableRow>
         </TableHeader>

@@ -7,6 +7,7 @@ import { filterData } from "./data";
 import { useRouter } from "next/navigation";
 import {
   getAllLeads,
+  importLeads,
   searchLeads,
   searchLeadsByCustomerSource,
   searchLeadsByType,
@@ -19,8 +20,12 @@ import { CiFilter, CiSearch } from "react-icons/ci";
 import CustomButton from "@/app/components/CustomButton";
 import { IoMdAddCircle } from "react-icons/io";
 import { useIsMobile } from "@/hooks/use-mobile";
+import Papa from "papaparse";
+import { useToast } from "@/hooks/use-toast";
 
 function Page() {
+  const {toast} = useToast();
+
   const router = useRouter();
   const isMobile = useIsMobile()
   const { t, locale } = useTranslation();
@@ -95,7 +100,88 @@ function Page() {
     setFilterValues(resetFilters);
     // onFilterChange(resetFilters);
   };
+  const handleExportCSV = async () => {
+    try {
+      const { leads } = await getAllLeads(10000, 0);
+      if (!leads || leads.length === 0) {
+        toast({
+          variant: "destructive",
+          title: "Error Export Leads",
+          description: error.message || "No leads available to export.",
+          status: "error",
+        });
+        return;
+      }
+      const csv = Papa.unparse(leads);
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "leads.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast({
+        variant: "success",
+        title: "Success Export Leads",
+        description: "Leads exported successfully.",
+        status: "success",
+      });
+    } catch (error) {
+      console.error("Error exporting leads:", error);
+      alert("Failed to export leads.");
+    }
+  };
+  const handleImportCSV = (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+      alert("No file selected.");
+      return;
+    }
 
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: async (results) => {
+        if (results.errors.length > 0) {
+          console.error("Parsing errors:", results.errors);
+          toast({
+            variant: "destructive",
+            title: "Invalid file format.",
+            description: "Please ensure the file is in CSV format.",
+            status: "error",
+          });
+          return;
+        }
+        try {
+          await importLeads(results.data);
+          toast({
+            variant: "success",
+            title: "Success import Leads",
+            description: "Leads imported successfully!",
+            status: "success",
+          });
+        } catch (error) {
+          console.error("Error importing leads:", error);
+          toast({
+            variant: "destructive",
+            title: "Error importing leads:",
+            description: error.message || "Failed to import leads.",
+            status: "error",
+          });
+        }
+      },
+      error: (error) => {
+        console.error("Error parsing file:", error);
+        toast({
+          variant: "destructive",
+          title: "Error importing leads:",
+          description: "Failed to read the CSV file.",
+          status: "error",
+        });
+      },
+    });
+  };
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <Grid className="w-full my-2" dir="ltr">
@@ -153,6 +239,8 @@ function Page() {
       >
         <ClientTable
           clients={leads}
+          handleExportCSV={handleExportCSV}
+          handleImportCSV={handleImportCSV}
           t={t}
           onFilterChange={onFilterChange}
           afterDel={fetchLeads}

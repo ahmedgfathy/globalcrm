@@ -192,7 +192,20 @@ export const searchLeadsByCustomerSource = async (searchTerm) => {
   }
 };
 
-
+export const importLeads = async(data)=>{
+  try {
+    console.log('Importing leads:', data);
+    // const response = await databases.createDocument(
+    //   process.env.NEXT_PUBLIC_DATABASE_ID,
+    //   process.env.NEXT_PUBLIC_LEADS,
+    // )
+    // console.log('Raw response:', response);
+    // return response;
+  } catch(error){
+    console.error('Error Import', error);
+    throw error;
+  }
+}
 
 // Mock data for testing
 // const mockLead = {
