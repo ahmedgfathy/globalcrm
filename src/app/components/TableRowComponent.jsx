@@ -24,7 +24,7 @@ const TableRowComponent = ({ client, t, afterDel }) => (
     <TableCell className='p-3 flex gap-3'>
       <Link
         href={`leads/${client.$id}`}
-        className='px-4 py-2 bg-blue-600 text-white rounded-md'
+        className='px-4 py-2 bg-yale_blue-700 text-white rounded-md'
       >
         <span className='inline-block max-sm:hidden'>{t('more_details')}</span>
         <span className='hidden max-sm:inline-block'>{t('more')}</span>
