@@ -252,6 +252,33 @@ export const importLeads = async (data) => {
   }
 };
 
+export const deleteAllLeads = async () => {
+  try {
+    // Fetch all leads
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS
+    );
+
+    // Delete each lead individually
+    const deletePromises = response.documents.map((document) =>
+      databases.deleteDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_LEADS,
+        document.$id
+      )
+    );
+
+    // Wait for all delete operations to complete
+    await Promise.all(deletePromises);
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting all leads:', error);
+    throw error;
+  }
+};
+
 // Mock data for testing
 // const mockLead = {
 //   name: "Example Name",
