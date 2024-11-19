@@ -47,6 +47,44 @@ export const getAllLeads = async (limit = 10, offset = 0) => {
   }
 };
 
+export const exportLeads = async () => {
+  try {
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      [
+        Query.orderDesc('$createdAt')
+      ]
+    );
+
+    const totalResponse = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      [
+        Query.limit(1),
+        Query.offset(0)
+      ]
+    );
+
+    const totalLeads = totalResponse.total;
+
+    const leads = response.documents.map(({ 
+      $collectionId, 
+      $databaseId, 
+      $id, 
+      $permissions, 
+      $updatedAt, 
+      ...rest 
+    }) => rest);
+
+    console.log(leads);
+    return { leads, totalLeads };
+  } catch (error) {
+    console.error('Error exporting leads:', error);
+    throw error;
+  }
+};
+
 
 export const deleteLead = async (leadId) => {
   try {
@@ -192,20 +230,27 @@ export const searchLeadsByCustomerSource = async (searchTerm) => {
   }
 };
 
-export const importLeads = async(data)=>{
+export const importLeads = async (data) => {
   try {
     console.log('Importing leads:', data);
-    // const response = await databases.createDocument(
-    //   process.env.NEXT_PUBLIC_DATABASE_ID,
-    //   process.env.NEXT_PUBLIC_LEADS,
-    // )
-    // console.log('Raw response:', response);
-    // return response;
-  } catch(error){
-    console.error('Error Import', error);
+    const responses = await Promise.all(
+      data.map(async (lead) => {
+        const response = await databases.createDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID,
+          process.env.NEXT_PUBLIC_LEADS,
+          ID.unique(), // Unique document ID
+          lead // Lead data
+        );
+        return response;
+      })
+    );
+    console.log('Raw responses:', responses);
+    return responses;
+  } catch (error) {
+    console.error('Error importing leads:', error);
     throw error;
   }
-}
+};
 
 // Mock data for testing
 // const mockLead = {

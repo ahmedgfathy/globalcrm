@@ -5,12 +5,14 @@ import { Pagination } from "antd";
 import ClientTable from "@/app/components/ClientTable";
 import { filterData } from "./data";
 import { useRouter } from "next/navigation";
+import { Spin } from 'antd';
 import {
   getAllLeads,
   importLeads,
   searchLeads,
   searchLeadsByCustomerSource,
   searchLeadsByType,
+  exportLeads,
 } from "@/actions/leadsAction";
 import { Grid } from "@mui/material";
 import { Input } from "@/components/ui/input";
@@ -35,10 +37,12 @@ function Page() {
   const [typeFilter, setTypeFilter] = useState("");
   const [customerSourceFilter, setCustomerSourceFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const leadsPerPage = 10;
 
   const fetchLeads = async (page = 1, search = "") => {
     const offset = (page - 1) * leadsPerPage;
+    setIsLoading(true);
     try {
       if (search) {
         console.log("Fetching leads with search term:", search);
@@ -53,6 +57,9 @@ function Page() {
       }
     } catch (error) {
       console.error("Error fetching leads:", error);
+    }
+    finally {
+      setIsLoading(false); // Set loading state to false
     }
   };
   const onFilterChange = async (e, data) => {
@@ -102,7 +109,7 @@ function Page() {
   };
   const handleExportCSV = async () => {
     try {
-      const { leads } = await getAllLeads(10000, 0);
+      const { leads } = await exportLeads();
       if (!leads || leads.length === 0) {
         toast({
           variant: "destructive",
@@ -233,32 +240,40 @@ function Page() {
           </div>
         </Grid>
       </Grid>
-      <div
-        className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden"
-        dir="rtl"
-      >
-        <ClientTable
-          clients={leads}
-          handleExportCSV={handleExportCSV}
-          handleImportCSV={handleImportCSV}
-          t={t}
-          onFilterChange={onFilterChange}
-          afterDel={fetchLeads}
-          onAddLead={() => router.push("/leads/add-lead")}
-          filterData={filterData}
-          filterValues={filterValues}
-          handleFilterChange={handleFilterChange}
-        />
-      </div>
-      <div className="flex justify-center mt-4" dir="ltr">
-        <Pagination
-          current={currentPage}
-          total={totalLeads}
-          pageSize={leadsPerPage}
-          onChange={handlePageChange}
-          className="custom-pagination"
-        />
-      </div>
+      {isLoading ? (
+  <div className="flex justify-center items-center h-full">
+    <Spin className="mt-5" size="large" />
+  </div>
+) : (
+  <div
+    className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden"
+    dir="rtl"
+  >
+    <ClientTable
+      clients={leads}
+      handleExportCSV={handleExportCSV}
+      handleImportCSV={handleImportCSV}
+      t={t}
+      onFilterChange={onFilterChange}
+      afterDel={fetchLeads}
+      onAddLead={() => router.push('/leads/add-lead')}
+      filterData={filterData}
+      filterValues={filterValues}
+      handleFilterChange={handleFilterChange}
+    />
+  </div>
+)}
+      {!isLoading && (
+        <div className="flex justify-center mt-4" dir="ltr">
+          <Pagination
+            current={currentPage}
+            total={totalLeads}
+            pageSize={leadsPerPage}
+            onChange={handlePageChange}
+            className="custom-pagination"
+          />
+        </div>
+      )}
     </div>
   );
 }
