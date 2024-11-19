@@ -5,17 +5,29 @@ import { Pagination } from "antd";
 import ClientTable from "@/app/components/ClientTable";
 import { filterData } from "./data";
 import { useRouter } from "next/navigation";
-import { getAllLeads, searchLeads, searchLeadsByCustomerSource, searchLeadsByType } from "@/actions/leadsAction";
+import {
+  getAllLeads,
+  importLeads,
+  searchLeads,
+  searchLeadsByCustomerSource,
+  searchLeadsByType,
+} from "@/actions/leadsAction";
 import { Grid } from "@mui/material";
 import { Input } from "@/components/ui/input";
 import EmptyPage from "@/app/components/EmptyPage";
 import "./pagination.css";
-import { CiSearch } from "react-icons/ci";
+import { CiFilter, CiSearch } from "react-icons/ci";
 import CustomButton from "@/app/components/CustomButton";
 import { IoMdAddCircle } from "react-icons/io";
+import { useIsMobile } from "@/hooks/use-mobile";
+import Papa from "papaparse";
+import { useToast } from "@/hooks/use-toast";
 
 function Page() {
+  const {toast} = useToast();
+
   const router = useRouter();
+  const isMobile = useIsMobile()
   const { t, locale } = useTranslation();
   const [leads, setLeads] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,16 +56,16 @@ function Page() {
     }
   };
   const onFilterChange = async (e, data) => {
-    console.log(e,data)
+    console.log(e, data);
     if (data === "Request type") {
-      const documents = await searchLeadsByType(e)
-      setLeads(documents)
-      console.log(documents)
+      const documents = await searchLeadsByType(e);
+      setLeads(documents);
+      console.log(documents);
     }
     if (data === "Leads Source") {
-      const documents = await searchLeadsByCustomerSource(e)
-      setLeads(documents)
-      console.log(documents)
+      const documents = await searchLeadsByCustomerSource(e);
+      setLeads(documents);
+      console.log(documents);
     }
   };
   useEffect(() => {
@@ -68,7 +80,108 @@ function Page() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+  const [filterValues, setFilterValues] = useState(
+    filterData.reduce((acc, ele) => {
+      acc[ele.filterName] = "";
+      return acc;
+    }, {})
+  );
+  const handleFilterChange = (value, filterName) => {
+    const updatedFilters = { ...filterValues, [filterName]: value };
+    console.log(updatedFilters);
+    setFilterValues(updatedFilters);
+    // onFilterChange(updatedFilters);
+  };
+  const handleClearFilters = () => {
+    const resetFilters = Object.keys(filterValues).reduce((acc, key) => {
+      acc[key] = "";
+      return acc;
+    }, {});
+    setFilterValues(resetFilters);
+    // onFilterChange(resetFilters);
+  };
+  const handleExportCSV = async () => {
+    try {
+      const { leads } = await getAllLeads(10000, 0);
+      if (!leads || leads.length === 0) {
+        toast({
+          variant: "destructive",
+          title: "Error Export Leads",
+          description: error.message || "No leads available to export.",
+          status: "error",
+        });
+        return;
+      }
+      const csv = Papa.unparse(leads);
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "leads.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast({
+        variant: "success",
+        title: "Success Export Leads",
+        description: "Leads exported successfully.",
+        status: "success",
+      });
+    } catch (error) {
+      console.error("Error exporting leads:", error);
+      alert("Failed to export leads.");
+    }
+  };
+  const handleImportCSV = (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+      alert("No file selected.");
+      return;
+    }
 
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: async (results) => {
+        if (results.errors.length > 0) {
+          console.error("Parsing errors:", results.errors);
+          toast({
+            variant: "destructive",
+            title: "Invalid file format.",
+            description: "Please ensure the file is in CSV format.",
+            status: "error",
+          });
+          return;
+        }
+        try {
+          await importLeads(results.data);
+          toast({
+            variant: "success",
+            title: "Success import Leads",
+            description: "Leads imported successfully!",
+            status: "success",
+          });
+        } catch (error) {
+          console.error("Error importing leads:", error);
+          toast({
+            variant: "destructive",
+            title: "Error importing leads:",
+            description: error.message || "Failed to import leads.",
+            status: "error",
+          });
+        }
+      },
+      error: (error) => {
+        console.error("Error parsing file:", error);
+        toast({
+          variant: "destructive",
+          title: "Error importing leads:",
+          description: "Failed to read the CSV file.",
+          status: "error",
+        });
+      },
+    });
+  };
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <Grid className="w-full my-2" dir="ltr">
@@ -100,12 +213,23 @@ function Page() {
                 onChange={handleSearchChange}
               />
             </div>
-            <CustomButton
-              fun={() => router.push("/leads/add-lead")}
-              title={t("add_lead")}
-              className="GreenButton p-2"
-              icon={() => <IoMdAddCircle />}
-            />
+            <div className="flex gap-2 items-center">
+              <CustomButton
+                fun={() => router.push("/leads/add-lead")}
+                title={!isMobile && t("add_lead")}
+                className="GreenButton p-2"
+                icon={() => <IoMdAddCircle />}
+              />
+              <CustomButton
+                title={ !isMobile && "Clear Filter"}
+                icon={() => <CiFilter />}
+                className="GreenButton w-full md:w-fit"
+                fun={() => {
+                  handleClearFilters();
+                  fetchLeads(1, "");
+                }}
+              />
+            </div>
           </div>
         </Grid>
       </Grid>
@@ -115,11 +239,15 @@ function Page() {
       >
         <ClientTable
           clients={leads}
+          handleExportCSV={handleExportCSV}
+          handleImportCSV={handleImportCSV}
           t={t}
           onFilterChange={onFilterChange}
           afterDel={fetchLeads}
           onAddLead={() => router.push("/leads/add-lead")}
           filterData={filterData}
+          filterValues={filterValues}
+          handleFilterChange={handleFilterChange}
         />
       </div>
       <div className="flex justify-center mt-4" dir="ltr">
