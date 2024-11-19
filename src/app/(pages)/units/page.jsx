@@ -9,7 +9,7 @@ import { Pagination } from "antd";
 import { Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import CustomButton from "@/app/components/CustomButton";
-import { DropdownMenImportExport } from "@/app/components/leadImport-Export/ImportExport";
+import  DropdownMenImportExport  from "@/app/components/leadImport-Export/ImportExport";
 import { getAllProperties } from "@/actions/propertiesAction";
 // import "./pagination.css"
 
@@ -21,7 +21,26 @@ function Page() {
   const [totalUnits, setTotalUnits] = useState(0);
   const UnitsPerPage = 10;
 
-
+  const [filterValues, setFilterValues] = useState(
+    filterData.reduce((acc, ele) => {
+      acc[ele.filterName] = ""; 
+      return acc;
+    }, {})
+  );
+  const handleFilterChange = (value, filterName) => {
+    const updatedFilters = { ...filterValues, [filterName]: value };
+    console.log(updatedFilters)
+    setFilterValues(updatedFilters);
+    // onFilterChange(updatedFilters);
+  };
+  const handleClearFilters = () => {
+    const resetFilters = Object.keys(filterValues).reduce((acc, key) => {
+      acc[key] = ""; 
+      return acc;
+    }, {});
+    setFilterValues(resetFilters); 
+    // onFilterChange(resetFilters); 
+  };
   const fetchUnits = async (page = 1) => {
     const offset = (page - 1) * UnitsPerPage;
     try {
@@ -43,6 +62,9 @@ function Page() {
     setCurrentPage(page);
   };
 
+  const onFilterChange = ()=>{
+    console.log("filter")
+  }
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full flex flex-wrap justify-between items-start gap-3 px-2 pt-2 max-[1200px]:px-7">
@@ -64,11 +86,15 @@ function Page() {
             </div>
           </Grid>
         </Grid>
-
+ 
 
         <div className="filter bg-Lightbg dark:bg-transparent rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex justify-end max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none" dir="ltr">
           <div className="filter w-full md:w-full">
-            <Filter data={filterData} />
+            <Filter
+            filterChange={onFilterChange}
+            filterValues={filterValues}
+            onFilterChange={handleFilterChange}
+            data={filterData} />
           </div>
           <DropdownMenImportExport />
         </div>

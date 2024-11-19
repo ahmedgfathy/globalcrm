@@ -14,10 +14,9 @@ function SheetCalls({ isDisabled, handleChange, lead }) {
   ];
 
   const CustomerSourceData = [
-    { value: "Ahmed", label: "Ahmed" },
-    { value: "khalid", label: "Khalid" },
-    { value: "Yaser", label: "Yaser" },
-    { value: "Ali", label: "Ali" },
+    {id:1, label: "facebook", value: "facebook"},
+    {id:2, label: "whatsapp", value: "whatsapp"},
+    {id:3, label: "youtupe", value: "youtupe"},
   ];
 
   const LeadStatus = [
@@ -32,11 +31,11 @@ function SheetCalls({ isDisabled, handleChange, lead }) {
   ];
 
   const Type = [
-    { value: "داخل الكومباوند", label: "داخل الكومباوند" },
-    { value: "محل تجاري", label: "محل تجاري" },
-    { value: "اداري مرخص", label: "اداري مرخص" },
-    { value: "اداري غير مرخص", label: "اداري غير مرخص" },
-    { value: "سكني خارج الكومباوند", label: "سكني خارج الكومباوند" },
+    {id:1, label: "Apartment", value: "apartment"},
+    {id:2, label: "Villa", value: "villa"},
+    {id:3, label: "Twinhouse", value: "twinhouse"},
+    {id:4, label: "Townhouse", value: "townhouse"},
+    {id:5, label: "Duplex", value: "duplex"},
   ];
 
   const defaultValues = {
