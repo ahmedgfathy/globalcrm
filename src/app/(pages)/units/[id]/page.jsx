@@ -3,7 +3,7 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import React, { useState, useEffect } from 'react';
 import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
 import { Box, Grid, Tab ,Tabs } from "@mui/material";
-import { getPropertyById, updatePropertyByID } from "@/actions/propertiesAction";
+import { getPropertyById, updatePropertyByID, uploadPropertyImages } from "@/actions/propertiesAction";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
@@ -13,6 +13,8 @@ function Page({ params }) {
   const { locale, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(0);
   const [unit, setUnit] = useState({})
+  const [images, setImages] = useState([]);
+  const [imagesFile, setImagesFile] = useState([]);
 
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
@@ -30,6 +32,25 @@ function Page({ params }) {
       console.log(unitData)
     } catch (error) {
       console.error("Error fetching leads:", error);
+    }
+  };
+  const handleImageChange = async (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+        reader.onload = (e) => {
+        setImages((prevImages) => [...prevImages, e.target.result]);
+      };
+      reader.readAsDataURL(file);
+        setImagesFile((prevFiles) => [...prevFiles, file]);
+        try {
+        const response = await uploadPropertyImages(file);
+        console.log(response)
+        setUnit((prevLead) => ({ ...prevLead, propertyImage: [...prevLead.propertyImage, response.fileUrl] }));
+        console.log("Image uploaded successfully:", response);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
     }
   };
   useEffect(() => {
@@ -109,6 +130,7 @@ function Page({ params }) {
             unit={unit}
             page="view"
             handleChange={handleChange}
+            handleImageChange={handleImageChange}
             handleSubmit={handleSubmit}
             title={t("unit_details")}
             description="Add Unit"

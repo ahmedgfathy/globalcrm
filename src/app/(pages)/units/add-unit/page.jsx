@@ -79,9 +79,8 @@ const router = useRouter();
     }
   };
 
-  const handleDeleteImage = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-    setImagesFile((prevImageFiles) => prevImageFiles.filter((_, i) => i !== index));
+  const handleDeleteImage = async (index, id) => {
+    console.log(index, id)
   };
 
 

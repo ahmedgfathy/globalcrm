@@ -47,7 +47,7 @@ export default function MultibleImages({
                                                 <Button
                                                     size="icon"
                                                     variant="destructive"
-                                                    onClick={() => handleDeleteImage(index)}
+                                                    onClick={() => handleDeleteImage(index, image)}
                                                     disabled={isDisabled}
                                                 >
                                                     <Trash2 className="h-4 w-4" />
