@@ -1,6 +1,6 @@
 import { databases, ID,  } from '@/services/appwrite/client';
 import {Query} from "appwrite"
-import { deleteProperty } from '@/actions/propertiesAction';
+
 
 export const addProperty = async (property) => {
   try {
