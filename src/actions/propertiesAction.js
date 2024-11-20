@@ -152,6 +152,61 @@ export const deletePropertyImage = async (fileId) => {
     throw error;
   }
 }
+
+
+export const togglePropertyLiked = async (propertyId) => {
+  try {
+
+    const document = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      propertyId
+    );
+
+
+    const updatedLiked = !document.liked;
+
+    // Update the document with the new liked value
+    const updatedDocument = await databases.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      propertyId,
+      { liked: updatedLiked }
+    );
+
+    console.log('Updated document:', updatedDocument);
+    return updatedDocument;
+  } catch (error) {
+    console.error('Error toggling liked field:', error);
+    throw error;
+  }
+};
+
+export const togglePropertyInHome = async (propertyId) => {
+  try {
+    const document = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      propertyId
+    );
+
+    const updatedInHome = !document.inHome;
+
+    const updatedDocument = await databases.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      propertyId,
+      { inHome: updatedInHome }
+    );
+
+    console.log('Updated document:', updatedDocument);
+    return updatedDocument;
+  } catch (error) {
+    console.error('Error toggling inHome field:', error);
+    throw error;
+  }
+};
+
 // Mock data for testing
 // const mockProperty = {
 //   name: "Example Property",
