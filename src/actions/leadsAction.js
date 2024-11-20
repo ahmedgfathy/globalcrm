@@ -2,7 +2,6 @@ import { databases, ID ,storage } from '@/services/appwrite/client';
 import {Query} from "appwrite"
 export const addLead = async (lead) => {
   try {
-    // Fetch the latest document to get the current highest lead number
     const latestDocumentResponse = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_LEADS,
@@ -26,10 +25,10 @@ export const addLead = async (lead) => {
     const leadWithNumber = { ...lead, leadNumber };
 
     const response = await databases.createDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
-      process.env.NEXT_PUBLIC_LEADS, // Collection ID
-      ID.unique(), // Unique document ID
-      leadWithNumber // Lead data with incremented lead number
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_LEADS, 
+      ID.unique(), 
+      leadWithNumber 
     );
 
     return response;
@@ -113,9 +112,9 @@ export const exportLeads = async () => {
 export const deleteLead = async (leadId) => {
   try {
     const response = await databases.deleteDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
-      process.env.NEXT_PUBLIC_LEADS, // Collection ID
-      leadId // Document ID
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_LEADS, 
+      leadId 
     );
     return response;
   } catch (error) {
@@ -299,6 +298,53 @@ export const deleteAllLeads = async () => {
     return { success: true };
   } catch (error) {
     console.error('Error deleting all leads:', error);
+    throw error;
+  }
+};
+
+export const searchLeadsByLeadStatus = async (searchTerm) => {
+  try {
+    console.log('Searching for leads with lead status:', searchTerm);
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      [
+        Query.contains('leadStatus', searchTerm)
+      ]
+    );
+
+    console.log('Raw response:', response);
+
+    // Exclude collectionId and databaseId from each document
+    const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log('Processed leads:', leads);
+    return leads;
+  } catch (error) {
+    console.error('Error searching for leads by lead status:', error);
+    throw error;
+  }
+};
+
+
+export const searchLeadsByClass = async (searchTerm) => {
+  try {
+    console.log('Searching for leads with class:', searchTerm);
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      [
+        Query.contains('class', searchTerm)
+      ]
+    );
+
+    console.log('Raw response:', response);
+
+    // Exclude collectionId and databaseId from each document
+    const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log('Processed leads:', leads);
+    return leads;
+  } catch (error) {
+    console.error('Error searching for leads by class:', error);
     throw error;
   }
 };
