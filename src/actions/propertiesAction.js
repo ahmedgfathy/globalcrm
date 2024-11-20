@@ -1,5 +1,6 @@
 import { databases, ID,  } from '@/services/appwrite/client';
 import {Query} from "appwrite"
+import { deleteProperty } from '@/actions/propertiesAction';
 
 export const addProperty = async (property) => {
   try {
@@ -118,6 +119,19 @@ export const uploadPropertyImages = async (files) => {
     throw error;
   }
 };
+
+export const deletePropertyImage = async (fileId) => {
+  try {
+    const response = await storage.deleteFile(
+      process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, // Bucket ID
+      fileId // File ID
+    );
+    return response;
+  } catch (error) {
+    console.error('Error deleting property image:', error);
+    throw error;
+  }
+}
 // Mock data for testing
 // const mockProperty = {
 //   name: "Example Property",
