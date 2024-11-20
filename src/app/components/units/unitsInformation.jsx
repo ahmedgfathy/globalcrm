@@ -5,45 +5,95 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
-import ImageSection from "../user-components/utils/ImageSection";
 import CardHeader from "./utils/CardHeader";
 import VideoSection from "./utils/VideoSection";
+import MultibleImages from "./utils/MultibleImages";
+import { uploadPropertyImages } from "@/actions/propertiesAction";
 
 
 
 export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...props }) {
     const { t } = useTranslation();
-    const [image, setImage] = useState("/assets/images/unit-image.jpeg");
-    const [video, setVideo] = useState("/assets/videos/units-video.mp4");  // Default video path
-  
+    const [images, setImages] = useState([]);
+    const [video, setVideo] = useState("/assets/videos/units-video.mp4");
+
     useEffect(() => {
-      const defaultImage = "/assets/images/unit-image.jpeg";
-      setImage(defaultImage);
-      setIsDisabled(page === "add" ? false : isDisabled);
+        const defaultImage = ["/assets/images/unit-image.jpeg"];
+        setImages(defaultImage);
+        setIsDisabled(page === "add" ? false : isDisabled);
     }, [page, setIsDisabled, isDisabled]);
-  
-    const handleImageChange = (event) => {
-      const file = event.target.files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => setImage(e.target.result);
-        reader.readAsDataURL(file);
-      }
+
+    // const handleImageChange = (e, index) => {
+    //     const files = Array.from(e.target.files);
+    //     if (files && files.length > 0) {
+    //         const newImages = [...images];
+    //         if (index >= 0 && index < images.length) {
+    //             newImages[index] = URL.createObjectURL(files[0]);
+    //         } else {
+    //             files.forEach((file) => {
+    //                 newImages.push(URL.createObjectURL(file));
+    //             });
+    //         }
+    //         setImages(newImages);
+    //     }
+    // };
+
+    const handleImageChange = async (event, index = null) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+          const uploadedFiles = Array.from(files);
+      
+          try {
+            const uploadedImages = await uploadPropertyImages(uploadedFiles);
+      
+            const imageUrls = uploadedImages.map((file) => file.fileUrl);
+      
+            setUnit((prevUnit) => ({
+              ...prevUnit,
+              UnitImages: index === null 
+                ? [...(prevUnit.UnitImages || []), ...imageUrls] 
+                : prevUnit.UnitImages.map((img, i) => (i === index ? imageUrls[0] : img)),
+            }));
+      
+            const imagePreviews = uploadedFiles.map((file) => URL.createObjectURL(file));
+            setImages((prevImages) => 
+              index === null 
+                ? [...prevImages, ...imagePreviews]
+                : prevImages.map((img, i) => (i === index ? imagePreviews[0] : img))
+            );
+      
+            setImagesFile((prevImagesFile) => 
+              index === null 
+                ? [...prevImagesFile, ...uploadedFiles]
+                : prevImagesFile.map((file, i) => (i === index ? uploadedFiles[0] : file))
+            );
+      
+            console.log("Images uploaded successfully:", uploadedImages);
+          } catch (error) {
+            console.error("Error uploading image:", error);
+            toast({
+              variant: "destructive",
+              title: "Error Uploading Image",
+              description: "There was an error uploading the images.",
+            });
+          }
+        }
+      };
+      
+    const handleDeleteImage = (index) => {
+        setImages((prev) => prev.filter((_, i) => i !== index));
     };
-  
-    const handleDeleteImage = () => setImage("/assets/images/unit-image.jpeg");
-  
     const handleVideoChange = (event) => {
-      const file = event.target.files?.[0];
-      if (file) {
-        setVideo(URL.createObjectURL(file));
-      }
+        const file = event.target.files?.[0];
+        if (file) {
+            setVideo(URL.createObjectURL(file));
+        }
     };
-  
+
     const handleDeleteVideo = () => {
-      setVideo("/assets/videos/units-video.mp4");  // Reset to default video
+        setVideo("/assets/videos/units-video.mp4");
     };
-  
+
     const fieldsData = [
         { id: 1, type: 'input', label: 'property_number', idField: 'propertyNumber', defaultValue: props?.unit?.propertyNumber },
         {
@@ -171,7 +221,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
 
             ],
         },
-        { id: 10, type: 'input', label: 'props_of_unit', idField: 'unitFeatures', defaultValue: props?.unit?.unitFeatures},
+        { id: 10, type: 'input', label: 'props_of_unit', idField: 'unitFeatures', defaultValue: props?.unit?.unitFeatures },
         {
             id: 11,
             type: 'select',
@@ -205,7 +255,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
     ];
 
     return (
-        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-4 overflow-x-hidden">
+        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-4 overflow-x-hidden" >
             <CardHeader
                 handleSubmit={props.handleSubmit}
                 title={props.title}
@@ -253,9 +303,9 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                                 </div>
                             </div>
                         </div>
-                        <ImageSection
-                            image={image}
-                            handleImageChange={handleImageChange}
+                        <MultibleImages
+                            images={images}
+                            handleImageChange={props?.handleImageChange}
                             handleDeleteImage={handleDeleteImage}
                             isDisabled={isDisabled}
                         />

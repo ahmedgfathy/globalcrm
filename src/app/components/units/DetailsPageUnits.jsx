@@ -9,32 +9,51 @@ import PricingInformation from "./PricingInformation";
 import UnitImageInformation from "./UnitImageInformation";
 import CollapsibleComponent from "../CollapsibleComponent";
 
-const DetailsPageUnits = ({ page, handleChange, handleSubmit, title, unit }) => {
+const DetailsPageUnits = ({
+    page,
+    handleChange,
+    handleSubmit,
+    title,
+    unit,
+    handleImageChange,
+    handleDeleteImage,
+    images
+}) => {
     const items = [
         {
             key: "1",
             label: "Unit Informations",
-            children: <UnitsInformation page={page} handleSubmit={handleSubmit} handleChange={handleChange}  title={title} unit={unit}/>,
+            children: <UnitsInformation
+                page={page}
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                title={title}
+                unit={unit}
+                images={images}
+                handleImageChange={handleImageChange}
+                handleDeleteImage={handleDeleteImage}
+
+            />,
         },
         {
             key: "2",
             label: "Custom Information",
-            children: <CustomInformation page={page} handleChange={handleChange}  unit={unit} />,
+            children: <CustomInformation page={page} handleChange={handleChange} unit={unit} />,
         },
         {
             key: "3",
             label: "Sales Information",
-            children: <SalesInformation page={page} handleChange={handleChange}  unit={unit} />,
+            children: <SalesInformation page={page} handleChange={handleChange} unit={unit} />,
         },
         {
             key: "4",
             label: "Unit Details",
-            children: <UnitsDetails page={page} handleChange={handleChange}  unit={unit} />,
+            children: <UnitsDetails page={page} handleChange={handleChange} unit={unit} />,
         },
         {
             key: "5",
             label: "Pricing Information",
-            children: <PricingInformation page={page} handleChange={handleChange}  unit={unit} />,
+            children: <PricingInformation page={page} handleChange={handleChange} unit={unit} />,
         },
         {
             key: "6",
