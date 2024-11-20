@@ -1,4 +1,4 @@
-import { databases, ID,  } from '@/services/appwrite/client';
+import { databases, ID, storage } from '@/services/appwrite/client';
 import {Query} from "appwrite"
 
 export const addProperty = async (property) => {
