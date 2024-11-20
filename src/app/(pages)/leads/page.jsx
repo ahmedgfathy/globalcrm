@@ -27,6 +27,7 @@ import { IoMdAddCircle } from 'react-icons/io'
 import { useIsMobile } from '@/hooks/use-mobile'
 import Papa from 'papaparse'
 import { useToast } from '@/hooks/use-toast'
+import DeleteButton from '../../components/delete-button/DeleteButton'
 
 function Page() {
   const { toast } = useToast()
@@ -239,19 +240,15 @@ function Page() {
                   fetchLeads(1, '')
                 }}
               />
-              <CustomButton
-                fun={async () => {
-                  await deleteAllLeads()
-                  fetchLeads(
-                    currentPage,
-                    searchTerm,
-                    typeFilter,
-                    customerSourceFilter
-                  )
-                }}
+              <DeleteButton
+              handleDelete={deleteAllLeads}
                 title={!isMobile && t('delete all leads')}
-                className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg'
-                icon={() => <MdDeleteForever />} // Replace with a delete icon if available
+                afterDel={()=>fetchLeads(
+                  currentPage,
+                  searchTerm,
+                  typeFilter,
+                  customerSourceFilter
+                )}
               />
             </div>
           </div>
