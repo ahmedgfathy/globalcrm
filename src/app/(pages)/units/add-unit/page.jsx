@@ -5,49 +5,51 @@ import { Box, Grid, Tab, Tabs } from "@mui/material";
 import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { addProperty } from "@/actions/propertiesAction";
+import { addProperty, uploadPropertyImages } from "@/actions/propertiesAction";
 
 function Page() {
   const { locale, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(0);
   const { toast } = useToast();
+  const [images, setImages] = useState([]);
+  const [imagesFile, setImagesFile] = useState({});
 
   const [unit, setUnit] = useState({
-  building: "",
-  unitFor: "",
-  propertyNumber: "",
-  theFloors: "",
-  area: "",
-  finished: "",
-  rooms: 0,
-  unitFeatures: "",
-  phase: "",
-  note: "",
-  totalPrice: 0,
-  inOrOutSideCompound: "", 
-  description: "",
-  lastFollowIn: "",
-  status: "",
-  activity: "",
-  propertyOfferedBy: "",
-  mobileNo: 0,
-  name: "",
-  tel: 0,
-  unitNo: "",
-  callUpdate: "",
-  forUpdate: "",
-  handler: "",
-  sales: "",
-  category: "",
-  createdTime: 0,
-  modifiedTime: 0,
-  landArea: "",
-  currency: "",
-  rentFrom: "",
-  rentTo: "",
-  compoundName: "",
-  propertyImage: [],
-  links: []
+    building: "",
+    unitFor: "",
+    propertyNumber: "",
+    theFloors: "",
+    area: "",
+    finished: "",
+    rooms: 0,
+    unitFeatures: "",
+    phase: "",
+    note: "",
+    totalPrice: 0,
+    inOrOutSideCompound: "",
+    description: "",
+    lastFollowIn: "",
+    status: "",
+    activity: "",
+    propertyOfferedBy: "",
+    mobileNo: 0,
+    name: "",
+    tel: 0,
+    unitNo: "",
+    callUpdate: "",
+    forUpdate: "",
+    handler: "",
+    sales: "",
+    category: "",
+    // modifiedTime: 0,
+    landArea: "",
+    currency: "",
+    rentFrom: "",
+    rentTo: "",
+    compoundName: "",
+    propertyImage: [],
+    links: [],
+    UnitImages: []
   });
 
   const handleChange = (_, field, value) => {
@@ -57,10 +59,55 @@ function Page() {
     }));
   };
 
+  const handleImageChange = async (event) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const uploadedFiles = Array.from(files);
+
+      try {
+        const uploadedImages = await uploadPropertyImages(uploadedFiles);
+        const imageUrls = uploadedImages.map((file) => file.fileUrl);
+
+        setUnit((prevUnit) => ({
+          ...prevUnit,
+          UnitImages: imageUrls,
+        }));
+
+        const imagePreviews = uploadedFiles.map((file) => URL.createObjectURL(file));
+        setImages((prevImages) => [...prevImages, ...imagePreviews]);
+
+        setImagesFile((prevImagesFile) => [...prevImagesFile, ...uploadedFiles]);
+
+        console.log("Images uploaded successfully:", uploadedImages);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        toast({
+          variant: "destructive",
+          title: "Error Uploading Image",
+          description: "There was an error uploading the images.",
+        });
+      }
+    }
+  };
+
+
+  const handleDeleteImage = (index) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    setImagesFile((prevImageFiles) => prevImageFiles.filter((_, i) => i !== index));
+  };
+
+
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-
+  const isValidUrl = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  };
   const handleSubmit = async () => {
     const currentDateTime = new Date().toLocaleString();
     const modifiedUnit = { ...unit };
@@ -68,7 +115,7 @@ function Page() {
     modifiedUnit.totalPrice = parseInt(modifiedUnit.totalPrice, 10)
     modifiedUnit.mobileNo = parseInt(modifiedUnit.mobileNo, 10)
     modifiedUnit.tel = parseInt(modifiedUnit.tel, 10)
-    modifiedUnit.links = modifiedUnit.links.split(" ")
+    modifiedUnit.links = Array.isArray(unit.links) ? unit.links.filter(isValidUrl) : [];
     try {
       const response = await addProperty(modifiedUnit);
       console.log("Unit created successfully:", response);
@@ -85,7 +132,7 @@ function Page() {
         phase: "",
         note: "",
         totalPrice: 0,
-        inOrOutSideCompound: "", 
+        inOrOutSideCompound: "",
         description: "",
         lastFollowIn: "",
         status: "",
@@ -100,8 +147,7 @@ function Page() {
         handler: "",
         sales: "",
         category: "",
-        createdTime: 0,
-        modifiedTime: 0,
+        // modifiedTime: 0,
         landArea: "",
         currency: "",
         rentFrom: "",
@@ -139,7 +185,7 @@ function Page() {
       });
     }
   };
-;
+  ;
 
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
@@ -175,8 +221,11 @@ function Page() {
               handleSubmit={handleSubmit}
               unit={unit}
               page="add"
-              title={t("unit_details")}
+              title={t("Unit_Informations")}
               description="Add Unit"
+              images={images}
+              handleImageChange={handleImageChange}
+              handleDeleteImage={handleDeleteImage}
             />
           )}
         </Grid>
