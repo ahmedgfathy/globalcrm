@@ -5,49 +5,51 @@ import { Box, Grid, Tab, Tabs } from "@mui/material";
 import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { addProperty } from "@/actions/propertiesAction";
+import { addProperty, uploadPropertyImages } from "@/actions/propertiesAction";
+import { useRouter } from "next/navigation";
 
 function Page() {
   const { locale, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(0);
   const { toast } = useToast();
-
+  const [images, setImages] = useState([]);
+  const [imagesFile, setImagesFile] = useState([]);
+const router = useRouter();
   const [unit, setUnit] = useState({
-  building: "",
-  unitFor: "",
-  propertyNumber: "",
-  theFloors: "",
-  area: "",
-  finished: "",
-  rooms: 0,
-  unitFeatures: "",
-  phase: "",
-  note: "",
-  totalPrice: 0,
-  inOrOutSideCompound: "", 
-  description: "",
-  lastFollowIn: "",
-  status: "",
-  activity: "",
-  propertyOfferedBy: "",
-  mobileNo: 0,
-  name: "",
-  tel: 0,
-  unitNo: "",
-  callUpdate: "",
-  forUpdate: "",
-  handler: "",
-  sales: "",
-  category: "",
-  createdTime: 0,
-  modifiedTime: 0,
-  landArea: "",
-  currency: "",
-  rentFrom: "",
-  rentTo: "",
-  compoundName: "",
-  propertyImage: [],
-  links: []
+    building: "",
+    unitFor: "",
+    propertyNumber: "",
+    theFloors: "",
+    area: "",
+    finished: "",
+    rooms: 0,
+    unitFeatures: "",
+    phase: "",
+    note: "",
+    totalPrice: 0,
+    inOrOutSideCompound: "",
+    description: "",
+    lastFollowIn: "",
+    status: "",
+    activity: "",
+    propertyOfferedBy: "",
+    mobileNo: 0,
+    name: "",
+    tel: 0,
+    unitNo: "",
+    callUpdate: "",
+    forUpdate: "",
+    handler: "",
+    sales: "",
+    category: "",
+    // modifiedTime: 0,
+    landArea: "",
+    currency: "",
+    rentFrom: "",
+    rentTo: "",
+    compoundName: "",
+    propertyImage: [],
+    links: [],
   });
 
   const handleChange = (_, field, value) => {
@@ -57,10 +59,42 @@ function Page() {
     }));
   };
 
+  const handleImageChange = async (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+        reader.onload = (e) => {
+        setImages((prevImages) => [...prevImages, e.target.result]);
+      };
+      reader.readAsDataURL(file);
+        setImagesFile((prevFiles) => [...prevFiles, file]);
+        try {
+        const response = await uploadPropertyImages(file);
+        console.log(response)
+        setUnit((prevLead) => ({ ...prevLead, propertyImage: [...prevLead.propertyImage, response.fileUrl] }));
+        console.log("Image uploaded successfully:", response);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
+
+  const handleDeleteImage = async (index, id) => {
+    console.log(index, id)
+  };
+
+
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
-
+  const isValidUrl = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  };
   const handleSubmit = async () => {
     const currentDateTime = new Date().toLocaleString();
     const modifiedUnit = { ...unit };
@@ -68,7 +102,8 @@ function Page() {
     modifiedUnit.totalPrice = parseInt(modifiedUnit.totalPrice, 10)
     modifiedUnit.mobileNo = parseInt(modifiedUnit.mobileNo, 10)
     modifiedUnit.tel = parseInt(modifiedUnit.tel, 10)
-    modifiedUnit.links = modifiedUnit.links.split(" ")
+    modifiedUnit.links = Array.isArray(unit.links) ? unit.links.filter(isValidUrl) : [];
+    console.log(unit)
     try {
       const response = await addProperty(modifiedUnit);
       console.log("Unit created successfully:", response);
@@ -85,7 +120,7 @@ function Page() {
         phase: "",
         note: "",
         totalPrice: 0,
-        inOrOutSideCompound: "", 
+        inOrOutSideCompound: "",
         description: "",
         lastFollowIn: "",
         status: "",
@@ -100,8 +135,7 @@ function Page() {
         handler: "",
         sales: "",
         category: "",
-        createdTime: 0,
-        modifiedTime: 0,
+        // modifiedTime: 0,
         landArea: "",
         currency: "",
         rentFrom: "",
@@ -139,7 +173,7 @@ function Page() {
       });
     }
   };
-;
+  ;
 
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
@@ -175,8 +209,11 @@ function Page() {
               handleSubmit={handleSubmit}
               unit={unit}
               page="add"
-              title={t("unit_details")}
+              title={t("Unit_Informations")}
               description="Add Unit"
+              images={images}
+              handleImageChange={handleImageChange}
+              handleDeleteImage={handleDeleteImage}
             />
           )}
         </Grid>

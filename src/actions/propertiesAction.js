@@ -1,4 +1,4 @@
-import { databases, ID,  } from '@/services/appwrite/client';
+import { databases, ID, storage } from '@/services/appwrite/client';
 import {Query} from "appwrite"
 
 export const addProperty = async (property) => {
@@ -93,31 +93,65 @@ export const getPropertyById = async (propertyId) => {
     throw error;
   }
 };
+// export const uploadPropertyImages = async (files) => {
+//   try {
+//     const uploadPromises = files.map(async (file) => {
+//       const response = await storage.createFile(
+//         process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, 
+//         ID.unique(), 
+//         file 
+//       );
+
+//       // Get the view URL
+//       const fileUrl = storage.getFileView(
+//         process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, // Bucket ID
+//         response.$id // File ID
+//       );
+
+//       return { id: response.$id, fileUrl: fileUrl.href };
+//     });
+
+//     const uploadedFiles = await Promise.all(uploadPromises);
+//     return uploadedFiles;
+//   } catch (error) {
+//     console.error('Error uploading property images:', error);
+//     throw error;
+//   }
+// };
+
 export const uploadPropertyImages = async (files) => {
   try {
-    const uploadPromises = files.map(async (file) => {
-      const response = await storage.createFile(
-        process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, 
-        ID.unique(), 
-        file 
-      );
+    const response = await storage.createFile(
+      process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, // Bucket ID
+      ID.unique(), // Unique file ID
+      files // File to upload
+    );
 
-      // Get the view URL
-      const fileUrl = storage.getFileView(
-        process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, // Bucket ID
-        response.$id // File ID
-      );
+    // Get the view URL
+    const fileUrl = storage.getFileView(
+      process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, // Bucket ID
+      response.$id // File ID
+    );
 
-      return { id: response.$id, fileUrl: fileUrl.href };
-    });
-
-    const uploadedFiles = await Promise.all(uploadPromises);
-    return uploadedFiles;
+    return { id: response.$id, fileUrl: fileUrl.href };
   } catch (error) {
-    console.error('Error uploading property images:', error);
+    console.error('Error uploading image:', error);
     throw error;
   }
 };
+
+export const deletePropertyImage = async (fileId) => {
+  try {
+    const response = await storage.deleteFile(
+      process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, // Bucket ID
+      fileId // File ID
+    );
+    return response;
+  } catch (error) {
+    console.error('Error deleting property image:', error);
+    throw error;
+  }
+}
 // Mock data for testing
 // const mockProperty = {
 //   name: "Example Property",

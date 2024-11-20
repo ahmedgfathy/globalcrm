@@ -4,6 +4,7 @@ import TextAreaField from "./TextAreaField";
 import DateInput from "./DateInput";
 import SelectInput from "./SelectInput";
 import { useTranslation } from "@/app/context/TranslationContext";
+import TagInput from "./TagInput";
 
 function FormFields({ fields, isDisabled, handleChange, section }) {
   const { t, locale } = useTranslation();
@@ -30,6 +31,8 @@ function FormFields({ fields, isDisabled, handleChange, section }) {
       return <TextAreaField key={field.id} {...commonProps} />;
     case 'date':
       return <DateInput key={field.id} {...commonProps} />;
+    case 'taginput':
+      return <TagInput key={field.id} {...commonProps} />;
     case 'select':
       return <SelectInput key={field.id} {...commonProps} data={field.options} value={field.defaultValue} />;
     default:
