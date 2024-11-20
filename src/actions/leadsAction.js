@@ -2,12 +2,35 @@ import { databases, ID ,storage } from '@/services/appwrite/client';
 import {Query} from "appwrite"
 export const addLead = async (lead) => {
   try {
-    const response = await databases.createDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
-      process.env.NEXT_PUBLIC_LEADS, // Collection ID
-      ID.unique(), // Unique document ID
-      lead // Data
+    const latestDocumentResponse = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      [
+        Query.orderDesc('leadNumber'),
+        Query.limit(1)
+      ]
     );
+
+    let currentNumber = 0;
+    if (latestDocumentResponse.documents.length > 0) {
+      const latestLeadNumber = latestDocumentResponse.documents[0].leadNumber;
+      currentNumber = parseInt(latestLeadNumber.replace('LEA', ''), 10);
+      console.log('Current number:', currentNumber);
+    }
+
+    // Increment the number for the new document
+    currentNumber += 1;
+    const leadNumber = `LEA${currentNumber}`;
+
+    const leadWithNumber = { ...lead, leadNumber };
+
+    const response = await databases.createDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_LEADS, 
+      ID.unique(), 
+      leadWithNumber 
+    );
+
     return response;
   } catch (error) {
     console.error('Error creating lead:', error);
@@ -89,9 +112,9 @@ export const exportLeads = async () => {
 export const deleteLead = async (leadId) => {
   try {
     const response = await databases.deleteDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
-      process.env.NEXT_PUBLIC_LEADS, // Collection ID
-      leadId // Document ID
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_LEADS, 
+      leadId 
     );
     return response;
   } catch (error) {
@@ -275,6 +298,53 @@ export const deleteAllLeads = async () => {
     return { success: true };
   } catch (error) {
     console.error('Error deleting all leads:', error);
+    throw error;
+  }
+};
+
+export const searchLeadsByLeadStatus = async (searchTerm) => {
+  try {
+    console.log('Searching for leads with lead status:', searchTerm);
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      [
+        Query.contains('leadStatus', searchTerm)
+      ]
+    );
+
+    console.log('Raw response:', response);
+
+    // Exclude collectionId and databaseId from each document
+    const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log('Processed leads:', leads);
+    return leads;
+  } catch (error) {
+    console.error('Error searching for leads by lead status:', error);
+    throw error;
+  }
+};
+
+
+export const searchLeadsByClass = async (searchTerm) => {
+  try {
+    console.log('Searching for leads with class:', searchTerm);
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      [
+        Query.contains('class', searchTerm)
+      ]
+    );
+
+    console.log('Raw response:', response);
+
+    // Exclude collectionId and databaseId from each document
+    const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log('Processed leads:', leads);
+    return leads;
+  } catch (error) {
+    console.error('Error searching for leads by class:', error);
     throw error;
   }
 };
