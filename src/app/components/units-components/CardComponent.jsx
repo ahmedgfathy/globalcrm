@@ -118,7 +118,7 @@ export function CardUnitComponent({ ele }) {
         </div>
         <div className="relative w-full top-0 h-[230px] overflow-hidden rounded-t">
           <Image
-            src={ele.href || "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600"}
+            src={ele?.propertyImage[0] || "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600"}
             alt={`${ele.name} profile picture`}
             layout="fill"
             objectFit="cover"

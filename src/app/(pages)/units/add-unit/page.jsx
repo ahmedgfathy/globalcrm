@@ -6,14 +6,15 @@ import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { addProperty, uploadPropertyImages } from "@/actions/propertiesAction";
+import { useRouter } from "next/navigation";
 
 function Page() {
   const { locale, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(0);
   const { toast } = useToast();
   const [images, setImages] = useState([]);
-  const [imagesFile, setImagesFile] = useState({});
-
+  const [imagesFile, setImagesFile] = useState([]);
+const router = useRouter();
   const [unit, setUnit] = useState({
     building: "",
     unitFor: "",
@@ -49,7 +50,6 @@ function Page() {
     compoundName: "",
     propertyImage: [],
     links: [],
-    UnitImages: []
   });
 
   const handleChange = (_, field, value) => {
@@ -60,36 +60,24 @@ function Page() {
   };
 
   const handleImageChange = async (event) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      const uploadedFiles = Array.from(files);
-
-      try {
-        const uploadedImages = await uploadPropertyImages(uploadedFiles);
-        const imageUrls = uploadedImages.map((file) => file.fileUrl);
-
-        setUnit((prevUnit) => ({
-          ...prevUnit,
-          UnitImages: imageUrls,
-        }));
-
-        const imagePreviews = uploadedFiles.map((file) => URL.createObjectURL(file));
-        setImages((prevImages) => [...prevImages, ...imagePreviews]);
-
-        setImagesFile((prevImagesFile) => [...prevImagesFile, ...uploadedFiles]);
-
-        console.log("Images uploaded successfully:", uploadedImages);
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+        reader.onload = (e) => {
+        setImages((prevImages) => [...prevImages, e.target.result]);
+      };
+      reader.readAsDataURL(file);
+        setImagesFile((prevFiles) => [...prevFiles, file]);
+        try {
+        const response = await uploadPropertyImages(file);
+        console.log(response)
+        setUnit((prevLead) => ({ ...prevLead, propertyImage: [...prevLead.propertyImage, response.fileUrl] }));
+        console.log("Image uploaded successfully:", response);
       } catch (error) {
         console.error("Error uploading image:", error);
-        toast({
-          variant: "destructive",
-          title: "Error Uploading Image",
-          description: "There was an error uploading the images.",
-        });
       }
     }
   };
-
 
   const handleDeleteImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
@@ -116,6 +104,7 @@ function Page() {
     modifiedUnit.mobileNo = parseInt(modifiedUnit.mobileNo, 10)
     modifiedUnit.tel = parseInt(modifiedUnit.tel, 10)
     modifiedUnit.links = Array.isArray(unit.links) ? unit.links.filter(isValidUrl) : [];
+    console.log(unit)
     try {
       const response = await addProperty(modifiedUnit);
       console.log("Unit created successfully:", response);

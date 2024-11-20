@@ -8,7 +8,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import CardHeader from "./utils/CardHeader";
 import VideoSection from "./utils/VideoSection";
 import MultibleImages from "./utils/MultibleImages";
-import { uploadPropertyImages } from "@/actions/propertiesAction";
+// import { uploadPropertyImages } from "@/actions/propertiesAction";
 
 
 
@@ -38,47 +38,47 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
     //     }
     // };
 
-    const handleImageChange = async (event, index = null) => {
-        const files = event.target.files;
-        if (files && files.length > 0) {
-          const uploadedFiles = Array.from(files);
+    // const handleImageChange = async (event, index = null) => {
+    //     const files = event.target.files;
+    //     if (files && files.length > 0) {
+    //       const uploadedFiles = Array.from(files);
       
-          try {
-            const uploadedImages = await uploadPropertyImages(uploadedFiles);
+    //       try {
+    //         const uploadedImages = await uploadPropertyImages(uploadedFiles);
       
-            const imageUrls = uploadedImages.map((file) => file.fileUrl);
+    //         const imageUrls = uploadedImages.map((file) => file.fileUrl);
       
-            setUnit((prevUnit) => ({
-              ...prevUnit,
-              UnitImages: index === null 
-                ? [...(prevUnit.UnitImages || []), ...imageUrls] 
-                : prevUnit.UnitImages.map((img, i) => (i === index ? imageUrls[0] : img)),
-            }));
+    //         setUnit((prevUnit) => ({
+    //           ...prevUnit,
+    //           UnitImages: index === null 
+    //             ? [...(prevUnit.UnitImages || []), ...imageUrls] 
+    //             : prevUnit.UnitImages.map((img, i) => (i === index ? imageUrls[0] : img)),
+    //         }));
       
-            const imagePreviews = uploadedFiles.map((file) => URL.createObjectURL(file));
-            setImages((prevImages) => 
-              index === null 
-                ? [...prevImages, ...imagePreviews]
-                : prevImages.map((img, i) => (i === index ? imagePreviews[0] : img))
-            );
+    //         const imagePreviews = uploadedFiles.map((file) => URL.createObjectURL(file));
+    //         setImages((prevImages) => 
+    //           index === null 
+    //             ? [...prevImages, ...imagePreviews]
+    //             : prevImages.map((img, i) => (i === index ? imagePreviews[0] : img))
+    //         );
       
-            setImagesFile((prevImagesFile) => 
-              index === null 
-                ? [...prevImagesFile, ...uploadedFiles]
-                : prevImagesFile.map((file, i) => (i === index ? uploadedFiles[0] : file))
-            );
+    //         setImagesFile((prevImagesFile) => 
+    //           index === null 
+    //             ? [...prevImagesFile, ...uploadedFiles]
+    //             : prevImagesFile.map((file, i) => (i === index ? uploadedFiles[0] : file))
+    //         );
       
-            console.log("Images uploaded successfully:", uploadedImages);
-          } catch (error) {
-            console.error("Error uploading image:", error);
-            toast({
-              variant: "destructive",
-              title: "Error Uploading Image",
-              description: "There was an error uploading the images.",
-            });
-          }
-        }
-      };
+    //         console.log("Images uploaded successfully:", uploadedImages);
+    //       } catch (error) {
+    //         console.error("Error uploading image:", error);
+    //         toast({
+    //           variant: "destructive",
+    //           title: "Error Uploading Image",
+    //           description: "There was an error uploading the images.",
+    //         });
+    //       }
+    //     }
+    //   };
       
     const handleDeleteImage = (index) => {
         setImages((prev) => prev.filter((_, i) => i !== index));
@@ -304,7 +304,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                             </div>
                         </div>
                         <MultibleImages
-                            images={images}
+                            images={props?.unit?.propertyImage || images}
                             handleImageChange={props?.handleImageChange}
                             handleDeleteImage={handleDeleteImage}
                             isDisabled={isDisabled}
