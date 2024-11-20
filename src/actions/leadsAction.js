@@ -2,12 +2,36 @@ import { databases, ID ,storage } from '@/services/appwrite/client';
 import {Query} from "appwrite"
 export const addLead = async (lead) => {
   try {
+    // Fetch the latest document to get the current highest lead number
+    const latestDocumentResponse = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      [
+        Query.orderDesc('leadNumber'),
+        Query.limit(1)
+      ]
+    );
+
+    let currentNumber = 0;
+    if (latestDocumentResponse.documents.length > 0) {
+      const latestLeadNumber = latestDocumentResponse.documents[0].leadNumber;
+      currentNumber = parseInt(latestLeadNumber.replace('LEA', ''), 10);
+      console.log('Current number:', currentNumber);
+    }
+
+    // Increment the number for the new document
+    currentNumber += 1;
+    const leadNumber = `LEA${currentNumber}`;
+
+    const leadWithNumber = { ...lead, leadNumber };
+
     const response = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
       process.env.NEXT_PUBLIC_LEADS, // Collection ID
       ID.unique(), // Unique document ID
-      lead // Data
+      leadWithNumber // Lead data with incremented lead number
     );
+
     return response;
   } catch (error) {
     console.error('Error creating lead:', error);
