@@ -10,7 +10,7 @@ import { Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import CustomButton from "@/app/components/CustomButton";
 import  DropdownMenImportExport  from "@/app/components/leadImport-Export/ImportExport";
-import { getAllProperties } from "@/actions/propertiesAction";
+import { getAllProperties, togglePropertyLiked } from "@/actions/propertiesAction";
 import DeleteButton from "@/app/components/delete-button/DeleteButton";
 import { CiFilter, CiSearch } from "react-icons/ci";
 import { Input } from "@/components/ui/input";
@@ -69,6 +69,11 @@ function Page() {
 
   const onFilterChange = ()=>{
     console.log("filter")
+  }
+  const handleLike = async(id)=>{
+    const data = await togglePropertyLiked(id)
+    console.log(data)
+    fetchUnits()
   }
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -140,7 +145,7 @@ function Page() {
         <Grid container className="flex justify-center gap-5" dir="ltr">
           {units.map((unit, index) => (
             <Grid item xs={12} sm={7} md={5.5} lg={3.7} key={index}>
-              <CardUnitComponent ele={unit} />
+              <CardUnitComponent ele={unit} handleLike={handleLike}/>
             </Grid>
           ))}
         </Grid>

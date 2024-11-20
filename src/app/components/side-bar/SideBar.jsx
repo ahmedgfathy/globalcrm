@@ -89,10 +89,10 @@ function SideBar() {
             <ul className="space-y-2 font-medium">
               <li className="logo">
                 <Image
-                  width={50}
-                  height={50}
+                  width={110}
+                  height={110}
                   alt="logo"
-                  src="/assets/logo/logo.webp"
+                  src="/assets/logo/logo.jpeg"
                   className="mx-auto"
                 />
               </li>

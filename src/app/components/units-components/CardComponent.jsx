@@ -22,7 +22,7 @@ import "./style.css"
 import { CgArrowTopRightR } from "react-icons/cg";
 
 import { useRouter } from "next/navigation";
-export function CardUnitComponent({ ele }) {
+export function CardUnitComponent({ ele, handleLike }) {
   const { t } = useTranslation();
   const iconCard = [
     { icon: AiOutlineWhatsApp, href: "", color: "#08521d" },
@@ -69,14 +69,14 @@ export function CardUnitComponent({ ele }) {
               />
             </svg>
 
-            {favourite ? (
+            {ele.liked ? (
               <svg
                 className="icon cursor-pointer bg-black-200 p-2 rounded-full text-white items-center justify-center"
                 viewBox="0 0 24 24"
                 fill="red"
                 stroke="red"
                 xmlns="http://www.w3.org/2000/svg"
-                onClick={() => setfavourite(!favourite)}
+                onClick={(e) => {e.stopPropagation(); handleLike(ele.$id)}}
               >
                 <path
                   fillRule="evenodd"
@@ -95,7 +95,7 @@ export function CardUnitComponent({ ele }) {
                 fill="transparent"
                 stroke="#fff"
                 xmlns="http://www.w3.org/2000/svg"
-                onClick={() => setfavourite(!favourite)}
+                onClick={(e) => {e.stopPropagation(); handleLike(ele.$id)}}
               >
                 <path
                   fillRule="evenodd"
