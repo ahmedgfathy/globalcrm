@@ -10,7 +10,7 @@ import { Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import CustomButton from "@/app/components/CustomButton";
 import  DropdownMenImportExport  from "@/app/components/leadImport-Export/ImportExport";
-import { exportProperties, getAllProperties, importProperties, togglePropertyInHome, togglePropertyLiked } from "@/actions/propertiesAction";
+import { exportProperties, getAllProperties, importProperties, searchPropertyByName, togglePropertyInHome, togglePropertyLiked } from "@/actions/propertiesAction";
 import DeleteButton from "@/app/components/delete-button/DeleteButton";
 import { CiFilter, CiSearch } from "react-icons/ci";
 import { Input } from "@/components/ui/input";
@@ -50,22 +50,36 @@ function Page() {
     setFilterValues(resetFilters); 
     // onFilterChange(resetFilters); 
   };
-  const fetchUnits = async (page = 1) => {
-    const offset = (page - 1) * UnitsPerPage;
+  const fetchUnits = async (page = 1, search = '') => {
+    const offset = (page - 1) * UnitsPerPage
+    // setIsLoading(true)
     try {
-      const { properties, totalProperties } = await getAllProperties(UnitsPerPage, offset);
-
-      setUnits(properties);
-      setTotalUnits(totalProperties);
+      if (search) {
+        console.log('Fetching units with search term:', search)
+        const properties = await searchPropertyByName(search)
+        setUnits(properties);
+        setTotalUnits(properties.length);
+      } else {
+        console.log('Fetching all units')
+        const { properties, totalProperties } = await getAllProperties(UnitsPerPage, offset)
+        setUnits(properties);
+        setTotalUnits(totalProperties);
+      }
     } catch (error) {
-      console.error("Error fetching units:", error);
+      console.error('Error fetching units', error)
+    } finally {
+      // setIsLoading(false) // Set loading state to false
     }
-  };
+  }
 
-
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value)
+    setCurrentPage(1)
+  }
+  
   useEffect(() => {
-    fetchUnits(currentPage);
-  }, [currentPage]);
+    fetchUnits(currentPage, searchTerm);
+  }, [currentPage, searchTerm]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -209,7 +223,7 @@ function Page() {
                 className='w-full bg-transparent focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 text-lg border-0 shadow-none'
                 placeholder={`${t('search_unit')} ...`}
                 value={searchTerm}
-                // onChange={handleSearchChange}
+                onChange={handleSearchChange}
               />
             </div>
             <div className='flex gap-1 md:gap-2 items-center justify-between w-full md:w-fit'>
