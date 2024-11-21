@@ -94,14 +94,16 @@ export const getPropertyById = async (propertyId) => {
   }
 };
 
-const searchPropertyByName = async (name) => {
+
+
+export const searchPropertyByType = async (type) => {
   try {
-    console.log('Searching for properties with name:', name);
+    console.log('Searching for properties with type:', type);
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
       [
-        Query.contains('name', name)
+        Query.contains('type', type)
       ]
     );
 
@@ -116,6 +118,8 @@ const searchPropertyByName = async (name) => {
     throw error;
   }
 };
+
+
 
 // export const uploadPropertyImages = async (files) => {
 //   try {
