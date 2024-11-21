@@ -3,7 +3,7 @@ import {Query} from "appwrite"
 
 
 const dummyData = {
-  settings: JSON.stringify({
+  leadSettings: JSON.stringify({
     clientFollowUp: ["Follow Up 1", "Follow Up 2"],
     assignedTo: ["John Doe", "Jane Smith"],
     customerSource: ["Website", "Referral"],
