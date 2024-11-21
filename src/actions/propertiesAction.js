@@ -94,9 +94,7 @@ export const getPropertyById = async (propertyId) => {
   }
 };
 
-
-
-export const searchPropertyByType = async (type) => {
+export const searchPropertyByName = async (name) => {
   try {
     console.log('Searching for properties with type:', type);
     const response = await databases.listDocuments(
