@@ -125,55 +125,69 @@ function Page() {
     }
   };
   const handleImportCSV = (event) => {
-    const file = event.target.files[0]
+    const file = event.target.files[0];
     if (!file) {
-      alert('No file selected.')
-      return
+      alert('No file selected.');
+      return;
     }
-
+  
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
       complete: async (results) => {
         if (results.errors.length > 0) {
-          console.error('Parsing errors:', results.errors)
+          console.error('Parsing errors:', results.errors);
           toast({
             variant: 'destructive',
             title: 'Invalid file format.',
             description: 'Please ensure the file is in CSV format.',
             status: 'error',
-          })
-          return
+          });
+          return;
         }
+  
+        // Convert necessary attributes from strings to integers
+        const convertedData = results.data.map((property) => ({
+          ...property,
+          totalPrice: parseInt(property.totalPrice, 10),
+          rooms: parseInt(property.rooms, 10),
+          mobileNo: parseInt(property.rooms, 10),
+          tel: parseInt(property.rooms, 10),
+          propertyImage: property.propertyImage ? property.propertyImage.split(',') : [],
+          links: property.links ? property.links.split(',') : [],
+          inHome: property.inHome === 'TRUE',
+          liked: property.liked === 'TRUE',
+        }));
+  
         try {
-          await importProperties(results.data)
+          await importProperties(convertedData);
           toast({
             variant: 'success',
             title: 'Success import Units',
             description: 'Units imported successfully!',
             status: 'success',
-          })
+          });
         } catch (error) {
-          console.error('Error importing units:', error)
+          console.error('Error importing units:', error);
           toast({
             variant: 'destructive',
             title: 'Error importing units:',
             description: error.message || 'Failed to import units.',
             status: 'error',
-          })
+          });
         }
       },
       error: (error) => {
-        console.error('Error parsing file:', error)
+        console.error('Error parsing file:', error);
         toast({
           variant: 'destructive',
           title: 'Error importing units:',
           description: 'Failed to read the CSV file.',
           status: 'error',
-        })
+        });
       },
-    })
-  }
+    });
+  };
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full flex flex-wrap justify-between items-start gap-3 px-2 pt-2 max-[1200px]:px-7">
