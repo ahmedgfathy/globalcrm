@@ -205,7 +205,7 @@ export const togglePropertyInHome = async (propertyId) => {
     console.error('Error toggling inHome field:', error);
     throw error;
   }
-};
+}; 
 
 export const importProperties = async (data) => {
   try {
