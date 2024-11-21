@@ -93,6 +93,30 @@ export const getPropertyById = async (propertyId) => {
     throw error;
   }
 };
+
+const searchPropertyByName = async (name) => {
+  try {
+    console.log('Searching for properties with name:', name);
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      [
+        Query.contains('name', name)
+      ]
+    );
+
+    console.log('Raw response:', response);
+
+    // Exclude collectionId and databaseId from each document
+    const properties = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log('Processed properties:', properties);
+    return properties;
+  } catch (error) {
+    console.error('Error searching for properties by name:', error);
+    throw error;
+  }
+};
+
 // export const uploadPropertyImages = async (files) => {
 //   try {
 //     const uploadPromises = files.map(async (file) => {
