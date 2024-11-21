@@ -3,11 +3,9 @@ import React, { useState, useEffect } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
-  SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -18,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 const selectBoxes = [
   { name: "clientFollowUp", label: "Client Follow Up" },
   { name: "assignedTo", label: "Assigned To" },
@@ -27,9 +26,39 @@ const selectBoxes = [
   { name: "class", label: "Class" },
 ];
 
+const dummyData = {
+  clientFollowUp: ["Follow Up 1", "Follow Up 2"],
+  assignedTo: ["John Doe", "Jane Smith"],
+  customerSource: ["Website", "Referral"],
+  type: ["New", "Existing"],
+  leadStatus: ["Open", "Closed"],
+  class: ["Class A", "Class B"],
+};
+
 function SettingsLead() {
-  const [options, setOptions] = useState({});
+  const [options, setOptions] = useState(dummyData);
   const [newValues, setNewValues] = useState({});
+
+  const handleAddOption = (boxName) => {
+    if (newValues[boxName]) {
+      setOptions((prev) => ({
+        ...prev,
+        [boxName]: [...(prev[boxName] || []), newValues[boxName]],
+      }));
+      setNewValues((prev) => ({
+        ...prev,
+        [boxName]: "",
+      }));
+    }
+  };
+
+  const handleDeleteOption = (boxName, optionToDelete) => {
+    console.log("delete");
+    setOptions((prev) => ({
+      ...prev,
+      [boxName]: prev[boxName].filter((option) => option !== optionToDelete),
+    }));
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -48,21 +77,24 @@ function SettingsLead() {
                   </SelectTrigger>
                   <SelectContent>
                     {options[box.name]?.map((option, index) => (
-                      <SelectItem key={index} value={option}>
-                        <div className="flex justify-between items-center w-full">
-                          {option}
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleDeleteOption(box.name, option);
-                            }}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </SelectItem>
+                      <div
+                        key={index}
+                        className="flex items-center justify-between px-2 py-1"
+                      >
+                        <span>{option}</span>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleDeleteOption(box.name, option);
+                          }}
+                          className="text-red-500 hover:bg-transparent hover:border hover:border-red-500 hover:text-red-600 duration-200"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     ))}
                   </SelectContent>
                 </Select>
