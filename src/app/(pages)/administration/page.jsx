@@ -1,7 +1,8 @@
 "use client";
 import MainCardSetting from "@/app/components/administration/MainCardSetting";
+import SettingsLead from "@/app/components/administration/utils/SettingsLead";
 import TabComponent from "@/app/components/TabComponent";
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import React, { useState } from "react";
 
 function Page() {
@@ -11,6 +12,7 @@ function Page() {
   };
 
   return (
+    <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
     <Grid
       container
       direction="row"
@@ -30,20 +32,21 @@ function Page() {
       >
         {selectedTab === 0 && (
           <MainCardSetting
-            title="Units Setting"
+            title="Units Settings"
             description="You can access the unit setting here"
             content={<p>Content for Units Setting</p>}
           />
         )}
         {selectedTab === 1 && (
           <MainCardSetting
-            title="Leads Setting"
+            title="Leads Settings"
             description="You can access the lead setting here"
-            content={<p>Content for Leads Setting</p>}
+            content={<SettingsLead />}
           />
         )}
       </Grid>
     </Grid>
+    </Box>
   );
 }
 
