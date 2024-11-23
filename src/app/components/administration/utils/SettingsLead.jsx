@@ -16,19 +16,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useTranslation } from "@/app/context/TranslationContext";
 
 const selectBoxes = [
-  { name: "clientFollowUp", label: "Client Follow Up" },
-  { name: "assignedTo", label: "Assigned To" },
-  { name: "customerSource", label: "Customer Source" },
-  { name: "type", label: "Type" },
-  { name: "leadStatus", label: "Lead Status" },
-  { name: "class", label: "Class" },
+  { name: "clientFollowUp", label: "Client_follow_up" },
+  { name: "assignedTo", label: "Assigned_To" },
+  { name: "customerSource", label: "Customer_Source" },
+  { name: "type", label: "type" },
+  { name: "leadStatus", label: "Lead_Status" },
+  { name: "class", label: "class" },
 ];
+  function SettingsLead({handleDeleteOption, setNewValues, options, newValues, handleAddOption}) {
+  const { t } = useTranslation()
 
-
-
-function SettingsLead({handleDeleteOption, setNewValues, options, newValues, handleAddOption}) {
 
   return (
     <div className="container mx-auto p-4">
@@ -36,14 +36,14 @@ function SettingsLead({handleDeleteOption, setNewValues, options, newValues, han
         {selectBoxes.map((box) => (
           <Card key={box.name} className="bg-Lightbg dark:bg-cardbgDark">
             <CardHeader>
-              <CardTitle>{box.label}</CardTitle>
-              <CardDescription>Options management {box.label}</CardDescription>
+              <CardTitle>{t(`${box.label}`)}</CardTitle>
+              <CardDescription>{t("Options_management")} {t(`${box.label}`)}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <Select>
                   <SelectTrigger>
-                    <SelectValue placeholder={`${box.label}`} />
+                    <SelectValue placeholder={t(`${box.label}`)} />
                   </SelectTrigger>
                   <SelectContent>
                     {options[box.name]?.map((option, index) => (
@@ -71,7 +71,7 @@ function SettingsLead({handleDeleteOption, setNewValues, options, newValues, han
                 <div className="flex items-center space-x-2">
                   <Input
                     type="text"
-                    placeholder={`Add ${box.label} New`}
+                    placeholder={t(`add`) + " " + t(`${box.label}`) + " " + t(`new`)}
                     value={newValues[box.name] || ""}
                     onChange={(e) =>
                       setNewValues((prev) => ({
@@ -87,7 +87,7 @@ function SettingsLead({handleDeleteOption, setNewValues, options, newValues, han
                       color: "#5be49b",
                     }}
                   >
-                    <Plus className="h-4 w-4 mr-2" /> Add
+                    <Plus className="h-4 w-4 mr-2" /> {t(`add`)}
                   </Button>
                 </div>
               </div>

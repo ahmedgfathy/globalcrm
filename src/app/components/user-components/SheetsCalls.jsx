@@ -52,7 +52,7 @@ function SheetCalls({ isDisabled, handleChange, lead }) {
       <CardContent className="w-full min-w-max overflow-x-auto" >
         <div className="grid gap-1 grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1" dir={locale == "ar" ? "rtl" : "ltr"}>
           <SelectInput
-            label={t("Assigned To")}
+            label={t("Assigned_To")}
             id="assignedTo"
             value={lead?.assignedTo}
             data={AssignedData}
@@ -62,7 +62,7 @@ function SheetCalls({ isDisabled, handleChange, lead }) {
           />
 
           <SelectInput
-            label={t("Customer Source")}
+            label={t("Customer_Source")}
             id="customerSource"
             value={lead?.customerSource}
             data={CustomerSourceData}
@@ -72,7 +72,7 @@ function SheetCalls({ isDisabled, handleChange, lead }) {
           />
 
           <SelectInput
-            label={t("Type")}
+            label={t("type")}
             id="type"
             value={lead?.type}
             data={Type}
@@ -82,7 +82,7 @@ function SheetCalls({ isDisabled, handleChange, lead }) {
           />
 
           <SelectInput
-            label={t("Lead Status")}
+            label={t("Lead_Status")}
             id="leadStatus"
             value={lead?.leadStatus}
             data={LeadStatus}

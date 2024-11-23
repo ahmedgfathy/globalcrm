@@ -115,5 +115,16 @@
   "custom_information": "Custom Information",
   "sales_information": "Sales Information",
   "pricing_information": "Pricing Information",
-  "unit_image_information": "Unit Image Information"
+  "unit_image_information": "Unit Image Information",
+  "Options_management":"Options management",
+  "add" :"Add",
+  "new" :"New",
+  "Units_Settings":"Units Settings",
+  "Leads_Settings":"Leads Settings",
+  "decripe_lead":"You can access the lead setting here",
+  "decripe_unit":"You can access the unit setting here",
+  "Assigned_To": "Assigned To",
+  "Customer_Source": "Customer Source",
+  "Lead_Status": "Lead Status"
+
 }
