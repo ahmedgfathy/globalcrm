@@ -15,12 +15,7 @@ export default function CustomInformation({ page, setIsDisabled, isDisabled, ...
             label: 'property_offered_by',
             idField: 'propertyOfferedBy',
             defaultValue: props?.unit?.propertyOfferedBy,
-            options: [
-                { value: 'مالك', label: 'مالك' },
-                { value: 'مسؤول طرف المالك', label: 'مسؤول طرف المالك' },
-                { value: 'مكتب عقاري', label: 'مكتب عقاري' },
-                { value: 'حارس العقار', label: 'حارس العقار' }
-            ],
+            options: props?.options?.propertyOfferedBy,
         },
         { id: 2, type: 'input', label: 'name', idField: 'name', defaultValue: props?.unit?.name },
         { id: 3, type: 'input', label: 'unit_no', idField: 'unitNo', defaultValue: props?.unit?.unitNo },
@@ -30,10 +25,7 @@ export default function CustomInformation({ page, setIsDisabled, isDisabled, ...
             label: 'update',
             idField: 'forUpdate',
             defaultValue: props?.unit?.forUpdate,
-            options: [
-                { value: 'Want Upadate', label: 'Want Upadate' },
-                { value: 'Hidden', label: 'Hidden' }
-            ],
+            options: props?.options?.forUpdate,
         },
         { id: 5, type: 'input', label: 'mobile_no', idField: 'mobileNo', defaultValue: props?.unit?.mobileNo },
         { id: 6, type: 'input', label: 'tel', idField: 'tel', defaultValue: props?.unit?.tel },
@@ -43,16 +35,7 @@ export default function CustomInformation({ page, setIsDisabled, isDisabled, ...
             label: 'update_calls',
             idField: 'callUpdate',
             defaultValue: props?.unit?.callUpdate,
-            options: [
-                { value: 'تم الرد', label: 'تم الرد' },
-                { value: 'لا يرد', label: 'لا يرد' },
-                { value: 'مغلق', label: 'مغلق' },
-                { value: 'رقم دولي', label: 'رقم دولي' },
-                { value: 'بيكنسل', label: 'بيكنسل' },
-                { value: 'غير موجود بالخدمه', label: 'غير موجود بالخدمة' },
-                { value: 'بدون رقم موبايل', label: 'بدون رقم موبايل' },
-                { value: 'الرقم غلط', label: 'الرقم غلط' }
-            ]
+            options: props?.options?.callUpdate
         },
     ];
 
