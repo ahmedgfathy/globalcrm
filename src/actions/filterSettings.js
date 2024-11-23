@@ -13,6 +13,22 @@ const dummyData = {
   })
 };
 
+export const getAllSettings = async () => {
+  try {
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_FILTER_SETTINGS, 
+
+    );
+
+    console.log('Documents retrieved successfully:', response);
+    return response.documents;
+  } catch (error) {
+    console.error('Error getting documents:', error);
+    throw error;
+  }
+}
+
 export const createSettingsLeadDocument = async (data) => {
   try {
     const response = await databases.createDocument(
