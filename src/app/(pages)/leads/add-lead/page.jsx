@@ -114,7 +114,7 @@ function Page() {
         container
         direction="row"
         wrap="nowrap"
-        className="gap-6 max-sm:gap-1 py-6 px-4"
+        className="gap-6 max-sm:gap-1 py-6 px-4 min-h-screen"
       >
         <Grid
           item

@@ -26,39 +26,9 @@ const selectBoxes = [
   { name: "class", label: "Class" },
 ];
 
-const dummyData = {
-  clientFollowUp: ["Follow Up 1", "Follow Up 2"],
-  assignedTo: ["John Doe", "Jane Smith"],
-  customerSource: ["Website", "Referral"],
-  type: ["New", "Existing"],
-  leadStatus: ["Open", "Closed"],
-  class: ["Class A", "Class B"],
-};
 
-function SettingsLead() {
-  const [options, setOptions] = useState(dummyData);
-  const [newValues, setNewValues] = useState({});
 
-  const handleAddOption = (boxName) => {
-    if (newValues[boxName]) {
-      setOptions((prev) => ({
-        ...prev,
-        [boxName]: [...(prev[boxName] || []), newValues[boxName]],
-      }));
-      setNewValues((prev) => ({
-        ...prev,
-        [boxName]: "",
-      }));
-    }
-  };
-
-  const handleDeleteOption = (boxName, optionToDelete) => {
-    console.log("delete");
-    setOptions((prev) => ({
-      ...prev,
-      [boxName]: prev[boxName].filter((option) => option !== optionToDelete),
-    }));
-  };
+function SettingsLead({handleDeleteOption, setNewValues, options, newValues, handleAddOption}) {
 
   return (
     <div className="container mx-auto p-4">

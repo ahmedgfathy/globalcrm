@@ -2,7 +2,7 @@
 import { useTranslation } from "@/app/context/TranslationContext";
 import React, { useState, useEffect } from "react";
 import { ClientDetails, filterData } from "./data";
-import { CardUnitComponent } from "@/app/components/units-components/CardComponent";
+import  CardProperty  from "@/app/components/units-components/CardComponent";
 import { IoMdAddCircle } from "react-icons/io";
 import Filter from "@/app/components/Filter";
 import { Pagination } from "antd";
@@ -278,7 +278,7 @@ function Page() {
         <Grid container className="flex justify-center gap-5" dir="ltr">
           {units.map((unit, index) => (
             <Grid item xs={12} sm={7} md={5.5} lg={3.7} key={index}>
-              <CardUnitComponent ele={unit} handleLike={handleLike} handleShowHome={handleShowHome}/>
+              <CardProperty property={unit} handleLike={handleLike} handleShowHome={handleShowHome}/>
             </Grid>
           ))}
         </Grid>
