@@ -162,7 +162,7 @@ export const ClientDetails = [
       {id:4, name: "Townhouse", value: "townhouse"},
       {id:5, name: "Duplex", value: "duplex"},
     ]},
-    {id: 1, filterName: "Leads Status", optionData: [
+    {id: 2, filterName: "Leads Status", optionData: [
       { value: "قفل خارج الشركه", name: "قفل خارج الشركه" },
       { value: "قفل داخل الشركه", name: "قفل داخل الشركه" },
       { value: "مؤجل حاليا", name: "مؤجل حاليا" },
@@ -172,12 +172,12 @@ export const ClientDetails = [
       { value: "متابع معاينات", name: "متابع معاينات" },
       { value: "interested", name: "interested" },
     ]},
-    {id:1, filterName: "Leads Source", optionData: [
+    {id:3, filterName: "Leads Source", optionData: [
       {id:1, name: "facebook", value: "facebook"},
       {id:2, name: "whatsapp", value: "whatsapp"},
       {id:3, name: "youtupe", value: "youtupe"},
     ]},
-    {id:1, filterName: "Leads Classification", optionData: [
+    {id:4, filterName: "Leads Classification", optionData: [
       {id:1, name: "Apartment", value: "apartment"},
       {id:2, name: "Villa", value: "villa"},
       {id:3, name: "Twinhouse", value: "twinhouse"},

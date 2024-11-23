@@ -1,5 +1,5 @@
 "use client";
-import { createSettingsLeadDocument, getAllSettings, updateSettingsLeadDocument } from "@/actions/filterSettings";
+import { getAllSettings, updateSettings } from "@/actions/filterSettings";
 import MainCardSetting from "@/app/components/administration/MainCardSetting";
 import SettingsLead from "@/app/components/administration/utils/SettingsLead";
 import SettingsUnits from "@/app/components/administration/utils/SettingsUnits";
@@ -7,47 +7,62 @@ import TabComponent from "@/app/components/TabComponent";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { Box, Grid } from "@mui/material";
 import React, { useState, useEffect } from "react";
-const dummyData = {
-  clientFollowUp: ["Follow Up 1", "Follow Up 2"],
-  assignedTo: ["John Doe", "Jane Smith"],
-  customerSource: ["Website", "Referral"],
-  type: ["New", "Existing"],
-  leadStatus: ["Open", "Closed"],
-  class: ["Class A", "Class B"],
-};
+
 function Page() {
   const [options, setOptions] = useState({});
   const [newValues, setNewValues] = useState({});
+  const [newUnitsValues, setNewUnitsValues] = useState({});
+  const [unitsOptions, setUnitsOptions] = useState({})
   const { t } = useTranslation()
   const [selectedTab, setSelectedTab] = useState(0);
   useEffect(()=>{
     const fetchData = async()=>{
       const documents = await getAllSettings()
-      console.log(JSON.parse(documents[0].leadSettings))
-       console.log(documents[0].leadSettings)
        setOptions(JSON.parse(documents[0].leadSettings))
+       setUnitsOptions(JSON.parse(documents[0].unitSettings))
     }
     fetchData()
   }, [])
-  const handleAddOption = (boxName) => {
-    if (newValues[boxName]) {
-      setOptions((prev) => ({
-        ...prev,
-        [boxName]: [...(prev[boxName] || []), newValues[boxName]],
-      }));
-      setNewValues((prev) => ({
-        ...prev,
-        [boxName]: "",
-      }));
+  const handleAddOption = (boxName, section) => {
+    if (section === "unit"){
+      if (newUnitsValues[boxName]) {
+        setUnitsOptions((prev) => ({
+          ...prev,
+          [boxName]: [...(prev[boxName] || []), newUnitsValues[boxName]],
+        }));
+        setNewUnitsValues((prev) => ({
+          ...prev,
+          [boxName]: "",
+        }));
+      }
+    }else{
+      if (newValues[boxName]) {
+        setOptions((prev) => ({
+          ...prev,
+          [boxName]: [...(prev[boxName] || []), newValues[boxName]],
+        }));
+        setNewValues((prev) => ({
+          ...prev,
+          [boxName]: "",
+        }));
+      }
     }
   };
 
-  const handleDeleteOption = (boxName, optionToDelete) => {
+  const handleDeleteOption = (boxName, optionToDelete, section) => {
     console.log("delete");
-    setOptions((prev) => ({
+    if (section === "unit") {
+      setUnitsOptions((prev) => ({
+        ...prev,
+        [boxName]: prev[boxName].filter((option) => option !== optionToDelete),
+      }));
+    }else{
+
+      setOptions((prev) => ({
       ...prev,
       [boxName]: prev[boxName].filter((option) => option !== optionToDelete),
     }));
+  }
   };
   
   const handleTabChange = (_, newValue) => {
@@ -55,10 +70,9 @@ function Page() {
   };
 
   const handleSubmit = async()=>{
-    const data = JSON.stringify(options)
-    const res = await updateSettingsLeadDocument({leadSettings:data})
-    console.log(options)
-    console.log(res)
+    const leadData = JSON.stringify(options)
+    const unitData = JSON.stringify(unitsOptions)
+    const res = await updateSettings({leadSettings:leadData, unitSettings: unitData})
   }
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
@@ -84,7 +98,7 @@ function Page() {
             handleSubmit={handleSubmit}
               title={t("Units_Settings")}
               description={t("decripe_unit")}
-              content={<SettingsUnits />}
+              content={<SettingsUnits options={unitsOptions} newValues={newUnitsValues} handleDeleteOption={handleDeleteOption} setNewValues={setNewUnitsValues} handleAddOption={handleAddOption}/>}
             />
           )}
           {selectedTab === 1 && (

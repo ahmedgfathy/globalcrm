@@ -19,9 +19,9 @@ export function SelectFiled({ data, label, id, isDisabled, defaultValue, handleC
         <SelectContent>
           <SelectGroup>
             <SelectLabel>{label}</SelectLabel>
-            {data.map((item) => (
-              <SelectItem key={item.value} value={item.value} disabled={isDisabled}>
-                {item.label}
+            {data?.map((item) => (
+              <SelectItem key={item.value || item} value={item.value || item} disabled={isDisabled}>
+                {item.label || item}
               </SelectItem>
             ))}
           </SelectGroup>

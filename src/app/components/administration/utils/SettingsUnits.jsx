@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,50 +36,10 @@ const selectBoxes = [
     { name: "currency", label: "currency" },
 ];
 
-const dummyData = {
-    UnitFor: ["New rented", "Hold now", "For sale", "Sold out", "Recycle"],
-    area: ["الرحاب", "المعادي", "التجمع الاول"],
-    rooms: ["1", "2", "3", "4", "5", "6", "7"],
-    phase: ["1", "2", "3", "4", "5", "6", "7"],
-    type: ["Stand alone Compound", "Twin House", "Town House CORNER", "Town House . M", "APARTMENT COMPOUND", "ViLLA OUT", "APARTMENT OUT", "STUDIO", "BESMENT", "DUPLEX G+B", "DUPLEX G+F", "DUPLEX ROOF", "ROOF", "OFFICE SPACE", "RETAIL", "ADMIN BUILDING", "CLINIC", "I VILLA G", "I VILLA R", "شاليه", "عماره", "اراضي", "مبني تجاري", "مبني تجاري - إداري", "صيدليات", "بنزينه", "مستشفيات", "مصانع", "دوبلكس متكرر"],
-    finished: ["SEMI FINISHED", "FULLY FINISHED", "Skeleton هيكل خرساني", "fully finished & furnished", "SEMI FURNITURE"],
-    inOrOutSideCompound: ["داخل كمبوند", "خارج كمبوند", "مناطق تجاريه"],
-    activity: ["سكني", "اداري مرخص", "اداري غير مرخص", "تجاري", "طبي"],
-    propertyOfferedBy: ["مالك", "مسؤول طرف المالك", "مكتب عقاري", "حارس العقار"],
-    forUpdate: ["Want Upadate", "Hidden"],
-    callUpdate: ["تم الرد", "لا يرد", "مغلق", "رقم دولي", "بيكنسل", "غير موجود بالخدمه", "بدون رقم موبايل", "الرقم غلط"],
-    handler: ["Group", "Users"],
-    sales: ["basma", "EMAN", "ASHOR", "amgd", "abd elrhman ra2ft", "romany magdy", "rahma", "ahmed abd elatef", "alaa zaki", "mohamed zaki", "abd elrhman zaki", "abullah reda", "yousef mohamed", "mustafa ashour", "doaa reda", "maii", "shahd", "ahmed hany"],
-    category: ["Stars"],
-    currency: ["Dollar", "EGY"],
 
-};
 
-function SettingsUnits() {
-    const [options, setOptions] = useState(dummyData);
-    const [newValues, setNewValues] = useState({});
+function SettingsUnits({handleDeleteOption, setNewValues, options, newValues, handleAddOption}) {
     const { t } = useTranslation()
-
-    const handleAddOption = (boxName) => {
-        if (newValues[boxName]) {
-            setOptions((prev) => ({
-                ...prev,
-                [boxName]: [...(prev[boxName] || []), newValues[boxName]],
-            }));
-            setNewValues((prev) => ({
-                ...prev,
-                [boxName]: "",
-            }));
-        }
-    };
-
-    const handleDeleteOption = (boxName, optionToDelete) => {
-        console.log("delete");
-        setOptions((prev) => ({
-            ...prev,
-            [boxName]: prev[boxName].filter((option) => option !== optionToDelete),
-        }));
-    };
 
     return (
         <div className="container mx-auto p-4">
@@ -109,7 +69,7 @@ function SettingsUnits() {
                                                     onClick={(e) => {
                                                         e.preventDefault();
                                                         e.stopPropagation();
-                                                        handleDeleteOption(box.name, option);
+                                                        handleDeleteOption(box.name, option, "unit");
                                                     }}
                                                     className="text-red-500 hover:bg-transparent hover:border hover:border-red-500 hover:text-red-600 duration-200"
                                                 >
@@ -132,7 +92,7 @@ function SettingsUnits() {
                                         }
                                     />
                                     <Button
-                                        onClick={() => handleAddOption(box.name)}
+                                        onClick={() => handleAddOption(box.name, "unit")}
                                         style={{
                                             backgroundColor: "rgba(91, 228, 155, 0.1)",
                                             color: "#5be49b",
