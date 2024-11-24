@@ -25,8 +25,8 @@ function Filter({ data, onFilterChange, filterValues, filterChange }) {
             <SelectGroup>
               <SelectLabel>{ele.filterName}</SelectLabel>
               {ele.optionData.map((option, idx) => (
-                <SelectItem value={option.value} key={idx}>
-                  {option.name}
+                <SelectItem value={option.value || option} key={idx}>
+                  {option.name || option}
                 </SelectItem>
               ))}
             </SelectGroup>

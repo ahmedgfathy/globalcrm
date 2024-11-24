@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/hooks/use-toast";
 import Papa from 'papaparse'
+import { getAllSettings } from "@/actions/filterSettings";
 
 // import "./pagination.css"
 
@@ -36,6 +37,32 @@ function Page() {
       return acc;
     }, {})
   );
+  const [options, setOptions] = useState([
+    {id:1, filterName: "Property Types", data: "type", optionData: []},
+    {id: 2, filterName: "in-side / Out Side", data: "inOrOutSideCompound", optionData: []},
+    {id:3, filterName: "Sales", data: "sales", optionData: []},
+    {id:4, filterName: "Category", data: "category", optionData: []},
+  ])
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const res = await getAllSettings();
+        const data = JSON.parse(res[0].unitSettings);
+        console.log(data)
+        setOptions((prev) =>
+          prev.map((option) => {
+            const matchedData = data[option.data] || [];
+            return { ...option, optionData: matchedData };
+          })
+        );
+      } catch (error) {
+        console.error("Failed to fetch options:", error);
+      }
+    };
+  
+    fetchOptions();
+  }, []);
+
   const handleFilterChange = (value, filterName) => {
     const updatedFilters = { ...filterValues, [filterName]: value };
     console.log(updatedFilters)
@@ -267,7 +294,7 @@ function Page() {
             filterChange={onFilterChange}
             filterValues={filterValues}
             onFilterChange={handleFilterChange}
-            data={filterData} />
+            data={options} />
           </div>
           <div className="hidden md:block">
               <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />
