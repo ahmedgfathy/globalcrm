@@ -36,8 +36,8 @@ const selectBoxes = [
         {selectBoxes.map((box) => (
           <Card key={box.name} className="bg-Lightbg dark:bg-cardbgDark">
             <CardHeader>
-              <CardTitle>{t(`${box.label}`)}</CardTitle>
-              <CardDescription>{t("Options_management")} {t(`${box.label}`)}</CardDescription>
+              <CardTitle className="font-bold">{t(`${box.label}`)}</CardTitle>
+              <CardDescription className="dark:text-[#b8b9b9] font-semibold">{t("Options_management")} {t(`${box.label}`)}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -82,6 +82,7 @@ const selectBoxes = [
                   />
                   <Button
                     onClick={() => handleAddOption(box.name)}
+                    className="font-semibold"
                     style={{
                       backgroundColor: "rgba(91, 228, 155, 0.1)",
                       color: "#5be49b",

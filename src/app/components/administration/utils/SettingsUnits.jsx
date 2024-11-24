@@ -38,7 +38,7 @@ const selectBoxes = [
 
 
 
-function SettingsUnits({handleDeleteOption, setNewValues, options, newValues, handleAddOption}) {
+function SettingsUnits({ handleDeleteOption, setNewValues, options, newValues, handleAddOption }) {
     const { t } = useTranslation()
 
     return (
@@ -47,8 +47,8 @@ function SettingsUnits({handleDeleteOption, setNewValues, options, newValues, ha
                 {selectBoxes.map((box) => (
                     <Card key={box.name} className="bg-Lightbg dark:bg-cardbgDark">
                         <CardHeader>
-                            <CardTitle>{t(`${box.label}`)}</CardTitle>
-                            <CardDescription>{t("Options_management")} {t(`${box.label}`)}</CardDescription>
+                            <CardTitle className="font-bold">{t(`${box.label}`)}</CardTitle>
+                            <CardDescription className="dark:text-[#b8b9b9] font-semibold">{t("Options_management")} {t(`${box.label}`)}</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-4">
@@ -82,6 +82,7 @@ function SettingsUnits({handleDeleteOption, setNewValues, options, newValues, ha
                                 <div className="flex items-center space-x-2">
                                     <Input
                                         type="text"
+                                        className="font-semibold"
                                         placeholder={t(`add`) + " " + t(`${box.label}`) + " " + t(`new`)}
                                         value={newValues[box.name] || ""}
                                         onChange={(e) =>
