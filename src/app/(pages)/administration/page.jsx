@@ -110,7 +110,7 @@ function Page() {
 >
   <TabComponent
     className="font-bold"
-    ele={["units", "leads", "roles"]}
+    ele={[ t("units"), t("leads"), t("roles")]}
     handleTabChange={handleTabChange}
     selectedTab={selectedTab}
   />

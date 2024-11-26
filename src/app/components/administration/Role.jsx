@@ -29,7 +29,7 @@ const availablePermissions = [
 ];
 
 export default function RoleManagement() {
-  const {locale} = useTranslation()
+  const {locale , t} = useTranslation()
   const [roles, setRoles] = useState([]);
   const [newRoleName, setNewRoleName] = useState("");
   const [selectedPermissions, setSelectedPermissions] = useState([]);
@@ -90,11 +90,11 @@ export default function RoleManagement() {
       <CardHeader className="text-xl md:text-2xl flex justify-between w-full flex-row items-center p-1 ">
         <div>
           <CardTitle className="pb-1 font-bold">
-            Manage roles and permissions
+            {t("Manage_roles_and_permissions")}
           </CardTitle>
         </div>
         <div>
-          <CustomButton title="Save" />
+          <CustomButton title={t("save")} />
         </div>
       </CardHeader>
       <CardContent className="p-1">
@@ -102,23 +102,23 @@ export default function RoleManagement() {
           <Card className="bg-Lightbg dark:bg-cardbgDark">
             <CardHeader>
               <CardTitle>
-                {editingRoleId ? "Edit Role" : "Add New Role"}
+                {editingRoleId ? t("Edit_Role") : t("Add_New_Role")}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label htmlFor="roleName">Role Name</Label>
+                <Label htmlFor="roleName">{t("Role_Name")}</Label>
                 <Input
                   id="roleName"
                   className="dark:placeholder:text-gray-300"
                   value={newRoleName}
                   onChange={(e) => setNewRoleName(e.target.value)}
-                  placeholder="Enter Role Name"
+                  placeholder={t("Enter_Role_Name")}
                 />
               </div>
 
               <div>
-                <Label>Permissions</Label>
+                <Label>{t("Permissions")}</Label>
                 <div className="grid grid-cols-2 gap-2">
                   {availablePermissions.map((permission) => (
                     <div
@@ -145,14 +145,14 @@ export default function RoleManagement() {
                   color: "#5be49b",
                 }}
               >
-                {editingRoleId ? "Edit Role" : "Add New Role"}
+                {editingRoleId ? t("Edit_Role") : t("Add_New_Role")}
               </Button>
             </CardContent>
           </Card>
 
           <Card className="bg-Lightbg dark:bg-cardbgDark">
             <CardHeader>
-              <CardTitle>Current roles</CardTitle>
+              <CardTitle>{t("Current_roles")}</CardTitle>
             </CardHeader>
             <CardContent>
               {roles.length > 0 ? (
@@ -209,7 +209,7 @@ export default function RoleManagement() {
                   </TableBody>
                 </Table>
               ) : (
-                <p>There are no roles added yet.</p>
+                <p>{t("There_are_no_roles_added_yet")}</p>
               )}
             </CardContent>
           </Card>
