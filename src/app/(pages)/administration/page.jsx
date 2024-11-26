@@ -6,6 +6,7 @@ import SettingsLead from "@/app/components/administration/utils/SettingsLead";
 import SettingsUnits from "@/app/components/administration/utils/SettingsUnits";
 import TabComponent from "@/app/components/TabComponent";
 import { useTranslation } from "@/app/context/TranslationContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/hooks/use-toast";
 import { Box, Grid } from "@mui/material";
 import React, { useState, useEffect } from "react";
@@ -18,6 +19,7 @@ function Page() {
   const { t } = useTranslation()
   const { toast } = useToast();
   const [selectedTab, setSelectedTab] = useState(0);
+  const isMobile = useIsMobile()
   useEffect(() => {
     const fetchData = async () => {
       const documents = await getAllSettings()
@@ -100,43 +102,59 @@ function Page() {
 
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
-      <Grid
-        container
-        direction="row"
-        wrap="nowrap"
-        className="gap-6 max-sm:gap-1 py-6 px-4 min-h-screen"
-      >
-        <TabComponent
-          className="font-bold"
-          ele={["units", "leads", "roles"]}
-          handleTabChange={handleTabChange}
-          selectedTab={selectedTab}
-        />
-        <Grid
-          item
-          xs={12}
-          sm={10}
-          className="bg-Lightbg dark:bg-transparent rounded-md px-2"
-        >
-          {selectedTab === 0 && (
-            <MainCardSetting
-              handleSubmit={handleSubmit}
-              title={t("Units_Settings")}
-              description={t("decripe_unit")}
-              content={<SettingsUnits options={unitsOptions} newValues={newUnitsValues} handleDeleteOption={handleDeleteOption} setNewValues={setNewUnitsValues} handleAddOption={handleAddOption} />}
-            />
-          )}
-          {selectedTab === 1 && (
-            <MainCardSetting
-              handleSubmit={handleSubmit}
-              title={t("Leads_Settings")}
-              description={t("decripe_lead")}
-              content={<SettingsLead options={options} newValues={newValues} handleDeleteOption={handleDeleteOption} setNewValues={setNewValues} handleAddOption={handleAddOption} />}
-            />
-          )}
-          {selectedTab === 2 && ( <RoleManagement /> )}
-        </Grid>
-      </Grid>
+<Grid
+  container
+  direction={ isMobile ? "column" : "row"} // ترتيب العمود على الهواتف
+  wrap="nowrap"
+  className="gap-6 max-sm:gap-1 py-6 px-4 min-h-screen"
+>
+  <TabComponent
+    className="font-bold"
+    ele={["units", "leads", "roles"]}
+    handleTabChange={handleTabChange}
+    selectedTab={selectedTab}
+  />
+  <Grid
+    item
+    xs={12}
+    className="bg-Lightbg dark:bg-transparent rounded-md p-0"
+  >
+    {selectedTab === 0 && (
+      <MainCardSetting
+        handleSubmit={handleSubmit}
+        title={t("Units_Settings")}
+        description={t("decripe_unit")}
+        content={
+          <SettingsUnits
+            options={unitsOptions}
+            newValues={newUnitsValues}
+            handleDeleteOption={handleDeleteOption}
+            setNewValues={setNewUnitsValues}
+            handleAddOption={handleAddOption}
+          />
+        }
+      />
+    )}
+    {selectedTab === 1 && (
+      <MainCardSetting
+        handleSubmit={handleSubmit}
+        title={t("Leads_Settings")}
+        description={t("decripe_lead")}
+        content={
+          <SettingsLead
+            options={options}
+            newValues={newValues}
+            handleDeleteOption={handleDeleteOption}
+            setNewValues={setNewValues}
+            handleAddOption={handleAddOption}
+          />
+        }
+      />
+    )}
+    {selectedTab === 2 && <RoleManagement />}
+  </Grid>
+</Grid>
+
     </Box>
   );
 }
