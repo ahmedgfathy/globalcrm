@@ -18,10 +18,7 @@ export default function UnitsDetails({ page, setIsDisabled, isDisabled, ...props
             label: 'currency',
             idField: 'currency',
             defaultValue: props?.unit?.currency,
-            options: [
-                { value: 'Dollar', label: 'Dollar' },
-                { value: 'EGY', label: 'EGY' },
-            ],
+            options: props?.options?.currency,
         },
         { id: 5, type: 'date', label: 'rent_from', idField: 'rentFrom', defaultValue: props?.unit?.rentFrom },
         { id: 6, type: 'date', label: 'rent_to', idField: 'rentTo', defaultValue: props?.unit?.rentTo },

@@ -61,12 +61,13 @@ export const createSettings = async (data) => {
   }
 };
 
-export const updateSettings = async (documentId, data) => {
+export const updateSettings = async ( data) => {
+
   try {
     const response = await databases.updateDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, 
       process.env.NEXT_PUBLIC_FILTER_SETTINGS, 
-      documentId, 
+      "67423f230023da0f7bef", 
       data // Updated document data
     );
 

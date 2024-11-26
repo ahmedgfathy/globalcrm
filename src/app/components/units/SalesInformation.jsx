@@ -15,10 +15,7 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             label: 'handler',
             idField: 'handler',
             defaultValue: props?.unit?.handler,
-            options: [
-                { value: 'Group', label: 'Group' },
-                { value: 'Users', label: 'Users' },
-            ],
+            options: props?.options?.handler,
         },
         {
             id: 2,
@@ -26,26 +23,7 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             label: 'sales',
             idField: 'sales',
             defaultValue: props?.unit?.sales,
-            options: [
-                { value: 'basma', label: 'بسماء' },
-                { value: 'EMAN', label: ' إيمان' },
-                { value: 'ASHOR', label: 'أشرف' },
-                { value: 'amgd', label: 'عماد' },
-                { value: 'abd elrhman ra2ft', label: 'عبد الرحمن رفعت' },
-                { value: 'romany magdy', label: 'روماني مجدي' },
-                { value: 'rahma', label: 'رحمة' },
-                { value: 'ahmed abd elatef', label: 'أحمد عبد العاطي' },
-                { value: 'alaa zaki', label: 'علاء زكي' },
-                { value: 'mohamed zaki', label: 'محمد زكي' },
-                { value: 'abd elrhman zaki', label: 'عبد الرحمن زكي' },
-                { value: 'abullah reda', label: 'عبد الله رضا' },
-                { value: 'yousef mohamed', label: 'يوسف محمد' },
-                { value: 'mustafa ashour', label: 'مصطفى أشرف' },
-                { value: 'doaa reda', label: 'دعاء رضا' },
-                { value: 'maii', label: 'مايا' },
-                { value: 'shahd', label: 'شهد' },
-                { value: 'ahmed hany', label: 'أحمد هاني' }
-            ],
+            options: props?.options?.sales,
         },
         {
             id: 3,
@@ -53,9 +31,7 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             label: 'category',
             idField: 'category',
             defaultValue: props?.unit?.category,
-            options: [
-                { value: 'Stars', label: 'Stars' },
-            ],
+            options: props?.options?.category,
         },
     ];
 
