@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useTranslation } from "@/app/context/TranslationContext";
 
 const TagInput = ({ label, id, defaultValue = [], isDisabled = false, section, handleChange }) => {
   const [tags, setTags] = useState(defaultValue);
@@ -41,11 +42,15 @@ const TagInput = ({ label, id, defaultValue = [], isDisabled = false, section, h
       return updatedTags;
     });
   };
+  const { locale} = useTranslation();
 
   return (
     <div className="space-y-2 sm:col-span-3">
-      <Label htmlFor={id} className="font-semibold">
-        {label}
+      <Label htmlFor={id} className="font-semibold w-full " dir={locale === "ar" ? "rtl" : "ltr"}
+      >
+        <p className='w-full'>
+          {label}
+        </p>
       </Label>
       <Input
         disabled={isDisabled}

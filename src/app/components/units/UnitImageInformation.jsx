@@ -13,10 +13,10 @@ export default function UnitImageInformation({ page, setIsDisabled, isDisabled, 
 
     return (
         <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden" dir="rtl">
-            <div className="header w-full flex justify-between items-center pb-4">
+            <div className="header w-full flex justify-between items-center pb-4" dir="rtl">
                 <p className="text-xl font-bold">{t("unit_image_information")}</p>
             </div>
-            <CardContent className="w-5/6  overflow-x-auto" dir="rtl">
+            <CardContent className="w-11/12 max-sm:w-full  overflow-x-auto" >
                 <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} />
             </CardContent>
         </Card>
