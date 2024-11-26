@@ -28,6 +28,7 @@ import { useIsMobile } from '@/hooks/use-mobile'
 import Papa from 'papaparse'
 import { useToast } from '@/hooks/use-toast'
 import DeleteButton from '../../components/delete-button/DeleteButton'
+import { getAllSettings } from '@/actions/filterSettings'
 
 function Page() {
   const { toast } = useToast()
@@ -42,6 +43,12 @@ function Page() {
   const [customerSourceFilter, setCustomerSourceFilter] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [options, setOptions] = useState([
+    {id:1, filterName: "Request type", data: "type", optionData: []},
+    {id: 2, filterName: "Leads Status", data: "leadStatus", optionData: []},
+    {id:3, filterName: "Leads Source", data: "customerSource", optionData: []},
+    {id:4, filterName: "Leads Classification", data: "class", optionData: []},
+  ])
   const leadsPerPage = 10
 
   const fetchLeads = async (page = 1, search = '') => {
@@ -81,6 +88,27 @@ function Page() {
   useEffect(() => {
     fetchLeads(currentPage, searchTerm)
   }, [currentPage, searchTerm])
+  
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const res = await getAllSettings();
+        const data = JSON.parse(res[0].leadSettings);
+        console.log(data)
+        setOptions((prev) =>
+          prev.map((option) => {
+            const matchedData = data[option.data] || [];
+            return { ...option, optionData: matchedData };
+          })
+        );
+      } catch (error) {
+        console.error("Failed to fetch options:", error);
+      }
+    };
+  
+    fetchOptions();
+  }, []);
+  
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value)
@@ -271,7 +299,7 @@ function Page() {
             onFilterChange={onFilterChange}
             afterDel={fetchLeads}
             onAddLead={() => router.push('/leads/add-lead')}
-            filterData={filterData}
+            filterData={options}
             filterValues={filterValues}
             handleFilterChange={handleFilterChange}
           />

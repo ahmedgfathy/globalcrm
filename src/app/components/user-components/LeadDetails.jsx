@@ -39,11 +39,7 @@ export default function LeadDetails({ page, setIsDisabled, isDisabled, ...props 
       label: 'Client_follow_up',
       idField: 'clientFollowUp',
       defaultValue: props.lead?.clientFollowUp,
-      options: [
-        { value: 'ahmed', label: 'Ahmed' },
-        { value: 'mohamed', label: 'Mohamed' },
-        { value: 'ali', label: 'Ali' },
-      ],
+      options: props?.options?.clientFollowUp,
     },
     {
       id: 7,
@@ -51,11 +47,7 @@ export default function LeadDetails({ page, setIsDisabled, isDisabled, ...props 
       label: 'class',
       idField: 'class',
       defaultValue: props.lead?.class,
-      options: [
-        { value: 'A', label: 'Class A' },
-        { value: 'B', label: 'Class B' },
-        { value: 'C', label: 'Class C' },
-      ],
+      options: props?.options?.class,
     },
   ];
 

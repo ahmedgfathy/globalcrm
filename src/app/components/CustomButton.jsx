@@ -4,7 +4,7 @@ import React from 'react'
 function CustomButton({title, icon, fun, className = "GreenButton"}) {
   return (
     <Button className={`${className} dark p-1 gap-1`} onClick={fun}>
-    {icon()}
+    {icon && icon()}
     {title}
   </Button>
   )

@@ -116,5 +116,15 @@
 "custom_information": "معلومات مخصصة",
 "sales_information": "معلومات المبيعات",
 "pricing_information": "معلومات التسعير",
-"unit_image_information": "معلومات صورة الوحدة"
+"unit_image_information": "معلومات صورة الوحدة",
+"Options_management":"إدارة الخيارات",
+"add" :"اضافة",
+"new" :"جديد",
+"Units_Settings":"اعدادات الوحدات",
+"Leads_Settings":"اعدادات العملاء",
+"decripe_lead":"يمكنك الوصول إلى إعدادات العملاء هنا",
+"decripe_unit":"يمكنك الوصول إلى إعدادات الوحدات هنا",
+"Assigned_To": "مكلف لـ",
+"Customer_Source": "مصدر العميل",
+"Lead_Status": "حالة العميل المحتمل"
 }

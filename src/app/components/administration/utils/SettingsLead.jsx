@@ -16,49 +16,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useTranslation } from "@/app/context/TranslationContext";
 
 const selectBoxes = [
-  { name: "clientFollowUp", label: "Client Follow Up" },
-  { name: "assignedTo", label: "Assigned To" },
-  { name: "customerSource", label: "Customer Source" },
-  { name: "type", label: "Type" },
-  { name: "leadStatus", label: "Lead Status" },
-  { name: "class", label: "Class" },
+  { name: "clientFollowUp", label: "Client_follow_up" },
+  { name: "assignedTo", label: "Assigned_To" },
+  { name: "customerSource", label: "Customer_Source" },
+  { name: "type", label: "type" },
+  { name: "leadStatus", label: "Lead_Status" },
+  { name: "class", label: "class" },
 ];
+  function SettingsLead({handleDeleteOption, setNewValues, options, newValues, handleAddOption}) {
+  const { t } = useTranslation()
 
-const dummyData = {
-  clientFollowUp: ["Follow Up 1", "Follow Up 2"],
-  assignedTo: ["John Doe", "Jane Smith"],
-  customerSource: ["Website", "Referral"],
-  type: ["New", "Existing"],
-  leadStatus: ["Open", "Closed"],
-  class: ["Class A", "Class B"],
-};
-
-function SettingsLead() {
-  const [options, setOptions] = useState(dummyData);
-  const [newValues, setNewValues] = useState({});
-
-  const handleAddOption = (boxName) => {
-    if (newValues[boxName]) {
-      setOptions((prev) => ({
-        ...prev,
-        [boxName]: [...(prev[boxName] || []), newValues[boxName]],
-      }));
-      setNewValues((prev) => ({
-        ...prev,
-        [boxName]: "",
-      }));
-    }
-  };
-
-  const handleDeleteOption = (boxName, optionToDelete) => {
-    console.log("delete");
-    setOptions((prev) => ({
-      ...prev,
-      [boxName]: prev[boxName].filter((option) => option !== optionToDelete),
-    }));
-  };
 
   return (
     <div className="container mx-auto p-4">
@@ -66,14 +36,14 @@ function SettingsLead() {
         {selectBoxes.map((box) => (
           <Card key={box.name} className="bg-Lightbg dark:bg-cardbgDark">
             <CardHeader>
-              <CardTitle>{box.label}</CardTitle>
-              <CardDescription>Options management {box.label}</CardDescription>
+              <CardTitle className="font-bold">{t(`${box.label}`)}</CardTitle>
+              <CardDescription className="dark:text-[#b8b9b9] font-semibold">{t("Options_management")} {t(`${box.label}`)}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <Select>
                   <SelectTrigger>
-                    <SelectValue placeholder={`${box.label}`} />
+                    <SelectValue placeholder={t(`${box.label}`)} />
                   </SelectTrigger>
                   <SelectContent>
                     {options[box.name]?.map((option, index) => (
@@ -101,7 +71,7 @@ function SettingsLead() {
                 <div className="flex items-center space-x-2">
                   <Input
                     type="text"
-                    placeholder={`Add ${box.label} New`}
+                    placeholder={t(`add`) + " " + t(`${box.label}`) + " " + t(`new`)}
                     value={newValues[box.name] || ""}
                     onChange={(e) =>
                       setNewValues((prev) => ({
@@ -112,12 +82,13 @@ function SettingsLead() {
                   />
                   <Button
                     onClick={() => handleAddOption(box.name)}
+                    className="font-semibold"
                     style={{
                       backgroundColor: "rgba(91, 228, 155, 0.1)",
                       color: "#5be49b",
                     }}
                   >
-                    <Plus className="h-4 w-4 mr-2" /> Add
+                    <Plus className="h-4 w-4 mr-2" /> {t(`add`)}
                   </Button>
                 </div>
               </div>

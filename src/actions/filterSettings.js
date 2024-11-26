@@ -10,10 +10,41 @@ const dummyData = {
     type: ["New", "Existing"],
     leadStatus: ["Open", "Closed"],
     class: ["Class A", "Class B"],
+  }),
+  unitSettings: JSON.stringify({
+    unitType: ["Type 1", "Type 2"],
+    unitStatus: ["Available", "Occupied"],
+    unitLocation: ["Location 1", "Location 2"],
   })
 };
 
-export const createSettingsLeadDocument = async (data) => {
+// Parse the JSON strings back into objects
+// const leadSettings = JSON.parse(response.leadSettings);
+// const unitSettings = JSON.parse(response.unitSettings);
+
+
+const dummyDataProperties = {
+  unitSettings: JSON.stringify({
+    // put your data here like the previous example
+  })
+};
+
+export const getAllSettings = async () => {
+  try {
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_FILTER_SETTINGS, 
+    );
+
+    console.log('Documents retrieved successfully:', response);
+    return response.documents;
+  } catch (error) {
+    console.error('Error getting documents:', error);
+    throw error;
+  }
+}
+
+export const createSettings = async (data) => {
   try {
     const response = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, 
@@ -30,12 +61,13 @@ export const createSettingsLeadDocument = async (data) => {
   }
 };
 
-export const updateSettingsLeadDocument = async (documentId, data) => {
+export const updateSettings = async ( data) => {
+
   try {
     const response = await databases.updateDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, 
       process.env.NEXT_PUBLIC_FILTER_SETTINGS, 
-      documentId, 
+      "67423f230023da0f7bef", 
       data // Updated document data
     );
 

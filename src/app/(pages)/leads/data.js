@@ -151,37 +151,37 @@ export const ClientDetails = [
       email: "Raymond@simmmple.com",
       DESC: "any",
     },
-  ];
+];
 
-
-  export const filterData = [
-    {id:1, filterName: "Request type", optionData: [
-      {id:1, name: "Apartment", value: "apartment"},
-      {id:2, name: "Villa", value: "villa"},
-      {id:3, name: "Twinhouse", value: "twinhouse"},
-      {id:4, name: "Townhouse", value: "townhouse"},
-      {id:5, name: "Duplex", value: "duplex"},
-    ]},
-    {id: 1, filterName: "Leads Status", optionData: [
-      { value: "قفل خارج الشركه", name: "قفل خارج الشركه" },
-      { value: "قفل داخل الشركه", name: "قفل داخل الشركه" },
-      { value: "مؤجل حاليا", name: "مؤجل حاليا" },
-      { value: "لا يرد", name: "لا يرد" },
-      { value: "not interested", name: "not interested" },
-      { value: "very interested", name: "very interested" },
-      { value: "متابع معاينات", name: "متابع معاينات" },
-      { value: "interested", name: "interested" },
-    ]},
-    {id:1, filterName: "Leads Source", optionData: [
-      {id:1, name: "facebook", value: "facebook"},
-      {id:2, name: "whatsapp", value: "whatsapp"},
-      {id:3, name: "youtupe", value: "youtupe"},
-    ]},
-    {id:1, filterName: "Leads Classification", optionData: [
-      {id:1, name: "Apartment", value: "apartment"},
-      {id:2, name: "Villa", value: "villa"},
-      {id:3, name: "Twinhouse", value: "twinhouse"},
-      {id:4, name: "Townhouse", value: "townhouse"},
-      {id:5, name: "Duplex", value: "duplex"},
-    ]},
-  ]
+export const filterData = 
+[
+  {id:1, filterName: "Request type", optionData: [
+    {id:1, name: "Apartment", value: "apartment"},
+    {id:2, name: "Villa", value: "villa"},
+    {id:3, name: "Twinhouse", value: "twinhouse"},
+    {id:4, name: "Townhouse", value: "townhouse"},
+    {id:5, name: "Duplex", value: "duplex"},
+  ]},
+  {id: 2, filterName: "Leads Status", optionData: [
+    { value: "قفل خارج الشركه", name: "قفل خارج الشركه" },
+    { value: "قفل داخل الشركه", name: "قفل داخل الشركه" },
+    { value: "مؤجل حاليا", name: "مؤجل حاليا" },
+    { value: "لا يرد", name: "لا يرد" },
+    { value: "not interested", name: "not interested" },
+    { value: "very interested", name: "very interested" },
+    { value: "متابع معاينات", name: "متابع معاينات" },
+    { value: "interested", name: "interested" },
+  ]},
+  {id:3, filterName: "Leads Source", optionData: [
+    {id:1, name: "facebook", value: "facebook"},
+    {id:2, name: "whatsapp", value: "whatsapp"},
+    {id:3, name: "youtupe", value: "youtupe"},
+  ]},
+  {id:4, filterName: "Leads Classification", optionData: [
+    {id:1, name: "Apartment", value: "apartment"},
+    {id:2, name: "Villa", value: "villa"},
+    {id:3, name: "Twinhouse", value: "twinhouse"},
+    {id:4, name: "Townhouse", value: "townhouse"},
+    {id:5, name: "Duplex", value: "duplex"},
+  ]},
+]

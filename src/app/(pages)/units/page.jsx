@@ -2,7 +2,7 @@
 import { useTranslation } from "@/app/context/TranslationContext";
 import React, { useState, useEffect } from "react";
 import { ClientDetails, filterData } from "./data";
-import { CardUnitComponent } from "@/app/components/units-components/CardComponent";
+import  CardProperty  from "@/app/components/units-components/CardComponent";
 import { IoMdAddCircle } from "react-icons/io";
 import Filter from "@/app/components/Filter";
 import { Pagination } from "antd";
@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/hooks/use-toast";
 import Papa from 'papaparse'
+import { getAllSettings } from "@/actions/filterSettings";
 
 // import "./pagination.css"
 
@@ -36,6 +37,32 @@ function Page() {
       return acc;
     }, {})
   );
+  const [options, setOptions] = useState([
+    {id:1, filterName: "Property Types", data: "type", optionData: []},
+    {id: 2, filterName: "in-side / Out Side", data: "inOrOutSideCompound", optionData: []},
+    {id:3, filterName: "Sales", data: "sales", optionData: []},
+    {id:4, filterName: "Category", data: "category", optionData: []},
+  ])
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const res = await getAllSettings();
+        const data = JSON.parse(res[0].unitSettings);
+        console.log(data)
+        setOptions((prev) =>
+          prev.map((option) => {
+            const matchedData = data[option.data] || [];
+            return { ...option, optionData: matchedData };
+          })
+        );
+      } catch (error) {
+        console.error("Failed to fetch options:", error);
+      }
+    };
+  
+    fetchOptions();
+  }, []);
+
   const handleFilterChange = (value, filterName) => {
     const updatedFilters = { ...filterValues, [filterName]: value };
     console.log(updatedFilters)
@@ -267,7 +294,7 @@ function Page() {
             filterChange={onFilterChange}
             filterValues={filterValues}
             onFilterChange={handleFilterChange}
-            data={filterData} />
+            data={options} />
           </div>
           <div className="hidden md:block">
               <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />
@@ -278,7 +305,7 @@ function Page() {
         <Grid container className="flex justify-center gap-5" dir="ltr">
           {units.map((unit, index) => (
             <Grid item xs={12} sm={7} md={5.5} lg={3.7} key={index}>
-              <CardUnitComponent ele={unit} handleLike={handleLike} handleShowHome={handleShowHome}/>
+              <CardProperty property={unit} handleLike={handleLike} handleShowHome={handleShowHome}/>
             </Grid>
           ))}
         </Grid>
