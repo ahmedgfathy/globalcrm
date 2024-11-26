@@ -104,7 +104,7 @@ function Page() {
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
 <Grid
   container
-  direction={ isMobile ? "column" : "row"} // ترتيب العمود على الهواتف
+  direction={ isMobile ? "column" : "row"} 
   wrap="nowrap"
   className="gap-6 max-sm:gap-1 py-6 px-4 min-h-screen"
 >
