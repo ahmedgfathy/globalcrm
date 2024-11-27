@@ -35,6 +35,7 @@ function TabComponent({ ele, selectedTab, handleTabChange }) {
               label={ele}
               sx={{
                 color: '#5be49b',
+                fontFamily: "cairo",
                 '&.Mui-selected': {
                   color: '#5be49b',
                   backgroundColor: 'rgba(91, 228, 155, 0.1)',
