@@ -54,7 +54,7 @@ function SheetCalls({ isDisabled, handleChange, lead, options }) {
           />
 
           <DateInput
-            label={t("ModifiedTime")}
+            label={t("modified_time")}
             id="modifiedTime"
             defaultValue={lead?.$updatedAt}
             isDisabled={true}
@@ -63,7 +63,7 @@ function SheetCalls({ isDisabled, handleChange, lead, options }) {
           />
 
           <DateInput
-            label={t("CreatedTime")}
+            label={t("created_time")}
             id="createdTime"
             defaultValue={lead?.$createdAt || 0}
             isDisabled={true}

@@ -16,16 +16,40 @@ import { useTranslation } from "@/app/context/TranslationContext";
 function DeleteButton({ handleDelete, title, afterDel }) {
   const { locale, t } = useTranslation();
 
+  // const onOk = () => {
+  //   return handleDelete()
+  //     .then(() => {
+  //       if (afterDel){
+  //         return afterDel();
+  //       }else{
+  //         console.log("ddd")
+  //       }
+  //     })
+  //     .catch(() => {
+  //       console.log("Oops, errors occurred!");
+  //     });
+  // };
   const onOk = () => {
-    return handleDelete()
-      .then(() => {
+    const result = handleDelete();
+    if (result instanceof Promise) {
+      return result
+        .then(() => {
+          if (afterDel) {
+            return afterDel();
+          }
+        })
+        .catch(() => {
+          console.log("Oops, errors occurred!");
+        });
+    } else {
+      console.warn("handleDelete did not return a Promise.");
+      if (afterDel) {
         afterDel();
-      })
-      .catch(() => {
-        console.log("Oops, errors occurred!");
-      });
+      }
+      return Promise.resolve();
+    }
   };
-
+  
   return (
     <Dialog>
       <DialogTrigger>
