@@ -1,40 +1,52 @@
-import { Grid, Tab, Tabs } from '@mui/material'
-import React from 'react'
+import { Grid, Tab, Tabs, useMediaQuery } from '@mui/material';
+import React from 'react';
 
-function TabComponent({ele, selectedTab, handleTabChange}) {
+function TabComponent({ ele, selectedTab, handleTabChange }) {
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
+
   return (
-    <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md max-sm:hidden">
-    <Tabs
-      orientation="vertical"
-      value={selectedTab}
-      onChange={handleTabChange}
-      aria-label="Vertical tabs"
-      TabIndicatorProps={{
-        style: {
-          backgroundColor: "#4CAF50",
-        },
-      }}
-      style={{ height: '100%', paddingTop: 16 }}
+    <Grid
+      item
+      xs={12}
+      md={2}
+      className={`bg-Lightbg dark:bg-cardbgDark my-2 rounded-md ${
+        isSmallScreen ? '' : 'max-sm:hidden'
+      }`}
     >
-        {ele?.map((ele, i)=>{
-            return(
-                <Tab
-                key={i}
-                  label={ele}
-                  sx={{
-                    color: "#5be49b",
-                    "&.Mui-selected": {
-                      color: "#5be49b",
-                      backgroundColor: "rgba(91, 228, 155, 0.1)"
-                    },
-                  }}
-                />
-
-            )
+      <Tabs
+        orientation={isSmallScreen ? 'horizontal' : 'vertical'} 
+        value={selectedTab}
+        onChange={handleTabChange}
+        aria-label="Tabs"
+        TabIndicatorProps={{
+          style: {
+            backgroundColor: '#4CAF50',
+          },
+        }}
+        style={{
+          width: '100%',
+          paddingTop: isSmallScreen ? 0 : 16, 
+        }}
+      >
+        {ele?.map((ele, i) => {
+          return (
+            <Tab
+              key={i}
+              label={ele}
+              sx={{
+                color: '#5be49b',
+                fontFamily: "cairo",
+                '&.Mui-selected': {
+                  color: '#5be49b',
+                  backgroundColor: 'rgba(91, 228, 155, 0.1)',
+                },
+              }}
+            />
+          );
         })}
-    </Tabs>
-  </Grid>
-  )
+      </Tabs>
+    </Grid>
+  );
 }
 
-export default TabComponent
+export default TabComponent;

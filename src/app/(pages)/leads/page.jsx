@@ -254,13 +254,13 @@ function Page() {
             <div className='flex gap-2 items-center'>
               <CustomButton
                 fun={() => router.push('/leads/add-lead')}
-                title={!isMobile && t('add_lead')}
+                title={!isMobile && t('clear_filter')}
                 className='GreenButton p-2'
                 icon={() => <IoMdAddCircle />}
               />
 
               <CustomButton
-                title={!isMobile && 'Clear Filter'}
+                title={!isMobile && t('clear_filter')}
                 icon={() => <CiFilter />}
                 className='GreenButton w-full md:w-fit'
                 fun={() => {
@@ -270,7 +270,7 @@ function Page() {
               />
               <DeleteButton
               handleDelete={deleteAllLeads}
-                title={!isMobile && t('delete all leads')}
+                title={!isMobile && t('delete_all_leads')}
                 afterDel={()=>fetchLeads(
                   currentPage,
                   searchTerm,

@@ -262,7 +262,7 @@ function Page() {
               />
 
               <CustomButton
-                title={!isMobile && 'Clear Filter'}
+                title={!isMobile && t('clear_filter')}
                 icon={() => <CiFilter />}
                 className='GreenButton w-fit'
                 fun={() => {
@@ -272,7 +272,7 @@ function Page() {
               />
               <DeleteButton
               // handleDelete={deleteAllLeads}
-                title={!isMobile && t('delete all units')}
+                title={!isMobile && t('delete_all_units')}
                 // afterDel={()=>fetchLeads(
                 //   currentPage,
                 //   searchTerm,

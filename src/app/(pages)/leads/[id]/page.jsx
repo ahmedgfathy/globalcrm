@@ -122,7 +122,7 @@ function Page({ params }) {
             style={{ height: "100%", paddingTop: 16 }}
           >
             <Tab
-              label="Lead Details"
+              label={t("Lead_Details")}
               sx={{
                 color: "#5be49b",
                 "&.Mui-selected": {
@@ -132,7 +132,7 @@ function Page({ params }) {
               }}
             />
             <Tab
-              label="Lead History"
+              label={t("Lead_History")}
               sx={{
                 color: "#5be49b",
                 "&.Mui-selected": {
