@@ -11,6 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge'
 import { LEAD_FIELDS, UNIT_FIELDS } from '@/app/constants/fields'
 import { useToast } from '@/hooks/use-toast'
+import { useTranslation } from '@/app/context/TranslationContext'
 
 const DEFAULT_PERMISSIONS = [
   ...LEAD_FIELDS.map(field => ({
@@ -30,6 +31,7 @@ const DEFAULT_PERMISSIONS = [
 ]
 
 export default function RoleManagement() {
+  const { t } = useTranslation()
   const { toast } = useToast()
   const [roles, setRoles] = useState([])
   const [currentRole, setCurrentRole] = useState({
@@ -73,7 +75,7 @@ export default function RoleManagement() {
     }
 
     if (isEditing) {
-      setRoles(prev => prev.map(role => 
+      setRoles(prev => prev.map(role =>
         role.id === currentRole.id ? currentRole : role
       ))
       toast({
@@ -93,7 +95,7 @@ export default function RoleManagement() {
         variant: "success"
       })
     }
-    
+
     resetForm()
   }
 
@@ -126,23 +128,23 @@ export default function RoleManagement() {
     <div className="container mx-auto">
       <Card className="bg-Lightbg dark:bg-cardbgDark">
         <CardHeader className="px-2">
-          <CardTitle >{isEditing ? 'Edit Role' : 'Add New Role'}</CardTitle>
+          <CardTitle >{isEditing ? t("Edit_Role") : t("Add_New_Role")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-medium">Role Name</label>
+            <label className="text-sm font-medium">{t("Role_Name")}</label>
             <Input
               value={currentRole.name}
               onChange={(e) => setCurrentRole(prev => ({ ...prev, name: e.target.value }))}
-              placeholder="Enter role name"
+              placeholder={t("Enter_Role_Name")}
               className="max-w-sm"
             />
           </div>
 
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value)}>
             <TabsList>
-              <TabsTrigger value="lead" className={`${activeTab === "lead" ? "bg-[#5be49b1a] text-[#5be49b]" : ""}`}>Leads</TabsTrigger>
-              <TabsTrigger value="unit" className={`${activeTab === "unit" ? "bg-[#5be49b1a] text-[#5be49b]" : ""}`}>Units</TabsTrigger>
+              <TabsTrigger value="lead" className={`${activeTab === t("leads")? "bg-[#5be49b1a] text-[#5be49b]" : ""}`}>{t("leads")}</TabsTrigger>
+              <TabsTrigger value="unit" className={`${activeTab === t("units") ? "bg-[#5be49b1a] text-[#5be49b]" : ""}`}>{t("units")}</TabsTrigger>
             </TabsList>
             <TabsContent value="lead">
               <EntityPermissions
@@ -163,11 +165,11 @@ export default function RoleManagement() {
           <div className="flex justify-end gap-2">
             {isEditing && (
               <Button variant="outline" onClick={resetForm}>
-                Cancel
+                {t("Cancel")}
               </Button>
             )}
             <Button onClick={handleSave} className="bg-[#5be49b1a] text-[#5be49b]">
-              {isEditing ? 'Update' : 'Save'} Permissions
+              {isEditing ? t("update"): t('save')} Permissions
             </Button>
           </div>
         </CardContent>
@@ -176,7 +178,7 @@ export default function RoleManagement() {
       {roles.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Added Roles</CardTitle>
+            <CardTitle>{t("added_rolles")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
@@ -195,7 +197,7 @@ export default function RoleManagement() {
                       <Button
                         variant="outline"
                         size="icon"
-                        onClick={()=>handleDelete(role.id)}
+                        onClick={() => handleDelete(role.id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -204,8 +206,8 @@ export default function RoleManagement() {
 
                   <Tabs defaultValue="lead">
                     <TabsList>
-                      <TabsTrigger value="lead">Leads</TabsTrigger>
-                      <TabsTrigger value="unit">Units</TabsTrigger>
+                      <TabsTrigger value="lead">{t("leads")}</TabsTrigger>
+                      <TabsTrigger value="unit">{t("units")}</TabsTrigger>
                     </TabsList>
                     <TabsContent value="lead">
                       <div className="rounded-md border">
@@ -225,10 +227,10 @@ export default function RoleManagement() {
                                   <TableCell>
                                     <div className="space-x-2 space-x-reverse">
                                       {permission.canView && (
-                                        <Badge variant="secondary">View</Badge>
+                                        <Badge variant="secondary">{t("view")}</Badge>
                                       )}
                                       {permission.canEdit && (
-                                        <Badge variant="secondary">Edit</Badge>
+                                        <Badge variant="secondary">{t("edit")}</Badge>
                                       )}
                                     </div>
                                   </TableCell>
@@ -256,10 +258,10 @@ export default function RoleManagement() {
                                   <TableCell>
                                     <div className="space-x-2 space-x-reverse">
                                       {permission.canView && (
-                                        <Badge variant="secondary">View</Badge>
+                                        <Badge variant="secondary">{t("view")}</Badge>
                                       )}
                                       {permission.canEdit && (
-                                        <Badge variant="secondary">Edit</Badge>
+                                        <Badge variant="secondary">{t("edit")}</Badge>
                                       )}
                                     </div>
                                   </TableCell>
