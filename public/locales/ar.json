@@ -147,5 +147,6 @@
   "edit":"تعديل",
   "view":"عرض",
   "Cancel":"إلغاء",
-  "Field_Name":"اسم الحقل"
+  "Field_Name":"اسم الحقل",
+  "View_Permissions": "عرض الصلاحيات"
 }

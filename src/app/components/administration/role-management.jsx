@@ -1,150 +1,137 @@
-'use client'
-import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { EntityPermissions } from './entity-permissions'
-import { Button } from '@/components/ui/button'
-import { Edit } from 'lucide-react'
-import { Trash2 } from 'lucide-react'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Badge } from '@/components/ui/badge'
-import { LEAD_FIELDS, UNIT_FIELDS } from '@/app/constants/fields'
-import { useToast } from '@/hooks/use-toast'
-import { useTranslation } from '@/app/context/TranslationContext'
+"use client";
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { EntityPermissions } from "./entity-permissions";
+import { Button } from "@/components/ui/button";
+import { Edit, Trash2 } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/app/context/TranslationContext";
+import PermissionsModal from "./permissions-modal";
+
+import { LEAD_FIELDS, UNIT_FIELDS } from "@/app/constants/fields";
+import { Label } from "@/components/ui/label";
+
 
 const DEFAULT_PERMISSIONS = [
-  ...LEAD_FIELDS.map(field => ({
+  ...LEAD_FIELDS.map((field) => ({
     fieldId: field.fieldId,
     fieldName: field.fieldName,
-    entityType: 'lead',
+    entityType: "lead",
     canView: false,
-    canEdit: false
+    canEdit: false,
   })),
-  ...UNIT_FIELDS.map(field => ({
+  ...UNIT_FIELDS.map((field) => ({
     fieldId: field.fieldId,
     fieldName: field.fieldName,
-    entityType: 'unit',
+    entityType: "unit",
     canView: false,
-    canEdit: false
-  }))
-]
-
+    canEdit: false,
+  })),
+];
 export default function RoleManagement() {
-  const { t } = useTranslation()
-  const { toast } = useToast()
-  const [roles, setRoles] = useState([])
+  const { t } = useTranslation();
+  const { toast } = useToast();
+  const [roles, setRoles] = useState([]);
   const [currentRole, setCurrentRole] = useState({
-    id: '',
-    name: '',
-    permissions: [...DEFAULT_PERMISSIONS]
-  })
-  const [isEditing, setIsEditing] = useState(false)
-  const [activeTab, setActiveTab] = useState('lead')
+    id: "",
+    name: "",
+    permissions: [...DEFAULT_PERMISSIONS],
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [activeTab, setActiveTab] = useState("lead");
+  const [selectedRole, setSelectedRole] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleShowPermissions = (role) => {
+    setSelectedRole(role);
+    setIsModalOpen(true);
+  };
 
   const handlePermissionChange = (fieldId, type, value) => {
-    setCurrentRole(prev => ({
+    setCurrentRole((prev) => ({
       ...prev,
-      permissions: prev.permissions.map(permission => {
-        if (permission.fieldId === fieldId && permission.entityType === activeTab) {
-          if (type === 'canView' && !value) {
-            return {
-              ...permission,
-              canView: false,
-              canEdit: false
-            }
-          }
-          return {
-            ...permission,
-            [type]: value
-          }
+      permissions: prev.permissions.map((permission) => {
+        if (
+          permission.fieldId === fieldId &&
+          permission.entityType === activeTab
+        ) {
+          return type === "canView" && !value
+            ? { ...permission, canView: false, canEdit: false }
+            : { ...permission, [type]: value };
         }
-        return permission
-      })
-    }))
-  }
+        return permission;
+      }),
+    }));
+  };
 
   const handleSave = () => {
     if (!currentRole.name.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter a role name",
-        variant: "destructive"
-      })
-      return
+      toast({ title: "Error", description: "Please enter a role name", variant: "destructive" });
+      return;
     }
 
-    if (isEditing) {
-      setRoles(prev => prev.map(role =>
-        role.id === currentRole.id ? currentRole : role
-      ))
-      toast({
-        title: "Updated",
-        description: "Role updated successfully",
-        variant: "success"
-      })
-    } else {
-      const newRole = {
-        ...currentRole,
-        id: crypto.randomUUID()
-      }
-      setRoles(prev => [...prev, newRole])
-      toast({
-        title: "Added",
-        description: "Role added successfully",
-        variant: "success"
-      })
-    }
+    setRoles((prev) =>
+      isEditing
+        ? prev.map((role) => (role.id === currentRole.id ? currentRole : role))
+        : [...prev, { ...currentRole, id: crypto.randomUUID() }]
+    );
 
-    resetForm()
-  }
+    toast({
+      title: isEditing ? "Updated" : "Added",
+      description: isEditing ? "Role updated successfully" : "Role added successfully",
+      variant: "success",
+    });
+
+    resetForm();
+  };
 
   const handleEdit = (role) => {
-    setCurrentRole(role)
-    setIsEditing(true)
-  }
+    setCurrentRole(role);
+    setIsEditing(true);
+  };
 
   const handleDelete = (deleteRoleId) => {
-    if (deleteRoleId) {
-      setRoles(prev => prev.filter(role => role.id !== deleteRoleId))
-      toast({
-        title: "Deleted",
-        description: "Role deleted successfully",
-        variant: "success"
-      })
-    }
-  }
+    setRoles((prev) => prev.filter((role) => role.id !== deleteRoleId));
+    toast({ title: t("Deleted"), description: t("Role_Deleted"), variant: "success" });
+  };
 
   const resetForm = () => {
-    setCurrentRole({
-      id: '',
-      name: '',
-      permissions: [...DEFAULT_PERMISSIONS]
-    })
-    setIsEditing(false)
-  }
+    setCurrentRole({ id: "", name: "", permissions: [...DEFAULT_PERMISSIONS] });
+    setIsEditing(false);
+  };
 
   return (
     <div className="container mx-auto">
       <Card className="bg-Lightbg dark:bg-cardbgDark">
-        <CardHeader className="px-2">
-          <CardTitle >{isEditing ? t("Edit_Role") : t("Add_New_Role")}</CardTitle>
+        <CardHeader>
+          <CardTitle>{isEditing ? t("Edit_Role") : t("Add_New_Role")}</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">{t("Role_Name")}</label>
+        <CardContent>
+          <div className="mb-2">
+            <Label className="text-sm font-medium">{t("Role_Name")}</Label>
             <Input
               value={currentRole.name}
-              onChange={(e) => setCurrentRole(prev => ({ ...prev, name: e.target.value }))}
+              onChange={(e) =>
+                setCurrentRole((prev) => ({ ...prev, name: e.target.value }))
+              }
               placeholder={t("Enter_Role_Name")}
-              className="max-w-sm"
             />
           </div>
 
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value)}>
             <TabsList>
-              <TabsTrigger value="lead" className={`${activeTab === t("leads")? "bg-[#5be49b1a] text-[#5be49b]" : ""}`}>{t("leads")}</TabsTrigger>
-              <TabsTrigger value="unit" className={`${activeTab === t("units") ? "bg-[#5be49b1a] text-[#5be49b]" : ""}`}>{t("units")}</TabsTrigger>
+              <TabsTrigger value="lead" className="data-[state=active]:dark:bg-[#5be49b1a] data-[state=active]:dark:text-[#5be49b]">{t("leads")}</TabsTrigger>
+              <TabsTrigger value="unit" className="data-[state=active]:dark:bg-[#5be49b1a] data-[state=active]:dark:text-[#5be49b]">{t("units")}</TabsTrigger>
             </TabsList>
             <TabsContent value="lead">
               <EntityPermissions
@@ -163,121 +150,71 @@ export default function RoleManagement() {
           </Tabs>
 
           <div className="flex justify-end gap-2">
-            {isEditing && (
-              <Button variant="outline" onClick={resetForm}>
-                {t("Cancel")}
-              </Button>
-            )}
-            <Button onClick={handleSave} className="bg-[#5be49b1a] text-[#5be49b]">
-              {isEditing ? t("update"): t('save')} Permissions
+            {isEditing && <Button onClick={resetForm}>{t("Cancel")}</Button>}
+            <Button
+              onClick={handleSave}
+              className="bg-[#5be49b1a] text-[#5be49b]"
+            >
+              {isEditing ? t("update") : t("save")} Permissions
             </Button>
           </div>
         </CardContent>
       </Card>
 
       {roles.length > 0 && (
-        <Card>
+        <Card className="mt-5">
           <CardHeader>
-            <CardTitle>{t("added_rolles")}</CardTitle>
+            <CardTitle>{t("Added_Roles")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-6">
-              {roles.map(role => (
-                <div key={role.id} className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-medium text-lg">{role.name}</h3>
-                    <div className="flex gap-2">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>{t("Role_Name")}</TableHead>
+                  <TableHead>{t("Actions")}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {roles.map((role) => (
+                  <TableRow key={role.id}>
+                    <TableCell>{role.name}</TableCell>
+                    <TableCell className="flex gap-2">
                       <Button
                         variant="outline"
-                        size="icon"
+                        size="sm"
                         onClick={() => handleEdit(role)}
                       >
-                        <Edit className="h-4 w-4" />
+                        <Edit size={14} /> {t("Edit")}
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => handleDelete(role.id)}
+                      >
+                        <Trash2 size={14} /> {t("Delete")}
                       </Button>
                       <Button
                         variant="outline"
-                        size="icon"
-                        onClick={() => handleDelete(role.id)}
+                        size="sm"
+                        onClick={() => handleShowPermissions(role)}
                       >
-                        <Trash2 className="h-4 w-4" />
+                        {t("View_Permissions")}
                       </Button>
-                    </div>
-                  </div>
-
-                  <Tabs defaultValue="lead">
-                    <TabsList>
-                      <TabsTrigger value="lead">{t("leads")}</TabsTrigger>
-                      <TabsTrigger value="unit">{t("units")}</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="lead">
-                      <div className="rounded-md border">
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead className="text-start">Field</TableHead>
-                              <TableHead className="text-start">Permissions</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {role.permissions
-                              .filter(p => p.entityType === 'lead' && (p.canView || p.canEdit))
-                              .map(permission => (
-                                <TableRow key={permission.fieldId}>
-                                  <TableCell>{permission.fieldName}</TableCell>
-                                  <TableCell>
-                                    <div className="space-x-2 space-x-reverse">
-                                      {permission.canView && (
-                                        <Badge variant="secondary">{t("view")}</Badge>
-                                      )}
-                                      {permission.canEdit && (
-                                        <Badge variant="secondary">{t("edit")}</Badge>
-                                      )}
-                                    </div>
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                          </TableBody>
-                        </Table>
-                      </div>
-                    </TabsContent>
-                    <TabsContent value="unit">
-                      <div className="rounded-md border">
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead className="text-start">Field</TableHead>
-                              <TableHead className="text-start">Permissions</TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {role.permissions
-                              .filter(p => p.entityType === 'unit' && (p.canView || p.canEdit))
-                              .map(permission => (
-                                <TableRow key={permission.fieldId}>
-                                  <TableCell>{permission.fieldName}</TableCell>
-                                  <TableCell>
-                                    <div className="space-x-2 space-x-reverse">
-                                      {permission.canView && (
-                                        <Badge variant="secondary">{t("view")}</Badge>
-                                      )}
-                                      {permission.canEdit && (
-                                        <Badge variant="secondary">{t("edit")}</Badge>
-                                      )}
-                                    </div>
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                          </TableBody>
-                        </Table>
-                      </div>
-                    </TabsContent>
-                  </Tabs>
-                </div>
-              ))}
-            </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       )}
+
+      <PermissionsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        role={selectedRole}
+      />
     </div>
-  )
+  );
 }
+

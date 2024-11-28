@@ -145,7 +145,8 @@
   "edit":"Edit",
   "view":"View",
   "Cancel":"Cancel",
-  "Field_Name":"Field Name"
+  "Field_Name":"Field Name",
+  "View_Permissions": "View Permissions"
 
 
 }

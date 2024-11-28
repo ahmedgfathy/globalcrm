@@ -38,13 +38,15 @@ export function EntityPermissions({
                 <TableCell className="text-start">
                   <Checkbox
                     checked={canView}
+                    className="data-[state=checked]:dark:bg-[#5be49b1a] data-[state=checked]:dark:text-[#5be49b] dark:border-[#5be49b]"
                     onCheckedChange={(checked) =>
                       onPermissionChange(fieldId, 'canView', checked)
                     }
-                  />
+                    />
                 </TableCell>
                 <TableCell className="text-start">
                   <Checkbox
+                    className="data-[state=checked]:dark:bg-[#5be49b1a] data-[state=checked]:dark:text-[#5be49b] dark:border-[#5be49b]"
                     checked={canEdit}
                     disabled={!canView}
                     onCheckedChange={(checked) =>
