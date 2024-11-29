@@ -31,7 +31,7 @@
   "leads": "Leads",
   "properties": "Units",
   "reports": "Reports",
-  "name": "Client Name",
+  "Client_name": "Client Name",
   "mobile_phone": "Mobile Phone",
   "search_client": "Search Client",
   "button_to_client": "go to client",
@@ -83,10 +83,11 @@
   "unit_no": "Unit No.",
   "update": "Update",
   "mobile_no": "Mobile No.",
-  "tel": "Tel",
+  "Telephone": "Telephone",
   "update_calls": "Update Calls",
   "save": "Save",
   "property_name_compound_name": "Property Name - Compound Name",
+  "Compound":"Compound",
   "handler": "Handler",
   "sales": "Sales",
   "category": "Category",
@@ -139,5 +140,13 @@
   "Enter_Role_Name":"Enter Role Name",
   "Permissions":"Permissions",
   "Current_roles":"Current roles",
-  "There_are_no_roles_added_yet":"There are no roles added yet"
+  "There_are_no_roles_added_yet":"There are no roles added yet",
+  "added_rolles":"Added Roles",
+  "edit":"Edit",
+  "view":"View",
+  "Cancel":"Cancel",
+  "Field_Name":"Field Name",
+  "View_Permissions": "View Permissions"
+
+
 }

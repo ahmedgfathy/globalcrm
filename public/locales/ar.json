@@ -32,7 +32,7 @@
   "properties": "الوحدات",
   "reports": "التقارير",
   "search_client": "البحث عن العميل",
-  "name": "اسم العميل",
+  "Client_name": "اسم العميل",
   "mobile_phone": "رقم الهاتف",
   "button_to_client": "الذهاب الي العميل",
   "add_lead": "أضافة عميل",
@@ -84,7 +84,9 @@
   "unit_no": "رقم الوحدة",
   "update": "تعديل",
   "mobile_no": "رقم الجوال",
-  "tel": "الهاتف",
+  "Telephone": "الهاتف",
+  "Compound":"الموقع",
+
   "update_calls": "تحديث المكالمات",
   "save": "حفظ",
   "property_name_compound_name": "اسم العقار - اسم المجمع",
@@ -140,5 +142,11 @@
   "Enter_Role_Name": "ادخل اسم الدور",
   "Permissions": "التصاريح",
   "Current_roles": "الدور الحالي",
-  "There_are_no_roles_added_yet": "لا يوجد اي أدوار بعد"
+  "There_are_no_roles_added_yet": "لا يوجد اي أدوار بعد",
+  "added_rolles":"تم اضافه الأدوار",
+  "edit":"تعديل",
+  "view":"عرض",
+  "Cancel":"إلغاء",
+  "Field_Name":"اسم الحقل",
+  "View_Permissions": "عرض الصلاحيات"
 }

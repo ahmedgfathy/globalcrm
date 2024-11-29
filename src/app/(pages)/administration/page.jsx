@@ -1,7 +1,7 @@
 "use client";
 import { getAllSettings, updateSettings } from "@/actions/filterSettings";
 import MainCardSetting from "@/app/components/administration/MainCardSetting";
-import RoleManagement from "@/app/components/administration/Role";
+import RoleManagement from "@/app/components/administration/role-management";
 import SettingsLead from "@/app/components/administration/utils/SettingsLead";
 import SettingsUnits from "@/app/components/administration/utils/SettingsUnits";
 import TabComponent from "@/app/components/TabComponent";
