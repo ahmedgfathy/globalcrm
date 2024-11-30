@@ -14,22 +14,19 @@ function Page() {
     { name: "C", value: 4, fill: "#5f942e" },
     { name: "D", value: 3, fill: "#ffc107" },
   ];
-  const commonInfo = [
-    { id: 1, title: "employee_count", number: "15_00", time: "last_s_days", percent: "+٢٫٦%" , color:"#007867"},
-    { id: 2, title: "company_count", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color:"#5f942e" },
-    { id: 3, title: "task_count", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color:"#ff5630" }
+  const unitsInfo = [
+    { id: 1, title: "units", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#007867" },
+    { id: 2, title: "units", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#5f942e" },
+    { id: 3, title: "units", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" },
+    { id: 4, title: "units", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" }
+  ]
+  const leadinfo = [
+    { id: 1, title: "leads", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#007867" },
+    { id: 2, title: "leads", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#5f942e" },
+    { id: 3, title: "leads", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" },
+    { id: 4, title: "leads", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" }
   ]
   const sectionOne = [
-    {
-      id: 1,
-      title: "",
-      number: "",
-      time: "",
-      percent: "",
-      icon: () => { },
-      link: "",
-      description: "",
-    },
     {
       id: 2,
       title: "recent_activities",
@@ -62,6 +59,25 @@ function Page() {
   return (
     <div className="dashboard py-10 max-sm:px-4">
       <div className="mx-auto container">
+
+        <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
+          {unitsInfo.map((card) => {
+            return (
+              <div className="secondary-card" key={card.id}>
+                <SecondaryCards data={card} />
+              </div>
+            );
+          })}
+        </div>
+        <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
+          {leadinfo.map((card) => {
+            return (
+              <div className="secondary-card" key={card.id}>
+                <SecondaryCards data={card} />
+              </div>
+            );
+          })}
+        </div>
         <div className="grid lg:grid-cols-3 max-sm:grid-cols-1 gap-4 px-4 py-4">
           {sectionOne?.map((card, index) => {
             return (
@@ -70,19 +86,15 @@ function Page() {
               </div>
             );
           })}
-        </div>
-        <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4">
           <div className="main-card row-span-2">
             <MainCard dataForChart={dataForChart} />
           </div>
-          {commonInfo.map((card) => {
-            return (
-              <div className="secondary-card" key={card.id}>
-                <SecondaryCards data={card} />
-              </div>
-            );
-          })}
         </div>
+        {/* <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
+          <div className="main-card row-span-2">
+            <MainCard dataForChart={dataForChart} />
+          </div>
+        </div> */}
       </div>
     </div>
   );

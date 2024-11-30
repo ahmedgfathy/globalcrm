@@ -5,9 +5,9 @@ import React from 'react'
 function ActionsCard({card}) {
   const {t} = useTranslation()
   return (
-<div className="h-[200px] bg-Lightbg dark:bg-cardbgDark rounded-2xl p-4 shadow-md dark:shadow-none overflow-x-auto transition-all duration-300">
+<div className="h-[441px] bg-Lightbg dark:bg-cardbgDark rounded-2xl p-4 shadow-md dark:shadow-none overflow-x-auto transition-all duration-300 ">
   <div className="flex items-center justify-between mb-2">
-    <h3 className="text-xl font-semibold flex items-center gap-2 text-gray-800 dark:text-gray-100">
+    <h3 className="text-xl font-semibold flex items-center gap-2 text-gray-800 dark:text-gray-100 pb-2">
       {card.icon && (
         <span className="text-primary-500 dark:text-primary-300 ">
           {card.icon()}
@@ -28,7 +28,7 @@ function ActionsCard({card}) {
     </div>
   </div>
 
-  <p className="text-3xl font-extrabold text-gray-900 dark:text-gray-50 mb-2">{t(card.subTitle)|| card.number}</p>
+  <p className="text-3xl font-extrabold text-gray-900 dark:text-gray-50 my-5">{t(card.subTitle)|| card.number}</p>
 
   {card.percent && (
     <p
