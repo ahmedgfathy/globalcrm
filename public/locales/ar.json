@@ -148,5 +148,12 @@
   "view":"عرض",
   "Cancel":"إلغاء",
   "Field_Name":"اسم الحقل",
-  "View_Permissions": "عرض الصلاحيات"
+  "View_Permissions": "عرض الصلاحيات",
+  "residential": "السكني",
+  "commercial": "التجاري",
+  "administrative": "اداري",
+  "resil": "ريسيل",
+  "social_media_leads": "عملاء سوشيال ميديا",
+  "company_leads": "عملاء الشركة",
+  "partner_leads": "عملاء شركاء"
 }

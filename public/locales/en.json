@@ -146,7 +146,12 @@
   "view":"View",
   "Cancel":"Cancel",
   "Field_Name":"Field Name",
-  "View_Permissions": "View Permissions"
-
-
+  "View_Permissions": "View Permissions",
+  "residential": "Residential",
+  "commercial": "Commercial",
+  "administrative": "Administrative",
+  "resil": "Resil",
+  "social_media_leads": "Social Media Leads",
+  "company_leads": "Company Leads",
+  "partner_leads": "Partner Leads"
 }

@@ -15,16 +15,16 @@ function Page() {
     { name: "D", value: 3, fill: "#ffc107" },
   ];
   const unitsInfo = [
-    { id: 1, title: "units", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#007867" },
-    { id: 2, title: "units", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#5f942e" },
-    { id: 3, title: "units", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" },
-    { id: 4, title: "units", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" }
+    { id: 1, title: "residential", number: "1102", time: "last_s_days", percent: "+٢٫٦%", color: "#007867" },
+    { id: 2, title: "commercial", number: "1587", time: "last_s_days", percent: "+٢٫٦%", color: "#5f942e" },
+    { id: 3, title: "administrative", number: "2602", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" },
+    { id: 4, title: "resil", number: "1205", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" }
   ]
-  const leadinfo = [
-    { id: 1, title: "leads", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#007867" },
-    { id: 2, title: "leads", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#5f942e" },
-    { id: 3, title: "leads", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" },
-    { id: 4, title: "leads", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" }
+  const leadInfo = [
+    { id: 1, title: "social_media_leads", number: "1025", time: "last_s_days", percent: "+٢٫٦%", color: "#007867" },
+    { id: 2, title: "company_leads", number: "485", time: "last_s_days", percent: "+٢٫٦%", color: "#5f942e" },
+    { id: 3, title: "partner_leads", number: "2001", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" },
+    { id: 4, title: "partner_leads", number: "2640", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" }
   ]
   const sectionOne = [
     {
@@ -53,6 +53,20 @@ function Page() {
         { name: "add_event", onClick: () => { } },
       ],
     },
+    {
+      id: 4,
+      title: "",
+      subTitle: "",
+      number: "",
+      time: "",
+      percent: "",
+      icon: () => {},
+      link: "",
+      description: "",
+      actions: [
+        // { name: "add_event", onClick: () => { } },
+      ],
+    },
   ];
 
 
@@ -70,7 +84,7 @@ function Page() {
           })}
         </div>
         <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
-          {leadinfo.map((card) => {
+          {leadInfo.map((card) => {
             return (
               <div className="secondary-card" key={card.id}>
                 <SecondaryCards data={card} />
@@ -78,7 +92,7 @@ function Page() {
             );
           })}
         </div>
-        <div className="grid lg:grid-cols-3 max-sm:grid-cols-1 gap-4 px-4 py-4">
+        <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
           {sectionOne?.map((card, index) => {
             return (
               <div className="actions-card" key={index}>
