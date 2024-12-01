@@ -1,25 +1,13 @@
-"use client";
+"use client"
 import React, { useState } from 'react';
-import { signUp, signIn, signOut, createUser, loginUser, getCurrentUserRole } from '../../actions/auth.js';
+import { signIn, signOut, createUser, loginUser } from '../../actions/auth';
 
-const AuthForm = () => {
+const AuthComponent = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [role, setRole] = useState('');
   const [message, setMessage] = useState('');
-
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await signUp(email, password);
-      setMessage('User signed up successfully!');
-      console.log(response);
-    } catch (error) {
-      setMessage('Error signing up user.');
-      console.error(error);
-    }
-  };
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -70,27 +58,8 @@ const AuthForm = () => {
 
   return (
     <div>
-      <h2>Auth Form</h2>
-      <form onSubmit={handleSignUp}>
-        <h3>Sign Up</h3>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Sign Up</button>
-      </form>
-
-      <form onSubmit={handleLoginUser}>
+      <h2>Auth Component</h2>
+      <form onSubmit={handleSignIn}>
         <h3>Sign In</h3>
         <input
           type="email"
@@ -112,7 +81,7 @@ const AuthForm = () => {
       <button onClick={handleSignOut}>Sign Out</button>
 
       <form onSubmit={handleCreateUser}>
-        <h3>Create User with Role</h3>
+        <h3>Create User</h3>
         <input
           type="email"
           placeholder="Email"
@@ -160,7 +129,7 @@ const AuthForm = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit">Login User</button>
       </form>
 
       <p>{message}</p>
@@ -168,4 +137,4 @@ const AuthForm = () => {
   );
 };
 
-export default AuthForm;
+export default AuthComponent;

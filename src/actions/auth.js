@@ -56,7 +56,7 @@ export const createUser = async (email, password, name, role) => {
 
     const dbResponse = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, // Collection ID
+      process.env.NEXT_PUBLIC_USERS, // Collection ID
       userId, // Use the same ID as the user account
       userDocument // Document data
     );
