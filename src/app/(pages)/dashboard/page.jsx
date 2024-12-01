@@ -14,22 +14,19 @@ function Page() {
     { name: "C", value: 4, fill: "#5f942e" },
     { name: "D", value: 3, fill: "#ffc107" },
   ];
-  const commonInfo = [
-    { id: 1, title: "employee_count", number: "15_00", time: "last_s_days", percent: "+٢٫٦%" , color:"#007867"},
-    { id: 2, title: "company_count", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color:"#5f942e" },
-    { id: 3, title: "task_count", number: "15_00", time: "last_s_days", percent: "+٢٫٦%", color:"#ff5630" }
+  const unitsInfo = [
+    { id: 1, title: "residential", number: "1102", time: "last_s_days", percent: "+٢٫٦%", color: "#007867" },
+    { id: 2, title: "commercial", number: "1587", time: "last_s_days", percent: "+٢٫٦%", color: "#5f942e" },
+    { id: 3, title: "administrative", number: "2602", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" },
+    { id: 4, title: "resil", number: "1205", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" }
+  ]
+  const leadInfo = [
+    { id: 1, title: "social_media_leads", number: "1025", time: "last_s_days", percent: "+٢٫٦%", color: "#007867" },
+    { id: 2, title: "company_leads", number: "485", time: "last_s_days", percent: "+٢٫٦%", color: "#5f942e" },
+    { id: 3, title: "partner_leads", number: "2001", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" },
+    { id: 4, title: "partner_leads", number: "2640", time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" }
   ]
   const sectionOne = [
-    {
-      id: 1,
-      title: "",
-      number: "",
-      time: "",
-      percent: "",
-      icon: () => { },
-      link: "",
-      description: "",
-    },
     {
       id: 2,
       title: "recent_activities",
@@ -56,26 +53,29 @@ function Page() {
         { name: "add_event", onClick: () => { } },
       ],
     },
+    {
+      id: 4,
+      title: "",
+      subTitle: "",
+      number: "",
+      time: "",
+      percent: "",
+      icon: () => {},
+      link: "",
+      description: "",
+      actions: [
+        // { name: "add_event", onClick: () => { } },
+      ],
+    },
   ];
 
 
   return (
     <div className="dashboard py-10 max-sm:px-4">
       <div className="mx-auto container">
-        <div className="grid lg:grid-cols-3 max-sm:grid-cols-1 gap-4 px-4 py-4">
-          {sectionOne?.map((card, index) => {
-            return (
-              <div className="actions-card" key={index}>
-                <ActionsCard card={card} />
-              </div>
-            );
-          })}
-        </div>
-        <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4">
-          <div className="main-card row-span-2">
-            <MainCard dataForChart={dataForChart} />
-          </div>
-          {commonInfo.map((card) => {
+
+        <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
+          {unitsInfo.map((card) => {
             return (
               <div className="secondary-card" key={card.id}>
                 <SecondaryCards data={card} />
@@ -83,6 +83,32 @@ function Page() {
             );
           })}
         </div>
+        <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
+          {leadInfo.map((card) => {
+            return (
+              <div className="secondary-card" key={card.id}>
+                <SecondaryCards data={card} />
+              </div>
+            );
+          })}
+        </div>
+        <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
+          {sectionOne?.map((card, index) => {
+            return (
+              <div className="actions-card" key={index}>
+                <ActionsCard card={card} />
+              </div>
+            );
+          })}
+          <div className="main-card row-span-2">
+            <MainCard dataForChart={dataForChart} />
+          </div>
+        </div>
+        {/* <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
+          <div className="main-card row-span-2">
+            <MainCard dataForChart={dataForChart} />
+          </div>
+        </div> */}
       </div>
     </div>
   );

@@ -56,7 +56,7 @@
   "company_count": "Company Count",
   "task_count": "Tasks Done",
   "15_00": "1500",
-  "last_s_days": "Last 7 days",
+  "last_s_days": "Last 30 days",
   "tasks": "Tasks",
   "according_to_achievement": "According to achievement",
   "tasks_performed": "Tasks performed",
@@ -146,7 +146,12 @@
   "view":"View",
   "Cancel":"Cancel",
   "Field_Name":"Field Name",
-  "View_Permissions": "View Permissions"
-
-
+  "View_Permissions": "View Permissions",
+  "residential": "Residential",
+  "commercial": "Commercial",
+  "administrative": "Administrative",
+  "resil": "Resil",
+  "social_media_leads": "Social Media Leads",
+  "company_leads": "Company Leads",
+  "partner_leads": "Partner Leads"
 }
