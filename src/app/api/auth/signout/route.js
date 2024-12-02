@@ -1,4 +1,4 @@
-import {account,databases} from "../../../../services/appwrite/client.js"
+import { account } from '@/services/appwrite/client';
 import cookie from 'cookie';
 
 export async function POST(req) {
