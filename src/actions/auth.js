@@ -42,6 +42,7 @@ export const signIn = async (email, password) => {
   }
 };
 
+
 // Sign Out Function
 export const signOut = async () => {
   try {
@@ -64,21 +65,11 @@ export const createUser = async (email, password, name, role) => {
 
     // const hashedPassword = await bcrypt.hash(password, 10);
 
-    // const userDocument = {
-    //   userId,
-    //   email,
-    //   role,
-    //   password,
-    // };
     const userDocument = {
-      // userId,
-      // email,
-      "61422_5_email": email,
-      "61422_5_password": password,
-      "61422_5_role": role,
-      "61422_5_userId": userId,
-      // role,
-      // password,
+      userId,
+      email,
+      role,
+      password,
     };
     const dbResponse = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, 
