@@ -1,5 +1,6 @@
 "use client";
 import { getAllSettings, updateSettings } from "@/actions/filterSettings";
+import CreateUser from "@/app/components/administration/create-user";
 import MainCardSetting from "@/app/components/administration/MainCardSetting";
 import RoleManagement from "@/app/components/administration/role-management";
 import SettingsLead from "@/app/components/administration/utils/SettingsLead";
@@ -110,7 +111,7 @@ function Page() {
 >
   <TabComponent
     className="font-bold"
-    ele={[ t("units"), t("leads"), t("roles")]}
+    ele={[ t("units"), t("leads"), t("roles"), "create user"]}
     handleTabChange={handleTabChange}
     selectedTab={selectedTab}
   />
@@ -152,6 +153,7 @@ function Page() {
       />
     )}
     {selectedTab === 2 && <RoleManagement />}
+    {selectedTab === 3 && <CreateUser />}
   </Grid>
 </Grid>
 
