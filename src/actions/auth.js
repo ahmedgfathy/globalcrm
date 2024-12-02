@@ -3,6 +3,7 @@ import { account, databases, ID } from '../services/appwrite/client.js';
 // will use it later if needed
 // import bcrypt from 'bcryptjs'; 
 
+// Sign Up Function
 export const signUp = async (email, password) => {
   try {
     const response = await account.create(ID.unique(), email, password);
@@ -14,33 +15,49 @@ export const signUp = async (email, password) => {
   }
 };
 
-// User logs in and fetches role
-export const loginUser = async (email, password) => {
+// Sign In Function
+export const signIn = async (email, password) => {
   try {
-    const response = await axios.post('/api/auth/signin', { email, password });
-    console.log('User signed in successfully:', response.data);
-    return response.data;
+    const session = await account.createEmailPasswordSession(email, password);
+    
+    const user = await account.get();
+    const userId = user.$id;
+    
+    const userDocument = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, // Your users collection ID
+      userId
+    );
+    const { email:userEmail ,role } = userDocument
+    const userData = {userEmail, role ,userId}
+    console.log('User signed in successfully:');
+
+    // Save session data and user document in localStorage
+    localStorage.setItem('session', JSON.stringify({ userData }));
+
+    return { userData };
   } catch (error) {
-    console.error('Error logging in:', error);
+    console.error('Error signing in:', error);
     throw error;
   }
 };
 
+// Sign Out Function
 export const signOut = async () => {
   try {
-    const response = await axios.post('/api/auth/signout');
-    console.log('User signed out successfully:', response.data);
-    return response.data;
+    await account.deleteSession('current');
+    console.log('User signed out successfully');
+
+    // Remove session data from localStorage
+    localStorage.removeItem('session');
   } catch (error) {
     console.error('Error signing out:', error);
     throw error;
   }
 };
 
-// Create a new user with a role and save it in the database
 export const createUser = async (email, password, name, role) => {
   try {
-
     const userId = ID.unique();
     const userResponse = await account.create(userId, email, password, name);
     console.log('User created successfully:', userResponse);
@@ -55,10 +72,10 @@ export const createUser = async (email, password, name, role) => {
     };
 
     const dbResponse = await databases.createDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
-      process.env.NEXT_PUBLIC_USERS, // Collection ID
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
       userId, // Use the same ID as the user account
-      userDocument // Document data
+      userDocument 
     );
 
     console.log('User saved in database successfully:', dbResponse);
@@ -69,14 +86,12 @@ export const createUser = async (email, password, name, role) => {
   }
 };
 
-
-
-// Utility Functions
 export const getCurrentUserRole = () => {
-  return sessionStorage.getItem('userRole');
+  const session = JSON.parse(localStorage.getItem('session'));
+  return session ? session.userRole : null;
 };
 
 export const getSession = () => {
-  const session = cookie.get('session');
+  const session = localStorage.getItem('session');
   return session ? JSON.parse(session) : null;
 };
