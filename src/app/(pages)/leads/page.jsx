@@ -254,7 +254,7 @@ function Page() {
             <div className='flex gap-2 items-center'>
               <CustomButton
                 fun={() => router.push('/leads/add-lead')}
-                title={!isMobile && t('clear_filter')}
+                title={!isMobile && t('add_lead')}
                 className='GreenButton p-2'
                 icon={() => <IoMdAddCircle />}
               />
