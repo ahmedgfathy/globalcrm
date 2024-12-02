@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import { signIn, signOut, createUser, loginUser } from '../../actions/auth';
+import { signOut, createUser, signIn } from '../../actions/auth';
 
 const AuthComponent = () => {
   const [email, setEmail] = useState('');
@@ -47,9 +47,9 @@ const AuthComponent = () => {
   const handleLoginUser = async (e) => {
     e.preventDefault();
     try {
-      const { session, userRole } = await loginUser(email, password);
-      setMessage(`User logged in successfully with role: ${userRole}`);
-      console.log(session);
+      const { userData} = await signIn(email, password);
+      console.log(userData)
+      setMessage(`User logged in successfully with role`);
     } catch (error) {
       setMessage('Error logging in user.');
       console.error(error);
@@ -57,7 +57,7 @@ const AuthComponent = () => {
   };
 
   return (
-    <div>
+    <div className='mt-4'>
       <h2>Auth Component</h2>
       <form onSubmit={handleSignIn}>
         <h3>Sign In</h3>
