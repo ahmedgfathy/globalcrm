@@ -7,6 +7,7 @@ import { Heart, Home, ExternalLink, Phone } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { Checkbox } from "@/components/ui/checkbox";
 
 function CardProperty({ property, handleLike, handleShowHome }) {
   const router = useRouter();
@@ -40,9 +41,8 @@ function CardProperty({ property, handleLike, handleShowHome }) {
             }}
           >
             <Home
-              className={`h-4 w-4 ${
-                property.inHome && "text-red-600 text-xl"
-              } `}
+              className={`h-4 w-4 ${property.inHome && "text-red-600 text-xl"
+                } `}
             />
           </Button>
           <Button
@@ -72,6 +72,9 @@ function CardProperty({ property, handleLike, handleShowHome }) {
               className={`h-4 w-4 ${property.liked && "text-red-600 text-xl"}`}
             />
           </Button>
+          <div className="w-9 h-9 bg-white bg-opacity-50 hover:bg-[#3c3f49] rounded-[6px] flex justify-center items-center">
+            <Checkbox className="h-4 w-4" />
+          </div>
         </div>
         <div className="absolute bottom-2 right-2">
           <Badge

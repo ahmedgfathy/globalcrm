@@ -64,13 +64,22 @@ export const createUser = async (email, password, name, role) => {
 
     // const hashedPassword = await bcrypt.hash(password, 10);
 
+    // const userDocument = {
+    //   userId,
+    //   email,
+    //   role,
+    //   password,
+    // };
     const userDocument = {
-      userId,
-      email,
-      role,
-      password,
+      // userId,
+      // email,
+      "61422_5_email": email,
+      "61422_5_password": password,
+      "61422_5_role": role,
+      "61422_5_userId": userId,
+      // role,
+      // password,
     };
-
     const dbResponse = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, 
       process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
@@ -79,6 +88,7 @@ export const createUser = async (email, password, name, role) => {
     );
 
     console.log('User saved in database successfully:', dbResponse);
+    console.log(userResponse, dbResponse)
     return { userResponse, dbResponse };
   } catch (error) {
     console.error('Error creating user:', error);
