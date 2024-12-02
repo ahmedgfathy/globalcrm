@@ -19,7 +19,6 @@ import { useToast } from "@/hooks/use-toast";
 import Papa from 'papaparse'
 import { getAllSettings } from "@/actions/filterSettings";
 
-// import "./pagination.css"
 
 function Page() {
   const {toast} = useToast()
