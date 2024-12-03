@@ -271,7 +271,7 @@ function Page() {
                   fetchLeads(1, '')
                 }}
               />
-              <DeleteButton
+              {/* <DeleteButton
               handleDelete={deleteAllLeads}
               title={!isMobile && t('delete_all_leads')}
                 afterDel={()=>fetchLeads(
@@ -280,7 +280,7 @@ function Page() {
                   typeFilter,
                   customerSourceFilter
                 )}
-              />
+              /> */}
             </div>
           </div>
         </Grid>
