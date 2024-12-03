@@ -55,9 +55,9 @@ const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterV
             <TableHead className="min-w-fit text-nowrap p-3 text-start text-dark dark:text-white text-base font-bold">
               {t("action")}
             </TableHead>
-            <TableHead className="min-w-fit text-nowrap p-3 text-end flex h-auto justify-around items-center">
+            {/* <TableHead className="min-w-fit text-nowrap p-3 text-end flex h-auto justify-around items-center">
               <DropdownMenImportExport t={t} handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />
-            </TableHead>
+            </TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>

@@ -61,26 +61,65 @@ export const deleteProperty = async (propertyId) => {
   }
 };
 
+// export const deleteAllProperties = async () => {
+//   try {
+//     // Fetch all properties
+//     const response = await databases.listDocuments(
+//       process.env.NEXT_PUBLIC_DATABASE_ID,
+//       process.env.NEXT_PUBLIC_PROPERTIES
+//     );
+//     console.log(response)
+//     // Delete each property individually
+//     // const deletePromises =  response.documents.map((document) =>
+//     //   databases.deleteDocument(
+//     //     process.env.NEXT_PUBLIC_DATABASE_ID,
+//     //     process.env.NEXT_PUBLIC_PROPERTIES,
+//     //     document.$id
+//     //   )
+//     // );
+
+//     // Wait for all delete operations to complete
+//     // await Promise.all(deletePromises);
+
+//     console.log(deletePromises)
+//     return { success: true };
+//   } catch (error) {
+//     console.error('Error deleting all properties:', error);
+//     throw error;
+//   }
+// };
 export const deleteAllProperties = async () => {
   try {
-    // Fetch all properties
-    const response = await databases.listDocuments(
-      process.env.NEXT_PUBLIC_DATABASE_ID,
-      process.env.NEXT_PUBLIC_PROPERTIES
-    );
+    let hasMoreDocuments = true;
+    const limit = 100; // الحد الأقصى للعناصر لكل طلب
 
-    // Delete each property individually
-    const deletePromises = response.documents.map((document) =>
-      databases.deleteDocument(
+    while (hasMoreDocuments) {
+      // Fetch a batch of documents
+      const response = await databases.listDocuments(
         process.env.NEXT_PUBLIC_DATABASE_ID,
         process.env.NEXT_PUBLIC_PROPERTIES,
-        document.$id
-      )
-    );
+      );
 
-    // Wait for all delete operations to complete
-    await Promise.all(deletePromises);
+      // Check if there are documents to delete
+      if (response.documents.length === 0) {
+        hasMoreDocuments = false; 
+        break;
+      }
 
+      // Delete each property individually
+      const deletePromises = response.documents.map((document) =>
+        databases.deleteDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID,
+          process.env.NEXT_PUBLIC_PROPERTIES,
+          document.$id
+        )
+      );
+
+      // Wait for all delete operations to complete
+      await Promise.all(deletePromises);
+    }
+
+    console.log('All properties deleted successfully.');
     return { success: true };
   } catch (error) {
     console.error('Error deleting all properties:', error);
@@ -259,28 +298,71 @@ export const togglePropertyInHome = async (propertyId) => {
     throw error;
   }
 }; 
-
 export const importProperties = async (data) => {
   try {
     console.log('Importing properties:', data);
-    const responses = await Promise.all(
-      data.map(async (property) => {
-        const response = await databases.createDocument(
-          process.env.NEXT_PUBLIC_DATABASE_ID,
-          process.env.NEXT_PUBLIC_PROPERTIES,
-          ID.unique(), // Unique document ID
-          property // Property data
-        );
-        return response;
-      })
-    );
-    console.log('Raw responses:', responses);
-    return responses;
+
+    const batchSize = 50; 
+    const batches = [];
+    for (let i = 0; i < data.length; i += batchSize) {
+      batches.push(data.slice(i, i + batchSize));
+    }
+
+    for (const batch of batches) {
+      const responses = await Promise.all(
+        batch.map(async (property) => {
+          console.log(property)
+          try {
+            const response = await databases.createDocument(
+              process.env.NEXT_PUBLIC_DATABASE_ID,
+              process.env.NEXT_PUBLIC_PROPERTIES,
+              ID.unique(), // Unique document ID
+              property // Property data
+            );
+            return response;
+          } catch (error) {
+            console.error('Error creating document:', property, error.message);
+            return null; // تجاهل الأخطاء الفردية واستمر
+          }
+        })
+      );
+
+      console.log(`Batch processed: ${responses.filter(Boolean).length} documents`);
+    }
+
+    console.log('All batches processed successfully.');
+    return { success: true };
   } catch (error) {
     console.error('Error importing properties:', error);
     throw error;
   }
 };
+
+
+
+
+
+// export const importProperties = async (data) => {
+//   try {
+//     console.log('Importing properties:', data);
+//     const responses = await Promise.all(
+//       data.map(async (property) => {
+//         const response = await databases.createDocument(
+//           process.env.NEXT_PUBLIC_DATABASE_ID,
+//           process.env.NEXT_PUBLIC_PROPERTIES,
+//           ID.unique(), // Unique document ID
+//           property // Property data
+//         );
+//         return response;
+//       })
+//     );
+//     console.log('Raw responses:', responses);
+//     return responses;
+//   } catch (error) {
+//     console.error('Error importing properties:', error);
+//     throw error;
+//   }
+// };
 
 export const exportProperties = async () => {
   try {
