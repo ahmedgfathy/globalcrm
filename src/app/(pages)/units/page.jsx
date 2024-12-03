@@ -10,7 +10,7 @@ import { Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import CustomButton from "@/app/components/CustomButton";
 import  DropdownMenImportExport  from "@/app/components/leadImport-Export/ImportExport";
-import { exportProperties, getAllProperties, importProperties, searchPropertyByName, togglePropertyInHome, togglePropertyLiked } from "@/actions/propertiesAction";
+import { exportProperties, getAllProperties,deleteAllProperties, importProperties, searchPropertyByName, togglePropertyInHome, togglePropertyLiked } from "@/actions/propertiesAction";
 import DeleteButton from "@/app/components/delete-button/DeleteButton";
 import { CiFilter, CiSearch } from "react-icons/ci";
 import { Input } from "@/components/ui/input";
@@ -228,6 +228,27 @@ function Page() {
       },
     });
   };
+
+  const handleDeleteAllProperties = async () => {
+    try {
+      await deleteAllProperties();
+      toast({
+        variant: 'success',
+        title: 'Success Delete Units',
+        description: 'All units deleted successfully.',
+        status: 'success',
+      });
+      fetchUnits(); // Refresh the state after deletion
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error Deleting Units',
+        description: error.message || 'An unexpected error occurred.',
+        status: 'error',
+      });
+      console.error('Error deleting units:', error);
+    }
+  };
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full flex flex-wrap justify-between items-start gap-3 px-2 pt-2 max-[1200px]:px-7">
@@ -270,14 +291,9 @@ function Page() {
                 }}
               />
               <DeleteButton
-              // handleDelete={deleteAllLeads}
+                handleDelete={handleDeleteAllProperties}
                 title={!isMobile && t('delete_all_units')}
-                // afterDel={()=>fetchLeads(
-                //   currentPage,
-                //   searchTerm,
-                //   typeFilter,
-                //   customerSourceFilter
-                // )}
+                afterDel={() => fetchUnits(currentPage, searchTerm)}
               />
               <div className="block md:hidden">
               <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV}/>

@@ -61,6 +61,33 @@ export const deleteProperty = async (propertyId) => {
   }
 };
 
+export const deleteAllProperties = async () => {
+  try {
+    // Fetch all properties
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES
+    );
+
+    // Delete each property individually
+    const deletePromises = response.documents.map((document) =>
+      databases.deleteDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_PROPERTIES,
+        document.$id
+      )
+    );
+
+    // Wait for all delete operations to complete
+    await Promise.all(deletePromises);
+
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting all properties:', error);
+    throw error;
+  }
+};
+
 export const updatePropertyByID = async (propertyId, updatedData) => {
   try {
     const sanitizedData = { ...updatedData };
