@@ -1,13 +1,20 @@
 "use client";
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { UserContext } from "@/app/context/UserContext";
 import MainCard from "@/app/components/dashboard/MainCard";
 import SecondaryCards from "@/app/components/dashboard/SecondaryCards";
 import ActionsCard from "@/app/components/dashboard/ActionsCard";
 import { FaCalendarAlt } from "react-icons/fa";
 import { MdOutlineRecentActors } from "react-icons/md";
 import RecentChart from "@/app/components/dashboard/RecentChart";
-
+import ProtectedRoute from "@/app/components/ProtectedRoute"
 function Page() {
+  const router = useRouter();
+  const [state] = useContext(UserContext);
+
+
+
   const dataForChart = [
     { name: "A", value: 14, fill: "#007867" },
     { name: "B", value: 6, fill: "#ff5630" },
@@ -71,9 +78,9 @@ function Page() {
 
 
   return (
+    <ProtectedRoute>
     <div className="dashboard py-10 max-sm:px-4">
       <div className="mx-auto container">
-
         <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
           {unitsInfo.map((card) => {
             return (
@@ -104,13 +111,9 @@ function Page() {
             <MainCard dataForChart={dataForChart} />
           </div>
         </div>
-        {/* <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
-          <div className="main-card row-span-2">
-            <MainCard dataForChart={dataForChart} />
-          </div>
-        </div> */}
       </div>
     </div>
+  </ProtectedRoute>
   );
 }
 

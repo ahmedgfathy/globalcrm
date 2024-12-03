@@ -11,6 +11,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/hooks/use-toast";
 import { Box, Grid } from "@mui/material";
 import React, { useState, useEffect } from "react";
+import ProtectedRoute from "@/app/components/ProtectedRoute"
+
 
 function Page() {
   const [options, setOptions] = useState({});
@@ -102,6 +104,7 @@ function Page() {
   };
 
   return (
+    <ProtectedRoute>
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
 <Grid
   container
@@ -158,6 +161,7 @@ function Page() {
 </Grid>
 
     </Box>
+    </ProtectedRoute>
   );
 }
 

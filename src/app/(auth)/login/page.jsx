@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useCallback, useContext } from "react";
+import React, { useState, useCallback, useContext , useEffect} from "react";
 import style from "./page.module.css";
 import { useRouter } from "next/navigation";
 import FormComponent from "@/app/components/FormComponent/FormComponent";
@@ -20,6 +20,19 @@ function Page() {
     password: "",
   });
 
+  useEffect(() => {
+
+    const session = localStorage.getItem('session'); 
+    
+
+  
+    // Or check for a specific condition in your user state
+    if (session || state?.userData?.token) {
+      router.push("/dashboard");
+    }
+  }, [state, router]);
+
+
   const togglePasswordVisibility = useCallback(() => {
     setShowPassword((prevShow) => !prevShow);
   }, []);
@@ -31,19 +44,28 @@ function Page() {
     }));
   }, []);
 
+  
   const handleLoginUser = async (e) => {
     e.preventDefault();
+    if (!formData.email || !formData.password) {
+      toast({
+        variant: "destructive",
+        title: "Missing Credentials",
+        description: "Please enter both email and password.",
+        status: "error",
+      });
+      return;
+    }
     setIsSubmitting(true);
     try {
       console.log(formData.email, formData.password);
-      
       const { userData } = await signIn(formData.email, formData.password);
       console.log(userData);
-      setState({userData: userData})
+      setState({ userData });
       toast({
         variant: "success",
         title: "Success Login User",
-        description: `welcome back ${userData?.name || ""}` ,
+        description: `Welcome back ${userData?.name || ""}`,
         status: "success",
       });
       router.push("/dashboard");
@@ -52,15 +74,17 @@ function Page() {
       toast({
         variant: "destructive",
         title: "Error Login User",
-        description: error.message || "There was an issue login",
+        description: error.message || "There was an issue logging in.",
         status: "error",
       });
-      
     } finally {
       setIsSubmitting(false);
     }
   };
+  
 
+
+  
   return (
     <div className="login">
       <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
