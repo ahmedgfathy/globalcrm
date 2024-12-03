@@ -138,7 +138,7 @@ function Page() {
         return;
       }
   
-      const csv = Papa.unparse(units);
+      const csv = Papa.unparse(properties);
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
