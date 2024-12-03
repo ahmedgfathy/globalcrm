@@ -70,10 +70,12 @@ function DeleteButton({ handleDelete, title, afterDel }) {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="destructive" onClick={onOk}>
-            {t("Delete")}
-            <AiOutlineDelete className="mx-1 text-lg" />
-          </Button>
+          <DialogClose asChild>
+            <Button variant="destructive" onClick={onOk}>
+              {t("Delete")}
+              <AiOutlineDelete className="mx-1 text-lg" />
+            </Button>
+          </DialogClose>
           <DialogClose asChild>
             <Button type="button" variant="secondary">
               {t("close_dialog")}

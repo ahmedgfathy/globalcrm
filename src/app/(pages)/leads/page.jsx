@@ -29,6 +29,7 @@ import Papa from 'papaparse'
 import { useToast } from '@/hooks/use-toast'
 import DeleteButton from '../../components/delete-button/DeleteButton'
 import { getAllSettings } from '@/actions/filterSettings'
+import ProtectedRoute from '@/app/components/ProtectedRoute'
 
 function Page() {
   const { toast } = useToast()
@@ -221,6 +222,8 @@ function Page() {
     })
   }
   return (
+    <ProtectedRoute>
+
     <div className='p-6 min-h-screen bg-gray-100 dark:bg-gray-900'>
       <Grid className='w-full my-2' dir='ltr'>
         <Grid
@@ -233,10 +236,10 @@ function Page() {
         >
           <div
             className={`head flex justify-between items-start w-full flex-row-reverse gap-5`}
-          >
+            >
             <div
               className={`flex items-center w-3/4 h-max max-[450px]:w-full dark:shadow-none rounded-xl bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus-within:border-black dark:hover:border-white dark:focus-within:border-white focus:outline-none px-2`}
-            >
+              >
               <span
                 className={`text-gray-400 ${locale === 'ar' ? 'ml-2' : 'mr-2'}`}
               >
@@ -257,7 +260,7 @@ function Page() {
                 title={!isMobile && t('add_lead')}
                 className='GreenButton p-2'
                 icon={() => <IoMdAddCircle />}
-              />
+                />
 
               <CustomButton
                 title={!isMobile && t('clear_filter')}
@@ -270,7 +273,7 @@ function Page() {
               />
               <DeleteButton
               handleDelete={deleteAllLeads}
-                title={!isMobile && t('delete_all_leads')}
+              title={!isMobile && t('delete_all_leads')}
                 afterDel={()=>fetchLeads(
                   currentPage,
                   searchTerm,
@@ -288,8 +291,8 @@ function Page() {
         </div>
       ) : (
         <div
-          className='w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden'
-          dir='rtl'
+        className='w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden'
+        dir='rtl'
         >
           <ClientTable
             clients={leads}
@@ -302,7 +305,7 @@ function Page() {
             filterData={options}
             filterValues={filterValues}
             handleFilterChange={handleFilterChange}
-          />
+            />
         </div>
       )}
       {!isLoading && (
@@ -313,10 +316,11 @@ function Page() {
             pageSize={leadsPerPage}
             onChange={handlePageChange}
             className='custom-pagination'
-          />
+            />
         </div>
       )}
     </div>
+      </ProtectedRoute>
   )
 }
 
