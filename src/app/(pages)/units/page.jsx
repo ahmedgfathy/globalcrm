@@ -336,17 +336,20 @@ function Page() {
               />
             </div>
             <div className='flex gap-1 md:gap-2 items-center justify-between w-full md:w-fit'>
+            {/* <div className='flex gap-1 md:gap-2 items-center justify-between w-full'> */}
               <CustomButton
                 fun={() => router.push('/units/add-unit')}
-                title={!isMobile && t('add_unit')}
-                className='GreenButton p-2'
+                // title={!isMobile && t('add_unit')}
+                title={t('add_unit')}
+                className='GreenButton'
                 icon={() => <IoMdAddCircle />}
               />
 
               <CustomButton
-                title={!isMobile && t('clear_filter')}
+                // title={!isMobile && t('clear_filter')}
+                title={t('clear_filter')}
                 icon={() => <CiFilter />}
-                className='GreenButton w-fit'
+                className='GreenButton'
                 fun={() => {
                   // handleClearFilters()
                   // fetchLeads(1, '')
@@ -357,9 +360,9 @@ function Page() {
                 title={!isMobile && t('delete_all_units')}
                 // afterDel={() => fetchUnits(currentPage, searchTerm)}
               /> */}
-              <div className="block md:hidden">
+              {/* <div className="block md:hidden"> */}
               {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV}/> */}
-              </div>
+              {/* </div> */}
             </div>
           </div>
           </Grid>
