@@ -134,7 +134,7 @@ function Page() {
     }
   }
   const handleLike = async(id)=>{
-    const data = await togglePropertyLiked(id)
+    const data = await togglePropertyLiked(id) 
     console.log(data)
     fetchUnits()
   }
