@@ -50,6 +50,25 @@ export const addProject = async (project) => {
     }
   };
 
+  export const getProjectById = async (projectId) => {
+    try {
+      const response = await databases.getDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_PROJECTS,
+        projectId
+      );
+  
+      // Destructure the response to exclude unwanted fields
+      const { $collectionId, $createdAt,$databaseId,$permissions,$updatedAt, ...projectData } = response;
+  
+      console.log(projectData);
+      return projectData;
+    } catch (error) {
+      console.error('Error getting project:', error);
+      throw error;
+    }
+  };
+
 export const deleteProject = async (projectId) => {
     try {
       const response = await databases.deleteDocument(
