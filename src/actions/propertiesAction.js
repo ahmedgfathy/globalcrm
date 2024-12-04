@@ -162,12 +162,12 @@ export const getPropertyById = async (propertyId) => {
 
 export const searchPropertyByName = async (name) => {
   try {
-    console.log('Searching for properties with type:', type);
+    console.log('Searching for properties with name:', name);
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
       [
-        Query.contains('type', type)
+        Query.contains('name', name)
       ]
     );
 
@@ -338,31 +338,50 @@ export const importProperties = async (data) => {
   }
 };
 
+export const searchUnitByTypes = async (searchTerm) => {
+  try {
+    console.log('Searching for leads with type:', searchTerm);
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      [
+        Query.contains('type', searchTerm)
+      ]
+    );
 
+    console.log('Raw response:', response);
 
+    // Exclude collectionId and databaseId from each document
+    const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log('Processed leads:', leads);
+    return leads;
+  } catch (error) {
+    console.error('Error searching for leads by type:', error);
+    throw error;
+  }
+};
+export const searchUnitByCategory = async (searchTerm) => {
+  try {
+    console.log('Searching for leads with type:', searchTerm);
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      [
+        Query.contains('category', searchTerm)
+      ]
+    );
 
+    console.log('Raw response:', response);
 
-// export const importProperties = async (data) => {
-//   try {
-//     console.log('Importing properties:', data);
-//     const responses = await Promise.all(
-//       data.map(async (property) => {
-//         const response = await databases.createDocument(
-//           process.env.NEXT_PUBLIC_DATABASE_ID,
-//           process.env.NEXT_PUBLIC_PROPERTIES,
-//           ID.unique(), // Unique document ID
-//           property // Property data
-//         );
-//         return response;
-//       })
-//     );
-//     console.log('Raw responses:', responses);
-//     return responses;
-//   } catch (error) {
-//     console.error('Error importing properties:', error);
-//     throw error;
-//   }
-// };
+    // Exclude collectionId and databaseId from each document
+    const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log('Processed leads:', leads);
+    return leads;
+  } catch (error) {
+    console.error('Error searching for leads by type:', error);
+    throw error;
+  }
+};
 
 export const exportProperties = async () => {
   try {

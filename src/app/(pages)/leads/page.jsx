@@ -44,13 +44,14 @@ function Page() {
   const [customerSourceFilter, setCustomerSourceFilter] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [leadsPerPage, setLeadsPerPage] = useState(10)
   const [options, setOptions] = useState([
     {id:1, filterName: "Request type", data: "type", optionData: []},
     {id: 2, filterName: "Leads Status", data: "leadStatus", optionData: []},
     {id:3, filterName: "Leads Source", data: "customerSource", optionData: []},
     {id:4, filterName: "Leads Classification", data: "class", optionData: []},
   ])
-  const leadsPerPage = 10
+  // const leadsPerPage = 10
 
   const fetchLeads = async (page = 1, search = '') => {
     const offset = (page - 1) * leadsPerPage
@@ -88,7 +89,7 @@ function Page() {
   }
   useEffect(() => {
     fetchLeads(currentPage, searchTerm)
-  }, [currentPage, searchTerm])
+  }, [currentPage, searchTerm, leadsPerPage])
   
   useEffect(() => {
     const fetchOptions = async () => {
@@ -221,6 +222,12 @@ function Page() {
       },
     })
   }
+    const handlePageSizeChange = (current, size) => {
+    setLeadsPerPage(size);
+    setCurrentPage(1);
+    console.log(size);
+    
+  };
   return (
     <ProtectedRoute>
 
@@ -312,8 +319,10 @@ function Page() {
         <div className='flex justify-center mt-4' dir='ltr'>
           <Pagination
             current={currentPage}
+            showSizeChanger
             total={totalLeads}
             pageSize={leadsPerPage}
+            onShowSizeChange={handlePageSizeChange}
             onChange={handlePageChange}
             className='custom-pagination'
             />
