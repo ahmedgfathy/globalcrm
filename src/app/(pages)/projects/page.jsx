@@ -17,7 +17,7 @@ export default function ProjectsPage() {
         <CustomButton 
         title="Add Project"
         icon={() => <PlusCircle size={20} />}
-        fun={() => router.push('/projects/add')}
+        fun={() => router.push('/projects/add-project')}
         />
         {/* <Button className="bg-green-600 hover:bg-green-700">
           <PlusCircle className="mr-2 h-4 w-4" />
