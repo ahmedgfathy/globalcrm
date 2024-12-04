@@ -355,7 +355,7 @@ function Page() {
               />
             </div>
             <div className='flex gap-1 md:gap-2 items-center justify-between w-full md:w-fit'>
-            {/* <div className='flex gap-1 md:gap-2 items-center justify-between w-full'> */}
+            {/* <div className='flex gap-1 md:gap-2 items-center justify-between w-full'> */} 
               <CustomButton
                 fun={() => router.push('/units/add-unit')}
                 // title={!isMobile && t('add_unit')}
