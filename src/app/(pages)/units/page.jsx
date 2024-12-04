@@ -10,7 +10,7 @@ import { Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import CustomButton from "@/app/components/CustomButton";
 import  DropdownMenImportExport  from "@/app/components/leadImport-Export/ImportExport";
-import { exportProperties, getAllProperties,deleteAllProperties, importProperties, searchPropertyByName, togglePropertyInHome, togglePropertyLiked } from "@/actions/propertiesAction";
+import { exportProperties, getAllProperties,deleteAllProperties, importProperties, searchPropertyByName, togglePropertyInHome, togglePropertyLiked, searchUnitByCategory, searchUnitByTypes } from "@/actions/propertiesAction";
 import DeleteButton from "@/app/components/delete-button/DeleteButton";
 import { CiFilter, CiSearch } from "react-icons/ci";
 import { Input } from "@/components/ui/input";
@@ -28,7 +28,8 @@ function Page() {
   const [units, setUnits] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalUnits, setTotalUnits] = useState(0);
-  const UnitsPerPage = 10;
+  const [UnitsPerPage, setUnitsPerPage] = useState(10)
+  // const UnitsPerPage = 10;
   const [searchTerm, setSearchTerm] = useState('')
   const [filterValues, setFilterValues] = useState(
     filterData.reduce((acc, ele) => {
@@ -85,6 +86,7 @@ function Page() {
         const properties = await searchPropertyByName(search)
         setUnits(properties);
         setTotalUnits(properties.length);
+        console.log(properties)
       } else {
         console.log('Fetching all units')
         const { properties, totalProperties } = await getAllProperties(UnitsPerPage, offset)
@@ -97,7 +99,12 @@ function Page() {
       // setIsLoading(false) // Set loading state to false
     }
   }
-
+  const handlePageSizeChange = (current, size) => {
+    setUnitsPerPage(size);
+    setCurrentPage(1);
+    console.log(size);
+    
+  };
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value)
     setCurrentPage(1)
@@ -105,17 +112,29 @@ function Page() {
   
   useEffect(() => {
     fetchUnits(currentPage, searchTerm);
-  }, [currentPage, searchTerm]);
+  }, [currentPage, searchTerm, UnitsPerPage]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  const onFilterChange = ()=>{
-    console.log("filter")
+  const onFilterChange = async (e, data) => {
+    console.log(e, data)
+    if (data === 'Category') {
+      const documents = await searchUnitByCategory(e)
+      setUnits(documents)
+      setTotalUnits(documents.length)
+      console.log(documents)
+    }
+    if (data === 'Property Types') {
+      const documents = await searchUnitByTypes(e)
+      setUnits(documents)
+      setTotalUnits(documents.length)
+      console.log(documents)
+    }
   }
   const handleLike = async(id)=>{
-    const data = await togglePropertyLiked(id)
+    const data = await togglePropertyLiked(id) 
     console.log(data)
     fetchUnits()
   }
@@ -124,131 +143,193 @@ function Page() {
     console.log(data)
     fetchUnits()
   }
-  const handleExportCSV = async () => {
-    try {
-      const  {properties}  = await exportProperties();
-      console.log(properties)
-      if (!properties || properties.length === 0) {
-        toast({
-          variant: 'destructive',
-          title: 'Error Export Units',
-          description: 'No units available to export.', // أزل error.message
-          status: 'error',
-        });
-        return;
-      }
+  // const handleExportCSV = async () => {
+  //   try {
+  //     const  {properties}  = await exportProperties();
+  //     console.log(properties)
+  //     if (!properties || properties.length === 0) {
+  //       toast({
+  //         variant: 'destructive',
+  //         title: 'Error Export Units',
+  //         description: 'No units available to export.', 
+  //         status: 'error',
+  //       });
+  //       return;
+  //     }
   
-      const csv = Papa.unparse(properties);
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'units.csv';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+  //     const csv = Papa.unparse(units);
+  //     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  //     const url = URL.createObjectURL(blob);
+  //     const link = document.createElement('a');
+  //     link.href = url;
+  //     link.download = 'units.csv';
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
   
-      toast({
-        variant: 'success',
-        title: 'Success Export Units',
-        description: 'Units exported successfully.',
-        status: 'success',
-      });
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error Exporting Units',
-        description: error.message || 'An unexpected error occurred.', // الآن error معرف هنا
-        status: 'error',
-      });
-      console.error('Error exporting units:', error);
-    }
-  };
-  const handleImportCSV = (event) => {
-    const file = event.target.files[0];
-    if (!file) {
-      alert('No file selected.');
-      return;
-    }
+  //     toast({
+  //       variant: 'success',
+  //       title: 'Success Export Units',
+  //       description: 'Units exported successfully.',
+  //       status: 'success',
+  //     });
+  //   } catch (error) {
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'Error Exporting Units',
+  //       description: error.message || 'An unexpected error occurred.', // الآن error معرف هنا
+  //       status: 'error',
+  //     });
+  //     console.error('Error exporting units:', error);
+  //   }
+  // };
+  // // const handleImportCSV = (event) => {
+  // //   const file = event.target.files[0];
+  // //   if (!file) {
+  // //     alert('No file selected.');
+  // //     return;
+  // //   }
   
-    Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
-      complete: async (results) => {
-        if (results.errors.length > 0) {
-          console.error('Parsing errors:', results.errors);
-          toast({
-            variant: 'destructive',
-            title: 'Invalid file format.',
-            description: 'Please ensure the file is in CSV format.',
-            status: 'error',
-          });
-          return;
-        }
+  // //   Papa.parse(file, {
+  // //     header: true,
+  // //     skipEmptyLines: true,
+  // //     complete: async (results) => {
+  // //       if (results.errors.length > 0) {
+  // //         console.error('Parsing errors:', results.errors);
+  // //         toast({
+  // //           variant: 'destructive',
+  // //           title: 'Invalid file format.',
+  // //           description: 'Please ensure the file is in CSV format.',
+  // //           status: 'error',
+  // //         });
+  // //         return;
+  // //       }
   
-        // Convert necessary attributes from strings to integers
-        const convertedData = results.data.map((property) => ({
-          ...property,
-          totalPrice: parseInt(property.totalPrice, 10),
-          rooms: parseInt(property.rooms, 10),
-          mobileNo: parseInt(property.rooms, 10),
-          tel: parseInt(property.rooms, 10),
-          propertyImage: property.propertyImage ? property.propertyImage.split(',') : [],
-          links: property.links ? property.links.split(',') : [],
-          inHome: property.inHome === 'TRUE',
-          liked: property.liked === 'TRUE',
-        }));
+  // //       // Convert necessary attributes from strings to integers
+  // //       const convertedData = results.data.map((property) => ({
+  // //         ...property,
+  // //         totalPrice: parseInt(property.totalPrice, 10),
+  // //         rooms: parseInt(property.rooms, 10),
+  // //         mobileNo: parseInt(property.rooms, 10),
+  // //         tel: parseInt(property.rooms, 10),
+  // //         propertyImage: property.propertyImage ? property.propertyImage.split(',') : [],
+  // //         links: property.links ? property.links.split(',') : [],
+  // //         inHome: property.inHome === 'TRUE',
+  // //         liked: property.liked === 'TRUE',
+  // //       }));
   
-        try {
-          await importProperties(convertedData);
-          toast({
-            variant: 'success',
-            title: 'Success import Units',
-            description: 'Units imported successfully!',
-            status: 'success',
-          });
-        } catch (error) {
-          console.error('Error importing units:', error);
-          toast({
-            variant: 'destructive',
-            title: 'Error importing units:',
-            description: error.message || 'Failed to import units.',
-            status: 'error',
-          });
-        }
-      },
-      error: (error) => {
-        console.error('Error parsing file:', error);
-        toast({
-          variant: 'destructive',
-          title: 'Error importing units:',
-          description: 'Failed to read the CSV file.',
-          status: 'error',
-        });
-      },
-    });
-  };
-
-  const handleDeleteAllProperties = async () => {
-    try {
-      await deleteAllProperties();
-      toast({
-        variant: 'success',
-        title: 'Success Delete Units',
-        description: 'All units deleted successfully.',
-        status: 'success',
-      });
-      fetchUnits(); // Refresh the state after deletion
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error Deleting Units',
-        description: error.message || 'An unexpected error occurred.',
-        status: 'error',
-      });
-      console.error('Error deleting units:', error);
-    }
-  };
+  // //       try {
+  // //         await importProperties(convertedData);
+  // //         toast({
+  // //           variant: 'success',
+  // //           title: 'Success import Units',
+  // //           description: 'Units imported successfully!',
+  // //           status: 'success',
+  // //         });
+  // //       } catch (error) {
+  // //         console.error('Error importing units:', error);
+  // //         toast({
+  // //           variant: 'destructive',
+  // //           title: 'Error importing units:',
+  // //           description: error.message || 'Failed to import units.',
+  // //           status: 'error',
+  // //         });
+  // //       }
+  // //     },
+  // //     error: (error) => {
+  // //       console.error('Error parsing file:', error);
+  // //       toast({
+  // //         variant: 'destructive',
+  // //         title: 'Error importing units:',
+  // //         description: 'Failed to read the CSV file.',
+  // //         status: 'error',
+  // //       });
+  // //     },
+  // //   });
+  // // };
+  // const handleImportCSV = (event) => {
+  //   const file = event.target.files[0];
+  //   if (!file) {
+  //     alert('No file selected.');
+  //     return;
+  //   }
+  
+  //   Papa.parse(file, {
+  //     header: true,
+  //     skipEmptyLines: true,
+  //     complete: async (results) => {
+  //       if (results.errors.length > 0) {
+  //         console.error('Parsing errors:', results.errors);
+  //         toast({
+  //           variant: 'destructive',
+  //           title: 'Invalid file format.',
+  //           description: 'Please ensure the file is in CSV format.',
+  //           status: 'error',
+  //         });
+  //         return;
+  //       }
+  
+  //       const convertedData = results.data.map((property) => ({
+  //         ...property,
+  //         totalPrice: parseInt(property.totalPrice, 10),
+  //         rooms: parseInt(property.rooms, 10),
+  //         mobileNo: parseInt(property.mobileNo, 10),
+  //         tel: parseInt(property.tel, 10),
+  //         propertyImage: property.propertyImage ? property.propertyImage.split(',') : [],
+  //         links: property.links ? property.links.split(',') : [],
+  //         inHome: property.inHome === 'TRUE',
+  //         liked: property.liked === 'TRUE',
+  //       }));
+  
+  //       try {
+  //         await importProperties(convertedData);
+  //         toast({
+  //           variant: 'success',
+  //           title: 'Success import Units',
+  //           description: 'Units imported successfully!',
+  //           status: 'success',
+  //         });
+  //       } catch (error) {
+  //         console.error('Error importing units:', error);
+  //         toast({
+  //           variant: 'destructive',
+  //           title: 'Error importing units:',
+  //           description: error.message || 'Failed to import units.',
+  //           status: 'error',
+  //         });
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.error('Error parsing file:', error);
+  //       toast({
+  //         variant: 'destructive',
+  //         title: 'Error importing units:',
+  //         description: 'Failed to read the CSV file.',
+  //         status: 'error',
+  //       });
+  //     },
+  //   });
+  // };
+  // const handleDeleteAllProperties = async () => {
+  //   try {
+  //     await deleteAllProperties();
+  //     toast({
+  //       variant: 'success',
+  //       title: 'Success Delete Units',
+  //       description: 'All units deleted successfully.',
+  //       status: 'success',
+  //     });
+  //     // fetchUnits(); // Refresh the state after deletion
+  //   } catch (error) {
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'Error Deleting Units',
+  //       description: error.message || 'An unexpected error occurred.',
+  //       status: 'error',
+  //     });
+  //     console.error('Error deleting units:', error);
+  //   }
+  // };
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full flex flex-wrap justify-between items-start gap-3 px-2 pt-2 max-[1200px]:px-7">
@@ -274,30 +355,33 @@ function Page() {
               />
             </div>
             <div className='flex gap-1 md:gap-2 items-center justify-between w-full md:w-fit'>
+            {/* <div className='flex gap-1 md:gap-2 items-center justify-between w-full'> */} 
               <CustomButton
                 fun={() => router.push('/units/add-unit')}
-                title={!isMobile && t('add_unit')}
-                className='GreenButton p-2'
+                // title={!isMobile && t('add_unit')}
+                title={t('add_unit')}
+                className='GreenButton'
                 icon={() => <IoMdAddCircle />}
               />
 
               <CustomButton
-                title={!isMobile && t('clear_filter')}
+                // title={!isMobile && t('clear_filter')}
+                title={t('clear_filter')}
                 icon={() => <CiFilter />}
-                className='GreenButton w-fit'
+                className='GreenButton'
                 fun={() => {
-                  // handleClearFilters()
-                  // fetchLeads(1, '')
+                  handleClearFilters()
+                  fetchUnits(1, '')
                 }}
               />
-              <DeleteButton
+              {/* <DeleteButton
                 handleDelete={handleDeleteAllProperties}
                 title={!isMobile && t('delete_all_units')}
-                afterDel={() => fetchUnits(currentPage, searchTerm)}
-              />
-              <div className="block md:hidden">
-              <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV}/>
-              </div>
+                // afterDel={() => fetchUnits(currentPage, searchTerm)}
+              /> */}
+              {/* <div className="block md:hidden"> */}
+              {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV}/> */}
+              {/* </div> */}
             </div>
           </div>
           </Grid>
@@ -312,24 +396,31 @@ function Page() {
             data={options} />
           </div>
           <div className="hidden md:block">
-              <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />
+              {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
               </div>
           
         </div>
 
-        <Grid container className="flex justify-center gap-5" dir="ltr">
-          {units.map((unit, index) => (
-            <Grid item xs={12} sm={7} md={5.5} lg={3.7} key={index}>
-              <CardProperty property={unit} handleLike={handleLike} handleShowHome={handleShowHome}/>
-            </Grid>
-          ))}
-        </Grid>
+        <Grid container spacing={1} dir="ltr">
+  {units.map((unit, index) => (
+    <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+      <CardProperty 
+        property={unit} 
+        handleLike={handleLike} 
+        handleShowHome={handleShowHome} 
+      />
+    </Grid>
+  ))}
+</Grid>
+
 
         <div className="w-full flex justify-center mt-4" dir="ltr">
           <Pagination
             current={currentPage}
             total={totalUnits}
             pageSize={UnitsPerPage}
+            showSizeChanger
+            onShowSizeChange={handlePageSizeChange}
             onChange={handlePageChange}
             className="custom-pagination"
           />
