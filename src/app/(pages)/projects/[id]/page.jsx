@@ -12,22 +12,23 @@ import Point from "ol/geom/Point";
 import { Style, Icon } from "ol/style";
 import { Translate } from "ol/interaction";
 import ProjectForm from "@/app/components/ProjectForm";
-import { addProject } from "@/actions/projectAction";
+import { getProjectById, updateProject } from "@/actions/projectAction";
 import { useToast } from "@/hooks/use-toast";
 
 
-export default function Page() {
+export default function ProjectUpdate({ params: paramsPromise }) {
   const {toast} = useToast()
+  const [params, setParams] = useState(null);
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [project, setProject] = useState({
-    projectName:"",
+    projectName: "",
     companyName: "",
-    companyInformation:"",
+    companyInformation: "",
     projectInformation: "",
-    latitude:"",
-    longitude:""
-  })
+    latitude: "",
+    longitude: ""
+  });
   const [coordinates, setCoordinates] = useState({
     lat: 31.106573247052467,
     lng: 30.947136106713348,
@@ -35,6 +36,32 @@ export default function Page() {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const markerRef = useRef(null);
+
+  // Unwrap params
+  useEffect(() => {
+    paramsPromise
+      .then((resolvedParams) => setParams(resolvedParams))
+      .catch((error) => console.error("Error resolving params:", error));
+  }, [paramsPromise]);
+
+  useEffect(() => {
+    if (!params) return;
+
+    async function fetchProject() {
+      try {
+        const projectData = await getProjectById(params.id);
+        setProject(projectData);
+        setCoordinates({
+          lat: parseFloat(projectData.latitude),
+          lng: parseFloat(projectData.longitude),
+        });
+      } catch (error) {
+        console.error("Error fetching project:", error);
+      }
+    }
+
+    fetchProject();
+  }, [params]);
 
   useEffect(() => {
     const vectorSource = new VectorSource();
@@ -127,6 +154,7 @@ export default function Page() {
       alert("Invalid longitude value");
     }
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProject((prev) => ({
@@ -134,6 +162,7 @@ export default function Page() {
       [name]: value,
     }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const updatedProject = {
@@ -141,29 +170,32 @@ export default function Page() {
       latitude: coordinates.lat,
       longitude: coordinates.lng,
     };
-  
+
     console.log("Project Data:", updatedProject);
-  
+
     try {
-      await addProject(updatedProject);
+      await updateProject(params.id, updatedProject);
       toast({
         variant: "success",
-        title: "Project Added Successfully",
-        description: "The project was added successfully!",
+        title: "Success Update project",
+        description: `project updated successfuly`,
         status: "success",
       });
     } catch (error) {
-      console.error("Error adding project:", error);
+      console.error("Error updating project:", error);
       toast({
         variant: "destructive",
-        title: "Error Adding Project",
-        description: error.message || "There was an error adding the project.",
+        title: "Error updating project",
+        description: error.message || "Error updating project",
         status: "error",
-      });
+      })
     }
   };
-  
-  
+
+  if (!params) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <div className="container mx-auto flex justify-center items-center min-h-screen">
       <ProjectForm
@@ -176,7 +208,7 @@ export default function Page() {
         handleSubmit={handleSubmit}
         handleChange={handleChange}
         project={project}
-        buttonText={"Add Project"} 
+        buttonText={"Update Project"} 
       />
     </div>
   );

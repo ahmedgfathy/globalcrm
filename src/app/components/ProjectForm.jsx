@@ -15,7 +15,8 @@ function ProjectForm({
   mapRef,
   handleLongitudeChange,
   handleChange,
-  handleSubmit
+  handleSubmit,
+  buttonText // Added prop
 }) {
   return (
     <form className="space-y-6 bg-[#242b32] p-6 rounded-lg w-full md:w-2/3">
@@ -142,12 +143,12 @@ function ProjectForm({
       </div>
 
       <Button
-  type="submit"
-  onClick={handleSubmit}
-  className="w-full bg-[#5be49b1a] text-[#5be49b] hover:bg-[#5be49b33]"
->
-  Add Project
-</Button>
+    type="submit"
+    onClick={handleSubmit}
+    className="w-full bg-[#5be49b1a] text-[#5be49b] hover:bg-[#5be49b33]"
+  >
+    {buttonText} {/* Use the buttonText prop */}
+  </Button>
     </form>
   );
 }
