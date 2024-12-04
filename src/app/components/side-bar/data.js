@@ -6,6 +6,7 @@ import { SiGoogleads } from "react-icons/si";
 import { TbReportSearch } from "react-icons/tb";
 import { IoCallSharp } from "react-icons/io5";
 import { RiAdminLine } from "react-icons/ri";
+import { GoProject } from "react-icons/go";
 
 export const links = [
   {
@@ -43,6 +44,12 @@ export const links = [
     title: "units",
     link: "units",
     icon: () => <LuTableProperties className="text-xl" />,
+  },
+  {
+    id: 7,
+    title: "projects",
+    link: "projects",
+    icon: () => <GoProject  className="text-xl" />,
   },
   // {
   //   id: 7,
