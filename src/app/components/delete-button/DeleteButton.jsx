@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { useTranslation } from "@/app/context/TranslationContext";
 
-function DeleteButton({ handleDelete, title, afterDel }) {
+function DeleteButton({ handleDelete, title, afterDel, className }) {
   const { locale, t } = useTranslation();
 
   // const onOk = () => {
@@ -53,7 +53,7 @@ function DeleteButton({ handleDelete, title, afterDel }) {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="destructive" aria-label={t("delete")}>
+        <Button variant="destructive" aria-label={t("delete")} className={className}>
           {title}
           <AiOutlineDelete className="mx-1 text-lg" />
         </Button>
