@@ -70,7 +70,7 @@ export default function ProjectsPage() {
           projects.map((project) => (
             <Card
               key={project.$id}
-              className='bg-[#242b32] border-0 overflow-hidden cursor-pointer'
+              className='bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden cursor-pointer transition-colors duration-300'
               onClick={() => handleProjectClick(project.$id)}
             >
               <div className='flex h-[200px]'>
@@ -80,34 +80,37 @@ export default function ProjectsPage() {
                     alt={project.projectName || 'Project Image'}
                     width={400}
                     height={200}
-                    className='object-cover h-full' 
+                    className='object-cover h-full'
                   />
                 </div>
-                <div className='flex-1 p-6 flex flex-col justify-between'>
+                <div className='flex-1 p-6 flex flex-col justify-between bg-white dark:bg-gray-800'>
                   <div className='space-y-4'>
-                    <h3 className='text-xl font-semibold'>{project.projectName}</h3>
-                    <p className='text-gray-400'>
+                    <h3 className='text-xl font-semibold text-gray-900 dark:text-white'>
+                      {project.projectName}
+                    </h3>
+                    <p className='text-gray-600 dark:text-gray-400'>
                       {project.projectInformation || 'No description provided.'}
                     </p>
                   </div>
                   <div className='flex justify-between items-center'>
                     <div className='flex items-center space-x-4'>
-                      <span className='text-green-500'>
+                      <span className='text-green-500 dark:text-green-400'>
                         {project.status || 'Active'}
                       </span>
-                      <span className='text-gray-400'>
+                      <span className='text-gray-500 dark:text-gray-300'>
                         Start Date: { format(new Date(project.$createdAt), 'dd MMMM yyyy') || 'N/A'}
                       </span>
                     </div>
                     <Button
                       variant='destructive'
                       size='icon'
+                      className='text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-500 transition-colors duration-300'
                       onClick={(e) => {
-                        e.stopPropagation()
-                        handleDelete(project.$id)
+                        e.stopPropagation();
+                        handleDelete(project.$id);
                       }}
                     >
-                      <Trash2 className='h-4 w-4' />
+                      <Trash2 className='h-4 w-4 text-white-500' />
                     </Button>
                   </div>
                 </div>

@@ -98,7 +98,7 @@ export const deleteProject = async (projectId) => {
     }
   }
 
-  
+
   export const uploadImageToBucket = async (file) => {
     try {
       console.log('Uploading image:', file);
@@ -120,3 +120,17 @@ export const deleteProject = async (projectId) => {
       throw error;
     }
   };
+
+  export const deleteImageFromBucket = async (fileId) => {
+    try {
+      const response = await storage.deleteFile(
+        process.env.NEXT_PUBLIC_PROJECTS_BUCKET, 
+        fileId 
+      );
+      return response;
+    } catch (error) {
+      console.error('Error deleting image:', error);
+      throw error
+    }
+  }
+  
