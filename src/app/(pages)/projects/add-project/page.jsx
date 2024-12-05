@@ -106,24 +106,27 @@ export default function Page() {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       const previews = files.map((file) => URL.createObjectURL(file));
-      setImages(files);
-      setImagePreviews(previews);
+
+      setImages((prevImages) => [...prevImages, ...files]);
+      setImagePreviews((prevPreviews) => [...prevPreviews, ...previews]);
   
       try {
         const uploadPromises = files.map((file) => uploadImageToBucket(file));
         const uploadResults = await Promise.all(uploadPromises);
-        const imageUrls = uploadResults.map((result) => result.$id); // Assuming the upload result contains a $id field
+
+        const imageUrls = uploadResults.map((result) => result.fileUrl);
         setProject((prev) => ({
           ...prev,
-          images: imageUrls,
+          images: [...prev.images, ...imageUrls],
         }));
+  
         console.log('Uploaded images:', uploadResults);
       } catch (error) {
         console.error('Error uploading images:', error);
       }
     }
   };
-
+  
   const handleLatitudeChange = (e) => {
     const lat = parseFloat(e.target.value);
     if (!isNaN(lat)) {
