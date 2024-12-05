@@ -19,7 +19,7 @@ function ProjectForm({
   buttonText // Added prop
 }) {
   return (
-    <form className="space-y-6 bg-[#242b32] p-6 rounded-lg w-full md:w-2/3">
+    <form className="space-y-6 bg-Lightbg shadow-md dark:shadow-none dark:bg-cardbgDark p-6 rounded-lg w-full md:w-2/3">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="projectName">Project Name</Label>
@@ -29,7 +29,7 @@ function ProjectForm({
             placeholder="Enter project name"
             value={project?.projectName}
             onChange={handleChange}
-            className="bg-[#1a1f24] border-gray-700"
+            
           />
         </div>
         <div className="space-y-2">
@@ -40,12 +40,12 @@ function ProjectForm({
             placeholder="Enter company name"
             value={project?.companyName}
             onChange={handleChange}
-            className="bg-[#1a1f24] border-gray-700"
+            
           />
         </div>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-2"> 
         <Label htmlFor="companyInfo">Company Information</Label>
         <Textarea
           id="companyInfo"
@@ -53,7 +53,7 @@ function ProjectForm({
           placeholder="Enter company information"
           value={project?.companyInformation}
           onChange={handleChange}
-          className="bg-[#1a1f24] border-gray-700"
+          
         />
       </div>
 
@@ -65,7 +65,7 @@ function ProjectForm({
           placeholder="Enter project information"
           value={project?.projectInformation}
           onChange={handleChange}
-          className="bg-[#1a1f24] border-gray-700"
+          
         />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -127,7 +127,7 @@ function ProjectForm({
             placeholder="Enter latitude"
             value={coordinates.lat}
             onChange={handleLatitudeChange}
-            className="bg-[#1a1f24] border-gray-700"
+            
           />
         </div>
         <div className="space-y-2">
@@ -137,7 +137,7 @@ function ProjectForm({
             placeholder="Enter longitude"
             value={coordinates.lng}
             onChange={handleLongitudeChange}
-            className="bg-[#1a1f24] border-gray-700"
+            
           />
         </div>
       </div>

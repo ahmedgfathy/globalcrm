@@ -12,7 +12,7 @@ import Point from "ol/geom/Point";
 import { Style, Icon } from "ol/style";
 import { Translate } from "ol/interaction";
 import ProjectForm from "@/app/components/ProjectForm";
-import { addProject } from "@/actions/projectAction";
+import { addProject,uploadImageToBucket } from "@/actions/projectAction";
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -26,7 +26,8 @@ export default function Page() {
     companyInformation:"",
     projectInformation: "",
     latitude:"",
-    longitude:""
+    longitude:"",
+    images:[],
   })
   const [coordinates, setCoordinates] = useState({
     lat: 31.106573247052467,
@@ -101,15 +102,31 @@ export default function Page() {
     }
   }, [coordinates]);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       const previews = files.map((file) => URL.createObjectURL(file));
-      setImages(files);
-      setImagePreviews(previews);
+
+      setImages((prevImages) => [...prevImages, ...files]);
+      setImagePreviews((prevPreviews) => [...prevPreviews, ...previews]);
+  
+      try {
+        const uploadPromises = files.map((file) => uploadImageToBucket(file));
+        const uploadResults = await Promise.all(uploadPromises);
+
+        const imageUrls = uploadResults.map((result) => result.fileUrl);
+        setProject((prev) => ({
+          ...prev,
+          images: [...prev.images, ...imageUrls],
+        }));
+  
+        console.log('Uploaded images:', uploadResults);
+      } catch (error) {
+        console.error('Error uploading images:', error);
+      }
     }
   };
-
+  
   const handleLatitudeChange = (e) => {
     const lat = parseFloat(e.target.value);
     if (!isNaN(lat)) {

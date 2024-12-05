@@ -129,7 +129,7 @@ function Page() {
           </div>
           <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
             <div className="main-card row-span-2">
-              <MainCard dataForChart={chartData} title="social_media_leads" />
+              <MainCard dataForChart={chartData} title="social_media_leads" target="lead" />
             </div>
             {leadInfo.map((card) => (
               <div className="secondary-card" key={card.id}>

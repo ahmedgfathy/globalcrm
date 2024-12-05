@@ -1,10 +1,10 @@
 'use client'
 import { useTranslation } from '@/app/context/TranslationContext'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Pagination } from 'antd'
 import ClientTable from '@/app/components/ClientTable'
 import { filterData } from './data'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Spin } from 'antd'
 import { MdDeleteForever } from 'react-icons/md' // Correct import
 
@@ -36,6 +36,7 @@ function Page() {
 
   const router = useRouter()
   const isMobile = useIsMobile()
+  const urlParams = useSearchParams();
   const { t, locale } = useTranslation()
   const [leads, setLeads] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
@@ -45,6 +46,8 @@ function Page() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [leadsPerPage, setLeadsPerPage] = useState(10)
+  const filterValue = useMemo(() => urlParams.get("filter"), [urlParams]);
+
   const [options, setOptions] = useState([
     {id:1, filterName: "Request type", data: "type", optionData: []},
     {id: 2, filterName: "Leads Status", data: "leadStatus", optionData: []},
@@ -82,21 +85,19 @@ function Page() {
       console.log(documents)
     }
     if (data === 'Leads Source') {
+      console.log("dddd")
       const documents = await searchLeadsByCustomerSource(e)
       setLeads(documents)
       console.log(documents)
     }
   }
-  useEffect(() => {
-    fetchLeads(currentPage, searchTerm)
-  }, [currentPage, searchTerm, leadsPerPage])
+
   
   useEffect(() => {
     const fetchOptions = async () => {
       try {
         const res = await getAllSettings();
         const data = JSON.parse(res[0].leadSettings);
-        console.log(data)
         setOptions((prev) =>
           prev.map((option) => {
             const matchedData = data[option.data] || [];
@@ -133,6 +134,9 @@ function Page() {
     // onFilterChange(updatedFilters);
   }
   const handleClearFilters = () => {
+    if(filterValue){
+      router.push("/leads")
+    }
     const resetFilters = Object.keys(filterValues).reduce((acc, key) => {
       acc[key] = ''
       return acc
@@ -140,6 +144,9 @@ function Page() {
     setFilterValues(resetFilters)
     // onFilterChange(resetFilters);
   }
+    useEffect(() => {
+      fetchLeads(currentPage, searchTerm)
+  }, [currentPage, searchTerm, leadsPerPage, filterValue])
   const handleExportCSV = async () => {
     try {
       const { leads } = await exportLeads()

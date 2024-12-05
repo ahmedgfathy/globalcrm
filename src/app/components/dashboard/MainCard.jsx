@@ -4,7 +4,7 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import PieChartActive from "./PieChartActive";
 import { useTheme } from 'next-themes';
 
-function MainCard({ dataForChart, title }) {
+function MainCard({ dataForChart, title, target }) {
   const { t } = useTranslation();
   return (
     <div className="h-max bg-Lightbg dark:bg-cardbgDark rounded-2xl flex flex-col justify-between items-center gap-2 py-6 shadow-box_shadow dark:shadow-none">
@@ -17,7 +17,7 @@ function MainCard({ dataForChart, title }) {
       </div>
       <div className="w-full flex justify-between items-center border-dashed border-b-2 border-[#2e3942] ">
         <div className="pb-5 w-full h-60">
-          <PieChartActive dataForChart={dataForChart} />
+          <PieChartActive dataForChart={dataForChart} target={target || ""} />
         </div>
       </div>
       <ul className="w-full h-20 min-h-max flex flex-wrap justify-center items-center gap-x-2 px-6">

@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { deleteProject, getProjects } from '@/actions/projectAction'
 import { Spin } from 'antd'
+import { format } from 'date-fns';
+
 
 export default function ProjectsPage() {
   const { t } = useTranslation()
@@ -75,17 +77,17 @@ export default function ProjectsPage() {
                 <div className='w-1/3 relative'>
                   <Image
                     src={project.image || "https://t4.ftcdn.net/jpg/03/00/10/35/360_F_300103505_oBLUa4dEG8mFdP60givbyNdoy7aHFmuu.jpg"}
-                    alt={project.name || 'Project Image'}
+                    alt={project.projectName || 'Project Image'}
                     width={400}
                     height={200}
-                    className='object-cover h-full'
+                    className='object-cover h-full' 
                   />
                 </div>
                 <div className='flex-1 p-6 flex flex-col justify-between'>
                   <div className='space-y-4'>
-                    <h3 className='text-xl font-semibold'>{project.name}</h3>
+                    <h3 className='text-xl font-semibold'>{project.projectName}</h3>
                     <p className='text-gray-400'>
-                      {project.description || 'No description provided.'}
+                      {project.projectInformation || 'No description provided.'}
                     </p>
                   </div>
                   <div className='flex justify-between items-center'>
@@ -94,7 +96,7 @@ export default function ProjectsPage() {
                         {project.status || 'Active'}
                       </span>
                       <span className='text-gray-400'>
-                        Start Date: {project.startDate || 'N/A'}
+                        Start Date: { format(new Date(project.$createdAt), 'dd MMMM yyyy') || 'N/A'}
                       </span>
                     </div>
                     <Button

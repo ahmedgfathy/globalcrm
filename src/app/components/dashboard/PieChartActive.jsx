@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { PieChart, Pie, Sector, ResponsiveContainer } from 'recharts';
 import { useTheme } from 'next-themes';
+import { useRouter } from 'next/navigation';
 
 const renderActiveShape = (props, isDarkMode) => {
   const RADIAN = Math.PI / 180;
@@ -49,7 +50,8 @@ const renderActiveShape = (props, isDarkMode) => {
   );
 };
 
-const PieChartActive = ({ dataForChart }) => {
+const PieChartActive = ({ dataForChart, target }) => {
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
   const { theme } = useTheme();
   const isDarkMode = theme === 'dark';
@@ -57,6 +59,14 @@ const PieChartActive = ({ dataForChart }) => {
   const onPieEnter = (_, index) => {
     setActiveIndex(index);
   };
+  const handleClick = () => {
+    if (target === "lead" && dataForChart[activeIndex]?.name) {
+        router.push(`/leads?filter=Leads Source&data=${dataForChart[activeIndex]?.name}`);
+    } else {
+        console.error("Invalid data for navigation");
+    }
+};
+// http://localhost:3000/leads?customerSource=Website
 
   return (
     <ResponsiveContainer>
@@ -71,6 +81,8 @@ const PieChartActive = ({ dataForChart }) => {
           outerRadius={65}
           dataKey="value"
           onMouseEnter={onPieEnter}
+          onClick={handleClick}
+        
         />
       </PieChart>
     </ResponsiveContainer>

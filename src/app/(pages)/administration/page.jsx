@@ -12,6 +12,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Box, Grid } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import ProtectedRoute from "@/app/components/ProtectedRoute"
+import AccountsPage from "@/app/components/administration/accounts/Account";
 
 
 function Page() {
@@ -114,7 +115,7 @@ function Page() {
 >
   <TabComponent
     className="font-bold"
-    ele={[ t("units"), t("leads"), t("roles"), "create user"]}
+    ele={[ t("units"), t("leads"), t("roles"), "accounts", "create user"]}
     handleTabChange={handleTabChange}
     selectedTab={selectedTab}
   />
@@ -156,7 +157,8 @@ function Page() {
       />
     )}
     {selectedTab === 2 && <RoleManagement />}
-    {selectedTab === 3 && <CreateUser />}
+    {selectedTab === 3 && <AccountsPage />}
+    {selectedTab === 4 && <CreateUser />}
   </Grid>
 </Grid>
 
