@@ -97,3 +97,26 @@ export const deleteProject = async (projectId) => {
       throw error;
     }
   }
+
+  
+  export const uploadImageToBucket = async (file) => {
+    try {
+      console.log('Uploading image:', file);
+      const response = await storage.createFile(
+        process.env.NEXT_PUBLIC_PROJECTS_BUCKET, 
+        ID.unique(), 
+        file 
+      );
+  
+      // Get the view URL
+      const fileUrl = storage.getFileView(
+        process.env.NEXT_PUBLIC_PROJECTS_BUCKET, 
+        response.$id 
+      );
+  
+      return { id: response.$id, fileUrl: fileUrl.href };
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      throw error;
+    }
+  };
