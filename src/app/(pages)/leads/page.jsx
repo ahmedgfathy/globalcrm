@@ -39,7 +39,10 @@ function Page() {
   const urlParams = useSearchParams();
   const { t, locale } = useTranslation()
   const [leads, setLeads] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
+  // Replace the existing currentPage initialization
+const initialPage = parseInt(urlParams.get('page') || '1', 10);
+const [currentPage, setCurrentPage] = useState(initialPage);
+
   const [totalLeads, setTotalLeads] = useState(0)
   const [typeFilter, setTypeFilter] = useState('')
   const [customerSourceFilter, setCustomerSourceFilter] = useState('')
@@ -113,14 +116,17 @@ function Page() {
   }, []);
   
 
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value)
     setCurrentPage(1)
   }
 
   const handlePageChange = (page) => {
-    setCurrentPage(page)
+    setCurrentPage(page);
+    router.push(`?page=${page}&search=${searchTerm}`);
   }
+
   const [filterValues, setFilterValues] = useState(
     filterData.reduce((acc, ele) => {
       acc[ele.filterName] = ''
@@ -314,11 +320,11 @@ function Page() {
             handleImportCSV={handleImportCSV}
             t={t}
             onFilterChange={onFilterChange}
-            afterDel={fetchLeads}
-            onAddLead={() => router.push('/leads/add-lead')}
-            filterData={options}
-            filterValues={filterValues}
-            handleFilterChange={handleFilterChange}
+            afterDel={() => fetchLeads(currentPage, searchTerm)}
+  onAddLead={() => router.push('/leads/add-lead')}
+  filterData={options}
+  filterValues={filterValues}
+  handleFilterChange={handleFilterChange}
             />
         </div>
       )}
