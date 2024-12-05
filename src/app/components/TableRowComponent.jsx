@@ -35,7 +35,7 @@ const TableRowComponent = ({ client, t, afterDel }) => {
           <span className='hidden max-sm:inline-block'>{t('more')}</span>
         </Link>
         <DeleteButton
-          handleDelete={() => deleteLead(client.$id)}
+          handleDelete={(e) => { e.stopPropagation(); deleteLead(client.$id)}}
           afterDel={afterDel}
         />
       </TableCell>

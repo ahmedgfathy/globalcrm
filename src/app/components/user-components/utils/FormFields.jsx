@@ -5,13 +5,15 @@ import DateInput from "./DateInput";
 import SelectInput from "./SelectInput";
 import { useTranslation } from "@/app/context/TranslationContext";
 import TagInput from "./TagInput";
+import MultiSelectInput from "./MultiSelectInput";
 
 function FormFields({ fields, isDisabled, handleChange, section }) {
   const { t, locale } = useTranslation();
+
   return (
     <div
       className="space-y-4 lg:col-span-3"
-      dir={locale === "ar" ? "rtl" : "rtl"}
+      dir={locale === "ar" ? "rtl" : "ltr"}
     >
       <div className="grid gap-1 grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1">
         {fields.map((field) => {
@@ -21,28 +23,43 @@ function FormFields({ fields, isDisabled, handleChange, section }) {
             defaultValue: field.defaultValue,
             isDisabled,
             handleChange,
-            section
+            section,
           };
 
           switch (field.type) {
-            case 'input':
+            case "input":
               return <InputField key={field.id} {...commonProps} />;
-            case 'textarea':
+            case "textarea":
               return <TextAreaField key={field.id} {...commonProps} />;
-            case 'date':
+            case "date":
               return <DateInput key={field.id} {...commonProps} />;
-            case 'taginput':
+            case "taginput":
               return <TagInput key={field.id} {...commonProps} />;
-            case 'select':
-              return <SelectInput key={field.id} {...commonProps} data={field.options} value={field.defaultValue} />;
+            case "select":
+              return (
+                <SelectInput
+                  key={field.id}
+                  {...commonProps}
+                  data={field.options}
+                  value={field.defaultValue}
+                />
+              );
+            case "multiselect":
+              return (
+                <MultiSelectInput
+                  key={field.id}
+                  {...commonProps}
+                  options={field.options}
+                />
+              );
             default:
               return null;
           }
         })}
-
       </div>
     </div>
   );
 }
+
 
 export default FormFields;
