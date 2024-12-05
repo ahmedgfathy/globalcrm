@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { account, databases, ID } from '../services/appwrite/client.js';
+import { Query } from 'appwrite';
 // will use it later if needed
 // import bcrypt from 'bcryptjs'; 
 
@@ -86,7 +87,38 @@ export const createUser = async (email, password, name, role) => {
     throw error;
   }
 };
+export const getUsers = async (limit = 10, offset = 0) => {
+  try {
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      [
+        Query.limit(limit),
+        Query.offset(offset),
+        Query.orderDesc('$createdAt')
+      ]
+    );
 
+    const totalResponse = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      [
+        Query.limit(1),
+        Query.offset(0)
+      ]
+    );
+
+    const totalUsers = totalResponse.total;
+
+    const users = response.documents.map(({ collectionId, databaseId, password: undefined , ...rest }) => rest);
+
+    console.log(users);
+    return { users, totalUsers };
+  } catch (error) {
+    console.error('Error getting users:', error);
+    throw error;
+  }
+};
 export const getCurrentUserRole = () => {
   const session = JSON.parse(localStorage.getItem('session'));
   return session ? session.userRole : null;
