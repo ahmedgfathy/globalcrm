@@ -137,7 +137,14 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             options: props?.options?.type,
         },
         { id: 7, type: 'input', label: 'building', idField: 'building', defaultValue: props?.unit?.building },
-        { id: 8, type: 'input', label: 'the_floors', idField: 'theFloors', defaultValue: props?.unit?.theFloors },
+        {
+            id: 8,
+            type: "multiselect",
+            label: "the_floors",
+            idField: "theFloors",
+            defaultValue: props?.unit?.theFloors,
+            options: props?.options?.theFloors,
+          },
         {
             id: 9,
             type: 'select',

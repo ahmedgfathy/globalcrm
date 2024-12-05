@@ -4,12 +4,13 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import PieChartActive from "./PieChartActive";
 import { useTheme } from 'next-themes';
 
-function MainCard({ dataForChart }) {
+function MainCard({ dataForChart, title }) {
   const { t } = useTranslation();
   return (
     <div className="h-max bg-Lightbg dark:bg-cardbgDark rounded-2xl flex flex-col justify-between items-center gap-2 py-6 shadow-box_shadow dark:shadow-none">
       <div className="flex flex-col w-full text-start px-6">
-        <p className="text-xl font-bold">{t("tasks")}</p>
+        {/* <p className="text-xl font-bold">{t("tasks")}</p> */}
+        <p className="text-xl font-bold">{t(title)}</p>
         <p className="text-lg text-[#637381]">
           {t("according_to_achievement")}
         </p>
@@ -28,7 +29,7 @@ function MainCard({ dataForChart }) {
                 style={{ backgroundColor: data.fill }}
               ></span>
               <p className="text-base max-sm:text-sm text-[#637381]">
-                {t("tasks_performed")}
+                {data.name}
               </p>
             </li>
           );

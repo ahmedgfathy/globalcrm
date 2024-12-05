@@ -34,6 +34,7 @@ const selectBoxes = [
     { name: "sales", label: "sales" },
     { name: "category", label: "category" },
     { name: "currency", label: "currency" },
+    { name: "theFloors", label: "theFloors"},
 ];
 
 
