@@ -2,35 +2,32 @@ import { databases, ID ,storage } from '@/services/appwrite/client';
 import {Query} from "appwrite"
 export const addLead = async (lead) => {
   try {
-    const latestDocumentResponse = await databases.listDocuments(
+    // Fetch the total number of leads
+    const totalLeadsResponse = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_LEADS,
       [
-        Query.orderDesc('leadNumber'),
-        Query.limit(1)
+        Query.limit(1),
+        Query.offset(0)
       ]
     );
 
-    let currentNumber = 0;
-    if (latestDocumentResponse.documents.length > 0) {
-      const latestLeadNumber = latestDocumentResponse.documents[0].leadNumber;
-      currentNumber = parseInt(latestLeadNumber.replace('LEA', ''), 10);
-      console.log('Current number:', currentNumber);
-    }
+    const totalLeads = totalLeadsResponse.total + 10000;
+    console.log('Total leads:', totalLeads);
 
-    // Increment the number for the new document
-    currentNumber += 1;
+    const currentNumber = totalLeads + 1;
+
     const leadNumber = `LEA${currentNumber}`;
-    console.log(leadNumber);
-    
+    console.log('New leadNumber:', leadNumber);
 
+    // Add the new lead document
     const leadWithNumber = { ...lead, leadNumber };
 
     const response = await databases.createDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, 
-      process.env.NEXT_PUBLIC_LEADS, 
-      ID.unique(), 
-      leadWithNumber 
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      ID.unique(),
+      leadWithNumber
     );
 
     return response;
@@ -39,6 +36,7 @@ export const addLead = async (lead) => {
     throw error;
   }
 };
+
 export const getAllLeads = async (limit = 10, offset = 0) => {
   try {
     const response = await databases.listDocuments(
