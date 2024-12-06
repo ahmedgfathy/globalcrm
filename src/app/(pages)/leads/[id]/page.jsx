@@ -64,7 +64,6 @@ const currentPage = searchParams.get('page') || '1';
     const currentDateTime = new Date().toLocaleString();
     try {
       const response = await updateLeadByID(params.id,lead);
-      console.log("Lead created successfully:", response);
       setLead({
         name: "",
         leadNumber: "",
@@ -90,7 +89,6 @@ const currentPage = searchParams.get('page') || '1';
           </ToastAction>
         ),
       });
-      router.back()
     } catch (error) {
       console.error("Error Updating lead:", error);
 

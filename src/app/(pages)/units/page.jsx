@@ -116,6 +116,7 @@ function Page() {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    window.scrollTo(0, 0);
   };
 
   const onFilterChange = async (e, data) => {

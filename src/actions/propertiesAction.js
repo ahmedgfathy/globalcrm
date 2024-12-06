@@ -420,6 +420,84 @@ export const exportProperties = async () => {
     throw error;
   }
 };
+// export const getPropertiesActivity = async () => {
+//   try {
+//     let allProperties = [];
+//     let lastBatchSize = 0;
+//     let offset = 0;
+//     const limit = 100;
+
+//     do {
+//       const response = await databases.listDocuments(
+//         process.env.NEXT_PUBLIC_DATABASE_ID,
+//         process.env.NEXT_PUBLIC_PROPERTIES,
+//         [
+//           Query.limit(limit),
+//           Query.offset(offset),
+//         ]
+//       );
+
+//       allProperties = [...allProperties, ...response.documents];
+
+//       lastBatchSize = response.documents.length;
+//       offset += lastBatchSize;
+//     } while (lastBatchSize > 0); 
+
+//     const propertyActivity = allProperties.reduce((acc, property) => {
+//       const activity = property.activity || "Unknown";
+//       acc[activity] = (acc[activity] || 0) + 1;
+//       return acc;
+//     }, {});
+
+//     console.log(propertyActivity);
+//     return propertyActivity;
+//   } catch (error) {
+//     console.error("Error fetching leads by source:", error);
+//     throw error;
+//   }
+// };
+export const getPropertiesActivity = async () => {
+  try {
+    let allProperties = [];
+    let lastDocument = null;
+    const limit = 100;
+
+    while (true) {
+      const query = lastDocument
+        ? [Query.limit(limit), Query.cursorAfter(lastDocument.$id)]
+        : [Query.limit(limit)];
+
+      const response = await databases.listDocuments(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_PROPERTIES,
+        query
+      );
+
+      allProperties = [...allProperties, ...response.documents];
+
+      if (response.documents.length < limit) {
+        break;
+      }
+
+      lastDocument = response.documents[response.documents.length - 1];
+    }
+
+    const propertyActivity = allProperties.reduce((acc, property) => {
+      const activity = property.activity || "Unknown";
+      acc[activity] = (acc[activity] || 0) + 1;
+      return acc;
+    }, {});
+
+    console.log(propertyActivity);
+    return propertyActivity;
+  } catch (error) {
+    console.error("Error fetching property activity:", error);
+    throw error;
+  }
+};
+
+
+//
 
 // Mock data for testing
 // const mockProperty = {

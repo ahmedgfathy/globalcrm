@@ -13,8 +13,6 @@ export const addLead = async (lead) => {
     );
 
     const totalLeads = totalLeadsResponse.total + 10000;
-    console.log('Total leads:', totalLeads);
-
     const currentNumber = totalLeads + 1;
 
     const leadNumber = `LEA${currentNumber}`;
@@ -61,8 +59,6 @@ export const getAllLeads = async (limit = 10, offset = 0) => {
     const totalLeads = totalResponse.total;
 
     const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
-
-    console.log(leads);
     return { leads, totalLeads };
   } catch (error) {
     console.error('Error fetching leads:', error);
@@ -99,15 +95,12 @@ export const getLeadsBySource = async () => {
       return acc;
     }, {});
 
-    console.log(leadsBySource);
     return leadsBySource;
   } catch (error) {
     console.error("Error fetching leads by source:", error);
     throw error;
   }
 };
-
-
 
 export const getLastMonthLeadsCount = async () => {
   try {
@@ -125,14 +118,12 @@ export const getLastMonthLeadsCount = async () => {
 
     const totalLeadsLastMonth = response.total;
 
-    console.log(`Total leads added in the last month: ${totalLeadsLastMonth}`);
     return totalLeadsLastMonth;
   } catch (error) {
     console.error("Error fetching leads from the last month:", error);
     throw error;
   }
 };
-
 
 export const exportLeads = async () => {
   try {
@@ -164,14 +155,12 @@ export const exportLeads = async () => {
       ...rest 
     }) => rest);
 
-    console.log(leads);
     return { leads, totalLeads };
   } catch (error) {
     console.error('Error exporting leads:', error);
     throw error;
   }
 };
-
 
 export const deleteLead = async (leadId) => {
   try {
@@ -241,8 +230,6 @@ export const uploadImageToBucket = async (file) => {
   }
 };
 
-
-
 export const searchLeads = async (searchTerm) => {                                                                       
   try {
     console.log('Searching for leads with term:', searchTerm);
@@ -259,8 +246,6 @@ export const searchLeads = async (searchTerm) => {
       ]
     );
 
-    console.log('Raw response:', response);
-
     // Exclude collectionId and databaseId from each document
     const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
     console.log('Processed leads:', leads);
@@ -273,7 +258,6 @@ export const searchLeads = async (searchTerm) => {
 
 export const searchLeadsByType = async (searchTerm) => {
   try {
-    console.log('Searching for leads with type:', searchTerm);
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_LEADS,
@@ -282,11 +266,8 @@ export const searchLeadsByType = async (searchTerm) => {
       ]
     );
 
-    console.log('Raw response:', response);
-
     // Exclude collectionId and databaseId from each document
     const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
-    console.log('Processed leads:', leads);
     return leads;
   } catch (error) {
     console.error('Error searching for leads by type:', error);
@@ -296,7 +277,6 @@ export const searchLeadsByType = async (searchTerm) => {
 
 export const searchLeadsByCustomerSource = async (searchTerm) => {
   try {
-    console.log('Searching for leads with type:', searchTerm);
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_LEADS,
@@ -305,11 +285,9 @@ export const searchLeadsByCustomerSource = async (searchTerm) => {
       ]
     );
 
-    console.log('Raw response:', response);
 
     // Exclude collectionId and databaseId from each document
     const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
-    console.log('Processed leads:', leads);
     return leads;
   } catch (error) {
     console.error('Error searching for leads by type:', error);
@@ -319,7 +297,6 @@ export const searchLeadsByCustomerSource = async (searchTerm) => {
 
 export const importLeads = async (data) => {
   try {
-    console.log('Importing leads:', data);
     const responses = await Promise.all(
       data.map(async (lead) => {
         const response = await databases.createDocument(
@@ -331,7 +308,6 @@ export const importLeads = async (data) => {
         return response;
       })
     );
-    console.log('Raw responses:', responses);
     return responses;
   } catch (error) {
     console.error('Error importing leads:', error);
@@ -368,7 +344,6 @@ export const deleteAllLeads = async () => {
 
 export const searchLeadsByLeadStatus = async (searchTerm) => {
   try {
-    console.log('Searching for leads with lead status:', searchTerm);
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_LEADS,
@@ -377,11 +352,9 @@ export const searchLeadsByLeadStatus = async (searchTerm) => {
       ]
     );
 
-    console.log('Raw response:', response);
 
     // Exclude collectionId and databaseId from each document
     const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
-    console.log('Processed leads:', leads);
     return leads;
   } catch (error) {
     console.error('Error searching for leads by lead status:', error);
@@ -392,7 +365,6 @@ export const searchLeadsByLeadStatus = async (searchTerm) => {
 
 export const searchLeadsByClass = async (searchTerm) => {
   try {
-    console.log('Searching for leads with class:', searchTerm);
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_LEADS,
@@ -401,11 +373,9 @@ export const searchLeadsByClass = async (searchTerm) => {
       ]
     );
 
-    console.log('Raw response:', response);
 
     // Exclude collectionId and databaseId from each document
     const leads = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
-    console.log('Processed leads:', leads);
     return leads;
   } catch (error) {
     console.error('Error searching for leads by class:', error);
