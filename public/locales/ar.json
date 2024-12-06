@@ -156,5 +156,8 @@
   "social_media_leads": "عملاء سوشيال ميديا",
   "company_leads": "عملاء الشركة",
   "partner_leads": "عملاء شركاء",
-  "total_leads": "اجمالي عدد العملاء"
+  "total_leads": "اجمالي عدد العملاء",
+  "medical": "طبي",
+  "exit": "الغاء",
+  "back": "رجوع"
 }

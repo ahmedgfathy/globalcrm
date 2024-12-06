@@ -48,8 +48,6 @@ function Page() {
     const currentDateTime = new Date().toLocaleString();
     try {
       const response = await addLead(lead);
-      console.log("Lead created successfully:", response);
-      console.log(response.$id);
       setLead({
         name: "",
         leadNumber: "",
