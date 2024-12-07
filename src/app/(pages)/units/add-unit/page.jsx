@@ -60,24 +60,35 @@ const router = useRouter();
   };
 
   const handleImageChange = async (event) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
+    const files = event.target.files;
+    if (files.length > 0) {
+      const newImages = [];
+      const newFiles = [];
+  
+      for (const file of files) {
+        const reader = new FileReader();
         reader.onload = (e) => {
-        setImages((prevImages) => [...prevImages, e.target.result]);
-      };
-      reader.readAsDataURL(file);
-        setImagesFile((prevFiles) => [...prevFiles, file]);
+          setImages((prevImages) => [...prevImages, e.target.result]);
+        };
+        reader.readAsDataURL(file);
+  
+        newFiles.push(file);
         try {
-        const response = await uploadPropertyImages(file);
-        console.log(response)
-        setUnit((prevLead) => ({ ...prevLead, propertyImage: [...prevLead.propertyImage, response.fileUrl] }));
-        console.log("Image uploaded successfully:", response);
-      } catch (error) {
-        console.error("Error uploading image:", error);
+          const response = await uploadPropertyImages(file);
+          setUnit((prevLead) => ({
+            ...prevLead,
+            propertyImage: [...prevLead.propertyImage, response.fileUrl],
+          }));
+          console.log("Image uploaded successfully:", response);
+        } catch (error) {
+          console.error("Error uploading image:", error);
+        }
       }
+  
+      setImagesFile((prevFiles) => [...prevFiles, ...newFiles]);
     }
   };
+  
 
   const handleDeleteImage = async (index, id) => {
     console.log(index, id)
