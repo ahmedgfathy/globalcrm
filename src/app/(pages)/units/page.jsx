@@ -43,7 +43,6 @@ function Page() {
     {id: 2, filterName: "in-side / Out Side", data: "inOrOutSideCompound", optionData: []},
     {id:3, filterName: "Sales", data: "sales", optionData: []},
     {id:4, filterName: "Category", data: "category", optionData: []},
-    {id:5, filterName: "Range", data: "range", optionData:["Total Price", "mesh total price"]},
   ])
   useEffect(() => {
     const fetchOptions = async () => {
