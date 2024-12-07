@@ -163,12 +163,23 @@ export const getPropertyById = async (propertyId) => {
 export const searchPropertyByName = async (name) => {
   try {
     console.log('Searching for properties with name:', name);
+    const queries = [];
+
+    if (name) {
+      queries.push(
+        Query.or(
+          [
+            Query.contains('name', name),
+            Query.contains('mobileNo', name),
+          ]
+        )
+      );
+    }
+
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
-      [
-        Query.contains('name', name)
-      ]
+      queries
     );
 
     console.log('Raw response:', response);
@@ -183,7 +194,36 @@ export const searchPropertyByName = async (name) => {
   }
 };
 
+export const searchPropertyByRange = async (from, to) => {
+  try {
+    console.log('Searching for properties with totalPrice from:', from, 'to:', to);
+    const queries = [];
 
+    if (from !== undefined && to !== undefined) {
+      queries.push(Query.between('totalPrice', from, to));
+    } else if (from !== undefined) {
+      queries.push(Query.greaterEqual('totalPrice', from));
+    } else if (to !== undefined) {
+      queries.push(Query.lessEqual('totalPrice', to));
+    }
+
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      queries
+    );
+
+    console.log('Raw response:', response);
+
+    // Exclude collectionId and databaseId from each document
+    const properties = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log('Processed properties:', properties);
+    return properties;
+  } catch (error) {
+    console.error('Error searching for properties by range:', error);
+    throw error;
+  }
+};
 
 // export const uploadPropertyImages = async (files) => {
 //   try {
