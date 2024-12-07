@@ -411,31 +411,34 @@ useEffect(()=>{
                 title={!isMobile && t('delete_all_units')}
                 // afterDel={() => fetchUnits(currentPage, searchTerm)}
               /> */}
-              <div className="block md:hidden">
-              <Input  />
-              <Input  />
+              {/* <div className="block md:hidden"> */}
               {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />  */}
-              </div> 
+              {/* </div>  */}
             </div>
           </div>
           </Grid>
  
 
-        <div className="filter bg-Lightbg dark:bg-transparent rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex justify-end max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-0 md:px-3 shadow-box_shadow dark:shadow-none" dir="rtl">
-          <div className="filter w-full md:w-full" >
-            <Filter
-            filterChange={onFilterChange}
-            filterValues={filterValues}
-            onFilterChange={handleFilterChange}
-            data={options} />
-          </div>
-          <div className="hidden md:grid grid-cols-2">
-            <Input />
-            <Input />
-              {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
-              </div>
-          
-        </div>
+          <div className="filter-container bg-Lightbg dark:bg-transparent rounded-xl w-full min-h-[60px] max-[450px]:h-auto max-[450px]:py-2 flex justify-between items-center flex-wrap gap-3 px-3 shadow-box_shadow dark:shadow-none mb-5 max-[450px]:mb-0 flex-col md:flex-row " dir="rtl">
+  
+  <div className="filter w-full md:w-auto flex-1">
+    <Filter
+    col="5"
+      filterChange={onFilterChange}
+      filterValues={filterValues}
+      onFilterChange={handleFilterChange}
+      data={options}
+    />
+  </div>
+
+  <div className="flex gap-3">
+    <Input className="w-full" />
+    <Input className="w-full" />
+    {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
+  </div>
+  
+</div>
+
 
         <Grid container spacing={1} dir="ltr">
   {units.map((unit, index) => (

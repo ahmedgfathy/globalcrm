@@ -93,9 +93,10 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
     const handleDeleteVideo = () => {
         setVideo("/assets/videos/units-video.mp4");
     };
-
+    
     const fieldsData = [
         { id: 1, type: 'input', label: 'property_number', idField: 'propertyNumber', defaultValue: props?.unit?.propertyNumber },
+        { id: 17, type: 'input', label: 'unit_no', idField: 'unitNo', defaultValue: props?.unit?.unitNo },
         {
             id: 2,
             type: 'select',
@@ -144,7 +145,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             idField: "theFloors",
             defaultValue: props?.unit?.theFloors,
             options: props?.options?.theFloors,
-          },
+        },
         {
             id: 9,
             type: 'select',
@@ -163,6 +164,15 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             options: props?.options?.inOrOutSideCompound,
         },
         { id: 12, type: 'input', label: 'total_price', idField: 'totalPrice', defaultValue: props?.unit?.totalPrice },
+        { id: 24, type: 'input', label: 'Price per meter', idField: 'PricePerMeter', defaultValue: props?.unit?.totalPrice },
+        {
+            id: 21,
+            type: 'select',
+            label: 'currency',
+            idField: 'currency',
+            defaultValue: props?.unit?.currency,
+            options: props?.options?.currency,
+        },
         { id: 14, type: 'date', label: 'last_follow_up', idField: 'lastFollowIn', defaultValue: props?.unit?.lastFollowIn },
         {
             id: 15,
@@ -173,6 +183,12 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             options: props?.options?.activity,
         },
         { id: 16, type: 'input', label: 'status', idField: 'status', defaultValue: props?.unit?.status },
+       
+        { id: 22, type: 'date', label: 'rent_from', idField: 'rentFrom', defaultValue: props?.unit?.rentFrom },
+        { id: 23, type: 'date', label: 'rent_to', idField: 'rentTo', defaultValue: props?.unit?.rentTo },
+        { id: 20, type: 'input', label: 'land_area', idField: 'landArea', defaultValue: props?.unit?.landArea },
+        { id: 18, type: 'date', label: 'created_time', idField: 'createdTime', defaultValue: props?.unit?.createdTime },
+        { id: 19, type: 'date', label: 'modified_time', idField: 'modifiedTime', defaultValue: props?.unit?.modifiedTime },
         { id: 13, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props?.unit?.description },
     ];
 
