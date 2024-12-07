@@ -26,7 +26,7 @@ function Filter({ data, onFilterChange, filterValues, filterChange }) {
   
 
   return (
-    <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-3 w-full md:w-3/4 justify-items-end">
+    <div className={`grid lg:grid-cols-${data?.length} max-sm:grid-cols-1 gap-3 w-full md:w-3/4 justify-items-end`}>
       {data?.map((ele, i) => (
         <Select
           key={i}

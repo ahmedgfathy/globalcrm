@@ -42,19 +42,34 @@ function Page() {
     {id: 2, filterName: "in-side / Out Side", data: "inOrOutSideCompound", optionData: []},
     {id:3, filterName: "Sales", data: "sales", optionData: []},
     {id:4, filterName: "Category", data: "category", optionData: []},
+    {id:4, filterName: "Range", data: "range", optionData: []},
   ])
   useEffect(() => {
     const fetchOptions = async () => {
       try {
         const res = await getAllSettings();
-        const data = JSON.parse(res[0].unitSettings);
-        console.log(data)
-        setOptions((prev) =>
-          prev.map((option) => {
-            const matchedData = data[option.data] || [];
-            return { ...option, optionData: matchedData };
-          })
-        );
+  
+        if (res && res.length > 0 && res[0].unitSettings) {
+          const data = JSON.parse(res[0].unitSettings);
+          console.log("Fetched Data:", data);
+  
+          setOptions((prev) =>
+            prev.map((option) => {
+              const matchedData = data[option.data];
+              return {
+                ...option,
+                optionData:
+                  matchedData && matchedData.length > 0
+                    ? matchedData
+                    : option.data === "range"
+                    ? ["Total Price", "mesh total price"]
+                    : [],
+              };
+            })
+          );
+        } else {
+          console.warn("No settings found.");
+        }
       } catch (error) {
         console.error("Failed to fetch options:", error);
       }
