@@ -163,7 +163,6 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             options: props?.options?.inOrOutSideCompound,
         },
         { id: 12, type: 'input', label: 'total_price', idField: 'totalPrice', defaultValue: props?.unit?.totalPrice },
-        { id: 13, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props?.unit?.description },
         { id: 14, type: 'date', label: 'last_follow_up', idField: 'lastFollowIn', defaultValue: props?.unit?.lastFollowIn },
         {
             id: 15,
@@ -174,6 +173,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             options: props?.options?.activity,
         },
         { id: 16, type: 'input', label: 'status', idField: 'status', defaultValue: props?.unit?.status },
+        { id: 13, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props?.unit?.description },
     ];
 
     return (
@@ -189,8 +189,8 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                 t={t}
             />
 
-            <CardContent className="w-full overflow-x-hidden lg:grid gap-2 gap-y-8 lg:grid-cols-4 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
-                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} col={4} />
+            <CardContent className="w-full overflow-x-hidden d gap-2 gap-y-8 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
+                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} col="4" />
                 {/* <Card className="h-max bg-transparent pt-5">
                     <CardContent className="bg-transparent p-0 space-y-2">
                         <div className="relative h-48 lg:h-40 p-0">
