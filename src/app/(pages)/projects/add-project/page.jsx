@@ -114,7 +114,7 @@ export default function Page() {
         const uploadPromises = files.map((file) => uploadImageToBucket(file));
         const uploadResults = await Promise.all(uploadPromises);
 
-        const imageUrls = uploadResults.map((result) => result.fileUrl);
+        const imageUrls = uploadResults.map((result) => ({fileUrl: result.fileUrl, id: result.id}));
         setProject((prev) => ({
           ...prev,
           images: [...prev.images, ...imageUrls],
@@ -157,6 +157,7 @@ export default function Page() {
       ...project,
       latitude: coordinates.lat,
       longitude: coordinates.lng,
+      images: JSON.stringify(project.images)
     };
   
     console.log("Project Data:", updatedProject);

@@ -125,6 +125,7 @@ const [currentPage, setCurrentPage] = useState(initialPage);
   const handlePageChange = (page) => {
     setCurrentPage(page);
     router.push(`?page=${page}&search=${searchTerm}`);
+    window.scrollTo(0, 0);
   }
 
   const [filterValues, setFilterValues] = useState(
