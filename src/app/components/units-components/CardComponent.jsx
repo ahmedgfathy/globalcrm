@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 
-function CardProperty({ property, handleLike, handleShowHome }) {
+function CardProperty({ property, handleLike, handleShowHome,handleCheckUnits }) {
   const router = useRouter();
   return (
     <div
@@ -73,7 +73,7 @@ function CardProperty({ property, handleLike, handleShowHome }) {
             />
           </Button>
           <div className="w-9 h-9 bg-white bg-opacity-50 hover:bg-[#3c3f49] rounded-[6px] flex justify-center items-center">
-            <Checkbox className="h-4 w-4" />
+            <Checkbox className="h-4 w-4" onClick={(e)=>{e.stopPropagation(); handleCheckUnits(property.$id)}} />
           </div>
         </div>
         <div className="absolute bottom-2 right-2">

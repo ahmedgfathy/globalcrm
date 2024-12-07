@@ -190,8 +190,8 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             />
 
             <CardContent className="w-full overflow-x-hidden lg:grid gap-2 gap-y-8 lg:grid-cols-4 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
-                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} />
-                <Card className="h-max bg-transparent pt-5">
+                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} col={4} />
+                {/* <Card className="h-max bg-transparent pt-5">
                     <CardContent className="bg-transparent p-0 space-y-2">
                         <div className="relative h-48 lg:h-40 p-0">
                             <iframe
@@ -238,7 +238,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                             isDisabled={isDisabled}
                         />
                     </CardContent>
-                </Card>
+                </Card> */}
             </CardContent>
         </Card>
     );

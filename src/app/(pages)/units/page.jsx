@@ -31,6 +31,7 @@ function Page() {
   const [UnitsPerPage, setUnitsPerPage] = useState(10)
   // const UnitsPerPage = 10;
   const [searchTerm, setSearchTerm] = useState('')
+  const [unitsTransfer, setUnitsTransfer] = useState([{id: "", note: false}])
   const [filterValues, setFilterValues] = useState(
     filterData.reduce((acc, ele) => {
       acc[ele.filterName] = ""; 
@@ -42,19 +43,34 @@ function Page() {
     {id: 2, filterName: "in-side / Out Side", data: "inOrOutSideCompound", optionData: []},
     {id:3, filterName: "Sales", data: "sales", optionData: []},
     {id:4, filterName: "Category", data: "category", optionData: []},
+    {id:5, filterName: "Range", data: "range", optionData:["Total Price", "mesh total price"]},
   ])
   useEffect(() => {
     const fetchOptions = async () => {
       try {
         const res = await getAllSettings();
-        const data = JSON.parse(res[0].unitSettings);
-        console.log(data)
-        setOptions((prev) =>
-          prev.map((option) => {
-            const matchedData = data[option.data] || [];
-            return { ...option, optionData: matchedData };
-          })
-        );
+  
+        if (res && res.length > 0 && res[0].unitSettings) {
+          const data = JSON.parse(res[0].unitSettings);
+          console.log("Fetched Data:", data);
+  
+          setOptions((prev) =>
+            prev.map((option) => {
+              const matchedData = data[option.data];
+              return {
+                ...option,
+                optionData:
+                  matchedData && matchedData.length > 0
+                    ? matchedData
+                    : option.data === "range"
+                    ? ["Total Price", "mesh total price"]
+                    : [],
+              };
+            })
+          );
+        } else {
+          console.warn("No settings found.");
+        }
       } catch (error) {
         console.error("Failed to fetch options:", error);
       }
@@ -62,6 +78,7 @@ function Page() {
   
     fetchOptions();
   }, []);
+  
 
   const handleFilterChange = (value, filterName) => {
     const updatedFilters = { ...filterValues, [filterName]: value };
@@ -136,14 +153,28 @@ function Page() {
   }
   const handleLike = async(id)=>{
     const data = await togglePropertyLiked(id) 
-    console.log(data)
-    fetchUnits()
+    fetchUnits(currentPage, searchTerm);
   }
   const handleShowHome = async(id)=>{
     const data = await togglePropertyInHome(id)
-    console.log(data)
-    fetchUnits()
+    fetchUnits(currentPage, searchTerm);
   }
+
+  const handleCheckUnits = (id) => {
+    setUnitsTransfer((prev) => {
+      const exists = prev.some((unit) => unit.id === id);
+      if (exists) {
+        return prev.filter((unit) => unit.id !== id);
+      } else {
+        return [...prev, { id, note: false }];
+      }
+    });
+  };
+  
+useEffect(()=>{
+  console.log(unitsTransfer)
+}, [unitsTransfer])
+
   // const handleExportCSV = async () => {
   //   try {
   //     const  {properties}  = await exportProperties();
@@ -380,9 +411,11 @@ function Page() {
                 title={!isMobile && t('delete_all_units')}
                 // afterDel={() => fetchUnits(currentPage, searchTerm)}
               /> */}
-              {/* <div className="block md:hidden"> */}
-              {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV}/> */}
-              {/* </div> */}
+              <div className="block md:hidden">
+              <Input  />
+              <Input  />
+              {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />  */}
+              </div> 
             </div>
           </div>
           </Grid>
@@ -396,7 +429,9 @@ function Page() {
             onFilterChange={handleFilterChange}
             data={options} />
           </div>
-          <div className="hidden md:block">
+          <div className="hidden md:grid grid-cols-2">
+            <Input />
+            <Input />
               {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
               </div>
           
@@ -409,6 +444,7 @@ function Page() {
         property={unit} 
         handleLike={handleLike} 
         handleShowHome={handleShowHome} 
+        handleCheckUnits={handleCheckUnits}
       />
     </Grid>
   ))}
