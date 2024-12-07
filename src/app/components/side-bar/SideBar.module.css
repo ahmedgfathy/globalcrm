@@ -2,8 +2,8 @@
   transition: width 0.5s ease;
 }
 .sidebarOpen {
-  width: 16rem;
+  width: 9rem;
 }
 .sidebarClosed {
-  width: 10rem;
+  width: 9rem;
 }
