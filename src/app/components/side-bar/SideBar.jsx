@@ -101,6 +101,7 @@ function SideBar() {
                 <li key={item.id}>
                   <Link
                     href={`/${item.link}`}
+                    onClick={() => isMobile && setIsOpen(false)}
                     className={`flex items-center w-full gap-3 p-2 text-gray-900 transition duration-100 rounded-lg group ${
                       isOpen
                         ? "flex-row text-xl font-semibold"

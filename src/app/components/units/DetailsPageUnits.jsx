@@ -39,9 +39,9 @@ const DetailsPageUnits = ({
                 handleChange={handleChange}
                 title={title}
                 unit={unit}
-                images={images}
-                handleImageChange={handleImageChange}
-                handleDeleteImage={handleDeleteImage}
+                // images={images}
+                // handleImageChange={handleImageChange}
+                // handleDeleteImage={handleDeleteImage}
 
             />,
         },
@@ -55,20 +55,20 @@ const DetailsPageUnits = ({
             label: "Sales Information",
             children: <SalesInformation page={page} handleChange={handleChange} unit={unit} options={options}/>,
         },
-        {
-            key: "4",
-            label: "Unit Details",
-            children: <UnitsDetails page={page} handleChange={handleChange} unit={unit} options={options}/>,
-        },
+        // {
+        //     key: "4",
+        //     label: "Unit Details",
+        //     children: <UnitsDetails page={page} handleChange={handleChange} unit={unit} options={options}/>,
+        // },
         {
             key: "5",
-            label: "Pricing Information",
+            label: "Notes",
             children: <PricingInformation page={page} handleChange={handleChange} unit={unit} />,
         },
         {
             key: "6",
             label: "Unit Image Information",
-            children: <UnitImageInformation page={page} handleChange={handleChange} unit={unit} />,
+            children: <UnitImageInformation page={page} handleChange={handleChange} unit={unit} handleImageChange={handleImageChange} images={images} handleDeleteImage={handleDeleteImage} />,
         },
     ];
 

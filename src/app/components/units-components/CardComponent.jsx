@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa6";
 import { MdOutlineBedroomChild } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
@@ -11,6 +11,25 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 function CardProperty({ property, handleLike, handleShowHome,handleCheckUnits }) {
   const router = useRouter();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const images = property?.propertyImage?.length
+    ? property.propertyImage
+    : [
+        "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600",
+      ];
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? images.length - 1 : prev - 1
+    );
+  };
   return (
     <div
       className="bg-white rounded-lg shadow-md overflow-hidden h-full"
@@ -19,14 +38,36 @@ function CardProperty({ property, handleLike, handleShowHome,handleCheckUnits })
       }}
     >
       <div className="relative">
-        <img
+        {/* <img
           src={
             property?.propertyImage[0] ||
             "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600"
           }
           alt={property?.name}
           className="w-full h-48 object-cover min-h-[240px]"
-        />
+        /> */}
+      <div className="relative w-full h-48 min-h-[240px] overflow-hidden rounded-lg">
+      <img
+        src={images[currentImageIndex]}
+        alt={property?.name}
+        className="w-full h-full object-cover"
+      />
+
+
+      <button
+        onClick={(e)=>{e.stopPropagation();prevImage()}}
+        className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+      >
+        ❮
+      </button>
+
+      <button
+        onClick={(e)=>{e.stopPropagation(); nextImage()}}
+        className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+      >
+        ❯
+      </button>
+    </div>
         <Badge className="absolute top-2 left-2 bg-red-500 text-white dark:hover:text-dark">
           For sell
         </Badge>
