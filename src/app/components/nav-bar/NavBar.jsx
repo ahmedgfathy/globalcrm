@@ -22,12 +22,16 @@ function NavBar() {
     >
       <div className="">
         <div className="flex items-center h-10">
+            {pathName !== "/login" && pathName !== "/" ? (
+      <>
           <div className="avatar">
-            <Menu />
-          </div>
-          <div className="setting mx-3">
+              <Menu />
+              </div>
+              <div className="setting mx-3">
             <Drawer />
           </div>
+          </>
+          ): null}
           {pathName !== "/login" && pathName !== "/" ? (
             <div className="links sm:mx-auto">
               <ul className="flex justify-evenly gap-3 md:-ml-[72px]">

@@ -88,6 +88,7 @@ export const deleteProperty = async (propertyId) => {
 //     throw error;
 //   }
 // };
+
 export const deleteAllProperties = async () => {
   try {
     let hasMoreDocuments = true;
@@ -193,19 +194,29 @@ export const searchPropertyByName = async (name) => {
     throw error;
   }
 };
-
-export const searchPropertyByRange = async (from, to) => {
+export const searchPropertyByRange = async (from, to, page = 1, limit = 10) => {
   try {
-    console.log('Searching for properties with totalPrice from:', from, 'to:', to);
+    if (!process.env.NEXT_PUBLIC_DATABASE_ID || !process.env.NEXT_PUBLIC_PROPERTIES) {
+      throw new Error('Missing environment variables');
+    }
+
+    if (from === undefined && to === undefined) {
+      console.log('No range provided.');
+      return { properties: [], total: 0 };
+    }
+
     const queries = [];
 
     if (from !== undefined && to !== undefined) {
-      queries.push(Query.between('totalPrice', from, to));
+      queries.push(Query.between('totalPrice', +from, +to));
     } else if (from !== undefined) {
-      queries.push(Query.greaterEqual('totalPrice', from));
+      queries.push(Query.greaterThanEqual('totalPrice', +from));
     } else if (to !== undefined) {
-      queries.push(Query.lessEqual('totalPrice', to));
+      queries.push(Query.lessEqual('totalPrice', +to));
     }
+
+    const offset = (page - 1) * limit;
+    queries.push(Query.limit(limit), Query.offset(offset));
 
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
@@ -215,15 +226,46 @@ export const searchPropertyByRange = async (from, to) => {
 
     console.log('Raw response:', response);
 
-    // Exclude collectionId and databaseId from each document
     const properties = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
     console.log('Processed properties:', properties);
-    return properties;
+
+    return { properties, total: response.total };
   } catch (error) {
-    console.error('Error searching for properties by range:', error);
+    console.error('Error searching for properties by range:', { from, to, page, limit, error });
     throw error;
   }
 };
+
+// export const searchPropertyByRange = async (from, to) => {
+//   try {
+//     console.log('Searching for properties with totalPrice from:', from, 'to:', to);
+//     const queries = [];
+
+//     if (from !== undefined && to !== undefined) {
+//       queries.push(Query.between('totalPrice', from, to));
+//     } else if (from !== undefined) {
+//       queries.push(Query.greaterThanEqual('totalPrice', from));
+//     } else if (to !== undefined) {
+//       queries.push(Query.lessEqual('totalPrice', to));
+//     }
+
+//     const response = await databases.listDocuments(
+//       process.env.NEXT_PUBLIC_DATABASE_ID,
+//       process.env.NEXT_PUBLIC_PROPERTIES,
+//       queries
+//     );
+
+//     console.log('Raw response:', response);
+
+//     // Exclude collectionId and databaseId from each document
+//     const properties = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+//     console.log('Processed properties:', properties);
+//     return {properties, total: response.total};
+//   } catch (error) {
+//     console.error('Error searching for properties by range:', error);
+//     throw error;
+//   }
+// };
 
 // export const uploadPropertyImages = async (files) => {
 //   try {
@@ -285,7 +327,6 @@ export const deletePropertyImage = async (fileId) => {
   }
 }
 
-
 export const togglePropertyLiked = async (propertyId) => {
   try {
 
@@ -337,7 +378,8 @@ export const togglePropertyInHome = async (propertyId) => {
     console.error('Error toggling inHome field:', error);
     throw error;
   }
-}; 
+};
+
 export const importProperties = async (data) => {
   try {
     console.log('Importing properties:', data);
@@ -400,6 +442,7 @@ export const searchUnitByTypes = async (searchTerm) => {
     throw error;
   }
 };
+
 export const searchUnitByCategory = async (searchTerm) => {
   try {
     console.log('Searching for leads with type:', searchTerm);
@@ -460,6 +503,7 @@ export const exportProperties = async () => {
     throw error;
   }
 };
+
 // export const getPropertiesActivity = async () => {
 //   try {
 //     let allProperties = [];
@@ -496,6 +540,7 @@ export const exportProperties = async () => {
 //     throw error;
 //   }
 // };
+
 export const getPropertiesActivity = async () => {
   try {
     let allProperties = [];
