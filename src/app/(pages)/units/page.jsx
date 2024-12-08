@@ -54,11 +54,12 @@ function Page() {
     { id: 2, filterName: "in-side / Out Side", data: "inOrOutSideCompound", optionData: [] },
     { id: 3, filterName: "Sales", data: "sales", optionData: [] },
     { id: 4, filterName: "Category", data: "category", optionData: [] },
+    { id: 5, filterName: "Range", data: "range", optionData: [] },
   ]);
 
   const parseFromTo = () => {
-    const parsedFrom = from ? Number(from) : null;
-    const parsedTo = to ? Number(to) : null;
+    const parsedFrom = from ? Number(from) : undefined;
+    const parsedTo = to ? Number(to) : undefined;
     return { parsedFrom, parsedTo };
   };
 
@@ -80,7 +81,7 @@ function Page() {
                   matchedData && matchedData.length > 0
                     ? matchedData
                     : option.data === "range"
-                    ? ["Total Price", "mesh total price"]
+                    ? ["Total Price", "Unit price per square meter"]
                     : [],
               };
             })
@@ -105,8 +106,10 @@ function Page() {
           console.log("Fetched properties by name:", propertiesByName);
         }
         if (parsedFrom || parsedTo) {
-          const propertiesByRange = await searchPropertyByRange(parsedFrom, parsedTo);
-          console.log("Fetched properties by range:", propertiesByRange);
+          const {properties, total} = await searchPropertyByRange(parsedFrom, parsedTo);
+          console.log("Fetched properties by range:", properties);
+          setUnits(properties)
+          setTotalUnits(total)
         }
       } catch (error) {
         console.error("Error fetching properties:", error);
@@ -131,29 +134,71 @@ function Page() {
     setFilterValues(resetFilters);
     // onFilterChange(resetFilters);
   };
-
-  const fetchUnits = async (page = 1, search = "") => {
+  const fetchUnits = async (page = 1, search = "", range = {}) => {
     const offset = (page - 1) * UnitsPerPage;
-    // setIsLoading(true)
+  
+    if (!UnitsPerPage || UnitsPerPage <= 0) {
+      console.error("Invalid UnitsPerPage value");
+      return;
+    }
+  
     try {
+      let properties = [];
+      let totalProperties = 0;
+  
       if (search) {
-        console.log("Fetching units with search term:", search);
-        const properties = await searchPropertyByName(search);
-        setUnits(properties);
-        setTotalUnits(properties.length);
-        console.log(properties);
+        const propertiesByName = await searchPropertyByName(search);
+        properties = propertiesByName;
+        totalProperties = propertiesByName.length;
+      } else if (range.from || range.to) {
+        const { properties: propertiesByRange, total } = await searchPropertyByRange(
+          range.from,
+          range.to,
+          currentPage,
+          UnitsPerPage,
+          
+        );
+        properties = propertiesByRange;
+        totalProperties = total;
       } else {
-        console.log("Fetching all units");
-        const { properties, totalProperties } = await getAllProperties(UnitsPerPage, offset);
-        setUnits(properties);
-        setTotalUnits(totalProperties);
+        const { properties: allProperties, totalProperties: total } = await getAllProperties(
+          UnitsPerPage,
+          offset
+        );
+        properties = allProperties;
+        totalProperties = total;
       }
+  
+      setUnits(properties);
+      setTotalUnits(totalProperties);
     } catch (error) {
       console.error("Error fetching units", error);
-    } finally {
-      // setIsLoading(false) // Set loading state to false
     }
   };
+  
+  
+  // const fetchUnits = async (page = 1, search = "") => {
+  //   const offset = (page - 1) * UnitsPerPage;
+  //   // setIsLoading(true)
+  //   try {
+  //     if (search) {
+  //       console.log("Fetching units with search term:", search);
+  //       const properties = await searchPropertyByName(search);
+  //       setUnits(properties);
+  //       setTotalUnits(properties.length);
+  //       console.log(properties);
+  //     } else {
+  //       console.log("Fetching all units");
+  //       const { properties, totalProperties } = await getAllProperties(UnitsPerPage, offset);
+  //       setUnits(properties);
+  //       setTotalUnits(totalProperties);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching units", error);
+  //   } finally {
+  //     // setIsLoading(false) // Set loading state to false
+  //   }
+  // };
 
   const handlePageSizeChange = (current, size) => {
     setUnitsPerPage(size);
@@ -167,13 +212,15 @@ function Page() {
   };
 
   useEffect(() => {
-    fetchUnits(currentPage, searchTerm);
-  }, [currentPage, searchTerm, UnitsPerPage]);
+    fetchUnits(currentPage, searchTerm, { from, to });
+  }, [from, to, searchTerm, currentPage, UnitsPerPage]);
+  
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
     window.scrollTo(0, 0);
   };
+  
 
   const onFilterChange = async (e, data) => {
     console.log(e, data);
@@ -261,11 +308,9 @@ function Page() {
                 title={!isMobile && t('delete_all_units')}
                 // afterDel={() => fetchUnits(currentPage, searchTerm)}
               /> */}
-              <div className="block md:hidden">
-                <Input />
-                <Input />
+              {/* <div className="block md:hidden"> */}
                 {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />  */}
-              </div>
+              {/* </div> */}
             </div>
           </div>
         </Grid>
@@ -275,9 +320,9 @@ function Page() {
           dir="rtl"
         >
           <div className="filter w-full md:w-full">
-            <Filter filterChange={onFilterChange} filterValues={filterValues} onFilterChange={handleFilterChange} data={options} />
+            <Filter filterChange={onFilterChange} filterValues={filterValues} onFilterChange={handleFilterChange} data={options} col={5} />
           </div>
-          <div className="hidden md:grid grid-cols-2">
+          <div className="flex gap-3">
             <Input placeholder="To" value={to} onChange={(e) => setTo(e.target.value)} />
             <Input placeholder="From" value={from} onChange={(e) => setFrom(e.target.value)} />
             {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}

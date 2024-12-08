@@ -53,32 +53,33 @@ function Filter({ data, onFilterChange, filterValues, filterChange, col }) {
     //   ))}
     // </div>
     <div className="filter-container w-full flex flex-wrap gap-3 items-center justify-end p-3 rounded-xl">
-  <div className={`filter-grid grid grid-cols-1 md:grid-cols-${col || "4"} gap-3 w-full`}>
-    {data?.map((ele, i) => (
-      <Select
-        key={i}
-        value={filterValues[ele.filterName] || ""}
-        onValueChange={(value) => {
-          onFilterChange(value, ele.filterName);
-          filterChange(value, ele.filterName);
-        }}
-        className="w-full"
-      >
-        <SelectTrigger className="bg-white dark:bg-dark_link_active rounded-md p-2 text-sm focus:outline-none w-full">
-          <SelectValue placeholder={ele.filterName} />
-        </SelectTrigger>
-        <SelectContent className="rounded-md bg-white dark:bg-dark_card">
-          <SelectGroup>
-            {ele.optionData?.map((option, index) => (
-              <SelectItem key={index} value={option}>
-                {option}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    ))}
-  </div>
+<div className={`filter-grid grid grid-cols-1 md:grid-cols-5 gap-3 w-full`}>
+  {data?.map((ele, i) => (
+    <Select
+      key={i}
+      value={filterValues[ele.filterName] || ""}
+      onValueChange={(value) => {
+        onFilterChange(value, ele.filterName);
+        filterChange(value, ele.filterName);
+      }}
+      className="w-full"
+    >
+      <SelectTrigger className="w-full font-bold bg-dark_link_active text-text_link_active_l dark:bg-gray-900 dark:text-white">
+        <SelectValue placeholder={ele.filterName} />
+      </SelectTrigger>
+      <SelectContent className="rounded-md ">
+        <SelectGroup>
+          {ele.optionData?.map((option, index) => (
+            <SelectItem key={index} value={option}>
+              {option}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  ))}
+</div>
+
 </div>
 
   );

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { account, databases, ID } from '../services/appwrite/client.js';
 import { Query } from 'appwrite';
 // will use it later if needed
