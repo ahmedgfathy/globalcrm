@@ -52,6 +52,7 @@
     "tui-calendar": "^1.15.3"
   },
   "devDependencies": {
+    "@types/node": "22.10.1",
     "eslint": "^8",
     "eslint-config-next": "15.0.2",
     "postcss": "^8",
