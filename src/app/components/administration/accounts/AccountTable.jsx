@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Settings, Trash2 } from 'lucide-react';
 
-export default function AccountsTable({accounts}) {
+export default function AccountsTable({account}) {
 
   const handleDelete = (id) => {
     console.log(id);
@@ -31,7 +31,7 @@ export default function AccountsTable({accounts}) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {accounts?.map((account) => (
+        {account?.map((account) => (
           <TableRow key={account.id}>
             <TableCell className="font-medium">{account?.username}</TableCell>
             <TableCell>{account?.email}</TableCell>
