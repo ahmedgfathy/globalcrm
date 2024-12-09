@@ -23,7 +23,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { ImagePlus, VideoIcon as VideoPlus, X } from "lucide-react";
 import { Image } from "antd";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
@@ -53,9 +52,8 @@ const videosUnit = typeof unit?.videos === "string"
     <CardTitle>Media Files</CardTitle>
   </CardHeader>
   <CardContent>
-    <div className="space-y-6 select-none ">
+    <div className="space-y-6 select-none">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        
         <div className="space-y-4">
           <Label>Images</Label>
           <Image.PreviewGroup>
@@ -70,7 +68,7 @@ const videosUnit = typeof unit?.videos === "string"
                         className="object-cover media-content"
                       />
                       <button
-                        onClick={() => handleDeleteImage(image.id)}
+                        onClick={() => { !props?.isDisabled && handleDeleteImage(image.id)}}
                         className="absolute top-2 left-2 bg-red-500 text-white rounded-full p-1 opacity-100 transition"
                       >
                         <X className="w-4 h-4" />
@@ -98,7 +96,6 @@ const videosUnit = typeof unit?.videos === "string"
             </Carousel>
           </Image.PreviewGroup>
         </div>
-
         <div className="space-y-4">
           <Label>Videos</Label>
           <Carousel className="w-full max-w-xs mx-auto">
@@ -112,7 +109,7 @@ const videosUnit = typeof unit?.videos === "string"
                       className="media-content"
                     />
                     <button
-                      onClick={() => handleDeleteVideo(video.id)}
+                      onClick={() => { !props?.isDisabled && handleDeleteVideo(video.id)}}
                       className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-100 transition"
                     >
                       <X className="w-4 h-4" />
@@ -139,7 +136,6 @@ const videosUnit = typeof unit?.videos === "string"
             </CarouselContent>
           </Carousel>
         </div>
-
       </div>
     </div>
   </CardContent>
