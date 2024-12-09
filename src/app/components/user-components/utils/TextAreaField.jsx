@@ -11,7 +11,8 @@ export default function TextAreaField({ label, id, defaultValue, isDisabled, sec
         <p className='w-full'>
           {label}
         </p>
-      </Label>        <textarea
+      </Label> 
+      <textarea
         disabled={isDisabled}
         onChange={(e) => handleChange(section || null, id, e.target.value)}
         id={id}

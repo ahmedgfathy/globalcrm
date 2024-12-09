@@ -53,7 +53,7 @@ function Filter({ data, onFilterChange, filterValues, filterChange, col }) {
     //   ))}
     // </div>
     <div className="filter-container w-full flex flex-wrap gap-3 items-center justify-end p-3 rounded-xl">
-<div className={`filter-grid grid grid-cols-1 md:grid-cols-5 gap-3 w-full`}>
+<div className={`filter-grid grid grid-cols-1 md:flex ${data?.length == 5 ? "md:justify-start" : "md:justify-end" } gap-3 w-full`}>
   {data?.map((ele, i) => (
     <Select
       key={i}
@@ -62,9 +62,9 @@ function Filter({ data, onFilterChange, filterValues, filterChange, col }) {
         onFilterChange(value, ele.filterName);
         filterChange(value, ele.filterName);
       }}
-      className="w-full"
+      className="w-full md:w-[200px]"
     >
-      <SelectTrigger className="w-full font-bold bg-dark_link_active text-text_link_active_l dark:bg-gray-900 dark:text-white">
+      <SelectTrigger className={`w-full ${data?.length == 5 ? "md:w-[200px]" : "md:w-[250px]"}  font-bold bg-dark_link_active text-text_link_active_l dark:bg-gray-900 dark:text-white`}>
         <SelectValue placeholder={ele.filterName} />
       </SelectTrigger>
       <SelectContent className="rounded-md ">

@@ -27,7 +27,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ImagePlus, VideoIcon as VideoPlus, X } from "lucide-react";
 import { Image } from "antd";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-
+import "./Style.css";
 export default function UnitImageInformation({
   handleImageChange,
   images,
@@ -52,29 +52,27 @@ const videosUnit = typeof unit?.videos === "string"
   // }, 2000);
 
   return (
-    <Card
-      className="menu-drawer w-full bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden"
-      dir="ltr"
-    >
-      <CardHeader>
-        <CardTitle>Media Files</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="space-y-4">
-              <Label>Images</Label>
-              <Image.PreviewGroup>
-              <Carousel className="w-full max-w-xs mx-auto">
+<Card className="menu-drawer w-full bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden" dir="ltr">
+  <CardHeader>
+    <CardTitle>Media Files</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <div className="space-y-6 select-none ">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        
+        <div className="space-y-4">
+          <Label>Images</Label>
+          <Image.PreviewGroup>
+            <Carousel className="w-full max-w-xs mx-auto">
               <CarouselContent>
-                  {imagesUnit?.map((image, index) => (
-                      <CarouselItem key={index}>
-                    <div className="relative" >
+                {imagesUnit?.map((image, index) => (
+                  <CarouselItem key={index}>
+                    <div className="relative media-item">
                       <Image
                         src={image.fileUrl}
                         alt={`Uploaded image ${index + 1}`}
-                        className="object-cover h-80 w-full"
-                        />
+                        className="object-cover media-content"
+                      />
                       <button
                         onClick={() => handleDeleteImage(image.id)}
                         className="absolute top-2 left-2 bg-red-500 text-white rounded-full p-1 opacity-100 transition"
@@ -82,81 +80,73 @@ const videosUnit = typeof unit?.videos === "string"
                         <X className="w-4 h-4" />
                       </button>
                     </div>
-                        </CarouselItem>
-                  ))}
+                  </CarouselItem>
+                ))}
+                <CarouselItem>
+                  <label className="upload-label border border-dashed dark:border-[#5be49b]">
+                    <div className="text-center space-y-2">
+                      <ImagePlus className="w-8 h-8 mx-auto text-muted-foreground dark:text-[#5be49b]" />
+                      <span className="text-sm text-muted-foreground dark:text-[#5be49b]">Upload Images</span>
+                    </div>
+                    <input
+                      type="file"
+                      className="hidden"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageChange}
+                    />
+                  </label>
+                </CarouselItem>
               </CarouselContent>
-              </Carousel>
-              </Image.PreviewGroup>
-              <label className="relative aspect-video rounded-lg border-2 border-dashed flex items-center justify-center cursor-pointer hover:bg-muted/50 dark:border-[#5be49b33] dark:text-[#5be49b]">
-                <div className="text-center space-y-2">
-                  <ImagePlus className="w-8 h-8 mx-auto text-muted-foreground dark:text-[#5be49b]" />
-                  <span className="text-sm text-muted-foreground dark:text-[#5be49b]">
-                    Upload Images
-                  </span>
-                </div>
-                <input
-                  type="file"
-                  className="hidden"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageChange}
-                />
-              </label>
-            </div>
+            </Carousel>
+          </Image.PreviewGroup>
+        </div>
 
-            <div className="space-y-4">
-              <Label>Videos</Label>
-              <Carousel className="w-full max-w-xs mx-auto">
-              <CarouselContent>
-                {videosUnit?.map((video, index) => (
-                   <CarouselItem key={index}>
-                  <div className="relative group">
+        <div className="space-y-4">
+          <Label>Videos</Label>
+          <Carousel className="w-full max-w-xs mx-auto">
+            <CarouselContent>
+              {videosUnit?.map((video, index) => (
+                <CarouselItem key={index}>
+                  <div className="relative media-item">
                     <video
                       src={video.fileUrl}
                       controls
-                      className="w-full h-80 object-cover"
+                      className="media-content"
                     />
                     <button
                       onClick={() => handleDeleteVideo(video.id)}
-                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1  opacity-100 transition"
+                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-100 transition"
                     >
                       <X className="w-4 h-4" />
                     </button>
                   </div>
-                  </CarouselItem>
-                ))}
-                </CarouselContent>
-              </Carousel>
-
-              <label className="relative aspect-video rounded-lg border-2 border-dashed flex items-center justify-center cursor-pointer hover:bg-muted/50 dark:border-[#5be49b33]">
-                <div className="text-center space-y-2">
-                  <VideoPlus className="w-8 h-8 mx-auto text-muted-foreground dark:text-[#5be49b]" />
-                  <span className="text-sm text-muted-foreground dark:text-[#5be49b]">
-                    Upload Videos
-                  </span>
-                </div>
-                <input
-                  type="file"
-                  className="hidden"
-                  accept="video/*"
-                  multiple
-                  onChange={handleVideoUpload}
-                />
-              </label>
-            </div>
-          </div>
-          <div className="space-y-2">
-            <Label>Sales notes</Label>
-            <Textarea
-              placeholder="Enter Note"
-              value={unit?.note}
-              onChange={(e)=>props?.handleChange(null,"note", e.target.value)}
-              id="note"
-              name="note"
-            />
-          </div>
+                </CarouselItem>
+              ))}
+              <CarouselItem>
+                <label className="upload-label border border-dashed dark:border-[#5be49b]">
+                  <div className="text-center space-y-2">
+                    <VideoPlus className="w-8 h-8 mx-auto text-muted-foreground dark:text-[#5be49b]" />
+                    <span className="text-sm text-muted-foreground dark:text-[#5be49b]">Upload Videos</span>
+                  </div>
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="video/*"
+                    multiple
+                    onChange={handleVideoUpload}
+                  />
+                </label>
+              </CarouselItem>
+            </CarouselContent>
+          </Carousel>
         </div>
-      </CardContent>
-    </Card>
+
+      </div>
+    </div>
+  </CardContent>
+</Card>
+
+
   );
 }

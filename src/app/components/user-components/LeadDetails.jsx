@@ -64,15 +64,25 @@ export default function LeadDetails({ page, setIsDisabled, isDisabled, ...props 
         t={t}
       />
 
-      <CardContent className="lg:grid gap-6 lg:grid-cols-4 md:gap-8 max-sm:flex max-sm:flex-col-reverse pt-4 gap-y-4" dir="rtl">
-        <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} className="mb-4" />
-        <ImageSection
-          image={props.image}
-          handleImageChange={props.handleImageChange}
-          handleDeleteImage={props.handleDeleteImage}
-          isDisabled={isDisabled}
-        />
-      </CardContent>
+<CardContent className="lg:grid gap-6 lg:grid-cols-4 md:gap-8 max-sm:flex max-sm:flex-col-reverse pt-4 gap-y-4" dir="rtl">
+<div className="lg:col-span-3 mb-4">
+
+  <FormFields
+    fields={fieldsData}
+    isDisabled={isDisabled}
+    handleChange={props.handleChange}
+    />
+    </div>
+  <div className="lg:col-span-1">
+  <ImageSection
+    image={props.image}
+    handleImageChange={props.handleImageChange}
+    handleDeleteImage={props.handleDeleteImage}
+    isDisabled={isDisabled}
+  />
+  </div>
+</CardContent>
+
     </Card>
   );
 }
