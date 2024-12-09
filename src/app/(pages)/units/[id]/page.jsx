@@ -258,7 +258,6 @@ function Page({ params }) {
             handleVideoUpload={handleVideoUpload}
             handleDeleteVideo={handleDeleteVideo}
             unit={unit}
-            page="add"
             title={t("Unit_Informations")}
             description="Add Unit"
             images={images}

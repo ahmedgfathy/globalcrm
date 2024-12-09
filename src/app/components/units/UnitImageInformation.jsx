@@ -46,10 +46,6 @@ const videosUnit = typeof unit?.videos === "string"
   ? JSON.parse(unit.videos)
   : unit?.videos || videos;
 
-  // setInterval(() => {
-  //   console.log(imagesUnit)
-  //   console.log(typeof imagesUnit)
-  // }, 2000);
 
   return (
 <Card className="menu-drawer w-full bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none pb-2 pt-2 overflow-x-hidden" dir="ltr">
@@ -90,6 +86,7 @@ const videosUnit = typeof unit?.videos === "string"
                     </div>
                     <input
                       type="file"
+                      disabled={props.isDisabled}
                       className="hidden"
                       accept="image/*"
                       multiple
@@ -131,6 +128,7 @@ const videosUnit = typeof unit?.videos === "string"
                   </div>
                   <input
                     type="file"
+                    disabled={props.isDisabled}
                     className="hidden"
                     accept="video/*"
                     multiple
