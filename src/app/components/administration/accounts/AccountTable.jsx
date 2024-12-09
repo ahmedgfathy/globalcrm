@@ -33,7 +33,7 @@ export default function AccountsTable({account}) {
       <TableBody>
         {account?.map((account) => (
           <TableRow key={account.id}>
-            <TableCell className="font-medium">{account?.username}</TableCell>
+            <TableCell className="font-medium">{account?.name}</TableCell>
             <TableCell>{account?.email}</TableCell>
             <TableCell className="text-right">
               <Button variant="ghost" size="icon" onClick={() => handleSettings(account.id)}>
