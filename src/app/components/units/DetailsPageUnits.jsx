@@ -18,7 +18,10 @@ const DetailsPageUnits = ({
     unit,
     handleImageChange,
     handleDeleteImage,
-    images
+    images,
+    handleVideoUpload,
+    videos,
+    handleDeleteVideo
 }) => {
     const [options, setOptions] = useState("")
   useEffect(()=>{
@@ -68,7 +71,7 @@ const DetailsPageUnits = ({
         {
             key: "6",
             label: "Unit Image Information",
-            children: <UnitImageInformation page={page} handleChange={handleChange} unit={unit} handleImageChange={handleImageChange} images={images} handleDeleteImage={handleDeleteImage} />,
+            children: <UnitImageInformation page={page} handleDeleteVideo={handleDeleteVideo} handleChange={handleChange} unit={unit} handleImageChange={handleImageChange} images={images} handleVideoUpload={handleVideoUpload} videos={videos} handleDeleteImage={handleDeleteImage} />,
         },
     ];
 
