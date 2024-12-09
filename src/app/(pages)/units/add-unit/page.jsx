@@ -5,7 +5,7 @@ import { Box, Grid, Tab, Tabs } from "@mui/material";
 import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import { addProperty, uploadPropertyImages } from "@/actions/propertiesAction";
+import { addProperty, deletePropertyImage, deletePropertyVideo, uploadPropertyImages, uploadPropertyVideo } from "@/actions/propertiesAction";
 import { useRouter } from "next/navigation";
 
 function Page() {
@@ -42,16 +42,45 @@ const router = useRouter();
     handler: "",
     sales: "",
     category: "",
-    // modifiedTime: 0,
     landArea: "",
     currency: "",
     rentFrom: "",
     rentTo: "",
     compoundName: "",
     propertyImage: [],
-    links: [],
+    videos: []
   });
+  const [videos, setVideos] = useState([]);
 
+  const handleVideoUpload = async (e) => {
+    const files = e.target.files;
+    if (files.length > 0) {
+      const newImages = [];
+      const newFiles = [];
+  
+      for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setVideos((prevImages) => [...prevImages, e.target.result]);
+        };
+        reader.readAsDataURL(file);
+  
+        newFiles.push(file);
+        try {
+          const response = await uploadPropertyVideo(file);
+          setUnit((prevLead) => ({
+            ...prevLead,
+            videos: [...prevLead.videos, {id: response.$id, fileUrl: response.fileUrl}],
+          }));
+          console.log("Image uploaded successfully:", response);
+        } catch (error) {
+          console.error("Error uploading image:", error);
+        }
+      }
+  
+      setImagesFile((prevFiles) => [...prevFiles, ...newFiles]);
+    }
+  };
   const handleChange = (_, field, value) => {
     setUnit((prevLead) => ({
       ...prevLead,
@@ -77,7 +106,7 @@ const router = useRouter();
           const response = await uploadPropertyImages(file);
           setUnit((prevLead) => ({
             ...prevLead,
-            propertyImage: [...prevLead.propertyImage, response.fileUrl],
+            propertyImage: [...prevLead.propertyImage,  {id: response.id, fileUrl: response.fileUrl}],
           }));
           console.log("Image uploaded successfully:", response);
         } catch (error) {
@@ -90,8 +119,18 @@ const router = useRouter();
   };
   
 
-  const handleDeleteImage = async (index, id) => {
-    console.log(index, id)
+  const handleDeleteImage = async ( id) => {
+    try {
+      await deletePropertyImage(id);
+      setUnit((prevUnit) => ({
+        ...prevUnit,
+        propertyImage: prevUnit.propertyImage.filter((image) => image.id !== id),
+      }));
+      
+      console.log("image deleted successfully");
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
   };
 
 
@@ -106,14 +145,28 @@ const router = useRouter();
       return false;
     }
   };
+  const handleDeleteVideo = async (id) => {
+    try {
+      await deletePropertyVideo(id);
+      setUnit((prevUnit) => ({
+        ...prevUnit,
+        videos: prevUnit.videos.filter((video) => video.id !== id),
+      }));
+      
+      console.log("Video deleted successfully");
+    } catch (error) {
+      console.error("Error deleting video:", error);
+    }
+  };
   const handleSubmit = async () => {
     const currentDateTime = new Date().toLocaleString();
     const modifiedUnit = { ...unit };
     modifiedUnit.rooms = parseInt(modifiedUnit.rooms, 10)
     modifiedUnit.totalPrice = parseInt(modifiedUnit.totalPrice, 10)
-    modifiedUnit.mobileNo = parseInt(modifiedUnit.mobileNo, 10)
+    modifiedUnit.PricePerMeter = parseInt(modifiedUnit.PricePerMeter, 10)
     modifiedUnit.tel = parseInt(modifiedUnit.tel, 10)
-    modifiedUnit.links = Array.isArray(unit.links) ? unit.links.filter(isValidUrl) : [];
+    modifiedUnit.videos = JSON.stringify(modifiedUnit.videos)
+    modifiedUnit.propertyImage = JSON.stringify(modifiedUnit.propertyImage)
     console.log(unit)
     try {
       const response = await addProperty(modifiedUnit);
@@ -146,17 +199,16 @@ const router = useRouter();
         handler: "",
         sales: "",
         category: "",
-        // modifiedTime: 0,
         landArea: "",
         currency: "",
         rentFrom: "",
         rentTo: "",
         compoundName: "",
         propertyImage: [],
-        links: []
       });
 
       toast({
+        variant: "success",
         title: "Unit Created",
         description: `Unit created successfully on ${currentDateTime}`,
         action: (
@@ -184,7 +236,7 @@ const router = useRouter();
       });
     }
   };
-  ;
+  
 
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
@@ -218,6 +270,9 @@ const router = useRouter();
             <DetailsPageUnits
               handleChange={handleChange}
               handleSubmit={handleSubmit}
+              videos={videos}
+              handleVideoUpload={handleVideoUpload}
+              handleDeleteVideo={handleDeleteVideo}
               unit={unit}
               page="add"
               title={t("Unit_Informations")}
@@ -235,3 +290,4 @@ const router = useRouter();
 }
 
 export default Page;
+

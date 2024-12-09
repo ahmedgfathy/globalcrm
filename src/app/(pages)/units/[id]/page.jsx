@@ -3,7 +3,7 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import React, { useState, useEffect } from 'react';
 import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
 import { Box, Grid, Tab ,Tabs } from "@mui/material";
-import { getPropertyById, updatePropertyByID, uploadPropertyImages } from "@/actions/propertiesAction";
+import { deletePropertyImage, deletePropertyVideo, getPropertyById, updatePropertyByID, uploadPropertyImages, uploadPropertyVideo } from "@/actions/propertiesAction";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
@@ -15,7 +15,7 @@ function Page({ params }) {
   const [unit, setUnit] = useState({})
   const [images, setImages] = useState([]);
   const [imagesFile, setImagesFile] = useState([]);
-
+  const [videos, setVideos] = useState([]);
   const handleTabChange = (event, newValue) => {
     setSelectedTab(newValue);
   };
@@ -28,18 +28,40 @@ function Page({ params }) {
   const fetchUnit = async () => {
     try {
       const unitData = await getPropertyById(params.id); 
-      setUnit(unitData);
-      console.log(unitData)
+      
+      const images = typeof unitData.propertyImage === "string"
+        ? JSON.parse(unitData.propertyImage || "[]")
+        : unitData.propertyImage;
+  
+      const videos = typeof unitData.videos === "string"
+        ? JSON.parse(unitData.videos || "[]")
+        : unitData.videos;
+  
+      setUnit({ ...unitData, propertyImage: images, videos });
+  
+      console.log(unitData);
     } catch (error) {
       console.error("Error fetching leads:", error);
     }
   };
+  
   const handleImageChange = async (event) => {
     const files = event.target.files;
-    if (files.length > 0) {
-      const newImages = [];
-      const newFiles = [];
   
+    if (files.length > 0) {
+      let updatedPropertyImage = [];
+
+      try {
+        if (typeof unit?.propertyImage === "string") {
+          updatedPropertyImage = JSON.parse(unit.propertyImage);
+        } else if (Array.isArray(unit?.propertyImage)) {
+          updatedPropertyImage = [...unit.propertyImage];
+        }
+      } catch (error) {
+        console.error("Error parsing propertyImage:", error);
+        updatedPropertyImage = [];
+      }
+      const newFiles = [];
       for (const file of files) {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -48,12 +70,20 @@ function Page({ params }) {
         reader.readAsDataURL(file);
   
         newFiles.push(file);
+  
         try {
           const response = await uploadPropertyImages(file);
-          setUnit((prevLead) => ({
-            ...prevLead,
-            propertyImage: [...prevLead.propertyImage, response.fileUrl],
+  
+          updatedPropertyImage.push({
+            id: response.id,
+            fileUrl: response.fileUrl,
+          });
+  
+          setUnit((prevUnit) => ({
+            ...prevUnit,
+            propertyImage: updatedPropertyImage,
           }));
+  
           console.log("Image uploaded successfully:", response);
         } catch (error) {
           console.error("Error uploading image:", error);
@@ -63,9 +93,90 @@ function Page({ params }) {
       setImagesFile((prevFiles) => [...prevFiles, ...newFiles]);
     }
   };
-  const handleDeleteImage = async (index, id) => {
-    console.log(index, id)
+  
+  const handleDeleteVideo = async (id) => {
+    try {
+      await deletePropertyVideo(id);
+      setUnit((prevUnit) => ({
+        ...prevUnit,
+        videos: prevUnit.videos.filter((video) => video.id !== id),
+      }));
+      
+      console.log("Video deleted successfully");
+    } catch (error) {
+      console.error("Error deleting video:", error);
+    }
   };
+
+  const handleDeleteImage = async ( id) => {
+    try {
+      await deletePropertyImage(id);
+      setUnit((prevUnit) => ({
+        ...prevUnit,
+        propertyImage: prevUnit.propertyImage.filter((image) => image.id !== id),
+      }));
+      
+      console.log("image deleted successfully");
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  };
+  const handleVideoUpload = async (e) => {
+    const files = e.target.files;
+  
+    if (files.length > 0) {
+      let updatedVideos = [];
+  
+      try {
+        if (typeof unit?.videos === "string") {
+          updatedVideos = JSON.parse(unit.videos);
+        } else if (Array.isArray(unit?.videos)) {
+          updatedVideos = [...unit.videos];
+        }
+      } catch (error) {
+        console.error("Error parsing videos:", error.message);
+        updatedVideos = [];
+      }
+  
+      const newFiles = [];
+  
+      for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setVideos((prevVideos) => [...prevVideos, e.target.result]);
+        };
+        reader.readAsDataURL(file);
+  
+        newFiles.push(file);
+  
+        try {
+          const response = await uploadPropertyVideo(file);
+  
+          if (response && response.$id && response.fileUrl) {
+            updatedVideos.push({
+              id: response.$id,
+              fileUrl: response.fileUrl,
+            });
+  
+            setUnit((prevUnit) => ({
+              ...prevUnit,
+              videos: updatedVideos,
+            }));
+  
+            console.log("Video uploaded successfully:", response);
+          } else {
+            console.error("Unexpected response format:", response);
+          }
+        } catch (error) {
+          console.error("Error uploading video:", error.message || error);
+        }
+      }
+  
+      setImagesFile((prevFiles) => [...prevFiles, ...newFiles]);
+    }
+  };
+  
+  
   useEffect(() => {
     if (params.id) fetchUnit(); 
   }, [params]);
@@ -75,13 +186,15 @@ function Page({ params }) {
     const modifiedUnit = { ...unit };
     modifiedUnit.rooms = parseInt(modifiedUnit.rooms, 10)
     modifiedUnit.totalPrice = parseInt(modifiedUnit.totalPrice, 10)
-    modifiedUnit.mobileNo = parseInt(modifiedUnit.mobileNo, 10)
+    modifiedUnit.PricePerMeter = parseInt(modifiedUnit.PricePerMeter, 10)
     modifiedUnit.tel = parseInt(modifiedUnit.tel, 10)
-    // modifiedUnit.links = modifiedUnit.links.split(" ")
+    modifiedUnit.videos = JSON.stringify(modifiedUnit.videos)
+    modifiedUnit.propertyImage = JSON.stringify(modifiedUnit.propertyImage)
     try {
       const response = await updatePropertyByID(params.id,modifiedUnit);
       console.log("Unit updated successfully:", response)
       toast({
+        variant: "success",
         title: "Unit Updated",
         description: `Unit Updated successfully on ${currentDateTime}`,
         action: (
@@ -93,7 +206,6 @@ function Page({ params }) {
           </ToastAction>
         ),
       });
-      router.push("/units")
     } catch (error) {
       console.error("Error Updating unit:", error);
 
@@ -139,15 +251,19 @@ function Page({ params }) {
 
       <Grid item xs={12} sm={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
         {selectedTab === 0 && (
-          <DetailsPageUnits
-            unit={unit}
-            page="view"
+            <DetailsPageUnits
             handleChange={handleChange}
-            handleImageChange={handleImageChange}
             handleSubmit={handleSubmit}
-            handleDeleteImage={handleDeleteImage}
-            title={t("unit_details")}
+            videos={videos}
+            handleVideoUpload={handleVideoUpload}
+            handleDeleteVideo={handleDeleteVideo}
+            unit={unit}
+            page="add"
+            title={t("Unit_Informations")}
             description="Add Unit"
+            images={images}
+            handleImageChange={handleImageChange}
+            handleDeleteImage={handleDeleteImage}
           />
         )}
       </Grid>
