@@ -334,19 +334,27 @@ export const deletePropertyImage = async (fileId) => {
   }
 }
 
-export const uploadPropertyVideo = async (files) => {
+
+export const uploadPropertyVideo = async (file) => {
   try {
     const response = await storage.createFile(
-      process.env.NEXT_PUBLIC_PROPERTIES_VIDEOS,
+      process.env.NEXT_PUBLIC_PROPERTIES_VIDEOS, 
       ID.unique(),
-      files
-    )
-    return response
+      file
+    );
+
+    const fileUrl = storage.getFileView(
+      process.env.NEXT_PUBLIC_PROPERTIES_VIDEOS,
+      response.$id
+    );
+
+    return { ...response, fileUrl }; 
   } catch (error) {
-    console.error('Error uploading video:', error)
-    throw error
+    console.error("Error uploading video:", error);
+    throw error;
   }
-}
+};
+
 
 export const deletePropertyVideo = async (fileId) => {
   try {
@@ -450,7 +458,7 @@ export const importProperties = async (data) => {
     return { success: true }
   } catch (error) {
     console.error('Error importing properties:', error)
-    throw errorimport { deleteProperty } from '@/actions/propertiesAction';
+    throw error
 
   }
 }
