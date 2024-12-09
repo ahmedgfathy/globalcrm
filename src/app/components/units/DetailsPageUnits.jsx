@@ -37,14 +37,14 @@ const DetailsPageUnits = ({
             label: "Unit Informations",
             children: <UnitsInformation
             options={options}
-                page={page}
-                handleSubmit={handleSubmit}
-                handleChange={handleChange}
-                title={title}
-                unit={unit}
-                // images={images}
-                // handleImageChange={handleImageChange}
-                // handleDeleteImage={handleDeleteImage}
+            page={page}
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            title={title}
+            unit={unit}
+            // images={images}
+            // handleImageChange={handleImageChange}
+            // handleDeleteImage={handleDeleteImage}
 
             />,
         },

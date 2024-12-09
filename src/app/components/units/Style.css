@@ -23,3 +23,35 @@
   .dark .ant-collapse-content-box{
     background-color: #1c252e;
   }
+
+
+.media-item {
+  width: 100%;
+  aspect-ratio: 16 / 9 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 8px !important ;
+}
+
+.media-content {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important; 
+  border-radius: 8px !important;
+}
+
+.upload-label {
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important; 
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  /* border: 2px dashed #ccc !important; */
+  cursor: pointer !important;
+  border-radius: 8px !important;
+  transition: background-color 0.3s !important;
+}
+
+.upload-label:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
