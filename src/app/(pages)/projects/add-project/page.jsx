@@ -12,7 +12,7 @@ import Point from "ol/geom/Point";
 import { Style, Icon } from "ol/style";
 import { Translate } from "ol/interaction";
 import ProjectForm from "@/app/components/ProjectForm";
-import { addProject,uploadImageToBucket } from "@/actions/projectAction";
+import { addProject,deleteImageFromBucket,uploadImageToBucket } from "@/actions/projectAction";
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -180,7 +180,22 @@ export default function Page() {
       });
     }
   };
+  const handleDeleteImage = async (id) => {
+    console.log(id);
+    
+    try {
+      await deleteImageFromBucket(id);
   
+      setProject((prevProject) => ({
+        ...prevProject,
+        images: prevProject.images.filter((img) => img.id !== id),
+      }));
+  
+      console.log("Image deleted successfully");
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  };
   
   return (
     <div className="container mx-auto flex justify-center items-center min-h-screen">
@@ -193,6 +208,7 @@ export default function Page() {
         handleLongitudeChange={handleLongitudeChange}
         handleSubmit={handleSubmit}
         handleChange={handleChange}
+        handleDeleteImage={handleDeleteImage}
         project={project}
         buttonText={"Add Project"} 
       />
