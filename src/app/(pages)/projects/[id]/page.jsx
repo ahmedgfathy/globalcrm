@@ -12,7 +12,7 @@ import Point from "ol/geom/Point";
 import { Style, Icon } from "ol/style";
 import { Translate } from "ol/interaction";
 import ProjectForm from "@/app/components/ProjectForm";
-import { getProjectById, updateProject } from "@/actions/projectAction";
+import { deleteImageFromBucket, getProjectById, updateProject, uploadImageToBucket } from "@/actions/projectAction";
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -27,7 +27,8 @@ export default function ProjectUpdate({ params: paramsPromise }) {
     companyInformation: "",
     projectInformation: "",
     latitude: "",
-    longitude: ""
+    longitude: "",
+    images:[],
   });
   const [coordinates, setCoordinates] = useState({
     lat: 31.106573247052467,
@@ -50,7 +51,12 @@ export default function ProjectUpdate({ params: paramsPromise }) {
     async function fetchProject() {
       try {
         const projectData = await getProjectById(params.id);
-        setProject(projectData);
+            const images = typeof projectData?.images === "string" 
+          ? JSON.parse(projectData.images) 
+          : projectData.images || [];
+    
+        setProject({ ...projectData, images });
+        
         setCoordinates({
           lat: parseFloat(projectData.latitude),
           lng: parseFloat(projectData.longitude),
@@ -59,9 +65,10 @@ export default function ProjectUpdate({ params: paramsPromise }) {
         console.error("Error fetching project:", error);
       }
     }
-
+    
     fetchProject();
-  }, [params]);
+    }, [params]);
+    
 
   useEffect(() => {
     const vectorSource = new VectorSource();
@@ -128,12 +135,28 @@ export default function ProjectUpdate({ params: paramsPromise }) {
     }
   }, [coordinates]);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       const previews = files.map((file) => URL.createObjectURL(file));
-      setImages(files);
-      setImagePreviews(previews);
+
+      setImages((prevImages) => [...prevImages, ...files]);
+      setImagePreviews((prevPreviews) => [...prevPreviews, ...previews]);
+  
+      try {
+        const uploadPromises = files.map((file) => uploadImageToBucket(file));
+        const uploadResults = await Promise.all(uploadPromises);
+
+        const imageUrls = uploadResults.map((result) => ({fileUrl: result.fileUrl, id: result.id}));
+        setProject((prev) => ({
+          ...prev,
+          images: [...prev.images, ...imageUrls],
+        }));
+  
+        console.log('Uploaded images:', uploadResults);
+      } catch (error) {
+        console.error('Error uploading images:', error);
+      }
     }
   };
 
@@ -169,6 +192,7 @@ export default function ProjectUpdate({ params: paramsPromise }) {
       ...project,
       latitude: coordinates.lat,
       longitude: coordinates.lng,
+      images: JSON.stringify(project.images)
     };
 
     console.log("Project Data:", updatedProject);
@@ -191,7 +215,24 @@ export default function ProjectUpdate({ params: paramsPromise }) {
       })
     }
   };
-
+  const handleDeleteImage = async (id) => {
+    console.log(id);
+    
+    try {
+      await deleteImageFromBucket(id);
+  
+      setProject((prevProject) => ({
+        ...prevProject,
+        images: prevProject.images.filter((img) => img.id !== id),
+      }));
+  
+      console.log("Image deleted successfully");
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  };
+  
+  
   if (!params) {
     return <p>Loading...</p>;
   }
@@ -200,12 +241,13 @@ export default function ProjectUpdate({ params: paramsPromise }) {
     <div className="container mx-auto flex justify-center items-center min-h-screen">
       <ProjectForm
         handleImageUpload={handleImageUpload}
-        imagePreviews={imagePreviews}
+        imagePreviews={project?.images || imagePreviews}
         handleLatitudeChange={handleLatitudeChange}
         coordinates={coordinates}
         mapRef={mapRef}
         handleLongitudeChange={handleLongitudeChange}
         handleSubmit={handleSubmit}
+        handleDeleteImage={handleDeleteImage}
         handleChange={handleChange}
         project={project}
         buttonText={"Update Project"} 
