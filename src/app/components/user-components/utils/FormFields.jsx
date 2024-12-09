@@ -17,7 +17,7 @@ function FormFields({ fields, isDisabled, handleChange, section, col }) {
     >
       <div
   className={`grid gap-x-4 gap-y-6 max-md:grid-cols-2 max-sm:grid-cols-1 ${
-    col ? `grid-cols-${col}` : "grid-cols-3"
+    col ? `grid-cols-4` : "grid-cols-3"
   }`}
 >
         {fields.map((field) => {

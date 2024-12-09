@@ -206,7 +206,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             />
 
             <CardContent className="w-full overflow-x-hidden d gap-2 gap-y-8 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
-                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} col="4" />
+                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} col={true} />
                 {/* <Card className="h-max bg-transparent pt-5">
                     <CardContent className="bg-transparent p-0 space-y-2">
                         <div className="relative h-48 lg:h-40 p-0">

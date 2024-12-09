@@ -2,6 +2,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 
 
@@ -32,6 +34,14 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             idField: 'category',
             defaultValue: props?.unit?.category,
             options: props?.options?.category,
+        },
+        {
+            id: 4,
+            type: 'textarea',
+            label: 'Sales Notes',
+            idField: 'note',
+            defaultValue: props?.unit?.note,
+            options: props?.options?.note,
         },
     ];
 
