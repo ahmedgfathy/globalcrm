@@ -58,7 +58,7 @@ function CardProperty({ property, handleLike, handleShowHome,handleCheckUnits })
         /> */}
       <div className="relative w-full h-48 min-h-[240px] overflow-hidden rounded-lg">
       <img
-        src={images[currentImageIndex]?.fileUrl || images[currentImageIndex]}
+        src={images?.[currentImageIndex]?.fileUrl || images?.[currentImageIndex]}
         alt={property?.name}
         className="w-full h-full object-cover"
       />
