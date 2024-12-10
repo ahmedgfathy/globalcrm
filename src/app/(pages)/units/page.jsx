@@ -7,7 +7,7 @@ import { IoMdAddCircle } from "react-icons/io";
 import Filter from "@/app/components/Filter";
 import { Pagination } from "antd";
 import { Grid } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from 'next/navigation'
 import CustomButton from "@/app/components/CustomButton";
 import DropdownMenImportExport from "@/app/components/leadImport-Export/ImportExport";
 import {
@@ -38,9 +38,11 @@ function Page() {
   const isMobile = useIsMobile();
   const { t, locale } = useTranslation();
   const [units, setUnits] = useState([]);
+  const urlParams = useSearchParams();
+const initialPage = parseInt(urlParams.get('page') || '1', 10);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalUnits, setTotalUnits] = useState(0);
-  const [UnitsPerPage, setUnitsPerPage] = useState(10);
+  const [UnitsPerPage, setUnitsPerPage] = useState(12);
   const [searchTerm, setSearchTerm] = useState("");
   const [unitsTransfer, setUnitsTransfer] = useState([{ id: "", note: false }]);
   const [filterValues, setFilterValues] = useState(
@@ -212,15 +214,15 @@ function Page() {
   };
 
   useEffect(() => {
-    fetchUnits(currentPage, searchTerm, { from, to });
-  }, [from, to, searchTerm, currentPage, UnitsPerPage]);
+    fetchUnits(currentPage, searchTerm);
+  }, [currentPage, searchTerm, UnitsPerPage]);
   
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    router.push(`?page=${page}&search=${searchTerm}`);
     window.scrollTo(0, 0);
   };
-  
 
   const onFilterChange = async (e, data) => {
     console.log(e, data);
@@ -337,17 +339,17 @@ function Page() {
           ))}
         </Grid>
 
-        <div className="w-full flex justify-center mt-4" dir="ltr">
-          <Pagination
-            current={currentPage}
-            total={totalUnits}
-            pageSize={UnitsPerPage}
-            showSizeChanger
-            onShowSizeChange={handlePageSizeChange}
-            onChange={handlePageChange}
-            className="custom-pagination"
-          />
-        </div>
+        <div className="flex justify-center mt-4" dir="ltr">
+  <Pagination
+    current={currentPage}
+    showSizeChanger
+    total={totalUnits}
+    pageSize={UnitsPerPage}
+    onShowSizeChange={handlePageSizeChange}
+    onChange={handlePageChange}
+    className="custom-pagination"
+  />
+</div>
         <div className="footer"></div>
       </div>
     </div>
