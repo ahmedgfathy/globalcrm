@@ -70,6 +70,7 @@ export const createUser = async (email, password, name, role) => {
       email,
       role,
       password,
+      name
     };
     const dbResponse = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, 
@@ -86,6 +87,22 @@ export const createUser = async (email, password, name, role) => {
     throw error;
   }
 };
+
+// export const getUsers = async (limit = 10, offset = 0) => {
+//   try {
+//     const response = await account.listLogs()
+
+
+
+
+//     console.log(response);
+//     return { response };
+//   } catch (error) {
+//     console.error('Error getting users:', error);
+//     throw error;
+//   }
+// };
+
 export const getUsers = async (limit = 10, offset = 0) => {
   try {
     const response = await databases.listDocuments(
