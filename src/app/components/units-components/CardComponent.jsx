@@ -13,11 +13,21 @@ function CardProperty({ property, handleLike, handleShowHome,handleCheckUnits })
   const router = useRouter();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const images = property?.propertyImage?.length
-    ? property.propertyImage
-    : [
-        "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600",
-      ];
+  const defaultImage = "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600";
+
+  let images;
+  
+  try {
+    images = property?.propertyImage 
+      ? JSON.parse(property.propertyImage) 
+      : [defaultImage];
+  } catch (error) {
+    console.error("Error parsing property images:", error);
+    images = Array.isArray(property?.propertyImage) 
+      ? property.propertyImage 
+      : [defaultImage];
+  }
+  
 
   const nextImage = () => {
     setCurrentImageIndex((prev) =>
@@ -48,7 +58,7 @@ function CardProperty({ property, handleLike, handleShowHome,handleCheckUnits })
         /> */}
       <div className="relative w-full h-48 min-h-[240px] overflow-hidden rounded-lg">
       <img
-        src={images[currentImageIndex]}
+        src={images?.[currentImageIndex]?.fileUrl || images?.[currentImageIndex]}
         alt={property?.name}
         className="w-full h-full object-cover"
       />
