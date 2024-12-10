@@ -63,11 +63,11 @@ const DetailsPageUnits = ({
         //     label: "Unit Details",
         //     children: <UnitsDetails page={page} handleChange={handleChange} unit={unit} options={options}/>,
         // },
-        {
-            key: "5",
-            label: "Notes",
-            children: <PricingInformation page={page} handleChange={handleChange} unit={unit} />,
-        },
+        // {
+        //     key: "5",
+        //     label: "Notes",
+        //     children: <PricingInformation page={page} handleChange={handleChange} unit={unit} />,
+        // },
         {
             key: "6",
             label: "Unit Image Information",
