@@ -3,11 +3,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
-import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+// import { Button } from "@/components/ui/button";
+// import { Pencil, Trash2 } from "lucide-react";
 import CardHeader from "./utils/CardHeader";
-import VideoSection from "./utils/VideoSection";
-import MultibleImages from "./utils/MultibleImages";
+// import VideoSection from "./utils/VideoSection";
+// import MultibleImages from "./utils/MultibleImages";
 // import { uploadPropertyImages } from "@/actions/propertiesAction";
 
 
@@ -15,7 +15,7 @@ import MultibleImages from "./utils/MultibleImages";
 export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...props }) {
     const { t } = useTranslation();
     const [images, setImages] = useState([]);
-    const [video, setVideo] = useState("/assets/videos/units-video.mp4");
+    // const [video, setVideo] = useState("/assets/videos/units-video.mp4");
 
     useEffect(() => {
         const defaultImage = ["/assets/images/unit-image.jpeg"];
@@ -80,21 +80,22 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
     //     }
     //   };
       
-    const handleDeleteImage = (index) => {
-        setImages((prev) => prev.filter((_, i) => i !== index));
-    };
-    const handleVideoChange = (event) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            setVideo(URL.createObjectURL(file));
-        }
-    };
+    // const handleDeleteImage = (index) => {
+    //     setImages((prev) => prev.filter((_, i) => i !== index));
+    // };
+    // const handleVideoChange = (event) => {
+    //     const file = event.target.files?.[0];
+    //     if (file) {
+    //         setVideo(URL.createObjectURL(file));
+    //     }
+    // };
 
-    const handleDeleteVideo = () => {
-        setVideo("/assets/videos/units-video.mp4");
-    };
+    // const handleDeleteVideo = () => {
+    //     setVideo("/assets/videos/units-video.mp4");
+    // };
     
     const fieldsData = [
+        { id: 25, type: 'input', label: 'property_name_compound_name', idField: 'compoundName', defaultValue: props?.unit?.compoundName },
         { id: 1, type: 'input', label: 'property_number', idField: 'propertyNumber', defaultValue: props?.unit?.propertyNumber },
         { id: 17, type: 'input', label: 'unit_no', idField: 'unitNo', defaultValue: props?.unit?.unitNo },
         {

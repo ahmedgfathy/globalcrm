@@ -24,7 +24,7 @@ const selectBoxes = [
   { name: "customerSource", label: "Customer_Source" },
   { name: "type", label: "type" },
   { name: "leadStatus", label: "Lead_Status" },
-  { name: "class", label: "class" },
+  { name: "class", label: "category" },
 ];
   function SettingsLead({handleDeleteOption, setNewValues, options, newValues, handleAddOption}) {
   const { t } = useTranslation()
