@@ -15,29 +15,31 @@ function CardProperty({ property, handleLike, handleShowHome,handleCheckUnits })
 
   const defaultImage = "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600";
 
-  let images;
-  
-  try {
-    images = property?.propertyImage 
-      ? JSON.parse(property.propertyImage) 
-      : [defaultImage];
-  } catch (error) {
-    console.error("Error parsing property images:", error);
-    images = Array.isArray(property?.propertyImage) 
-      ? property.propertyImage 
-      : [defaultImage];
+let images;
+
+try {
+  images = property?.propertyImage 
+    ? JSON.parse(property.propertyImage) 
+    : [defaultImage];
+  if (!Array.isArray(images) || images.length === 0) {
+    images = [defaultImage];
   }
-  
+} catch (error) {
+  console.error("Error parsing property images:", error);
+  images = [defaultImage];
+}
+
+
 
   const nextImage = () => {
     setCurrentImageIndex((prev) =>
-      prev === images.length - 1 ? 0 : prev + 1
+      prev === images?.length - 1 ? 0 : prev + 1
     );
   };
 
   const prevImage = () => {
     setCurrentImageIndex((prev) =>
-      prev === 0 ? images.length - 1 : prev - 1
+      prev === 0 ? images?.length - 1 : prev - 1
     );
   };
   return (
