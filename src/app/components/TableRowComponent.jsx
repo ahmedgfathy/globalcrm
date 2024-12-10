@@ -1,13 +1,23 @@
 "use client";
-import React from 'react'
-import Link from 'next/link'
+import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import DeleteButton from '@/app/components/delete-button/DeleteButton'
-import { TableCell, TableRow } from '@/components/ui/table'
-import { deleteLead } from '../../actions/leadsAction'
+import DeleteButton from "@/app/components/delete-button/DeleteButton";
+import { TableCell, TableRow } from "@/components/ui/table";
+import { deleteLead } from "../../actions/leadsAction";
+import { Checkbox } from "@/components/ui/checkbox";
 
-const TableRowComponent = ({ client, t, afterDel }) => {
+const TableRowComponent = ({ client, t, afterDel, selectedLeads, setSelectedLeads }) => {
   const router = useRouter();
+
+  const handleCheckboxChange = (checked) => {
+    setSelectedLeads((prev) =>
+      checked
+        ? [...prev, client.$id] 
+        : prev.filter((id) => id !== client.$id)  
+    );
+  };
+  
 
   const handleRowClick = (e) => {
     if (e.target.closest(".prevent-row-click")) {
@@ -21,9 +31,17 @@ const TableRowComponent = ({ client, t, afterDel }) => {
       className="hover:bg-gray-50 dark:hover:bg-gray-700 hover:cursor-pointer"
       onClick={handleRowClick}
     >
-      <TableCell className="p-3 text-base font-semibold">
-        {client.leadNumber}
+      <TableCell className="p-3 text-center">
+      <Checkbox  className="prevent-row-click" onCheckedChange={(checked)=>handleCheckboxChange(checked)} checked={selectedLeads.includes(client.$id)} />
+        {/* <input
+          type="checkbox"
+          className="prevent-row-click"
+          onChange={handleCheckboxChange}
+          checked={selectedLeads.includes(client.$id)}
+        /> */}
       </TableCell>
+
+      <TableCell className="p-3 text-base font-semibold">{client.leadNumber}</TableCell>
       <TableCell className="p-3 text-base font-semibold">{client.name}</TableCell>
       <TableCell className="p-3 text-base font-semibold">{client.number}</TableCell>
       <TableCell className="p-3 text-base font-semibold">{client.leadStatus}</TableCell>
@@ -51,4 +69,3 @@ const TableRowComponent = ({ client, t, afterDel }) => {
 };
 
 export default TableRowComponent;
-
