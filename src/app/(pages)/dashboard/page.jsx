@@ -124,19 +124,7 @@ function Page() {
       link: "/calendar",
       description: "calendar_card_description",
       actions: [{ name: "add_event", onClick: () => {} }],
-    },
-    {
-      id: 4,
-      title: "",
-      subTitle: "",
-      number: "",
-      time: "",
-      percent: "",
-      // icon: () => <FaCalendarAlt />,
-      link: "",
-      description: "",
-      // actions: [{ name: "add_event", onClick: () => {} }],
-    },
+    }
   ];
 
   return (

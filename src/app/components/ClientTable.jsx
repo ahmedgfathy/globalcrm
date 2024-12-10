@@ -12,7 +12,7 @@ import CustomButton from "@/app/components/CustomButton";
 import Filter from "./Filter";
 import  DropdownMenImportExport  from "./leadImport-Export/ImportExport";
 
-const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterValues,handleFilterChange, handleImportCSV, handleExportCSV }) => {
+const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterValues,handleFilterChange, handleImportCSV, handleExportCSV,selectedLeads, setSelectedLeads }) => {
 
   return (
     <div
@@ -34,6 +34,9 @@ const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterV
       <Table className="min-w-full text-start">
         <TableHeader>
           <TableRow className="bg-gray-100 dark:bg-gray-700">
+            <TableHead className="min-w-fit text-nowrap p-3 text-start text-dark dark:text-white text-base font-bold">
+              {t('check_lead')}
+            </TableHead>
             <TableHead className="min-w-fit text-nowrap p-3 text-start text-dark dark:text-white text-base font-bold">
               {t("lead_no")}
             </TableHead>
@@ -67,6 +70,8 @@ const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterV
               client={client}
               t={t}
               afterDel={() => afterDel(1, "")}
+              selectedLeads={selectedLeads}
+              setSelectedLeads={setSelectedLeads}
             />
           ))}
         </TableBody>
