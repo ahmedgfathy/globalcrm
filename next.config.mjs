@@ -39,6 +39,26 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config, { dev, isServer }) => {
+    if (dev) {
+      // Disable source maps in development
+      config.devtool = false;
+    }
+
+    // Limit the number of concurrent workers
+    config.optimization = {
+      ...config.optimization,
+      splitChunks: {
+        ...config.optimization.splitChunks,
+        maxInitialRequests: 1,
+        maxAsyncRequests: 1,
+      },
+    };
+
+    return config;
+  },
+  // Other configurations
 };
 
 export default nextConfig;
+
