@@ -450,7 +450,7 @@ export const importProperties = async (data) => {
     return { success: true }
   } catch (error) {
     console.error('Error importing properties:', error)
-    throw errorimport { deleteProperty } from '@/actions/propertiesAction';
+    throw error
 
   }
 }
