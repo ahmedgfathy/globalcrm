@@ -86,7 +86,6 @@
   "mobile_no": "رقم الجوال",
   "Telephone": "الهاتف",
   "Compound":"الموقع",
-
   "update_calls": "تحديث المكالمات",
   "save": "حفظ",
   "property_name_compound_name": "اسم العقار - اسم المجمع",
@@ -127,9 +126,9 @@
   "Leads_Settings": "اعدادات العملاء",
   "decripe_lead": "يمكنك الوصول إلى إعدادات العملاء هنا",
   "decripe_unit": "يمكنك الوصول إلى إعدادات الوحدات هنا",
-  "Assigned_To": "مكلف لـ",
+  "Assigned_To": "تحويل الي",
   "Customer_Source": "مصدر العميل",
-  "Lead_Status": "حالة العميل المحتمل",
+  "Lead_Status": "حالة العميل",
   "delete_all_leads": "حذف جميع العملاء",
   "delete_all_units": "حذف جميع الوحدات",
   "clear_filter": "اعادة الفلتر",
@@ -158,7 +157,7 @@
   "partner_leads": "عملاء شركاء",
   "total_leads": "اجمالي عدد العملاء",
   "medical": "طبي",
-  "exit": "الغاء",
+  "exit": "الغاء", 
   "back": "رجوع",
   "check_lead": "اختيار الليد"
 }
