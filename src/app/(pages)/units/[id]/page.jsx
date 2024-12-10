@@ -200,12 +200,13 @@ function Page({ params }) {
         action: (
           <ToastAction
             altText="ok"
-            onClick={() => router.push(`/units/${response.$id}`)}
+            
           >
             Show Details
           </ToastAction>
         ),
       });
+      router.back();
     } catch (error) {
       console.error("Error Updating unit:", error);
 
@@ -219,7 +220,9 @@ function Page({ params }) {
             Try Again
           </ToastAction>
         ),
-      });
+      }
+
+    );
     }
   };
   return (
