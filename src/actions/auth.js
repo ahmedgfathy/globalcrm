@@ -135,6 +135,31 @@ export const getUsers = async (limit = 10, offset = 0) => {
     throw error;
   }
 };
+
+export const searchUsers = async (searchTerm) => {                                                                       
+  try {
+    console.log('Searching for users with term:', searchTerm);
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      [
+        Query.or([
+          Query.contains('name', searchTerm),
+          Query.contains('email', searchTerm),
+
+        ])
+      ]
+    );
+
+    const users = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
+    console.log('Processed users:', users);
+    return users;
+  } catch (error) {
+    console.error('Error searching for users:', error);
+    throw error;
+  }
+};
+
 export const getCurrentUserRole = () => {
   const session = JSON.parse(localStorage.getItem('session'));
   return session ? session.userRole : null;
