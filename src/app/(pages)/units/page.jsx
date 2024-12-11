@@ -589,7 +589,9 @@ function Page() {
           ))}
         </Grid>
 
-        <div className="flex justify-center mt-4" dir="ltr">
+      </div>
+        <div className="footer ">
+        <div className="flex justify-center items-center mt-4" dir="ltr">
           <Pagination
             current={currentPage}
             showSizeChanger
@@ -597,11 +599,12 @@ function Page() {
             pageSize={UnitsPerPage}
             onShowSizeChange={handlePageSizeChange}
             onChange={handlePageChange}
-            className="custom-pagination"
+            className="custom-pagination mt-0 mx-auto"
           />
         </div>
-        <div className="footer"></div>
-      </div>
+
+
+        </div>
     </div>
   );
 }
