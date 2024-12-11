@@ -87,20 +87,22 @@ export const deleteProperty = async (propertyId) => {
 
 export const deleteAllProperties = async () => {
   try {
-    let hasMoreDocuments = true
-    const limit = 100 // الحد الأقصى للعناصر لكل طلب
+    let hasMoreDocuments = true;
+    const limit = 100; // الحد الأقصى للعناصر لكل طلب
+    let offset = 0;
 
     while (hasMoreDocuments) {
       // Fetch a batch of documents
       const response = await databases.listDocuments(
         process.env.NEXT_PUBLIC_DATABASE_ID,
-        process.env.NEXT_PUBLIC_PROPERTIES
-      )
+        process.env.NEXT_PUBLIC_PROPERTIES,
+        [Query.limit(limit), Query.offset(offset)]
+      );
 
       // Check if there are documents to delete
       if (response.documents.length === 0) {
-        hasMoreDocuments = false
-        break
+        hasMoreDocuments = false;
+        break;
       }
 
       // Delete each property individually
@@ -110,19 +112,23 @@ export const deleteAllProperties = async () => {
           process.env.NEXT_PUBLIC_PROPERTIES,
           document.$id
         )
-      )
+      );
 
       // Wait for all delete operations to complete
-      await Promise.all(deletePromises)
+      await Promise.all(deletePromises);
+
+      // Increase offset to fetch next batch
+      offset += limit;
     }
 
-    console.log('All properties deleted successfully.')
-    return { success: true }
+    console.log('All properties deleted successfully.');
+    return { success: true };
   } catch (error) {
-    console.error('Error deleting all properties:', error)
-    throw error
+    console.error('Error deleting all properties:', error);
+    throw error;
   }
-}
+};
+
 
 export const updatePropertyByID = async (propertyId, updatedData) => {
   try {
@@ -421,47 +427,137 @@ export const togglePropertyInHome = async (propertyId) => {
 }
 
 export const importProperties = async (data) => {
-  try {
-    console.log('Importing properties:', data)
+  console.log('Starting to import properties:', data);
 
-    const batchSize = 50
-    const batches = []
-    for (let i = 0; i < data.length; i += batchSize) {
-      batches.push(data.slice(i, i + batchSize))
-    }
+  const batchSize = 50;
+  const batches = [];
 
-    for (const batch of batches) {
-      const responses = await Promise.all(
-        batch.map(async (property) => {
-          console.log(property)
-          try {
-            const response = await databases.createDocument(
-              process.env.NEXT_PUBLIC_DATABASE_ID,
-              process.env.NEXT_PUBLIC_PROPERTIES,
-              ID.unique(), // Unique document ID
-              property // Property data
-            )
-            return response
-          } catch (error) {
-            console.error('Error creating document:', property, error.message)
-            return null // تجاهل الأخطاء الفردية واستمر
-          }
-        })
-      )
-
-      console.log(
-        `Batch processed: ${responses.filter(Boolean).length} documents`
-      )
-    }
-
-    console.log('All batches processed successfully.')
-    return { success: true }
-  } catch (error) {
-    console.error('Error importing properties:', error)
-    throw error
-
+  for (let i = 0; i < data.length; i += batchSize) {
+    batches.push(data.slice(i, i + batchSize));
   }
-}
+
+  const errors = []; 
+
+  for (const batch of batches) {
+    for (const property of batch) {
+      try {
+        const response = await databases.createDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID,
+          process.env.NEXT_PUBLIC_PROPERTIES,
+          ID.unique(), 
+          property
+        );
+        console.log('Document created:', response);
+      } catch (error) {
+        if (error.message.includes('Document with the requested ID already exists')) {
+          console.warn(`Skipping duplicate document for propertyNumber: ${property.propertyNumber}`);
+        } else {
+          console.error('Error creating document:', property, error.message);
+          errors.push({ property, error: error.message }); 
+        }
+      }
+    }
+    console.log(`Batch processed: ${batch.length} documents`);
+  }
+
+  if (errors.length > 0) {
+    console.error('Import completed with errors:', errors);
+    return { success: false, errors };
+  }
+
+  console.log('All batches processed successfully.');
+  return { success: true };
+};
+
+
+// export const importProperties = async (data) => {
+//   try {
+//     console.log('Importing properties:', data)
+
+//     const batchSize = 50
+//     const batches = []
+//     for (let i = 0; i < data.length; i += batchSize) {
+//       batches.push(data.slice(i, i + batchSize))
+//     }
+
+//     for (const batch of batches) {
+//       const responses = await Promise.all(
+//         batch.map(async (property) => {
+//           console.log(property)
+//           try {
+//             const response = await databases.createDocument(
+//               process.env.NEXT_PUBLIC_DATABASE_ID,
+//               process.env.NEXT_PUBLIC_PROPERTIES,
+//               ID.unique(), // Unique document ID
+//               property // Property data
+//             )
+//             return response
+//           } catch (error) {
+//             console.error('Error creating document:', property, error.message)
+//             return null // تجاهل الأخطاء الفردية واستمر
+//           }
+//         })
+//       )
+
+//       console.log(
+//         `Batch processed: ${responses.filter(Boolean).length} documents`
+//       )
+//     }
+
+//     console.log('All batches processed successfully.')
+//     return { success: true }
+//   } catch (error) {
+//     console.error('Error importing properties:', error)
+//     throw error
+
+//   }
+// }
+// export const importProperties = async (data) => {
+//   try {
+//     console.log('Starting to import properties:', data);
+
+//     const batchSize = 50;
+//     const batches = [];
+
+//     for (let i = 0; i < data.length; i += batchSize) {
+//       batches.push(data.slice(i, i + batchSize));
+//     }
+
+//     for (const batch of batches) {
+//       for (const property of batch) {
+//         try {
+//           const response = await databases.createDocument(
+//             process.env.NEXT_PUBLIC_DATABASE_ID,
+//             process.env.NEXT_PUBLIC_PROPERTIES,
+//             ID.unique(), 
+//             property
+//           );
+//           console.log('Document created:', response);
+//         } catch (error) {
+//           if (
+//             error.message.includes(
+//               'Document with the requested ID already exists'
+//             )
+//           ) {
+//             console.warn(
+//               `Skipping duplicate document for propertyNumber: ${property.propertyNumber}`
+//             );
+//           } else {
+//             console.error('Error creating document:', property, error.message);
+//             throw error;
+//           }
+//         }
+//       }
+//       console.log(`Batch processed: ${batch.length} documents`);
+//     }
+
+//     console.log('All batches processed successfully.');
+//     return { success: true };
+//   } catch (error) {
+//     console.error('Error importing properties:', error);
+//     throw error;
+//   }
+// };
 
 export const searchUnitByTypes = async (searchTerm) => {
   try {
