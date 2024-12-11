@@ -167,6 +167,7 @@ export const searchPropertyByName = async (name) => {
         Query.or([
           Query.contains('name', name),
           Query.contains('mobileNo', name),
+          Query.contains('tel', name),
         ])
       )
     }
