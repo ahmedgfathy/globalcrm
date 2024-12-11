@@ -159,5 +159,6 @@
   "exit": "Exit",
   "back": "Back",
   "check_lead": "Check Lead",
-  "sheet": "Sheets"
+  "sheet": "Sheets",
+  "transform": "Transform"
 }

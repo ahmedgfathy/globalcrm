@@ -30,6 +30,7 @@ import { useToast } from "@/hooks/use-toast";
 import DeleteButton from "../../components/delete-button/DeleteButton";
 import { getAllSettings } from "@/actions/filterSettings";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
+import { searchUsers } from "@/actions/auth";
 
 function Page() {
   const { toast } = useToast();
@@ -37,6 +38,7 @@ function Page() {
   const router = useRouter();
   const isMobile = useIsMobile();
   const urlParams = useSearchParams();
+  const [users, setUsers] = useState([]);
   const { t, locale } = useTranslation();
   const [leads, setLeads] = useState([]);
   // Replace the existing currentPage initialization
@@ -49,7 +51,7 @@ function Page() {
   const [customerSourceFilter, setCustomerSourceFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [leadsPerPage, setLeadsPerPage] = useState(10);
+  const [leadsPerPage, setLeadsPerPage] = useState(20);
   const filterValue = useMemo(() => urlParams.get("filter"), [urlParams]);
 
   const [options, setOptions] = useState([
@@ -249,6 +251,15 @@ function Page() {
     setCurrentPage(1);
     console.log(size);
   };
+  const searchUsersForTransform = async (data) => {
+    try {
+      const res = await searchUsers(data);
+      setUsers(res);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <ProtectedRoute>
       <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -300,8 +311,9 @@ function Page() {
                     fetchLeads(1, "");
                   }}
                 />
-                {/* <DeleteButton
-              handleDelete={deleteAllLeads}
+                <DeleteButton
+              // handleDelete={deleteAllLeads}
+              handleDelete={()=>console.log("no thing")}
               title={!isMobile && t('delete_all_leads')}
                 afterDel={()=>fetchLeads(
                   currentPage,
@@ -309,7 +321,7 @@ function Page() {
                   typeFilter,
                   customerSourceFilter
                 )}
-              /> */}
+              />
               </div>
             </div>
           </Grid>
@@ -332,6 +344,8 @@ function Page() {
               afterDel={() => fetchLeads(currentPage, searchTerm)}
               onAddLead={() => router.push("/leads/add-lead")}
               filterData={options}
+              searchUsersForTransform={searchUsersForTransform}
+              users={users}
               filterValues={filterValues}
               handleFilterChange={handleFilterChange}
               selectedLeads={selectedLeads}
@@ -340,7 +354,7 @@ function Page() {
           </div>
         )}
         {!isLoading && (
-          <div className="flex justify-center mt-4" dir="ltr">
+          <div className="flex mt-4" dir="ltr">
             <Pagination
               current={currentPage}
               showSizeChanger

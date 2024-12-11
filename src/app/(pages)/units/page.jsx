@@ -7,8 +7,9 @@ import { IoMdAddCircle } from "react-icons/io";
 import Filter from "@/app/components/Filter";
 import { Pagination } from "antd";
 import { Grid } from "@mui/material";
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from "next/navigation";
 import CustomButton from "@/app/components/CustomButton";
+import { GrTransaction } from "react-icons/gr";
 import DropdownMenImportExport from "@/app/components/leadImport-Export/ImportExport";
 import {
   exportProperties,
@@ -29,6 +30,19 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/hooks/use-toast";
 import Papa from "papaparse";
 import { getAllSettings } from "@/actions/filterSettings";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { searchUsers } from "@/actions/auth";
 
 function Page() {
   const [from, setFrom] = useState("");
@@ -39,12 +53,13 @@ function Page() {
   const { t, locale } = useTranslation();
   const [units, setUnits] = useState([]);
   const urlParams = useSearchParams();
-const initialPage = parseInt(urlParams.get('page') || '1', 10);
+  const initialPage = parseInt(urlParams.get("page") || "1", 10);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalUnits, setTotalUnits] = useState(0);
   const [UnitsPerPage, setUnitsPerPage] = useState(12);
   const [searchTerm, setSearchTerm] = useState("");
-  const [unitsTransfer, setUnitsTransfer] = useState([{ id: "", note: false }]);
+  const [unitsTransfer, setUnitsTransfer] = useState([]);
+  const [users, setUsers] = useState([]);
   const [filterValues, setFilterValues] = useState(
     filterData.reduce((acc, ele) => {
       acc[ele.filterName] = "";
@@ -53,7 +68,12 @@ const initialPage = parseInt(urlParams.get('page') || '1', 10);
   );
   const [options, setOptions] = useState([
     { id: 1, filterName: "Property Types", data: "type", optionData: [] },
-    { id: 2, filterName: "in-side / Out Side", data: "inOrOutSideCompound", optionData: [] },
+    {
+      id: 2,
+      filterName: "in-side / Out Side",
+      data: "inOrOutSideCompound",
+      optionData: [],
+    },
     { id: 3, filterName: "Sales", data: "sales", optionData: [] },
     { id: 4, filterName: "Category", data: "category", optionData: [] },
     { id: 5, filterName: "Range", data: "range", optionData: [] },
@@ -108,10 +128,13 @@ const initialPage = parseInt(urlParams.get('page') || '1', 10);
           console.log("Fetched properties by name:", propertiesByName);
         }
         if (parsedFrom || parsedTo) {
-          const {properties, total} = await searchPropertyByRange(parsedFrom, parsedTo);
+          const { properties, total } = await searchPropertyByRange(
+            parsedFrom,
+            parsedTo
+          );
           console.log("Fetched properties by range:", properties);
-          setUnits(properties)
-          setTotalUnits(total)
+          setUnits(properties);
+          setTotalUnits(total);
         }
       } catch (error) {
         console.error("Error fetching properties:", error);
@@ -138,47 +161,44 @@ const initialPage = parseInt(urlParams.get('page') || '1', 10);
   };
   const fetchUnits = async (page = 1, search = "", range = {}) => {
     const offset = (page - 1) * UnitsPerPage;
-  
+
     if (!UnitsPerPage || UnitsPerPage <= 0) {
       console.error("Invalid UnitsPerPage value");
       return;
     }
-  
+
     try {
       let properties = [];
       let totalProperties = 0;
-  
+
       if (search) {
         const propertiesByName = await searchPropertyByName(search);
         properties = propertiesByName;
         totalProperties = propertiesByName.length;
       } else if (range.from || range.to) {
-        const { properties: propertiesByRange, total } = await searchPropertyByRange(
-          range.from,
-          range.to,
-          currentPage,
-          UnitsPerPage,
-          
-        );
+        const { properties: propertiesByRange, total } =
+          await searchPropertyByRange(
+            range.from,
+            range.to,
+            currentPage,
+            UnitsPerPage
+          );
         properties = propertiesByRange;
         totalProperties = total;
       } else {
-        const { properties: allProperties, totalProperties: total } = await getAllProperties(
-          UnitsPerPage,
-          offset
-        );
+        const { properties: allProperties, totalProperties: total } =
+          await getAllProperties(UnitsPerPage, offset);
         properties = allProperties;
         totalProperties = total;
       }
-  
+
       setUnits(properties);
       setTotalUnits(totalProperties);
     } catch (error) {
       console.error("Error fetching units", error);
     }
   };
-  
-  
+
   // const fetchUnits = async (page = 1, search = "") => {
   //   const offset = (page - 1) * UnitsPerPage;
   //   // setIsLoading(true)
@@ -208,6 +228,192 @@ const initialPage = parseInt(urlParams.get('page') || '1', 10);
     console.log(size);
   };
 
+  const handleExportCSV = async () => {
+    try {
+      const  {properties}  = await exportProperties();
+      console.log(properties)
+      if (!properties || properties.length === 0) {
+        toast({
+          variant: 'destructive',
+          title: 'Error Export Units',
+          description: 'No units available to export.', 
+          status: 'error',
+        });
+        return;
+      }
+
+      const csv = Papa.unparse(properties);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'units.csv';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast({
+        variant: 'success',
+        title: 'Success Export Units',
+        description: 'Units exported successfully.',
+        status: 'success',
+      });
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error Exporting Units',
+        description: error.message || 'An unexpected error occurred.', // الآن error معرف هنا
+        status: 'error',
+      });
+      console.error('Error exporting units:', error);
+    }
+  };
+  // const handleImportCSV = (event) => {
+  //   const file = event.target.files[0];
+  //   if (!file) {
+  //     alert('No file selected.');
+  //     return;
+  //   }
+
+  //   Papa.parse(file, {
+  //     header: true,
+  //     skipEmptyLines: true,
+  //     complete: async (results) => {
+  //       if (results.errors.length > 0) {
+  //         console.error('Parsing errors:', results.errors);
+  //         toast({
+  //           variant: 'destructive',
+  //           title: 'Invalid file format.',
+  //           description: 'Please ensure the file is in CSV format.',
+  //           status: 'error',
+  //         });
+  //         return;
+  //       }
+
+  //       // Convert necessary attributes from strings to integers
+  //       const convertedData = results.data.map((property) => ({
+  //         ...property,
+  //         totalPrice: parseInt(property.totalPrice, 10),
+  //         rooms: parseInt(property.rooms, 10),
+  //         mobileNo: parseInt(property.rooms, 10),
+  //         tel: parseInt(property.rooms, 10),
+  //         propertyImage: property.propertyImage ? property.propertyImage.split(',') : [],
+  //         links: property.links ? property.links.split(',') : [],
+  //         inHome: property.inHome === 'TRUE',
+  //         liked: property.liked === 'TRUE',
+  //       }));
+
+  //       try {
+  //         await importProperties(convertedData);
+  //         toast({
+  //           variant: 'success',
+  //           title: 'Success import Units',
+  //           description: 'Units imported successfully!',
+  //           status: 'success',
+  //         });
+  //       } catch (error) {
+  //         console.error('Error importing units:', error);
+  //         toast({
+  //           variant: 'destructive',
+  //           title: 'Error importing units:',
+  //           description: error.message || 'Failed to import units.',
+  //           status: 'error',
+  //         });
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.error('Error parsing file:', error);
+  //       toast({
+  //         variant: 'destructive',
+  //         title: 'Error importing units:',
+  //         description: 'Failed to read the CSV file.',
+  //         status: 'error',
+  //       });
+  //     },
+  //   });
+  // };
+  const handleImportCSV = (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+      alert('No file selected.');
+      return;
+    }
+
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: async (results) => {
+        if (results.errors.length > 0) {
+          console.error('Parsing errors:', results.errors);
+          toast({
+            variant: 'destructive',
+            title: 'Invalid file format.',
+            description: 'Please ensure the file is in CSV format.',
+            status: 'error',
+          });
+          return;
+        }
+
+        const convertedData = results.data.map((property, index) => ({
+          ...property,
+          totalPrice: parseInt(property.totalPrice, 10),
+          rooms: parseInt(property.rooms, 10),
+          mobileNo: property.mobileNo || String(index),
+          tel: property.tel || String(index) ,
+          propertyImage: property.propertyImage ? property.propertyImage : "", 
+          inHome: property.inHome === 'TRUE',
+          liked: property.liked === 'TRUE',
+        }));
+
+        try {
+          await importProperties(convertedData);
+          toast({
+            variant: 'success',
+            title: 'Success import Units',
+            description: 'Units imported successfully!',
+            status: 'success',
+          });
+        } catch (error) {
+          console.error('Error importing units:', error);
+          toast({
+            variant: 'destructive',
+            title: 'Error importing units:',
+            description: error.message || 'Failed to import units.',
+            status: 'error',
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Error parsing file:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Error importing units:',
+          description: 'Failed to read the CSV file.',
+          status: 'error',
+        });
+      },
+    });
+  };
+  // const handleDeleteAllProperties = async () => {
+  //   try {
+  //     await deleteAllProperties();
+  //     toast({
+  //       variant: 'success',
+  //       title: 'Success Delete Units',
+  //       description: 'All units deleted successfully.',
+  //       status: 'success',
+  //     });
+  //     // fetchUnits(); // Refresh the state after deletion
+  //   } catch (error) {
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'Error Deleting Units',
+  //       description: error.message || 'An unexpected error occurred.',
+  //       status: 'error',
+  //     });
+  //     console.error('Error deleting units:', error);
+  //   }
+  // };
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1);
@@ -216,7 +422,6 @@ const initialPage = parseInt(urlParams.get('page') || '1', 10);
   useEffect(() => {
     fetchUnits(currentPage, searchTerm);
   }, [currentPage, searchTerm, UnitsPerPage]);
-  
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -260,7 +465,15 @@ const initialPage = parseInt(urlParams.get('page') || '1', 10);
       }
     });
   };
-
+  const searchUsersForTransform = async (data) => {
+    try {
+      const res = await searchUsers(data);
+      setUsers(res);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     console.log(unitsTransfer);
   }, [unitsTransfer]);
@@ -268,12 +481,24 @@ const initialPage = parseInt(urlParams.get('page') || '1', 10);
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="w-full flex flex-wrap justify-between items-start gap-3 px-2 pt-2 max-[1200px]:px-7">
-        <Grid item xs={12} sm={7} md={11.3} lg={11.4} className="flex w-full justify-end" dir="ltr">
-          <div className={`head flex justify-between items-start w-full flex-col  md:flex-row-reverse gap-2 md:gap-5`}>
+        <Grid
+          item
+          xs={12}
+          sm={7}
+          md={11.3}
+          lg={11.4}
+          className="flex w-full justify-end"
+          dir="ltr"
+        >
+          <div
+            className={`head flex justify-between items-start w-full flex-col  md:flex-row-reverse gap-2 md:gap-5`}
+          >
             <div
               className={`flex items-center w-3/4 h-max max-[450px]:w-full dark:shadow-none rounded-xl bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus-within:border-black dark:hover:border-white dark:focus-within:border-white focus:outline-none px-2`}
             >
-              <span className={`text-gray-400 ${locale === "ar" ? "ml-2" : "mr-2"}`}>
+              <span
+                className={`text-gray-400 ${locale === "ar" ? "ml-2" : "mr-2"}`}
+              >
                 <CiSearch />
               </span>
               <Input
@@ -294,7 +519,6 @@ const initialPage = parseInt(urlParams.get('page') || '1', 10);
                 className="GreenButton"
                 icon={() => <IoMdAddCircle />}
               />
-
               <CustomButton
                 // title={!isMobile && t('clear_filter')}
                 title={t("clear_filter")}
@@ -305,14 +529,18 @@ const initialPage = parseInt(urlParams.get('page') || '1', 10);
                   fetchUnits(1, "");
                 }}
               />
-              {/* <DeleteButton
-                handleDelete={handleDeleteAllProperties}
+
+              <DeleteButton
+                // handleDelete={handleDeleteAllProperties}
+                handleDelete={()=>console.log("no thing")}
                 title={!isMobile && t('delete_all_units')}
-                // afterDel={() => fetchUnits(currentPage, searchTerm)}
-              /> */}
-              {/* <div className="block md:hidden"> */}
-                {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />  */}
-              {/* </div> */}
+                afterDel={() => fetchUnits(currentPage, searchTerm)}
+              />
+              <div className="block md:hidden">
+              {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
+              {/* <DropdownMenImportExport  handleExportCSV={()=>console.log("no thing")} handleImportCSV={()=>console.log("no thing")} /> */}
+        <DropdownMenImportExport handleExportCSV={()=>console.log("no thing")} handleImportCSV={()=>console.log("no thing")} searchUsersForTransform={searchUsersForTransform} users={users} />
+              </div>
             </div>
           </div>
         </Grid>
@@ -322,34 +550,56 @@ const initialPage = parseInt(urlParams.get('page') || '1', 10);
           dir="rtl"
         >
           <div className="filter w-full md:w-full">
-            <Filter filterChange={onFilterChange} filterValues={filterValues} onFilterChange={handleFilterChange} data={options} col={5} />
+            <Filter
+              filterChange={onFilterChange}
+              filterValues={filterValues}
+              onFilterChange={handleFilterChange}
+              data={options}
+              col={5}
+            />
           </div>
           <div className="flex gap-3">
-            <Input placeholder="To" value={to} onChange={(e) => setTo(e.target.value)} />
-            <Input placeholder="From" value={from} onChange={(e) => setFrom(e.target.value)} />
-            {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
+            <Input
+              placeholder="To"
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+            />
+            <Input
+              placeholder="From"
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+            />
+              <div className="hidden md:block">
+            {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} searchUsersForTransform={searchUsersForTransform} users={users} /> */}
+            <DropdownMenImportExport handleExportCSV={()=>console.log("no thing")} handleImportCSV={()=>console.log("no thing")} searchUsersForTransform={searchUsersForTransform} users={users} />
+          </div>
           </div>
         </div>
 
         <Grid container spacing={1} dir="ltr">
           {units.map((unit, index) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-              <CardProperty property={unit} handleLike={handleLike} handleShowHome={handleShowHome} handleCheckUnits={handleCheckUnits} />
+              <CardProperty
+                property={unit}
+                handleLike={handleLike}
+                handleShowHome={handleShowHome}
+                handleCheckUnits={handleCheckUnits}
+              />
             </Grid>
           ))}
         </Grid>
 
         <div className="flex justify-center mt-4" dir="ltr">
-  <Pagination
-    current={currentPage}
-    showSizeChanger
-    total={totalUnits}
-    pageSize={UnitsPerPage}
-    onShowSizeChange={handlePageSizeChange}
-    onChange={handlePageChange}
-    className="custom-pagination"
-  />
-</div>
+          <Pagination
+            current={currentPage}
+            showSizeChanger
+            total={totalUnits}
+            pageSize={UnitsPerPage}
+            onShowSizeChange={handlePageSizeChange}
+            onChange={handlePageChange}
+            className="custom-pagination"
+          />
+        </div>
         <div className="footer"></div>
       </div>
     </div>
