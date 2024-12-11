@@ -695,11 +695,7 @@ export const exportProperties = async () => {
         [
           Query.limit(limit),
           Query.offset(offset),
-<<<<<<< HEAD
-          Query.orderDesc('$createdAt'),
-=======
-          Query.orderDesc('$createdAt') 
->>>>>>> 928abc14e38f1b86da0f8e19f38582c1e7c74187
+          Query.orderDesc('$createdAt')
         ]
       )
 
