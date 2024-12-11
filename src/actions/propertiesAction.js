@@ -561,13 +561,13 @@ export const importProperties = async (data) => {
 //       )
 //     }
 
-    console.log('All batches processed successfully.')
-    return { success: true }
-  } catch (error) {
-    console.error('Error importing properties:', error)
-    throw error
-  }
-}
+    // console.log('All batches processed successfully.')
+    // return { success: true }
+  // } catch (error) {
+    // console.error('Error importing properties:', error)
+    // throw error
+  // }
+// }
 
 // propertiesAction.js
 
