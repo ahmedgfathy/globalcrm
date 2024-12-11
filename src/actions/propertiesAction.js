@@ -509,32 +509,81 @@ export const searchUnitByCategory = async (searchTerm) => {
   }
 }
 
+// export const exportProperties = async () => {
+//   try {
+//     const response = await databases.listDocuments(
+//       process.env.NEXT_PUBLIC_DATABASE_ID,
+//       process.env.NEXT_PUBLIC_PROPERTIES,
+//       [Query.orderDesc('$createdAt')]
+//     )
+
+//     const totalResponse = await databases.listDocuments(
+//       process.env.NEXT_PUBLIC_DATABASE_ID,
+//       process.env.NEXT_PUBLIC_PROPERTIES,
+//       [Query.limit(1), Query.offset(0)]
+//     )
+
+//     const totalProperties = totalResponse.total
+
+//     const properties = response.documents.map(
+//       ({
+//         $collectionId,
+//         $databaseId,
+//         $id,
+//         $permissions,
+//         $updatedAt,
+//         ...rest
+//       }) => rest
+//     )
+
+//     console.log(properties)
+//     return { properties, totalProperties }
+//   } catch (error) {
+//     console.error('Error exporting properties:', error)
+//     throw error
+//   }
+// }
+
 export const exportProperties = async () => {
   try {
-    const response = await databases.listDocuments(
-      process.env.NEXT_PUBLIC_DATABASE_ID,
-      process.env.NEXT_PUBLIC_PROPERTIES,
-      [Query.orderDesc('$createdAt')]
-    )
+    const properties = []
+    let totalProperties = 0
+    let offset = 0
+    const limit = 100
 
     const totalResponse = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
       [Query.limit(1), Query.offset(0)]
     )
+    totalProperties = totalResponse.total
 
-    const totalProperties = totalResponse.total
+    while (offset < totalProperties) {
+      const response = await databases.listDocuments(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_PROPERTIES,
+        [
+          Query.limit(limit),
+          Query.offset(offset),
+          Query.orderDesc('$createdAt')
+        ]
+      )
 
-    const properties = response.documents.map(
-      ({
-        $collectionId,
-        $databaseId,
-        $id,
-        $permissions,
-        $updatedAt,
-        ...rest
-      }) => rest
-    )
+      properties.push(
+        ...response.documents.map(
+          ({
+            $collectionId,
+            $databaseId,
+            $id,
+            $permissions,
+            $updatedAt,
+            ...rest
+          }) => rest
+        )
+      )
+
+      offset += limit
+    }
 
     console.log(properties)
     return { properties, totalProperties }
@@ -543,6 +592,7 @@ export const exportProperties = async () => {
     throw error
   }
 }
+
 
 // export const getPropertiesActivity = async () => {
 //   try {
