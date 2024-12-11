@@ -695,7 +695,7 @@ export const exportProperties = async () => {
         [
           Query.limit(limit),
           Query.offset(offset),
-          Query.orderDesc('$createdAt'),
+          Query.orderDesc('$createdAt') 
         ]
       )
 
