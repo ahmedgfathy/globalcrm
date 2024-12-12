@@ -169,3 +169,15 @@ export const getSession = () => {
   const session = localStorage.getItem('session');
   return session ? JSON.parse(session) : null;
 };
+
+// propertiesAction.js
+
+export const getCurrentUserId = () => {
+  try {
+    const currentUser = account.get()
+    return currentUser.$id
+  } catch (error) {
+    console.error('Error fetching current user:', error)
+    throw error
+  }
+}
