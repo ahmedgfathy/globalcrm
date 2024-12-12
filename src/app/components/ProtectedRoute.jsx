@@ -1,9 +1,9 @@
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/app/context/UserContext";
-import { Spin } from "antd"; // Import the Spin component from Ant Design
-import { getSession } from "@/actions/auth"; // Import the getSession function
-import Unauthorized from "@/app/components/Unauthorized"; // Import the Unauthorized component
+import { Spin } from "antd";
+import { getSession } from "@/actions/auth";
+import Unauthorized from "@/app/components/Unauthorized";
 
 function ProtectedRoute({ children }) {
   const [state, setState] = useContext(UserContext);
@@ -13,19 +13,24 @@ function ProtectedRoute({ children }) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const session = getSession(); // Get session from cookies
-      if (!session) {
+      try {
+        const session = await getSession(); // Make sure getSession is async
+        if (!session) {
+          setIsAuthorized(false);
+        } else {
+          setState({ userData: session.userData });
+          setIsAuthorized(true);
+        }
+      } catch (error) {
+        console.error('Authentication error:', error);
         setIsAuthorized(false);
-        setLoading(false);
-      } else {
-        setState({ userData: session.userData });
-        setIsAuthorized(true);
+      } finally {
         setLoading(false);
       }
     };
 
     checkAuth();
-  }, [router, setState]);
+  }, [router, setState]); // Added setState as dependency
 
   if (loading) {
     return (
