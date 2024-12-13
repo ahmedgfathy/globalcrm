@@ -92,11 +92,12 @@ function Page() {
           <div className="bg-[#eee] dark:text-anti-flash_white dark:bg-dark min-h-screen w-full hidden lg:flex flex-col justify-evenly items-center">
             <div className="flex flex-col justify-evenly items-center h-[50vh]">
               <div className="title">
-                <h1 className="text-2xl font-bold">Vision Integration</h1>
+                <h1 className="text-2xl font-bold">رؤية جديدة</h1>
               </div>
               <div className="text">
                 <h3>
-                  تقدم الحل الأمثل لسير العمل بأعلى مستويات التقانة والتحليل
+                  {/* تقدم الحل الأمثل لسير العمل بأعلى مستويات التقانة والتحليل */}
+                  جلوبال ماركيتنج العقارية , الحل الامثل للتسويق العقاري
                 </h3>
               </div>
               <div className="img relative w-full h-[300px]">

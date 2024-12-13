@@ -158,13 +158,38 @@ const router = useRouter();
       console.error("Error deleting video:", error);
     }
   };
+
+  const handleError = (error) => {
+    // Default error description
+    let description = "There was an issue creating the unit.";
+    console.log(error.message)
+
+    // Check for specific error message
+    if (error.message.includes("Document with the requested ID already exists. Try again with a different ID or use ID.unique() to generate a unique ID")) {
+      description = "The telephone number or mobile number already exists.";
+    }
+
+    // Trigger the toast with dynamic description
+    toast({
+      variant: "destructive",
+      title: "Error Creating Unit",
+      description: description,
+      status: "error",
+      action: (
+        <ToastAction altText="ok" onClick={() => router.push(`/units`)}>
+          Try Again
+        </ToastAction>
+      ),
+    });
+  };
+
   const handleSubmit = async () => {
     const currentDateTime = new Date().toLocaleString();
     const modifiedUnit = { ...unit };
     modifiedUnit.rooms = parseInt(modifiedUnit.rooms, 10)
     modifiedUnit.totalPrice = parseInt(modifiedUnit.totalPrice, 10)
     modifiedUnit.PricePerMeter = parseInt(modifiedUnit.PricePerMeter, 10)
-    modifiedUnit.tel = modifiedUnit.tel
+
     modifiedUnit.videos = JSON.stringify(modifiedUnit.videos)
     modifiedUnit.propertyImage = JSON.stringify(modifiedUnit.propertyImage)
     console.log(unit)
@@ -221,19 +246,7 @@ const router = useRouter();
         ),
       });
     } catch (error) {
-      console.error("Error creating unit:", error);
-
-      toast({
-        variant: "destructive",
-        title: "Error Creating Unit",
-        description: error.message || "There was an issue creating the unit.",
-        status: "error",
-        action: (
-          <ToastAction altText="ok" onClick={() => router.push(`/units`)}>
-            Try Again
-          </ToastAction>
-        ),
-      });
+      handleError(error)
     }
   };
   

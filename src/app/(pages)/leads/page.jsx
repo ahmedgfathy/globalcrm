@@ -362,7 +362,7 @@ function Page() {
               pageSize={leadsPerPage}
               onShowSizeChange={handlePageSizeChange}
               onChange={handlePageChange}
-              className=""
+              className="custom-pagination "
             />
           </div>
         )}
