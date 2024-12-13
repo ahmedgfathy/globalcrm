@@ -599,7 +599,7 @@ function Page() {
             pageSize={UnitsPerPage}
             onShowSizeChange={handlePageSizeChange}
             onChange={handlePageChange}
-            className="custom-pagination mt-0 mx-auto"
+            className="custom-pagination"
           />
         </div>
 

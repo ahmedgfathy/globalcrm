@@ -16,9 +16,6 @@ import { getPropertiesActivity } from "@/actions/propertiesAction";
 import dynamic from "next/dynamic";
 
 function Page() {
-  // const MainCard = dynamic(() => import("@/app/components/dashboard/MainCard"), {
-  //   ssr: false, 
-  // });
   const router = useRouter();
   const [state] = useContext(UserContext);
   const [sources, setSources] = useState([]);
@@ -129,31 +126,57 @@ function Page() {
 
   return (
     <ProtectedRoute>
-      <div className="dashboard py-10 max-sm:px-4">
-        <div className="mx-auto container">
-          <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
+      <div className="dashboard min-h-screen bg-slate-50">
+        <div className="mx-auto container px-2 py-4 max-w-full">
+          {/* Stats Section */}
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-3 mb-3">
             {unitsInfo.map((card) => (
-              <div className="secondary-card" key={card.id}>
-                <SecondaryCards data={card} />
+              <div 
+                key={card.id}
+                className="bg-white/40 backdrop-blur-sm p-4 rounded-lg hover:bg-white/60 transition-colors duration-200 min-h-[120px]"
+              >
+                <SecondaryCards data={{...card}} />
               </div>
             ))}
           </div>
-          <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
-            <div className="main-card row-span-2">
-              <MainCard dataForChart={chartData} title="social_media_leads" target="lead" />
+
+          {/* Analytics Section */}
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-3 mb-3">
+            <div className="lg:col-span-2 row-span-2 bg-white/40 backdrop-blur-sm p-4 rounded-lg">
+              <MainCard 
+                dataForChart={chartData} 
+                title="social_media_leads" 
+                target="lead"
+                customClass="h-[300px]" 
+              />
             </div>
+            
             {leadInfo.map((card) => (
-              <div className="secondary-card" key={card.id}>
-                <SecondaryCards data={card} />
+              <div 
+                key={card.id}
+                className="bg-white/40 backdrop-blur-sm p-4 rounded-lg hover:bg-white/60 transition-colors duration-200 cursor-pointer"
+                onClick={card.fun}
+              >
+                <SecondaryCards data={{...card}} />
               </div>
             ))}
           </div>
-          <div className="grid lg:grid-cols-4 max-sm:grid-cols-1 gap-4 px-4 py-4">
-            <div className="main-card row-span-2">
-              <MainCard dataForChart={chartData} title="tasks" />
+
+          {/* Activity Section */}
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-3">
+            <div className="lg:col-span-2 row-span-2 bg-white/40 backdrop-blur-sm p-4 rounded-lg">
+              <MainCard 
+                dataForChart={chartData} 
+                title="tasks"
+                customClass="h-[300px]" 
+              />
             </div>
+            
             {sectionOne.map((card, index) => (
-              <div className="actions-card" key={index}>
+              <div 
+                key={index}
+                className="bg-white/40 backdrop-blur-sm p-4 rounded-lg hover:bg-white/60 transition-colors duration-200"
+              >
                 <ActionsCard card={card} />
               </div>
             ))}

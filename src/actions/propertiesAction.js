@@ -1,81 +1,33 @@
-import { databases, ID, storage, account } from '@/services/appwrite/client'
+import { databases, ID, storage } from '@/services/appwrite/client'
 import { Query } from 'appwrite'
 
-
-const getCurrentUserId = async () => {
+export const addProperty = async (property) => {
   try {
-    const currentUser = await account.get()
-    return currentUser.$id
-  } catch (error) {
-    console.error('Error fetching current user:', error)
-    throw error
-  }
-}
-// export const addProperty = async (property) => {
-//   try {
-//     const response = await databases.createDocument(
-//       process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
-//       process.env.NEXT_PUBLIC_PROPERTIES, // Collection ID
-//       ID.unique(), // Unique document ID
-//       property // Data
-//     )
-//     return response
-//   } catch (error) {
-//     console.error('Error creating property:', error)
-//     throw error
-//   }
-// }
-
-export const addProperty = async (propertyData) => {
-  try {
-    // Step 1: Get the current user's account
-    
-    const userId = await getCurrentUserId()
-
-    // Step 2: Create the new property
-    const propertyResponse = await databases.createDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // Your database ID
-      process.env.NEXT_PUBLIC_PROPERTIES, // Properties collection ID
-      ID.unique(), // Generate a unique ID for the property
-      {
-        ...propertyData, // The property data you want to save
-        users: [userId], // Add the current user to the `users` field
-      }
+    const response = await databases.createDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
+      process.env.NEXT_PUBLIC_PROPERTIES, // Collection ID
+      ID.unique(), // Unique document ID
+      property // Data
     )
-
-    const propertyId = propertyResponse.$id
-
-    // Step 3: Update the user's `properties` relationship
-    await databases.updateDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // Your database ID
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, // Users collection ID
-      userId, // Current user's document ID
-      {
-        properties: [propertyId], // Add the new property to the user's `properties` field
-      }
-    )
-
-    return propertyResponse
+    return response
   } catch (error) {
-    console.error('Error adding property:', error)
+    console.error('Error creating property:', error)
     throw error
   }
 }
 
 export const getAllProperties = async (limit = 10, offset = 0) => {
   try {
-    
-    const userId = await getCurrentUserId()
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
-      [Query.equal('users', userId), Query.limit(limit), Query.offset(offset)]
+      [Query.limit(limit), Query.offset(offset)]
     )
 
     const totalResponse = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
-      [Query.equal('users', userId),Query.limit(1), Query.offset(0)]
+      [Query.limit(1), Query.offset(0)]
     )
 
     const totalProperties = totalResponse.total
@@ -211,23 +163,16 @@ export const getPropertyById = async (propertyId) => {
   }
 }
 
-// propertiesAction.js
-
 export const searchPropertyByName = async (name) => {
   try {
-    const userId = await getCurrentUserId()
     console.log('Searching for properties with name:', name)
-
-    const queries = [
-      Query.equal('users', userId) // Ensure search is scoped to the user
-    ]
+    const queries = []
 
     if (name) {
       queries.push(
         Query.or([
           Query.contains('name', name),
           Query.contains('mobileNo', name),
-          Query.contains('tel', name),
         ])
       )
     }
@@ -251,12 +196,8 @@ export const searchPropertyByName = async (name) => {
     throw error
   }
 }
-// propertiesAction.js
-
 export const searchPropertyByRange = async (from, to, page = 1, limit = 10) => {
   try {
-    const userId = await getCurrentUserId()
-
     if (
       !process.env.NEXT_PUBLIC_DATABASE_ID ||
       !process.env.NEXT_PUBLIC_PROPERTIES
@@ -269,7 +210,7 @@ export const searchPropertyByRange = async (from, to, page = 1, limit = 10) => {
       return { properties: [], total: 0 }
     }
 
-    const queries = [Query.equal('users', userId)] // Filter by userId
+    const queries = []
 
     if (from !== undefined && to !== undefined) {
       queries.push(Query.between('totalPrice', +from, +to))
@@ -399,25 +340,27 @@ export const deletePropertyImage = async (fileId) => {
   }
 }
 
+
 export const uploadPropertyVideo = async (file) => {
   try {
     const response = await storage.createFile(
-      process.env.NEXT_PUBLIC_PROPERTIES_VIDEOS,
+      process.env.NEXT_PUBLIC_PROPERTIES_VIDEOS, 
       ID.unique(),
       file
-    )
+    );
 
     const fileUrl = storage.getFileView(
       process.env.NEXT_PUBLIC_PROPERTIES_VIDEOS,
       response.$id
-    )
+    );
 
-    return { ...response, fileUrl }
+    return { ...response, fileUrl }; 
   } catch (error) {
-    console.error('Error uploading video:', error)
-    throw error
+    console.error("Error uploading video:", error);
+    throw error;
   }
-}
+};
+
 
 export const deletePropertyVideo = async (fileId) => {
   try {
@@ -561,80 +504,103 @@ export const importProperties = async (data) => {
 //       )
 //     }
 
-    console.log('All batches processed successfully.')
-    return { success: true }
-  } catch (error) {
-    console.error('Error importing properties:', error)
-    throw error
-  }
-}
+//     console.log('All batches processed successfully.')
+//     return { success: true }
+//   } catch (error) {
+//     console.error('Error importing properties:', error)
+//     throw error
 
-// propertiesAction.js
+//   }
+// }
+// export const importProperties = async (data) => {
+//   try {
+//     console.log('Starting to import properties:', data);
+
+//     const batchSize = 50;
+//     const batches = [];
+
+//     for (let i = 0; i < data.length; i += batchSize) {
+//       batches.push(data.slice(i, i + batchSize));
+//     }
+
+//     for (const batch of batches) {
+//       for (const property of batch) {
+//         try {
+//           const response = await databases.createDocument(
+//             process.env.NEXT_PUBLIC_DATABASE_ID,
+//             process.env.NEXT_PUBLIC_PROPERTIES,
+//             ID.unique(), 
+//             property
+//           );
+//           console.log('Document created:', response);
+//         } catch (error) {
+//           if (
+//             error.message.includes(
+//               'Document with the requested ID already exists'
+//             )
+//           ) {
+//             console.warn(
+//               `Skipping duplicate document for propertyNumber: ${property.propertyNumber}`
+//             );
+//           } else {
+//             console.error('Error creating document:', property, error.message);
+//             throw error;
+//           }
+//         }
+//       }
+//       console.log(`Batch processed: ${batch.length} documents`);
+//     }
+
+//     console.log('All batches processed successfully.');
+//     return { success: true };
+//   } catch (error) {
+//     console.error('Error importing properties:', error);
+//     throw error;
+//   }
+// };
 
 export const searchUnitByTypes = async (searchTerm) => {
   try {
-    const userId = await getCurrentUserId()
-    console.log('Searching for properties with type:', searchTerm)
-
-    const queries = [
-      Query.equal('users', userId) // Ensure search is scoped to the user
-    ]
-
-    if (searchTerm) {
-      queries.push(Query.contains('type', searchTerm))
-    }
-
+    console.log('Searching for leads with type:', searchTerm)
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
-      queries
+      [Query.contains('type', searchTerm)]
     )
 
     console.log('Raw response:', response)
 
     // Exclude collectionId and databaseId from each document
-    const properties = response.documents.map(
+    const leads = response.documents.map(
       ({ collectionId, databaseId, ...rest }) => rest
     )
-    console.log('Processed properties:', properties)
-    return properties
+    console.log('Processed leads:', leads)
+    return leads
   } catch (error) {
-    console.error('Error searching for properties by type:', error)
+    console.error('Error searching for leads by type:', error)
     throw error
   }
 }
 
-// propertiesAction.js
-
 export const searchUnitByCategory = async (searchTerm) => {
   try {
-    const userId = await getCurrentUserId()
-    console.log('Searching for properties with category:', searchTerm)
-
-    const queries = [
-      Query.equal('users', userId) 
-    ]
-
-    if (searchTerm) {
-      queries.push(Query.contains('category', searchTerm))
-    }
-
+    console.log('Searching for leads with type:', searchTerm)
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
-      queries
+      [Query.contains('category', searchTerm)]
     )
 
     console.log('Raw response:', response)
 
     // Exclude collectionId and databaseId from each document
-    const properties = response.documents.map(
+    const leads = response.documents.map(
       ({ collectionId, databaseId, ...rest }) => rest
     )
-    console.log('Processed properties:', properties)
-    return properties
+    console.log('Processed leads:', leads)
+    return leads
   } catch (error) {
-    console.error('Error searching for properties by category:', error)
+    console.error('Error searching for leads by type:', error)
     throw error
   }
 }
@@ -722,6 +688,7 @@ export const exportProperties = async () => {
     throw error
   }
 }
+
 
 // export const getPropertiesActivity = async () => {
 //   try {
