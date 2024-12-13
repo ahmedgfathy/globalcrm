@@ -750,69 +750,96 @@ export const getPropertiesActivity = async () => {
   }
 }
 
-//
 
-// Mock data for testing
-// const mockProperty = {
-//   name: "Example Property",
-//   propertyNumber: "12345",
-//   number: 1,
-//   lastFollowUp: "2024-11-12T10:30:00Z",
-//   description: "Property description",
-//   clientFollowUp: "Follow-up notes",
-//   class: "Class type",
-//   assignedTo: "Assigned person",
-//   customerSource: "Source of customer",
-//   type: "Property type",
-//   propertyStatus: "Status of property",
-//   modifiedTime: "2024-11-12T10:30:00Z",
-//   createdTime: "2024-11-12T09:00:00Z"
-// };
 
-// // Example usage
-// addProperty(mockProperty)
-//   .then((response) => {
-//     console.log('Property created successfully:', response);
-//   })
-//   .catch((error) => {
-//     console.error('Error creating property:', error);
-//   });
 
-//mock data for testing
-// {
-//   "building": "",
-//   "unitFor": "",
-//   "propertyNumber": "",
-//   "theFloors": "",
-//   "area": "",
-//   "finished": "",
-//   "rooms": 0,
-//   "unitFeatures": "",
-//   "phase": "",
-//   "note": "",
-//   "totalPrice": 0,
-//   "inOrOutSideCompound": "1000",
-//   "description": "",
-//   "lastFollowIn": "11-15-2024",
-//   "status": "",
-//   "activity": "",
-//   "propertyOfferedBy": "",
-//   "mobileNo": 0,
-//   "name": "",
-//   "tel": 0,
-//   "unitNo": "",
-//   "callUpdate": "",
-//   "forUpdate": "",
-//   "handler": "",
-//   "sales": "",
-//   "category": "",
-//   "createdTime": "11-15-2024",
-//   "modifiedTime": "11-15-2024",
-//   "landArea": "",
-//   "currency": "",
-//   "rentFrom": "11-15-2024",
-//   "rentTo": "11-15-2024",
-//   "compoundName": "",
-//   "propertyImage": [],
-//   "links": []
-// }
+
+
+
+export const transferUnit = async (unitsId, targetUserIds) => {
+  try {
+    // Ensure `unitsId` and `targetUserIds` are arrays of strings
+    console.log(unitsId)
+    if (!Array.isArray(unitsId) || !unitsId.every((id) => typeof id === "string")) {
+      throw new Error("Invalid unitsId: All elements must be strings");
+    }
+
+    if (!Array.isArray(targetUserIds) || !targetUserIds.every((id) => typeof id === "string")) {
+      throw new Error("Invalid targetUserIds: All elements must be strings");
+    }
+
+    // Step 1: Get the current user's account
+    const currentUserId = await getCurrentUserId();
+
+    // Step 2: Fetch the current user's document
+    const currentUserDoc = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      currentUserId
+    );
+
+    // Step 3: Remove the specified units from the current user's document
+    const updatedCurrentUserUnits = currentUserDoc.properties.filter(
+      (unitId) => !unitsId.includes(unitId)
+    );
+
+    // Log updated properties for debugging
+    console.log("Updated Current User Units:", updatedCurrentUserUnits);
+
+    await databases.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      currentUserId,
+      { properties: updatedCurrentUserUnits } // Use a flat array of strings
+    );
+
+    // Step 4: Add the specified units to each target user's document
+    for (const targetUserId of targetUserIds) {
+      const targetUserDoc = await databases.getDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+        targetUserId
+      );
+
+      const updatedTargetUserUnits = [
+        ...new Set([...targetUserDoc.properties, ...unitsId]),
+      ]; // Prevent duplicates
+
+      console.log("Updated Target User Units:", updatedTargetUserUnits);
+
+      await databases.updateDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+        targetUserId,
+        { properties: updatedTargetUserUnits } // Use a flat array of strings
+      );
+    }
+
+    // Step 5: Update the `users` field in each unit document
+    for (const unitId of unitsId) {
+      const unitDoc = await databases.getDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_PROPERTIES,
+        unitId
+      );
+
+      const updatedUsers = [
+        ...new Set([...unitDoc.users.filter((id) => id !== currentUserId), ...targetUserIds]),
+      ]; // Prevent duplicates
+
+      console.log("Updated Users for Unit:", unitId, updatedUsers);
+
+      await databases.updateDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_PROPERTIES,
+        unitId,
+        { users: updatedUsers } // Use a flat array of strings
+      );
+    }
+
+    console.log("Units transferred successfully.");
+  } catch (error) {
+    console.error("Error transferring units:", error);
+    throw error;
+  }
+};
