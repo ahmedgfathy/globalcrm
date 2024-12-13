@@ -33,8 +33,8 @@ function NavBar() {
           </>
           ): null}
           {pathName !== "/login" && pathName !== "/" ? (
-            <div className="links sm:mx-auto">
-              <ul className="flex justify-evenly gap-3 md:-ml-[72px]">
+            <div className="links mx-auto md:ml-auto md:mr-0">
+              <ul className="flex justify-evenly gap-3 md:mr-32 ">
                 {data.map((item) => (
                   <li key={item.id}>
                     <Link
