@@ -22,7 +22,6 @@ function SideBar() {
     if (pathName === "/dashboard" && href === "/") return true;
   };
 
-
   useEffect(() => {
     if (isMobile) {
       const handleClickOutside = (event) => {
@@ -50,22 +49,16 @@ function SideBar() {
 
   return (
     <div className="relative z-50">
-      {isMobile ? (
-        !isOpen && (
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            aria-controls="sidebar-multi-level-sidebar"
-            type="button"
-            className={`fixed  z-40 top-5 translate-x-1/2 flex  justify-center items-center rounded-full w-10 h-10 text-sm text-gray-500 dark:text-white ${
-              isOpen ? "right-[16rem]" : "right-4"
-            }`}
-          >
-            <span className="sr-only">Open sidebar</span>
-            <CiMenuFries className="text-2xl" />
-          </button>
-        )
-      ) : (
-        ""
+      {isMobile && !isOpen && (
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          aria-controls="sidebar-multi-level-sidebar"
+          type="button"
+          className="fixed z-40 top-5 right-4 translate-x-1/2 flex justify-center items-center rounded-lg w-10 h-10 text-slate-600 hover:bg-slate-100 transition-colors duration-200"
+        >
+          <span className="sr-only">Open sidebar</span>
+          <CiMenuFries className="text-2xl" />
+        </button>
       )}
 
       {(isOpen || !isMobile) && (
@@ -73,47 +66,47 @@ function SideBar() {
           ref={sidebarRef}
           id="sidebar-multi-level-sidebar"
           className={`${styles.sidebar} ${
-            isOpen
-              ? !isMobile
-                ? styles.sidebarOpen
-                : "w-0"
-              : styles.sidebarClosed
-          } h-screen bg-white dark:bg-dark`}
+            isOpen ? styles.sidebarOpen : styles.sidebarClosed
+          } fixed right-0 top-0 h-screen border-l border-slate-200`}
           aria-label="Sidebar"
         >
-          <div
-            className={`h-full px-3 py-4 overflow-y-auto bg-white dark:bg-dark border-x shadow-sm fixed right-0 ${
-              styles.sidebar
-            } ${isOpen ? styles.sidebarOpen : styles.sidebarClosed} `}
-          >
+          <div className="h-full px-3 py-4 overflow-y-auto">
             <ul className="space-y-2 font-medium">
-              <li className="logo">
+              <li className="mb-6">
                 <Image
                   width={110}
                   height={110}
                   alt="logo"
                   src="/assets/logo/logo.jpeg"
-                  className="mx-auto"
+                  className={`mx-auto transition-transform duration-300 ${
+                    !isOpen && !isMobile ? 'scale-75' : ''
+                  }`}
                 />
               </li>
 
               {links.map((item) => (
-                <li key={item.id}>
+                <li key={item.id} className={styles.menuItem}>
                   <Link
                     href={`/${item.link}`}
                     onClick={() => isMobile && setIsOpen(false)}
-                    className={`flex items-center w-full gap-3 p-2 text-gray-900 transition duration-100 rounded-lg group ${
+                    className={`flex items-center gap-3 p-3 transition-all duration-200 ${
                       isOpen
-                        ? "flex-row text-xl font-semibold"
-                        : "flex-col justify-center items-center text-base font-medium"
+                        ? "flex-row text-base"
+                        : "flex-col justify-center items-center text-sm"
                     } ${
                       isActive(item.link)
-                        ? "bg-dark_link_active dark:bg-dark_link_active text-text_link_active_l dark:text-text_link_active"
-                        : "hover:bg-gray-200 dark:text-gray-400 dark:hover:text-gray-500"
+                        ? styles.activeMenuItem
+                        : "text-slate-600 hover:text-slate-800"
                     }`}
                   >
-                    <span>{item.icon()}</span>
-                    <span className="flex-1 text-left rtl:text-right whitespace-nowrap">
+                    <span className={`text-xl ${
+                      isActive(item.link) ? "text-slate-800" : "text-slate-500"
+                    }`}>
+                      {item.icon()}
+                    </span>
+                    <span className={`whitespace-nowrap transition-all duration-200 ${
+                      !isOpen && !isMobile ? "opacity-0 scale-0" : "opacity-100 scale-100"
+                    }`}>
                       {t(item.title)}
                     </span>
                   </Link>
