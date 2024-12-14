@@ -1,6 +1,6 @@
 'use client'
 import { useTranslation } from '@/app/context/TranslationContext'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 import { ClientDetails, filterData } from './data'
 import CardProperty from '@/app/components/units-components/CardComponent'
 import { IoMdAddCircle } from 'react-icons/io'
@@ -14,7 +14,8 @@ import DropdownMenImportExport from '@/app/components/leadImport-Export/ImportEx
 import {
   exportProperties,
   searchPropertyByRange,
-  getAllProperties,
+  getAllPropertiesForSales,
+  getAllPropertiesForAdmin,
   deleteAllProperties,
   importProperties,
   searchPropertyByName,
@@ -24,6 +25,7 @@ import {
   searchUnitByTypes,
   transferUnit,
 } from '@/actions/propertiesAction'
+import { UserContext } from '@/app/context/UserContext'
 import DeleteButton from '@/app/components/delete-button/DeleteButton'
 import { CiFilter, CiSearch } from 'react-icons/ci'
 import { Input } from '@/components/ui/input'
@@ -43,10 +45,13 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { searchUsers, getUsers } from '@/actions/auth'
+import { searchUsers, getUsers,getCurrentUser } from '@/actions/auth'
 
 function Page() {
   const [from, setFrom] = useState('')
+  const { value, updateValue } = useContext(UserContext);
+  const [currentUser, setCurrentUser] = useContext(UserContext)
+  const role = currentUser.userData.role
   const [to, setTo] = useState('')
   const { toast } = useToast()
   const router = useRouter()
@@ -67,6 +72,7 @@ function Page() {
       return acc
     }, {})
   )
+  console.log(role)
   const [selectedUsers, setSelectedUsers] = useState([])
   const [options, setOptions] = useState([
     { id: 1, filterName: 'Property Types', data: 'type', optionData: [] },
@@ -188,10 +194,15 @@ function Page() {
         properties = propertiesByRange
         totalProperties = total
       } else {
-        const { properties: allProperties, totalProperties: total } =
-          await getAllProperties(UnitsPerPage, offset)
-        properties = allProperties
-        totalProperties = total
+        let response;
+        if (role === 'admin') {
+          response = await getAllPropertiesForAdmin(UnitsPerPage, offset);
+        } else if (role === 'user') {
+          response = await getAllPropertiesForSales(UnitsPerPage, offset);
+        }
+        const { properties: allProperties, totalProperties: total } = response;
+        properties = allProperties;
+        totalProperties = total;
       }
 
       setUnits(properties)
@@ -213,7 +224,8 @@ function Page() {
   //       console.log(properties);
   //     } else {
   //       console.log("Fetching all units");
-  //       const { properties, totalProperties } = await getAllProperties(UnitsPerPage, offset);
+  //       const { properties, totalProperties } = await getAllPropertiesForSales(
+  // UnitsPerPage, offset);
   //       setUnits(properties);
   //       setTotalUnits(totalProperties);
   //     }
@@ -230,46 +242,110 @@ function Page() {
     console.log(size)
   }
 
-  const handleExportCSV = async () => {
-    try {
-      const  {properties}  = await exportProperties();
-      console.log(properties)
-      if (!properties || properties.length === 0) {
-        toast({
-          variant: 'destructive',
-          title: 'Error Export Units',
-          description: 'No units available to export.', 
-          status: 'error',
-        });
-        return;
-      }
+  // const handleExportCSV = async () => {
+  //   try {
+  //     const  {properties}  = await exportProperties();
+  //     console.log(properties)
+  //     if (!properties || properties.length === 0) {
+  //       toast({
+  //         variant: 'destructive',
+  //         title: 'Error Export Units',
+  //         description: 'No units available to export.',
+  //         status: 'error',
+  //       });
+  //       return;
+  //     }
 
-      const csv = Papa.unparse(properties);
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'units.csv';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+  //     const csv = Papa.unparse(properties);
+  //     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  //     const url = URL.createObjectURL(blob);
+  //     const link = document.createElement('a');
+  //     link.href = url;
+  //     link.download = 'units.csv';
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
 
-      toast({
-        variant: 'success',
-        title: 'Success Export Units',
-        description: 'Units exported successfully.',
-        status: 'success',
-      });
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error Exporting Units',
-        description: error.message || 'An unexpected error occurred.', // الآن error معرف هنا
-        status: 'error',
-      });
-      console.error('Error exporting units:', error);
-    }
-  };
+  //     toast({
+  //       variant: 'success',
+  //       title: 'Success Export Units',
+  //       description: 'Units exported successfully.',
+  //       status: 'success',
+  //     });
+  //   } catch (error) {
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'Error Exporting Units',
+  //       description: error.message || 'An unexpected error occurred.', // الآن error معرف هنا
+  //       status: 'error',
+  //     });
+  //     console.error('Error exporting units:', error);
+  //   }
+  // };
+  // // const handleImportCSV = (event) => {
+  // //   const file = event.target.files[0];
+  // //   if (!file) {
+  // //     alert('No file selected.');
+  // //     return;
+  // //   }
+
+  // //   Papa.parse(file, {
+  // //     header: true,
+  // //     skipEmptyLines: true,
+  // //     complete: async (results) => {
+  // //       if (results.errors.length > 0) {
+  // //         console.error('Parsing errors:', results.errors);
+  // //         toast({
+  // //           variant: 'destructive',
+  // //           title: 'Invalid file format.',
+  // //           description: 'Please ensure the file is in CSV format.',
+  // //           status: 'error',
+  // //         });
+  // //         return;
+  // //       }
+
+  // //       // Convert necessary attributes from strings to integers
+  // //       const convertedData = results.data.map((property) => ({
+  // //         ...property,
+  // //         totalPrice: parseInt(property.totalPrice, 10),
+  // //         rooms: parseInt(property.rooms, 10),
+  // //         mobileNo: parseInt(property.rooms, 10),
+  // //         tel: parseInt(property.rooms, 10),
+  // //         propertyImage: property.propertyImage ? property.propertyImage.split(',') : [],
+  // //         links: property.links ? property.links.split(',') : [],
+  // //         inHome: property.inHome === 'TRUE',
+  // //         liked: property.liked === 'TRUE',
+  // //       }));
+
+  // //       try {
+  // //         await importProperties(convertedData);
+  // //         toast({
+  // //           variant: 'success',
+  // //           title: 'Success import Units',
+  // //           description: 'Units imported successfully!',
+  // //           status: 'success',
+  // //         });
+  // //       } catch (error) {
+  // //         console.error('Error importing units:', error);
+  // //         toast({
+  // //           variant: 'destructive',
+  // //           title: 'Error importing units:',
+  // //           description: error.message || 'Failed to import units.',
+  // //           status: 'error',
+  // //         });
+  // //       }
+  // //     },
+  // //     error: (error) => {
+  // //       console.error('Error parsing file:', error);
+  // //       toast({
+  // //         variant: 'destructive',
+  // //         title: 'Error importing units:',
+  // //         description: 'Failed to read the CSV file.',
+  // //         status: 'error',
+  // //       });
+  // //     },
+  // //   });
+  // // };
   // const handleImportCSV = (event) => {
   //   const file = event.target.files[0];
   //   if (!file) {
@@ -292,13 +368,12 @@ function Page() {
   //         return;
   //       }
 
-  //       // Convert necessary attributes from strings to integers
   //       const convertedData = results.data.map((property) => ({
   //         ...property,
   //         totalPrice: parseInt(property.totalPrice, 10),
   //         rooms: parseInt(property.rooms, 10),
-  //         mobileNo: parseInt(property.rooms, 10),
-  //         tel: parseInt(property.rooms, 10),
+  //         mobileNo: parseInt(property.mobileNo, 10),
+  //         tel: parseInt(property.tel, 10),
   //         propertyImage: property.propertyImage ? property.propertyImage.split(',') : [],
   //         links: property.links ? property.links.split(',') : [],
   //         inHome: property.inHome === 'TRUE',
@@ -334,68 +409,6 @@ function Page() {
   //     },
   //   });
   // };
-  const handleImportCSV = (event) => {
-    const file = event.target.files[0];
-    if (!file) {
-      alert('No file selected.');
-      return;
-    }
-
-    Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
-      complete: async (results) => {
-        if (results.errors.length > 0) {
-          console.error('Parsing errors:', results.errors);
-          toast({
-            variant: 'destructive',
-            title: 'Invalid file format.',
-            description: 'Please ensure the file is in CSV format.',
-            status: 'error',
-          });
-          return;
-        }
-
-        const convertedData = results.data.map((property, index) => ({
-          ...property,
-          totalPrice: parseInt(property.totalPrice, 10),
-          rooms: parseInt(property.rooms, 10),
-          mobileNo: property.mobileNo || String(index),
-          tel: property.tel || String(index) ,
-          propertyImage: property.propertyImage ? property.propertyImage : "", 
-          inHome: property.inHome === 'TRUE',
-          liked: property.liked === 'TRUE',
-        }));
-
-        try {
-          await importProperties(convertedData);
-          toast({
-            variant: 'success',
-            title: 'Success import Units',
-            description: 'Units imported successfully!',
-            status: 'success',
-          });
-        } catch (error) {
-          console.error('Error importing units:', error);
-          toast({
-            variant: 'destructive',
-            title: 'Error importing units:',
-            description: error.message || 'Failed to import units.',
-            status: 'error',
-          });
-        }
-      },
-      error: (error) => {
-        console.error('Error parsing file:', error);
-        toast({
-          variant: 'destructive',
-          title: 'Error importing units:',
-          description: 'Failed to read the CSV file.',
-          status: 'error',
-        });
-      },
-    });
-  };
   // const handleDeleteAllProperties = async () => {
   //   try {
   //     await deleteAllProperties();
@@ -579,9 +592,14 @@ function Page() {
               <div>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="outline" className="GreenButton">
-                      <GrTransaction />
-                      {t("transform")}
+                    <Button
+                      variant='outline'
+                      className='GreenButton'
+                      onClick={() => {
+                        fetchUsers()
+                      }}
+                    >
+                      Transform
                     </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent>
@@ -589,42 +607,59 @@ function Page() {
                       <AlertDialogTitle> Transform Units </AlertDialogTitle>
                       <AlertDialogDescription>
                         <Input
-                          placeholder="Search Users"
+                          placeholder='Search Users'
                           onChange={(e) =>
                             searchUsersForTransform(e.target.value)
                           }
-                          className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
                         />
 
                         {users && users.length > 0 ? (
-                          <ul className="mt-4 space-y-2">
-                            {users.map((user, index) => (
+                          <ul className='mt-4 space-y-2'>
+                            {users.map((user) => (
                               <li
-                                key={index}
-                                className="p-4 bg-white shadow rounded-lg flex items-center justify-between hover:bg-blue-50 transition dark:bg-gray-900 dark:text-white"
+                                key={user.userId}
+                                className='p-4 bg-white shadow rounded-lg flex items-center justify-between hover:bg-blue-50 transition dark:bg-gray-900 dark:text-white'
                               >
                                 <div>
-                                  <p className="font-semibold text-gray-800 dark:text-white">
+                                  <p className='font-semibold text-gray-800 dark:text-white'>
                                     {user.name}
                                   </p>
-                                  <p className="text-sm text-gray-500 dark:text-white">
+                                  <p className='text-sm text-gray-500 dark:text-white'>
                                     {user.email}
                                   </p>
                                 </div>
-                                <Button className="">{t("select")}</Button>
+                                <Button
+                                  className={`${
+                                    selectedUsers.includes(user.userId)
+                                      ? 'bg-green-500 hover:bg-green-600 text-white'
+                                      : 'bg-green-700 hover:bg-green-900 text-white'
+                                  }`}
+                                  onClick={() => handleSelect(user.userId)}
+                                >
+                                  {selectedUsers.includes(user.userId)
+                                    ? 'Selected'
+                                    : 'Select'}
+                                </Button>
                               </li>
                             ))}
                           </ul>
                         ) : (
-                          <p className="mt-4 text-gray-600">Not found</p>
+                          <p className='mt-4 text-gray-600'>Not found</p>
                         )}
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel onClick={() => setUsers([])}>
+                      <AlertDialogCancel
+                        onClick={() => {
+                          setSelectedUsers([]) // Optionally clear selections on cancel
+                        }}
+                      >
                         Cancel
                       </AlertDialogCancel>
-                      <AlertDialogAction>Continue</AlertDialogAction>
+                      <AlertDialogAction onClick={handleTransferSubmit}>
+                        Submit
+                      </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
@@ -633,13 +668,11 @@ function Page() {
               {/* <DeleteButton
                 handleDelete={handleDeleteAllProperties}
                 title={!isMobile && t('delete_all_units')}
-                afterDel={() => fetchUnits(currentPage, searchTerm)}
-              />
-              <div className="block md:hidden">
-              {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
-              {/* <DropdownMenImportExport  handleExportCSV={()=>console.log("no thing")} handleImportCSV={()=>console.log("no thing")} /> */}
-        <DropdownMenImportExport handleExportCSV={()=>console.log("no thing")} handleImportCSV={()=>console.log("no thing")} searchUsersForTransform={searchUsersForTransform} users={users} />
-              </div>
+                // afterDel={() => fetchUnits(currentPage, searchTerm)}
+              /> */}
+              {/* <div className="block md:hidden"> */}
+              {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />  */}
+              {/* </div> */}
             </div>
           </div>
         </Grid>
@@ -668,10 +701,7 @@ function Page() {
               value={from}
               onChange={(e) => setFrom(e.target.value)}
             />
-              <div className="hidden md:block">
-            {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} searchUsersForTransform={searchUsersForTransform} users={users} /> */}
-            <DropdownMenImportExport handleExportCSV={()=>console.log("no thing")} handleImportCSV={()=>console.log("no thing")} searchUsersForTransform={searchUsersForTransform} users={users} />
-          </div>
+            {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
           </div>
         </div>
 
@@ -697,7 +727,7 @@ function Page() {
             pageSize={UnitsPerPage}
             onShowSizeChange={handlePageSizeChange}
             onChange={handlePageChange}
-            className="custom-pagination mt-0 mx-auto"
+            className='custom-pagination mt-0 mx-auto'
           />
         </div>
       </div>

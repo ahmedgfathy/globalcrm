@@ -1,14 +1,11 @@
 .sidebar {
-  transition: all 0.3s ease;
-  backdrop-filter: blur(8px);
-  background: rgba(255, 255, 255, 0.9);
-  z-index: 40;
+  transition: width 0.5s ease;
 }
 
 .sidebarOpen {
-  width: 14rem;
+  width: 9rem;
 }
 
 .sidebarClosed {
-  width: 4.5rem;
+  width: 9rem;
 }
