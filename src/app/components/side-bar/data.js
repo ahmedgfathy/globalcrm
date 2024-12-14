@@ -4,7 +4,7 @@ import { FaNoteSticky } from "react-icons/fa6";
 import { LuTableProperties } from "react-icons/lu";
 import { SiGoogleads } from "react-icons/si";
 import { TbReportSearch } from "react-icons/tb";
-import { IoCallSharp } from "react-icons/io5";
+import { IoCallSharp, IoCallOutline } from "react-icons/io5";
 import { RiAdminLine } from "react-icons/ri";
 import { GoProject } from "react-icons/go";
 
@@ -28,12 +28,6 @@ export const links = [
   //   link: "notes",
   //   icon: () => <FaNoteSticky className="text-xl" />,
   // },
-  // {
-  //   id: 4,
-  //   title: "calls",
-  //   link: "calls",
-  //   icon: () => <IoCallSharp className="text-xl" />,
-  // },
   {
     id: 2,
     title: "leads",
@@ -55,6 +49,13 @@ export const links = [
     link: "projects",
     icon: () => <GoProject className="text-2xl" />,
   },
+  {
+    id: 5,
+    title: "calls",
+    displayTitle: t => t("calls"),
+    icon: () => <IoCallOutline />,
+    link: "calls"
+  },
   // {
   //   id: 7,
   //   title: "reports",
@@ -62,7 +63,7 @@ export const links = [
   //   icon: () => <TbReportSearch className="text-xl" />,
   // },
   {
-    id: 5,
+    id: 6,
     title: "administration",
     displayTitle: "Administration",
     link: "administration",
