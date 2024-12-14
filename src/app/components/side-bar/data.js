@@ -11,9 +11,10 @@ import { GoProject } from "react-icons/go";
 export const links = [
   {
     id: 1,
-    title: "dashboard",
+    title: "Dashboard",
+    displayTitle: "Dashboard",
     link: "dashboard",
-    icon: () => <AiFillDashboard className="text-xl" />,
+    icon: () => <AiFillDashboard className="text-2xl" />,
   },
   // {
   //   id: 2,
@@ -34,22 +35,25 @@ export const links = [
   //   icon: () => <IoCallSharp className="text-xl" />,
   // },
   {
-    id: 5,
+    id: 2,
     title: "leads",
+    displayTitle: "Leads",
     link: "leads",
-    icon: () => <SiGoogleads className="text-xl" />,
+    icon: () => <SiGoogleads className="text-2xl" />,
   },
   {
-    id: 6,
+    id: 3,
     title: "units",
+    displayTitle: "Properties",
     link: "units",
-    icon: () => <LuTableProperties className="text-xl" />,
+    icon: () => <LuTableProperties className="text-2xl" />,
   },
   {
-    id: 7,
+    id: 4,
     title: "projects",
+    displayTitle: "Projects",
     link: "projects",
-    icon: () => <GoProject  className="text-xl" />,
+    icon: () => <GoProject className="text-2xl" />,
   },
   // {
   //   id: 7,
@@ -58,9 +62,10 @@ export const links = [
   //   icon: () => <TbReportSearch className="text-xl" />,
   // },
   {
-    id: 8,
+    id: 5,
     title: "administration",
+    displayTitle: "Administration",
     link: "administration",
-    icon: () => <RiAdminLine className="text-xl" />,
+    icon: () => <RiAdminLine className="text-2xl" />,
   },
 ];
