@@ -181,3 +181,13 @@ export const getCurrentUserId = () => {
     throw error
   }
 }
+
+export const getCurrentUser = () => {
+  try {
+    const currentUser = account.get()
+    return currentUser
+  } catch (error) {
+    console.error('Error fetching current user:', error)
+    throw error
+  }
+}
