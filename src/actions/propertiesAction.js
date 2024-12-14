@@ -62,7 +62,7 @@ export const addProperty = async (propertyData) => {
   }
 }
 
-export const getAllProperties = async (limit = 10, offset = 0) => {
+export const getAllPropertiesForSales = async (limit = 12, offset = 0) => {
   try {
     
     const userId = await getCurrentUserId()
@@ -101,6 +101,33 @@ export const deleteProperty = async (propertyId) => {
     return response
   } catch (error) {
     console.error('Error deleting property:', error)
+    throw error
+  }
+}
+
+export const getAllPropertiesForAdmin = async (limit = 12, offset = 0) => {
+  try {
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      [Query.limit(limit), Query.offset(offset)]
+    )
+
+    const totalResponse = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      [Query.limit(1), Query.offset(0)]
+    )
+
+    const totalProperties = totalResponse.total
+
+    // Exclude collectionId and databaseId from each document
+    const properties = response.documents.map(
+      ({ collectionId, databaseId, ...rest }) => rest
+    )
+    return { properties, totalProperties }
+  } catch (error) {
+    console.error('Error fetching properties:', error)
     throw error
   }
 }

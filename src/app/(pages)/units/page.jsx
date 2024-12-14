@@ -1,6 +1,6 @@
 'use client'
 import { useTranslation } from '@/app/context/TranslationContext'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useContext } from 'react'
 import { ClientDetails, filterData } from './data'
 import CardProperty from '@/app/components/units-components/CardComponent'
 import { IoMdAddCircle } from 'react-icons/io'
@@ -14,7 +14,8 @@ import DropdownMenImportExport from '@/app/components/leadImport-Export/ImportEx
 import {
   exportProperties,
   searchPropertyByRange,
-  getAllProperties,
+  getAllPropertiesForSales,
+  getAllPropertiesForAdmin,
   deleteAllProperties,
   importProperties,
   searchPropertyByName,
@@ -24,6 +25,7 @@ import {
   searchUnitByTypes,
   transferUnit,
 } from '@/actions/propertiesAction'
+import { UserContext } from '@/app/context/UserContext'
 import DeleteButton from '@/app/components/delete-button/DeleteButton'
 import { CiFilter, CiSearch } from 'react-icons/ci'
 import { Input } from '@/components/ui/input'
@@ -43,10 +45,13 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { searchUsers, getUsers } from '@/actions/auth'
+import { searchUsers, getUsers,getCurrentUser } from '@/actions/auth'
 
 function Page() {
   const [from, setFrom] = useState('')
+  const { value, updateValue } = useContext(UserContext);
+  const [currentUser, setCurrentUser] = useContext(UserContext)
+  const role = currentUser.userData.role
   const [to, setTo] = useState('')
   const { toast } = useToast()
   const router = useRouter()
@@ -67,6 +72,7 @@ function Page() {
       return acc
     }, {})
   )
+  console.log(role)
   const [selectedUsers, setSelectedUsers] = useState([])
   const [options, setOptions] = useState([
     { id: 1, filterName: 'Property Types', data: 'type', optionData: [] },
@@ -188,10 +194,15 @@ function Page() {
         properties = propertiesByRange
         totalProperties = total
       } else {
-        const { properties: allProperties, totalProperties: total } =
-          await getAllProperties(UnitsPerPage, offset)
-        properties = allProperties
-        totalProperties = total
+        let response;
+        if (role === 'admin') {
+          response = await getAllPropertiesForAdmin(UnitsPerPage, offset);
+        } else if (role === 'user') {
+          response = await getAllPropertiesForSales(UnitsPerPage, offset);
+        }
+        const { properties: allProperties, totalProperties: total } = response;
+        properties = allProperties;
+        totalProperties = total;
       }
 
       setUnits(properties)
@@ -213,7 +224,8 @@ function Page() {
   //       console.log(properties);
   //     } else {
   //       console.log("Fetching all units");
-  //       const { properties, totalProperties } = await getAllProperties(UnitsPerPage, offset);
+  //       const { properties, totalProperties } = await getAllPropertiesForSales(
+  // UnitsPerPage, offset);
   //       setUnits(properties);
   //       setTotalUnits(totalProperties);
   //     }
