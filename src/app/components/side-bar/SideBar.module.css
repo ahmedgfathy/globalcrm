@@ -1,5 +1,5 @@
 .sidebar {
-  transition: width 0.5s ease;
+  transition: width 0.5s ease; 
 }
 
 .sidebarOpen {
