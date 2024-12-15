@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileIcon, UploadIcon, XIcon } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { getUserSheets, uploadSheets } from "@/actions/sheetSetting";
+import { deleteSheet, getUserSheets, uploadSheets } from "@/actions/sheetSetting";
 import { useToast } from "@/hooks/use-toast";
 import { FileCard } from "@/app/components/sheets/FileCard";
 import { Trash2 } from "lucide-react";
@@ -93,11 +93,20 @@ export default function FileManager() {
       console.error("Error fetching sheets:", error);
     }
   };
-
   useEffect(() => {
     getSheets();
   }, []);
-
+  const handleDelete = async (fileId, sheetId) => {
+    try {
+      await deleteSheet(fileId, sheetId);
+      await getSheets();  
+      console.log("Sheet deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting sheet:", error);
+      alert("Failed to delete the sheet. Please try again.");
+    }
+  };
+  
   return (
     <div className="min-h-screen dark:bg-gray-900 text-white p-8">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -186,7 +195,7 @@ export default function FileManager() {
                     onDownload={() =>
                       window.open(file?.fileUrl?.replace("view", "download"))
                     }
-                    onDelete={() => console.log("del")}
+                    onDelete={() => handleDelete(file.fileId, file.$id)}
                     onPreview={() => console.log("prev")}
                   />
                 ))}

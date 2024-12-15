@@ -91,6 +91,50 @@ export const getAllPropertiesForSales = async (limit = 12, offset = 0) => {
   }
 }
 
+export const getAllPropertiesForTeamLead = async (teamLeadId, limit = 12, offset = 0) => {
+  try {
+    // Fetch the team lead's salesmen IDs
+    const teamLead = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      teamLeadId
+    )
+    const salesmenIds = teamLead.salesMen
+    console.log("salesMen", salesmenIds)
+
+    // Ensure salesmenIds is an array before using it in the query
+    if (!Array.isArray(salesmenIds)) {
+      throw new Error('Salesmen IDs should be an array');
+    }
+
+    // Fetch properties for all salesmen
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
+      process.env.NEXT_PUBLIC_PROPERTIES,  // Collection ID
+      [Query.equal('users', salesmenIds), Query.limit(limit), Query.offset(offset)]
+    )
+
+    const totalResponse = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      [Query.equal('users', salesmenIds), Query.limit(1), Query.offset(0)] // Use limit=1 for total count query
+    )
+
+    const totalProperties = totalResponse.total
+
+    // Exclude collectionId and databaseId from each document
+    const properties = response.documents.map(
+      ({ collectionId, databaseId, ...rest }) => rest
+    )
+
+    return { properties, totalProperties }
+  } catch (error) {
+    console.error('Error fetching properties for team lead:', error)
+    throw error
+  }
+}
+
+
 export const deleteProperty = async (propertyId) => {
   try {
     const response = await databases.deleteDocument(

@@ -24,6 +24,7 @@ import {
   searchUnitByCategory,
   searchUnitByTypes,
   transferUnit,
+  getAllPropertiesForTeamLead
 } from '@/actions/propertiesAction'
 import { UserContext } from '@/app/context/UserContext'
 import DeleteButton from '@/app/components/delete-button/DeleteButton'
@@ -49,9 +50,9 @@ import { searchUsers, getUsers,getCurrentUser } from '@/actions/auth'
 
 function Page() {
   const [from, setFrom] = useState('')
-  const { value, updateValue } = useContext(UserContext);
   const [currentUser, setCurrentUser] = useContext(UserContext)
   const role = currentUser.userData.role
+  const id = currentUser.userData.userId
   const [to, setTo] = useState('')
   const { toast } = useToast()
   const router = useRouter()
@@ -73,6 +74,7 @@ function Page() {
     }, {})
   )
   console.log(role)
+  console.log(id)
   const [selectedUsers, setSelectedUsers] = useState([])
   const [options, setOptions] = useState([
     { id: 1, filterName: 'Property Types', data: 'type', optionData: [] },
@@ -199,6 +201,8 @@ function Page() {
           response = await getAllPropertiesForAdmin(UnitsPerPage, offset);
         } else if (role === 'user') {
           response = await getAllPropertiesForSales(UnitsPerPage, offset);
+        } else if (role === "teamLead") {
+          response = await getAllPropertiesForTeamLead(id,UnitsPerPage, offset)
         }
         const { properties: allProperties, totalProperties: total } = response;
         properties = allProperties;
@@ -602,10 +606,10 @@ function Page() {
                       Transform
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent  className="max-h-[80vh] ">
                     <AlertDialogHeader>
                       <AlertDialogTitle> Transform Units </AlertDialogTitle>
-                      <AlertDialogDescription>
+                      <AlertDialogDescription className="max-h-[65vh] py-2 min-h-[10vh] overflow-auto">
                         <Input
                           placeholder='Search Users'
                           onChange={(e) =>
