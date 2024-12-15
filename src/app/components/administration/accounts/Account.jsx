@@ -17,7 +17,8 @@ export default function AccountsPage() {
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-bold mb-5">User Accounts</h1>
-      <AccountsTable account={users} />
+      <AccountsTable account={users} fetchUsers={fetchUsers}/>
+
     </div>
   )
 }
