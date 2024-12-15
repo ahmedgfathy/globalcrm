@@ -3,6 +3,26 @@ import { Query } from 'appwrite';
 // will use it later if needed
 // import bcrypt from 'bcryptjs'; 
 
+export const getCurrentUserId = () => {
+  try {
+    const currentUser = account.get()
+    return currentUser.$id
+  } catch (error) {
+    console.error('Error fetching current user:', error)
+    throw error
+  }
+}
+
+export const getCurrentUser = () => {
+  try {
+    const currentUser = account.get()
+    return currentUser
+  } catch (error) {
+    console.error('Error fetching current user:', error)
+    throw error
+  }
+}
+
 // Sign Up Function
 export const signUp = async (email, password) => {
   try {
@@ -35,6 +55,7 @@ export const signIn = async (email, password) => {
       userEmail: userDocument.email,
       role: userDocument.role,
       userId: user.$id,
+      name: user.name
     };
 
     localStorage.setItem('session', JSON.stringify({ userData }));
@@ -96,6 +117,83 @@ export const createUser = async (email, password, name, role, phone, address, ge
     throw error;
   }
 };
+
+export const createUserForTeamLead = async (email, password, name, role,teamLeadId)=> {
+  try {
+    const userId = ID.unique();
+    const userResponse = await account.create(userId, email, password, name);
+    console.log('User created successfully:', userResponse);
+
+    // const hashedPassword = await bcrypt.hash(password, 10);
+
+    const userDocument = {
+      userId,
+      email,
+      role,
+      password,
+      name
+    };
+    const dbResponse = await databases.createDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
+      userId, // Use the same ID as the user account
+      userDocument 
+    );
+    console.log("TeamLead document ID:", teamLeadId);
+    console.log("Generated userId:", userId);
+
+     // Fetch the current salesMen of the team lead (so we don't overwrite it)
+     const teamLead = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      teamLeadId
+    );
+
+    // Ensure salesMen is an array (in case it's empty or undefined)
+    const salesMen = Array.isArray(teamLead.salesMen) ? teamLead.salesMen : [];
+    const updatedSalesMen = [...salesMen, userId];
+
+    const updateTeamLead = await databases.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      teamLeadId, // the id of the teamLead in this case
+      {
+        salesMen: updatedSalesMen
+      }
+    );
+
+    const updateUser = await databases.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      userId,
+      {
+        teamLead: [teamLeadId]
+        }
+      );
+  
+      console.log('User saved in database successfully:', dbResponse)
+      console.log(userResponse, dbResponse)
+      return { userResponse, dbResponse,updateUser,updateTeamLead };
+  } catch (error) {
+    console.error('Error creating user:', error);
+    throw error;
+  }
+}
+
+// export const getUsers = async (limit = 10, offset = 0) => {
+//   try {
+//     const response = await account.listLogs()
+
+
+
+
+//     console.log(response);
+//     return { response };
+//   } catch (error) {
+//     console.error('Error getting users:', error);
+//     throw error;
+//   }
+// };
 
 export const getUsers = async (limit = 10, offset = 0) => {
   try {
@@ -164,27 +262,6 @@ export const getSession = () => {
   return session ? JSON.parse(session) : null;
 };
 
-// propertiesAction.js
-
-export const getCurrentUserId = () => {
-  try {
-    const currentUser = account.get()
-    return currentUser.$id
-  } catch (error) {
-    console.error('Error fetching current user:', error)
-    throw error
-  }
-}
-
-export const getCurrentUser = () => {
-  try {
-    const currentUser = account.get()
-    return currentUser
-  } catch (error) {
-    console.error('Error fetching current user:', error)
-    throw error
-  }
-}
 
 export const getUser = async (id) => {
   if (!id) return
@@ -235,4 +312,7 @@ export const deleteUser = async (id) => {
     throw error;
   }
 };
+
+
+// propertiesAction.js
 
