@@ -83,23 +83,48 @@ const getCurrentUserId = async () => {
         console.log("No sheets found for this user.");
         return [];
       }
-  
-    //   const response = await databases.listDocuments(
-    //     process.env.NEXT_PUBLIC_DATABASE_ID,  
-    //     process.env.NEXT_PUBLIC_SHEETS_COLLECTION_ID, 
-    //     [Query.equal('$id', sheetsArray)]
-    //   );
-  
-      console.log(sheetsArray);
-      return sheetsArray;
+        return sheetsArray;
     } catch (error) {
       console.error('Error fetching user sheets:', error);
       throw error;
     }
   };
   
+  export const deleteSheet = async (fileId, sheetId) => {
+    const userId = await getCurrentUserId();
   
+    try {
+      await storage.deleteFile(
+        process.env.NEXT_PUBLIC_SHEETS, 
+        fileId
+      );
   
+      await databases.deleteDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID, 
+        process.env.NEXT_PUBLIC_SHEETS_COLLECTION_ID, 
+        sheetId
+      );
   
+      const userDocument = await databases.getDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID, 
+        process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
+        userId
+      );
+  
+      const updatedSheets = userDocument.sheets.filter(id => id !== sheetId);
+  
+      await databases.updateDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID, 
+        process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
+        userId, 
+        { sheets: updatedSheets }
+      );
+  
+      console.log("File and sheet deleted successfully.");
+    } catch (error) {
+      console.error("Error deleting sheet:", error);
+      throw error;
+    }
+  };
   
   
