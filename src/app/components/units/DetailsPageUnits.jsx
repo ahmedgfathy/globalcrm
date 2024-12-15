@@ -18,7 +18,10 @@ const DetailsPageUnits = ({
     unit,
     handleImageChange,
     handleDeleteImage,
-    images
+    images,
+    handleVideoUpload,
+    videos,
+    handleDeleteVideo
 }) => {
     const [options, setOptions] = useState("")
   useEffect(()=>{
@@ -34,14 +37,14 @@ const DetailsPageUnits = ({
             label: "Unit Informations",
             children: <UnitsInformation
             options={options}
-                page={page}
-                handleSubmit={handleSubmit}
-                handleChange={handleChange}
-                title={title}
-                unit={unit}
-                images={images}
-                handleImageChange={handleImageChange}
-                handleDeleteImage={handleDeleteImage}
+            page={page}
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
+            title={title}
+            unit={unit}
+            // images={images}
+            // handleImageChange={handleImageChange}
+            // handleDeleteImage={handleDeleteImage}
 
             />,
         },
@@ -55,20 +58,20 @@ const DetailsPageUnits = ({
             label: "Sales Information",
             children: <SalesInformation page={page} handleChange={handleChange} unit={unit} options={options}/>,
         },
-        {
-            key: "4",
-            label: "Unit Details",
-            children: <UnitsDetails page={page} handleChange={handleChange} unit={unit} options={options}/>,
-        },
-        {
-            key: "5",
-            label: "Pricing Information",
-            children: <PricingInformation page={page} handleChange={handleChange} unit={unit} />,
-        },
+        // {
+        //     key: "4",
+        //     label: "Unit Details",
+        //     children: <UnitsDetails page={page} handleChange={handleChange} unit={unit} options={options}/>,
+        // },
+        // {
+        //     key: "5",
+        //     label: "Notes",
+        //     children: <PricingInformation page={page} handleChange={handleChange} unit={unit} />,
+        // },
         {
             key: "6",
             label: "Unit Image Information",
-            children: <UnitImageInformation page={page} handleChange={handleChange} unit={unit} />,
+            children: <UnitImageInformation page={page} handleDeleteVideo={handleDeleteVideo} handleChange={handleChange} unit={unit} handleImageChange={handleImageChange} images={images} handleVideoUpload={handleVideoUpload} videos={videos} handleDeleteImage={handleDeleteImage} />,
         },
     ];
 

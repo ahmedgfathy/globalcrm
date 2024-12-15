@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { useTranslation } from "@/app/context/TranslationContext";
 
-function DeleteButton({ handleDelete, title, afterDel }) {
+function DeleteButton({ handleDelete, title, afterDel, className }) {
   const { locale, t } = useTranslation();
 
   // const onOk = () => {
@@ -51,39 +51,51 @@ function DeleteButton({ handleDelete, title, afterDel }) {
   };
   
   return (
-    <Dialog>
-      <DialogTrigger>
-        <Button variant="destructive" aria-label={t("delete")}>
-          {title}
+<Dialog>
+  <DialogTrigger
+    onClick={(e) => e.stopPropagation()} // منع التفاعل مع صف الجدول
+  >
+    <Button variant="destructive" aria-label={t("delete")} className={className}>
+      {title}
+      <AiOutlineDelete className="mx-1 text-lg" />
+    </Button>
+  </DialogTrigger>
+  <DialogContent
+    locale={locale}
+    dir={locale === "ar" ? "rtl" : "ltr"}
+    className="text-start"
+    onClick={(e) => e.stopPropagation()}
+  >
+    <DialogHeader>
+      <DialogTitle>{t("sure_delete")}</DialogTitle>
+      <DialogDescription>{t("description_delete_dialog")}</DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <DialogClose asChild>
+        <Button
+          variant="destructive"
+          onClick={(e) => {
+            e.stopPropagation();
+            onOk();
+          }}
+        >
+          {t("Delete")}
           <AiOutlineDelete className="mx-1 text-lg" />
         </Button>
-      </DialogTrigger>
-      <DialogContent
-        locale={locale}
-        dir={locale === "ar" ? "rtl" : "ltr"}
-        className="text-start"
-      >
-        <DialogHeader>
-          <DialogTitle>{t("sure_delete")}</DialogTitle>
-          <DialogDescription>
-            {t("description_delete_dialog")}
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="destructive" onClick={onOk}>
-              {t("Delete")}
-              <AiOutlineDelete className="mx-1 text-lg" />
-            </Button>
-          </DialogClose>
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              {t("close_dialog")}
-            </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      </DialogClose>
+      <DialogClose asChild>
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {t("close_dialog")}
+        </Button>
+      </DialogClose>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
+
   );
 }
 

@@ -7,8 +7,9 @@ function SecondaryCards({ data }) {
   const { t } = useTranslation();
   return (
     <div
+    onClick={data.fun ? data.fun : null}
       key={data.id}
-      className="h-[179px] min-h-max bg-Lightbg dark:bg-cardbgDark rounded-2xl flex justify-between items-center px-2 pt-2 shadow-box_shadow dark:shadow-none overflow-x-auto"
+      className="h-[179px] min-h-max bg-Lightbg dark:bg-cardbgDark rounded-2xl flex justify-between items-center px-2 pt-2 shadow-box_shadow dark:shadow-none overflow-x-auto cursor-pointer"
     >
       <div className="w-11/12 h-full flex flex-col justify-between items-start gap-2 p-4">
         <p className="text-xl font-bold">{t(data.title)}</p>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa6";
 import { MdOutlineBedroomChild } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
@@ -9,8 +9,39 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 
-function CardProperty({ property, handleLike, handleShowHome }) {
+function CardProperty({ property, handleLike, handleShowHome,handleCheckUnits }) {
   const router = useRouter();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const defaultImage = "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600";
+
+let images;
+
+try {
+  images = property?.propertyImage 
+    ? JSON.parse(property.propertyImage) 
+    : [defaultImage];
+  if (!Array.isArray(images) || images.length === 0) {
+    images = [defaultImage];
+  }
+} catch (error) {
+  console.error("Error parsing property images:", error);
+  images = [defaultImage];
+}
+
+
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === images?.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) =>
+      prev === 0 ? images?.length - 1 : prev - 1
+    );
+  };
   return (
     <div
       className="bg-white rounded-lg shadow-md overflow-hidden h-full"
@@ -19,14 +50,36 @@ function CardProperty({ property, handleLike, handleShowHome }) {
       }}
     >
       <div className="relative">
-        <img
+        {/* <img
           src={
             property?.propertyImage[0] ||
             "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600"
           }
           alt={property?.name}
           className="w-full h-48 object-cover min-h-[240px]"
-        />
+        /> */}
+      <div className="relative w-full h-48 min-h-[240px] overflow-hidden rounded-lg">
+      <img
+        src={images?.[currentImageIndex]?.fileUrl || images?.[currentImageIndex]}
+        alt={property?.name}
+        className="w-full h-full object-cover"
+      />
+
+
+      <button
+        onClick={(e)=>{e.stopPropagation();prevImage()}}
+        className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+      >
+        ❮
+      </button>
+
+      <button
+        onClick={(e)=>{e.stopPropagation(); nextImage()}}
+        className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full"
+      >
+        ❯
+      </button>
+    </div>
         <Badge className="absolute top-2 left-2 bg-red-500 text-white dark:hover:text-dark">
           For sell
         </Badge>
@@ -73,7 +126,7 @@ function CardProperty({ property, handleLike, handleShowHome }) {
             />
           </Button>
           <div className="w-9 h-9 bg-white bg-opacity-50 hover:bg-[#3c3f49] rounded-[6px] flex justify-center items-center">
-            <Checkbox className="h-4 w-4" />
+            <Checkbox className="h-4 w-4" onClick={(e)=>{e.stopPropagation(); handleCheckUnits(property.$id)}} />
           </div>
         </div>
         <div className="absolute bottom-2 right-2">

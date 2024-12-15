@@ -6,9 +6,10 @@ import { Tabs, Tab, Box, Grid } from "@mui/material";
 import { getLeadById, updateLeadByID, uploadImageToBucket } from "@/actions/leadsAction";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-
+import { useRouter, useSearchParams } from 'next/navigation';
 function Page({ params }) { 
+  const searchParams = useSearchParams();
+const currentPage = searchParams.get('page') || '1';
   const { toast } = useToast()
   const { locale, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(0);
@@ -63,7 +64,6 @@ function Page({ params }) {
     const currentDateTime = new Date().toLocaleString();
     try {
       const response = await updateLeadByID(params.id,lead);
-      console.log("Lead created successfully:", response);
       setLead({
         name: "",
         leadNumber: "",
@@ -83,13 +83,12 @@ function Page({ params }) {
         action: (
           <ToastAction
             altText="ok"
-            onClick={() => router.push(`/leads/${response.$id}`)}
+            onClick={() => router.back()}
           >
             Show Details
           </ToastAction>
         ),
       });
-      router.push("/leads")
     } catch (error) {
       console.error("Error Updating lead:", error);
 

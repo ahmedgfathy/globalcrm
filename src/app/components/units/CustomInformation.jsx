@@ -4,7 +4,6 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
 
 
-
 export default function CustomInformation({ page, setIsDisabled, isDisabled, ...props }) {
     const { t } = useTranslation();
 
@@ -18,7 +17,7 @@ export default function CustomInformation({ page, setIsDisabled, isDisabled, ...
             options: props?.options?.propertyOfferedBy,
         },
         { id: 2, type: 'input', label: 'name', idField: 'name', defaultValue: props?.unit?.name },
-        { id: 3, type: 'input', label: 'unit_no', idField: 'unitNo', defaultValue: props?.unit?.unitNo },
+        
         {
             id: 4,
             type: 'select',

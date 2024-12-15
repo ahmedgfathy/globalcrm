@@ -3,11 +3,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
-import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
+// import { Button } from "@/components/ui/button";
+// import { Pencil, Trash2 } from "lucide-react";
 import CardHeader from "./utils/CardHeader";
-import VideoSection from "./utils/VideoSection";
-import MultibleImages from "./utils/MultibleImages";
+// import VideoSection from "./utils/VideoSection";
+// import MultibleImages from "./utils/MultibleImages";
 // import { uploadPropertyImages } from "@/actions/propertiesAction";
 
 
@@ -15,7 +15,7 @@ import MultibleImages from "./utils/MultibleImages";
 export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...props }) {
     const { t } = useTranslation();
     const [images, setImages] = useState([]);
-    const [video, setVideo] = useState("/assets/videos/units-video.mp4");
+    // const [video, setVideo] = useState("/assets/videos/units-video.mp4");
 
     useEffect(() => {
         const defaultImage = ["/assets/images/unit-image.jpeg"];
@@ -80,22 +80,24 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
     //     }
     //   };
       
-    const handleDeleteImage = (index) => {
-        setImages((prev) => prev.filter((_, i) => i !== index));
-    };
-    const handleVideoChange = (event) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            setVideo(URL.createObjectURL(file));
-        }
-    };
+    // const handleDeleteImage = (index) => {
+    //     setImages((prev) => prev.filter((_, i) => i !== index));
+    // };
+    // const handleVideoChange = (event) => {
+    //     const file = event.target.files?.[0];
+    //     if (file) {
+    //         setVideo(URL.createObjectURL(file));
+    //     }
+    // };
 
-    const handleDeleteVideo = () => {
-        setVideo("/assets/videos/units-video.mp4");
-    };
-
+    // const handleDeleteVideo = () => {
+    //     setVideo("/assets/videos/units-video.mp4");
+    // };
+    
     const fieldsData = [
+        { id: 25, type: 'input', label: 'property_name_compound_name', idField: 'compoundName', defaultValue: props?.unit?.compoundName },
         { id: 1, type: 'input', label: 'property_number', idField: 'propertyNumber', defaultValue: props?.unit?.propertyNumber },
+        { id: 17, type: 'input', label: 'unit_no', idField: 'unitNo', defaultValue: props?.unit?.unitNo },
         {
             id: 2,
             type: 'select',
@@ -137,7 +139,14 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             options: props?.options?.type,
         },
         { id: 7, type: 'input', label: 'building', idField: 'building', defaultValue: props?.unit?.building },
-        { id: 8, type: 'input', label: 'the_floors', idField: 'theFloors', defaultValue: props?.unit?.theFloors },
+        {
+            id: 8,
+            type: "multiselect",
+            label: "the_floors",
+            idField: "theFloors",
+            defaultValue: props?.unit?.theFloors,
+            options: props?.options?.theFloors,
+        },
         {
             id: 9,
             type: 'select',
@@ -156,7 +165,15 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             options: props?.options?.inOrOutSideCompound,
         },
         { id: 12, type: 'input', label: 'total_price', idField: 'totalPrice', defaultValue: props?.unit?.totalPrice },
-        { id: 13, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props?.unit?.description },
+        { id: 24, type: 'input', label: 'Meter price', idField: 'PricePerMeter', defaultValue: props?.unit?.totalPrice },
+        {
+            id: 21,
+            type: 'select',
+            label: 'currency',
+            idField: 'currency',
+            defaultValue: props?.unit?.currency,
+            options: props?.options?.currency,
+        },
         { id: 14, type: 'date', label: 'last_follow_up', idField: 'lastFollowIn', defaultValue: props?.unit?.lastFollowIn },
         {
             id: 15,
@@ -167,6 +184,13 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             options: props?.options?.activity,
         },
         { id: 16, type: 'input', label: 'status', idField: 'status', defaultValue: props?.unit?.status },
+       
+        { id: 22, type: 'date', label: 'rent_from', idField: 'rentFrom', defaultValue: props?.unit?.rentFrom },
+        { id: 23, type: 'date', label: 'rent_to', idField: 'rentTo', defaultValue: props?.unit?.rentTo },
+        { id: 20, type: 'input', label: 'land_area', idField: 'landArea', defaultValue: props?.unit?.landArea },
+        { id: 18, type: 'date', label: 'created_time', idField: 'createdTime', defaultValue: props?.unit?.createdTime },
+        { id: 19, type: 'date', label: 'modified_time', idField: 'modifiedTime', defaultValue: props?.unit?.modifiedTime },
+        { id: 13, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props?.unit?.description },
     ];
 
     return (
@@ -182,9 +206,9 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                 t={t}
             />
 
-            <CardContent className="w-full overflow-x-hidden lg:grid gap-2 gap-y-8 lg:grid-cols-4 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
-                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} />
-                <Card className="h-max bg-transparent pt-5">
+            <CardContent className="w-full overflow-x-hidden d gap-2 gap-y-8 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
+                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} col={true} />
+                {/* <Card className="h-max bg-transparent pt-5">
                     <CardContent className="bg-transparent p-0 space-y-2">
                         <div className="relative h-48 lg:h-40 p-0">
                             <iframe
@@ -231,7 +255,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                             isDisabled={isDisabled}
                         />
                     </CardContent>
-                </Card>
+                </Card> */}
             </CardContent>
         </Card>
     );

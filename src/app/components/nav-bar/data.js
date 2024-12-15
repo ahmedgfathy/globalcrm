@@ -1,6 +1,7 @@
 import { CiCalendar } from "react-icons/ci";
 import { FaNoteSticky } from "react-icons/fa6";
 import { IoCallSharp } from "react-icons/io5";
+import { SiGoogledocs } from "react-icons/si";
 import { TbReportSearch } from "react-icons/tb";
 
 export const data = [
@@ -27,5 +28,11 @@ export const data = [
         title: "reports",
         link: "reports",
         icon: () => <TbReportSearch className="text-xl" />,
+      },
+      {
+        id: 5,
+        title: "sheet",
+        link: "sheets",
+        icon: () => <SiGoogledocs  className="text-xl" />,
       },
 ]
