@@ -262,5 +262,57 @@ export const getSession = () => {
   return session ? JSON.parse(session) : null;
 };
 
+
+export const getUser = async (id) => {
+  if (!id) return
+  try {
+    const response = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
+      id 
+    );
+    response.password = undefined;
+    return response;
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    throw error;
+  }
+};
+
+
+export const updateUser = async (id, updatedData) => {
+  try {
+    console.log(id)
+    const response = await databases.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
+      id, 
+      updatedData 
+    );
+    console.log('User updated successfully:', response);
+    return response;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+};
+
+
+
+export const deleteUser = async (id) => {
+  try {
+    await databases.deleteDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      id
+    );
+    console.log('User deleted successfully from Auth and DB');
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    throw error;
+  }
+};
+
+
 // propertiesAction.js
 
