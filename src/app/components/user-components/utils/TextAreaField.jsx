@@ -5,7 +5,7 @@ export default function TextAreaField({ label, id, defaultValue, isDisabled, sec
   const { locale} = useTranslation();
 
   return (
-    <div className="space-y-2 sm:col-span-3">
+    <div className="space-y-2 sm:col-span-4">
       <Label htmlFor={id} className="font-semibold w-full " dir={locale === "ar" ? "rtl" : "ltr"}
       >
         <p className='w-full'>

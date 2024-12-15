@@ -187,7 +187,6 @@ function Page({ params }) {
     modifiedUnit.rooms = parseInt(modifiedUnit.rooms, 10)
     modifiedUnit.totalPrice = parseInt(modifiedUnit.totalPrice, 10)
     modifiedUnit.PricePerMeter = parseInt(modifiedUnit.PricePerMeter, 10)
-    modifiedUnit.tel = parseInt(modifiedUnit.tel, 10)
     modifiedUnit.videos = JSON.stringify(modifiedUnit.videos)
     modifiedUnit.propertyImage = JSON.stringify(modifiedUnit.propertyImage)
     try {

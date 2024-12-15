@@ -32,7 +32,7 @@ export const data = [
       {
         id: 5,
         title: "sheet",
-        link: "docs",
+        link: "sheets",
         icon: () => <SiGoogledocs  className="text-xl" />,
       },
 ]

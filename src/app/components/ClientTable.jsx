@@ -12,7 +12,7 @@ import CustomButton from "@/app/components/CustomButton";
 import Filter from "./Filter";
 import  DropdownMenImportExport  from "./leadImport-Export/ImportExport";
 
-const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterValues,handleFilterChange, handleImportCSV, handleExportCSV,selectedLeads, setSelectedLeads }) => {
+const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterValues,handleFilterChange, handleImportCSV, handleExportCSV,selectedLeads, setSelectedLeads, searchUsersForTransform, users  }) => {
 
   return (
     <div
@@ -58,9 +58,10 @@ const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterV
             <TableHead className="min-w-fit text-nowrap p-3 text-start text-dark dark:text-white text-base font-bold">
               {t("action")}
             </TableHead>
-            {/* <TableHead className="min-w-fit text-nowrap p-3 text-end flex h-auto justify-around items-center">
-              <DropdownMenImportExport t={t} handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />
-            </TableHead> */}
+            <TableHead className="min-w-fit text-nowrap p-3 text-end flex h-auto justify-around items-center">
+              <DropdownMenImportExport t={t} handleExportCSV={()=>console.log("no thing")} handleImportCSV={()=>console.log("no thing")} searchUsersForTransform={searchUsersForTransform} users={users} />
+              {/* <DropdownMenImportExport t={t} handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} searchUsersForTransform={searchUsersForTransform} users={users} /> */}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
