@@ -10,7 +10,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { MdOutlineRecentActors } from "react-icons/md";
 import RecentChart from "@/app/components/dashboard/RecentChart";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
-import { getLastMonthLeadsCount, getLeadsBySource } from "@/actions/leadsAction";
+import { getLastMonthLeadsCount, getLeadsBySource, getDashboardStats } from "@/actions/leadsAction";
 import { getAllSettings } from "@/actions/filterSettings";
 import { getPropertiesActivity } from "@/actions/propertiesAction";
 import dynamic from "next/dynamic";
@@ -36,23 +36,24 @@ function Page() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const [leadsCount, units, settings, sourceData] = await Promise.all([
-        getLastMonthLeadsCount(),
-        getPropertiesActivity(),
-        getAllSettings(),
-        getLeadsBySource(),
-      ]);
-
+      // Use the new optimized dashboard stats endpoint
+      const dashboardStats = await getDashboardStats();
+      
+      const settings = await getAllSettings();
       const dataJson = JSON.parse(settings[0]?.leadSettings || "{}");
       const customerSources = dataJson.customerSource || [];
       
       setData({
-        social_media_leads: 0,
-        company_leads: 485,
-        partner_leads: leadsCount
+        social_media_leads: dashboardStats.sourceData['Social Media'] || 0,
+        company_leads: dashboardStats.sourceData['Company'] || 0,
+        partner_leads: dashboardStats.leadsCount
       });
+      
+      // Fetch units data separately as it might be less frequently updated
+      const units = await getPropertiesActivity();
       setUnitsCount(units);
-      setChartData(prepareChartData(customerSources, sourceData));
+      
+      setChartData(prepareChartData(customerSources, dashboardStats.sourceData));
     } catch (error) {
       console.error("Dashboard data fetch error:", error);
     } finally {
@@ -60,8 +61,13 @@ function Page() {
     }
   };
 
+  // Add debouncing to prevent multiple rapid fetches
   useEffect(() => {
-    fetchDashboardData();
+    const debounceTimer = setTimeout(() => {
+      fetchDashboardData();
+    }, 300);
+
+    return () => clearTimeout(debounceTimer);
   }, []);
 
   const prepareChartData = (sources = [], apiResponse = {}) => {
