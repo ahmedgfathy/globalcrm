@@ -19,21 +19,26 @@ export const signUp = async (email, password) => {
 export const signIn = async (email, password) => {
   try {
     const session = await account.createEmailPasswordSession(email, password);
-    
     const user = await account.get();
-    const userId = user.$id;
-    
+
     const userDocument = await databases.getDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID,
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, // Your users collection ID
-      userId
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      user.$id
     );
-    const { email:userEmail ,role } = userDocument
-    const userData = {userEmail, role ,userId}
-    console.log('User signed in successfully:');
 
-    // Save session data and user document in localStorage
+    if (!userDocument) {
+      throw new Error('User not found');
+    }
+
+    const userData = {
+      userEmail: userDocument.email,
+      role: userDocument.role,
+      userId: user.$id,
+    };
+
     localStorage.setItem('session', JSON.stringify({ userData }));
+    console.log('User signed in successfully:', userData);
 
     return { userData };
   } catch (error) {
@@ -41,6 +46,7 @@ export const signIn = async (email, password) => {
     throw error;
   }
 };
+
 
 
 // Sign Out Function
@@ -57,7 +63,7 @@ export const signOut = async () => {
   }
 };
 
-export const createUser = async (email, password, name, role) => {
+export const createUser = async (email, password, name, role, phone, address, gender) => {
   try {
     const userId = ID.unique();
     const userResponse = await account.create(userId, email, password, name);
@@ -70,7 +76,10 @@ export const createUser = async (email, password, name, role) => {
       email,
       role,
       password,
-      name
+      name,
+      phone,
+      address,
+      gender
     };
     const dbResponse = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, 
@@ -88,29 +97,14 @@ export const createUser = async (email, password, name, role) => {
   }
 };
 
-// export const getUsers = async (limit = 10, offset = 0) => {
-//   try {
-//     const response = await account.listLogs()
-
-
-
-
-//     console.log(response);
-//     return { response };
-//   } catch (error) {
-//     console.error('Error getting users:', error);
-//     throw error;
-//   }
-// };
-
 export const getUsers = async (limit = 10, offset = 0) => {
   try {
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
       [
-        Query.limit(limit),
-        Query.offset(offset),
+        // Query.limit(limit),
+        // Query.offset(offset),
         Query.orderDesc('$createdAt')
       ]
     );
@@ -118,10 +112,10 @@ export const getUsers = async (limit = 10, offset = 0) => {
     const totalResponse = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
-      [
-        Query.limit(1),
-        Query.offset(0)
-      ]
+      // [
+      //   Query.limit(1),
+      //   Query.offset(0)
+      // ]
     );
 
     const totalUsers = totalResponse.total;
@@ -191,3 +185,54 @@ export const getCurrentUser = () => {
     throw error
   }
 }
+
+export const getUser = async (id) => {
+  if (!id) return
+  try {
+    const response = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
+      id 
+    );
+    response.password = undefined;
+    return response;
+  } catch (error) {
+    console.error('Error fetching user:', error);
+    throw error;
+  }
+};
+
+
+export const updateUser = async (id, updatedData) => {
+  try {
+    console.log(id)
+    const response = await databases.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
+      id, 
+      updatedData 
+    );
+    console.log('User updated successfully:', response);
+    return response;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+};
+
+
+
+export const deleteUser = async (id) => {
+  try {
+    await databases.deleteDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      id
+    );
+    console.log('User deleted successfully from Auth and DB');
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    throw error;
+  }
+};
+
