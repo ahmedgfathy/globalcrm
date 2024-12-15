@@ -1,7 +1,6 @@
 import { databases, ID, storage, account } from '@/services/appwrite/client'
 import { Query } from 'appwrite'
 
-
 const getCurrentUserId = async () => {
   try {
     const currentUser = await account.get()
@@ -29,7 +28,7 @@ const getCurrentUserId = async () => {
 export const addProperty = async (propertyData) => {
   try {
     // Step 1: Get the current user's account
-    
+
     const userId = await getCurrentUserId()
 
     // Step 2: Create the new property
@@ -64,7 +63,6 @@ export const addProperty = async (propertyData) => {
 
 export const getAllPropertiesForSales = async (limit = 12, offset = 0) => {
   try {
-    
     const userId = await getCurrentUserId()
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
@@ -75,7 +73,7 @@ export const getAllPropertiesForSales = async (limit = 12, offset = 0) => {
     const totalResponse = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
-      [Query.equal('users', userId),Query.limit(1), Query.offset(0)]
+      [Query.equal('users', userId), Query.limit(1), Query.offset(0)]
     )
 
     const totalProperties = totalResponse.total
@@ -91,7 +89,11 @@ export const getAllPropertiesForSales = async (limit = 12, offset = 0) => {
   }
 }
 
-export const getAllPropertiesForTeamLead = async (teamLeadId, limit = 12, offset = 0) => {
+export const getAllPropertiesForTeamLead = async (
+  teamLeadId,
+  limit = 12,
+  offset = 0
+) => {
   try {
     // Fetch the team lead's salesmen IDs
     const teamLead = await databases.getDocument(
@@ -100,18 +102,22 @@ export const getAllPropertiesForTeamLead = async (teamLeadId, limit = 12, offset
       teamLeadId
     )
     const salesmenIds = teamLead.salesMen
-    console.log("salesMen", salesmenIds)
+    console.log('salesMen', salesmenIds)
 
     // Ensure salesmenIds is an array before using it in the query
     if (!Array.isArray(salesmenIds)) {
-      throw new Error('Salesmen IDs should be an array');
+      throw new Error('Salesmen IDs should be an array')
     }
 
     // Fetch properties for all salesmen
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
-      process.env.NEXT_PUBLIC_PROPERTIES,  // Collection ID
-      [Query.equal('users', salesmenIds), Query.limit(limit), Query.offset(offset)]
+      process.env.NEXT_PUBLIC_PROPERTIES, // Collection ID
+      [
+        Query.equal('users', salesmenIds),
+        Query.limit(limit),
+        Query.offset(offset),
+      ]
     )
 
     const totalResponse = await databases.listDocuments(
@@ -133,7 +139,6 @@ export const getAllPropertiesForTeamLead = async (teamLeadId, limit = 12, offset
     throw error
   }
 }
-
 
 export const deleteProperty = async (propertyId) => {
   try {
@@ -278,14 +283,15 @@ export const getPropertyById = async (propertyId) => {
 
 // propertiesAction.js
 
-export const searchPropertyByName = async (name) => {
+const searchProperties = async (name, userId = null) => {
   try {
-    const userId = await getCurrentUserId()
-    console.log('Searching for properties with name:', name)
+    console.log('Searching for properties with name:', name);
 
-    const queries = [
-      Query.equal('users', userId) // Ensure search is scoped to the user
-    ]
+    const queries = [];
+
+    if (userId) {
+      queries.push(Query.equal('users', userId)); // Ensure search is scoped to the user
+    }
 
     if (name) {
       queries.push(
@@ -293,32 +299,43 @@ export const searchPropertyByName = async (name) => {
           Query.contains('name', name),
           Query.contains('mobileNo', name),
           Query.contains('tel', name),
+          Query.contains('compoundName', name),
         ])
-      )
+      );
     }
 
     const response = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
       queries
-    )
+    );
 
-    console.log('Raw response:', response)
+    console.log('Raw response:', response);
 
     // Exclude collectionId and databaseId from each document
     const properties = response.documents.map(
       ({ collectionId, databaseId, ...rest }) => rest
-    )
-    console.log('Processed properties:', properties)
-    return properties
+    );
+    console.log('Processed properties:', properties);
+    return properties;
   } catch (error) {
-    console.error('Error searching for properties by name:', error)
-    throw error
+    console.error('Error searching for properties by name:', error);
+    throw error;
   }
-}
+};
+
+export const searchPropertyByName = async (name) => {
+  const userId = await getCurrentUserId();
+  return searchProperties(name, userId);
+};
+
+export const searchPropertyByNameForAdmin = async (name) => {
+  return searchProperties(name);
+};
+
 // propertiesAction.js
 
-export const searchPropertyByRange = async (from, to, page = 1, limit = 10) => {
+export const searchPropertyByRange = async (from, to, page = 1, limit = 12) => {
   try {
     const userId = await getCurrentUserId()
 
@@ -598,7 +615,7 @@ export const searchUnitByTypes = async (searchTerm) => {
     console.log('Searching for properties with type:', searchTerm)
 
     const queries = [
-      Query.equal('users', userId) // Ensure search is scoped to the user
+      Query.equal('users', userId), // Ensure search is scoped to the user
     ]
 
     if (searchTerm) {
@@ -632,9 +649,7 @@ export const searchUnitByCategory = async (searchTerm) => {
     const userId = await getCurrentUserId()
     console.log('Searching for properties with category:', searchTerm)
 
-    const queries = [
-      Query.equal('users', userId) 
-    ]
+    const queries = [Query.equal('users', userId)]
 
     if (searchTerm) {
       queries.push(Query.contains('category', searchTerm))
@@ -783,37 +798,30 @@ export const exportProperties = async () => {
 
 export const getPropertiesActivity = async () => {
   try {
-    let allProperties = []
-    let lastDocument = null
-    const limit = 100
+    console.time('Fetch Data Time')
+    // Fetch all properties (ensure you're retrieving all documents and in a consistent order)
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      [Query.limit(30000), Query.orderAsc('$createdAt')] // Or any field to ensure consistent ordering
+    )
+    console.timeEnd('Fetch Data Time')
 
-    while (true) {
-      const query = lastDocument
-        ? [Query.limit(limit), Query.cursorAfter(lastDocument.$id)]
-        : [Query.limit(limit)]
+    // Log the number of documents fetched
+    console.log('Documents fetched:', response.documents.length)
 
-      const response = await databases.listDocuments(
-        process.env.NEXT_PUBLIC_DATABASE_ID,
-        process.env.NEXT_PUBLIC_PROPERTIES,
-        query
-      )
-
-      allProperties = [...allProperties, ...response.documents]
-
-      if (response.documents.length < limit) {
-        break
-      }
-
-      lastDocument = response.documents[response.documents.length - 1]
-    }
-
-    const propertyActivity = allProperties.reduce((acc, property) => {
+    // Check the first few documents to ensure they look correct
+    console.log('Sample documents:', response.documents.slice(0, 5))
+    console.time('Activity Count Time')
+    // Create an activity count object efficiently
+    const propertyActivity = response.documents.reduce((acc, property) => {
       const activity = property.activity || 'Unknown'
       acc[activity] = (acc[activity] || 0) + 1
       return acc
     }, {})
 
     console.log(propertyActivity)
+    console.timeEnd('Activity Count Time')
     return propertyActivity
   } catch (error) {
     console.error('Error fetching property activity:', error)
@@ -821,48 +829,48 @@ export const getPropertiesActivity = async () => {
   }
 }
 
-
-
-
-
-
-
 export const transferUnit = async (unitsId, targetUserIds) => {
   try {
     // Ensure `unitsId` and `targetUserIds` are arrays of strings
     console.log(unitsId)
-    if (!Array.isArray(unitsId) || !unitsId.every((id) => typeof id === "string")) {
-      throw new Error("Invalid unitsId: All elements must be strings");
+    if (
+      !Array.isArray(unitsId) ||
+      !unitsId.every((id) => typeof id === 'string')
+    ) {
+      throw new Error('Invalid unitsId: All elements must be strings')
     }
 
-    if (!Array.isArray(targetUserIds) || !targetUserIds.every((id) => typeof id === "string")) {
-      throw new Error("Invalid targetUserIds: All elements must be strings");
+    if (
+      !Array.isArray(targetUserIds) ||
+      !targetUserIds.every((id) => typeof id === 'string')
+    ) {
+      throw new Error('Invalid targetUserIds: All elements must be strings')
     }
 
     // Step 1: Get the current user's account
-    const currentUserId = await getCurrentUserId();
+    const currentUserId = await getCurrentUserId()
 
     // Step 2: Fetch the current user's document
     const currentUserDoc = await databases.getDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
       currentUserId
-    );
+    )
 
     // Step 3: Remove the specified units from the current user's document
     const updatedCurrentUserUnits = currentUserDoc.properties.filter(
       (unitId) => !unitsId.includes(unitId)
-    );
+    )
 
     // Log updated properties for debugging
-    console.log("Updated Current User Units:", updatedCurrentUserUnits);
+    console.log('Updated Current User Units:', updatedCurrentUserUnits)
 
     await databases.updateDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
       currentUserId,
       { properties: updatedCurrentUserUnits } // Use a flat array of strings
-    );
+    )
 
     // Step 4: Add the specified units to each target user's document
     for (const targetUserId of targetUserIds) {
@@ -870,20 +878,20 @@ export const transferUnit = async (unitsId, targetUserIds) => {
         process.env.NEXT_PUBLIC_DATABASE_ID,
         process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
         targetUserId
-      );
+      )
 
       const updatedTargetUserUnits = [
         ...new Set([...targetUserDoc.properties, ...unitsId]),
-      ]; // Prevent duplicates
+      ] // Prevent duplicates
 
-      console.log("Updated Target User Units:", updatedTargetUserUnits);
+      console.log('Updated Target User Units:', updatedTargetUserUnits)
 
       await databases.updateDocument(
         process.env.NEXT_PUBLIC_DATABASE_ID,
         process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
         targetUserId,
         { properties: updatedTargetUserUnits } // Use a flat array of strings
-      );
+      )
     }
 
     // Step 5: Update the `users` field in each unit document
@@ -892,25 +900,28 @@ export const transferUnit = async (unitsId, targetUserIds) => {
         process.env.NEXT_PUBLIC_DATABASE_ID,
         process.env.NEXT_PUBLIC_PROPERTIES,
         unitId
-      );
+      )
 
       const updatedUsers = [
-        ...new Set([...unitDoc.users.filter((id) => id !== currentUserId), ...targetUserIds]),
-      ]; // Prevent duplicates
+        ...new Set([
+          ...unitDoc.users.filter((id) => id !== currentUserId),
+          ...targetUserIds,
+        ]),
+      ] // Prevent duplicates
 
-      console.log("Updated Users for Unit:", unitId, updatedUsers);
+      console.log('Updated Users for Unit:', unitId, updatedUsers)
 
       await databases.updateDocument(
         process.env.NEXT_PUBLIC_DATABASE_ID,
         process.env.NEXT_PUBLIC_PROPERTIES,
         unitId,
         { users: updatedUsers } // Use a flat array of strings
-      );
+      )
     }
 
-    console.log("Units transferred successfully.");
+    console.log('Units transferred successfully.')
   } catch (error) {
-    console.error("Error transferring units:", error);
-    throw error;
+    console.error('Error transferring units:', error)
+    throw error
   }
-};
+}
