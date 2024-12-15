@@ -1,12 +1,12 @@
 .sidebar {
-  transition: all 0.3s ease-in-out;
+  transition: width 0.3s;
   direction: rtl;
 }
 
 .sidebarOpen {
-  width: 18rem;
+  width: 250px;
 }
 
 .sidebarClosed {
-  width: 6rem;
+  width: 250px;
 }

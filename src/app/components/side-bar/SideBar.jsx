@@ -20,7 +20,6 @@ function SideBar() {
   const isMobile = useIsMobile();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const pathName = usePathname();
   const sidebarRef = useRef(null);
 
@@ -29,7 +28,7 @@ function SideBar() {
     if (pathName === "/dashboard" && href === "/") return true;
   };
 
-  const isExpanded = isOpen || (!isMobile && isHovered);
+  const isExpanded = isOpen || !isMobile;
 
   useEffect(() => {
     if (isMobile) {
@@ -59,42 +58,14 @@ function SideBar() {
   const renderNavLink = (item) => {
     const linkContent = (
       <div className="flex items-center gap-3 w-full text-right">
-        <span className={`${isExpanded ? "order-2" : ""} text-2xl`}>
+        <span className="order-2 text-2xl">
           {item.icon()}
         </span>
-        <span className={`flex-1 whitespace-nowrap text-right ${!isExpanded && "hidden"}`}>
+        <span className="flex-1 whitespace-nowrap text-right">
           {item.displayTitle}
         </span>
       </div>
     );
-
-    if (!isExpanded) {
-      return (
-        <TooltipProvider delayDuration={0}>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href={`/${item.link}`}
-                onClick={() => isMobile && setIsOpen(false)}
-                className={`flex items-center w-full p-3 text-gray-900 dark:text-gray-200 transition duration-100 rounded-lg group 
-                  ${isActive(item.link)
-                    ? "bg-dark_link_active dark:bg-dark_link_active text-text_link_active_l dark:text-text_link_active"
-                    : "hover:bg-gray-200 dark:hover:bg-gray-700"
-                  }`}
-              >
-                {linkContent}
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent 
-              side="left" 
-              className="bg-gray-800 text-white px-3 py-2 rounded text-sm font-medium"
-            >
-              {item.displayTitle}
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      );
-    }
 
     return (
       <Link
@@ -129,20 +100,14 @@ function SideBar() {
       {(isExpanded || !isMobile) && (
         <aside
           ref={sidebarRef}
-          onMouseEnter={() => !isMobile && setIsHovered(true)}
-          onMouseLeave={() => !isMobile && setIsHovered(false)}
-          className={`${styles.sidebar} ${
-            isExpanded ? (!isMobile ? styles.sidebarOpen : "w-0") : styles.sidebarClosed
-          } h-screen bg-white dark:bg-gray-900 transition-all duration-300`}
+          className={`${styles.sidebar} ${styles.sidebarOpen} h-screen bg-white dark:bg-gray-900 transition-all duration-300`}
         >
-          <div className={`h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-900 border-x border-gray-200 dark:border-gray-700 shadow-sm fixed right-0 ${
-            styles.sidebar
-          } ${isExpanded ? styles.sidebarOpen : styles.sidebarClosed}`}>
+          <div className={`h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-900 border-x border-gray-200 dark:border-gray-700 shadow-sm fixed right-0 ${styles.sidebar} ${styles.sidebarOpen}`}>
             {/* Logo and title section */}
             <div className="flex flex-col items-center gap-3 mb-8"> {/* Increased gap and margin */}
               <Image
-                width={130} // Increased logo size
-                height={130} // Increased logo size
+                width={180} // Increased logo size
+                height={180} // Increased logo size
                 alt="logo"
                 src="/assets/logo/logo.png"
                 className="mx-auto"
