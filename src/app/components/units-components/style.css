@@ -1,0 +1,9 @@
+.space-y-1\.5 > :not([hidden]) ~ :not([hidden]) {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+.icon {
+    width: 35px;
+    height: 35px;
+  }
+  

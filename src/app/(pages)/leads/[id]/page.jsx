@@ -1,92 +1,183 @@
 "use client";
 import Details from "@/app/components/user-components/Details";
-import Update from "@/app/components/user-components/Update";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { useEffect, useRef, useState } from "react";
-import { AiOutlineRightSquare } from "react-icons/ai";
-import TabButton from "../utils/TabButton";
-
-function Page({ params }) {
-  const isMobile = useIsMobile();
-  const [isOpen, setIsOpen] = useState(!isMobile);
-  const tabsRef = useRef(null);
+import { Tabs, Tab, Box, Grid } from "@mui/material";
+import { getLeadById, updateLeadByID, uploadImageToBucket } from "@/actions/leadsAction";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter, useSearchParams } from 'next/navigation';
+function Page({ params }) { 
+  const searchParams = useSearchParams();
+const currentPage = searchParams.get('page') || '1';
+  const { toast } = useToast()
   const { locale, t } = useTranslation();
-  const listTabs = [
-    { id: 1, title: "Lead Details", value: "details" },
-    { id: 2, title: "Updates", value: "updates" },
-  ];
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [lead, setLead] = useState({}); 
+  const router = useRouter();
+  const [image, setImage] = useState("/");
+  const [imageFile, setImageFile] = useState(null); 
+  const handleChange = (_, field, value) => {
+    setLead((prevLead) => ({
+      ...prevLead,
+      [field] : value,
+    }));
+  };
 
-  useEffect(() => {
-    setIsOpen(!isMobile);
-  }, [isMobile]);
+  const handleTabChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
 
-  useEffect(() => {
-    if (isMobile) {
-      const handleClickOutside = (event) => {
-        if (tabsRef.current && !tabsRef.current.contains(event.target)) {
-          setIsOpen(false);
-        }
-      };
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
+  const fetchLead = async () => {
+    try {
+      const leadsData = await getLeadById(params.id); 
+      setLead(leadsData);
+    } catch (error) {
+      console.error("Error fetching leads:", error);
     }
-  }, [isMobile]);
+  };
+
+  useEffect(() => {
+    if (params.id) fetchLead(); 
+  }, [params]);
+  const handleImageChange = async (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setImage(e.target.result);
+      reader.readAsDataURL(file);
+      setImageFile(file);
+      try {
+        const response = await uploadImageToBucket(file);
+        setLead({...lead, leadImage: response.fileUrl});
+        console.log("Image uploaded successfully:", response);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
+  const handleDeleteImage = () => {
+    setImage("/assets/images/default-user.jpg");
+    setImageFile(null);
+  };
+  const handleSubmit = async () => {
+    const currentDateTime = new Date().toLocaleString();
+    try {
+      const response = await updateLeadByID(params.id,lead);
+      setLead({
+        name: "",
+        leadNumber: "",
+        number: "",
+        lastFollowUp: "",
+        description: "",
+        clientFollowUp: "",
+        class: "",
+        assignedTo: "",
+        customerSource: "",
+        type: "",
+        leadStatus: "",
+      });
+      toast({
+        title: "Lead Updated",
+        description: `Lead Updated successfully on ${currentDateTime}`,
+        action: (
+          <ToastAction
+            altText="ok"
+            onClick={() => router.back()}
+          >
+            Show Details
+          </ToastAction>
+        ),
+      });
+    } catch (error) {
+      console.error("Error Updating lead:", error);
+
+      toast({
+        variant: "destructive",
+        title: "Error Updating Lead",
+        description: error.message || "There was an issue Updating the lead.",
+        status: "error",
+        action: (
+          <ToastAction altText="ok" onClick={() => router.push(`/leads`)}>
+            Try Again
+          </ToastAction>
+        ),
+      });
+    }
+  };
 
   return (
-    <div className="page-user min-h-screen h-max mx-2">
-      <div className="container px-0 py-4 max-md:pb-20 max-md:pt-14 mx-auto flex">
-        <Tabs
-          defaultValue="details"
-          className="flex w-full h-full relative"
-        >
-          {isMobile && !isOpen && (
-            <AiOutlineRightSquare
-              className="text-xl absolute left-5 top-0 z-[2]"
-              onClick={() => setIsOpen(true)}
+    <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
+      <Grid container direction="row" wrap="nowrap" className="gap-6 max-sm:gap-1 py-6 px-4">
+        <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md max-sm:hidden">
+          <Tabs
+            orientation="vertical"
+            value={selectedTab}
+            onChange={handleTabChange}
+            aria-label="Vertical tabs"
+            TabIndicatorProps={{
+              style: { backgroundColor: "#4CAF50" },
+            }}
+            style={{ height: "100%", paddingTop: 16 }}
+          >
+            <Tab
+              label={t("Lead_Details")}
+              sx={{
+                color: "#5be49b",
+                "&.Mui-selected": {
+                  color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
+                },
+              }}
+            />
+            <Tab
+              label={t("Lead_History")}
+              sx={{
+                color: "#5be49b",
+                "&.Mui-selected": {
+                  color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
+                },
+              }}
+            />
+          </Tabs>
+        </Grid>
+
+        <Grid item xs={12} sm={10} className="bg-Lightbg dark:bg-transparent rounded-md px-2">
+          {selectedTab === 0 && (
+            <Details
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              handleDeleteImage={handleDeleteImage}
+              setImage={setImage}
+              imageFile={imageFile}
+              image={image}
+              setImageFile={setImageFile}
+              handleImageChange={handleImageChange}
+              lead={lead}
+              page="view"
+              title={t("Lead_Details")}
+              description={t("Lead_descriptions")}
             />
           )}
-
-          <TabsList
-            dir={locale == "ar" ? "rtl" : "ltr"}
-            ref={tabsRef}
-            className={`flex-shrink-0 flex flex-col gap-5 transition-all duration-200 bg-[#FFF] dark:bg-[#222831] min-h-screen overflow-hidden ${
-              isMobile
-                ? isOpen
-                  ? "absolute top-0 left-0 w-64"
-                  : "absolute top-0 -left-64"
-                : "w-64"
-            }`}
-          >
-            <TabButton data={listTabs} />
-          </TabsList>
-
-          <div className="flex-1 pl-5">
-            <TabsContent
-              value="details"
-              className="w-full"
-              dir={locale == "ar" ? "rtl" : "ltr"}
-            >
-              <Details
-                page="view"
-                title={t("Lead_Details")}
-                description={t("Lead_descriptions")}
-              />
-            </TabsContent>
-            <TabsContent
-              value="updates"
-              className="w-full"
-              dir={locale == "ar" ? "rtl" : "ltr"}
-            >
-              <Update />
-            </TabsContent>
-          </div>
-        </Tabs>
-      </div>
-    </div>
+          {selectedTab === 1 && (
+            <Details
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              handleDeleteImage={handleDeleteImage}
+              setImage={setImage}
+              imageFile={imageFile}
+              setImageFile={setImageFile}
+              handleImageChange={handleImageChange}
+              lead={lead}
+              page="view"
+              title={t("Lead_Details")}
+              description={t("Lead_descriptions")}
+            />
+          )}
+        </Grid>
+      </Grid>
+    </Box>
   );
 }
 

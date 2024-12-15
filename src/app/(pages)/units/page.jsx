@@ -1,163 +1,741 @@
-"use client";
-import { useTranslation } from "@/app/context/TranslationContext";
-import Link from "next/link";
-import React from "react";
-import { ClientDetails, filterData } from "./data";
-import { CardUnitComponent } from "@/app/components/units-components/CardComponent";
-import { IoMdAddCircle } from "react-icons/io";
-import Filter from "@/app/components/Filter";
+'use client'
+import { useTranslation } from '@/app/context/TranslationContext'
+import React, { useState, useEffect,useContext } from 'react'
+import { ClientDetails, filterData } from './data'
+import CardProperty from '@/app/components/units-components/CardComponent'
+import { IoMdAddCircle } from 'react-icons/io'
+import Filter from '@/app/components/Filter'
+import { Pagination } from 'antd'
+import { Grid } from '@mui/material'
+import { useRouter, useSearchParams } from 'next/navigation'
+import CustomButton from '@/app/components/CustomButton'
+import { GrTransaction } from 'react-icons/gr'
+import DropdownMenImportExport from '@/app/components/leadImport-Export/ImportExport'
+import {
+  exportProperties,
+  searchPropertyByRange,
+  getAllPropertiesForSales,
+  getAllPropertiesForAdmin,
+  deleteAllProperties,
+  importProperties,
+  searchPropertyByName,
+  togglePropertyInHome,
+  togglePropertyLiked,
+  searchUnitByCategory,
+  searchUnitByTypes,
+  transferUnit,
+  getAllPropertiesForTeamLead
+} from '@/actions/propertiesAction'
+import { UserContext } from '@/app/context/UserContext'
+import DeleteButton from '@/app/components/delete-button/DeleteButton'
+import { CiFilter, CiSearch } from 'react-icons/ci'
+import { Input } from '@/components/ui/input'
+import { useIsMobile } from '@/hooks/use-mobile'
+import { useToast } from '@/hooks/use-toast'
+import Papa from 'papaparse'
+import { getAllSettings } from '@/actions/filterSettings'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import { Button } from '@/components/ui/button'
+import { searchUsers, getUsers,getCurrentUser } from '@/actions/auth'
+
 function Page() {
-    
-  const { t } = useTranslation();
+  const [from, setFrom] = useState('')
+  const [currentUser, setCurrentUser] = useContext(UserContext)
+  const role = currentUser.userData.role
+  const id = currentUser.userData.userId
+  const [to, setTo] = useState('')
+  const { toast } = useToast()
+  const router = useRouter()
+  const isMobile = useIsMobile()
+  const { t, locale } = useTranslation()
+  const [units, setUnits] = useState([])
+  const urlParams = useSearchParams()
+  const initialPage = parseInt(urlParams.get('page') || '1', 10)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalUnits, setTotalUnits] = useState(0)
+  const [UnitsPerPage, setUnitsPerPage] = useState(12)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [unitsTransfer, setUnitsTransfer] = useState([])
+  const [users, setUsers] = useState([])
+  const [filterValues, setFilterValues] = useState(
+    filterData.reduce((acc, ele) => {
+      acc[ele.filterName] = ''
+      return acc
+    }, {})
+  )
+  console.log(role)
+  console.log(id)
+  const [selectedUsers, setSelectedUsers] = useState([])
+  const [options, setOptions] = useState([
+    { id: 1, filterName: 'Property Types', data: 'type', optionData: [] },
+    {
+      id: 2,
+      filterName: 'in-side / Out Side',
+      data: 'inOrOutSideCompound',
+      optionData: [],
+    },
+    { id: 3, filterName: 'Sales', data: 'sales', optionData: [] },
+    { id: 4, filterName: 'Category', data: 'category', optionData: [] },
+    { id: 5, filterName: 'Range', data: 'range', optionData: [] },
+  ])
+
+  const parseFromTo = () => {
+    const parsedFrom = from ? Number(from) : undefined
+    const parsedTo = to ? Number(to) : undefined
+    return { parsedFrom, parsedTo }
+  }
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      try {
+        const res = await getAllSettings()
+
+        if (res && res.length > 0 && res[0].unitSettings) {
+          const data = JSON.parse(res[0].unitSettings)
+          console.log('Fetched Data:', data)
+
+          setOptions((prev) =>
+            prev.map((option) => {
+              const matchedData = data[option.data]
+              return {
+                ...option,
+                optionData:
+                  matchedData && matchedData.length > 0
+                    ? matchedData
+                    : option.data === 'range'
+                    ? ['Total Price', 'Unit price per square meter']
+                    : [],
+              }
+            })
+          )
+        } else {
+          console.warn('No settings found.')
+        }
+      } catch (error) {
+        console.error('Failed to fetch options:', error)
+      }
+    }
+
+    fetchOptions()
+  }, [])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { parsedFrom, parsedTo } = parseFromTo()
+        if (searchTerm) {
+          const propertiesByName = await searchPropertyByName(searchTerm)
+          console.log('Fetched properties by name:', propertiesByName)
+        }
+        if (parsedFrom || parsedTo) {
+          const { properties, total } = await searchPropertyByRange(
+            parsedFrom,
+            parsedTo
+          )
+          console.log('Fetched properties by range:', properties)
+          setUnits(properties)
+          setTotalUnits(total)
+        }
+      } catch (error) {
+        console.error('Error fetching properties:', error)
+      }
+    }
+
+    fetchData()
+  }, [from, to, searchTerm])
+
+  const handleFilterChange = (value, filterName) => {
+    const updatedFilters = { ...filterValues, [filterName]: value }
+    console.log(updatedFilters)
+    setFilterValues(updatedFilters)
+    // onFilterChange(updatedFilters);
+  }
+
+  const handleClearFilters = () => {
+    const resetFilters = Object.keys(filterValues).reduce((acc, key) => {
+      acc[key] = ''
+      return acc
+    }, {})
+    setFilterValues(resetFilters)
+    // onFilterChange(resetFilters);
+  }
+  const fetchUnits = async (page = 1, search = '', range = {}) => {
+    const offset = (page - 1) * UnitsPerPage
+
+    if (!UnitsPerPage || UnitsPerPage <= 0) {
+      console.error('Invalid UnitsPerPage value')
+      return
+    }
+
+    try {
+      let properties = []
+      let totalProperties = 0
+
+      if (search) {
+        const propertiesByName = await searchPropertyByName(search)
+        properties = propertiesByName
+        totalProperties = propertiesByName.length
+      } else if (range.from || range.to) {
+        const { properties: propertiesByRange, total } =
+          await searchPropertyByRange(
+            range.from,
+            range.to,
+            currentPage,
+            UnitsPerPage
+          )
+        properties = propertiesByRange
+        totalProperties = total
+      } else {
+        let response;
+        if (role === 'admin') {
+          response = await getAllPropertiesForAdmin(UnitsPerPage, offset);
+        } else if (role === 'user') {
+          response = await getAllPropertiesForSales(UnitsPerPage, offset);
+        } else if (role === "teamLead") {
+          response = await getAllPropertiesForTeamLead(id,UnitsPerPage, offset)
+        }
+        const { properties: allProperties, totalProperties: total } = response;
+        properties = allProperties;
+        totalProperties = total;
+      }
+
+      setUnits(properties)
+      setTotalUnits(totalProperties)
+    } catch (error) {
+      console.error('Error fetching units', error)
+    }
+  }
+
+  // const fetchUnits = async (page = 1, search = "") => {
+  //   const offset = (page - 1) * UnitsPerPage;
+  //   // setIsLoading(true)
+  //   try {
+  //     if (search) {
+  //       console.log("Fetching units with search term:", search);
+  //       const properties = await searchPropertyByName(search);
+  //       setUnits(properties);
+  //       setTotalUnits(properties.length);
+  //       console.log(properties);
+  //     } else {
+  //       console.log("Fetching all units");
+  //       const { properties, totalProperties } = await getAllPropertiesForSales(
+  // UnitsPerPage, offset);
+  //       setUnits(properties);
+  //       setTotalUnits(totalProperties);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching units", error);
+  //   } finally {
+  //     // setIsLoading(false) // Set loading state to false
+  //   }
+  // };
+
+  const handlePageSizeChange = (current, size) => {
+    setUnitsPerPage(size)
+    setCurrentPage(1)
+    console.log(size)
+  }
+
+  // const handleExportCSV = async () => {
+  //   try {
+  //     const  {properties}  = await exportProperties();
+  //     console.log(properties)
+  //     if (!properties || properties.length === 0) {
+  //       toast({
+  //         variant: 'destructive',
+  //         title: 'Error Export Units',
+  //         description: 'No units available to export.',
+  //         status: 'error',
+  //       });
+  //       return;
+  //     }
+
+  //     const csv = Papa.unparse(properties);
+  //     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  //     const url = URL.createObjectURL(blob);
+  //     const link = document.createElement('a');
+  //     link.href = url;
+  //     link.download = 'units.csv';
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+
+  //     toast({
+  //       variant: 'success',
+  //       title: 'Success Export Units',
+  //       description: 'Units exported successfully.',
+  //       status: 'success',
+  //     });
+  //   } catch (error) {
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'Error Exporting Units',
+  //       description: error.message || 'An unexpected error occurred.', // الآن error معرف هنا
+  //       status: 'error',
+  //     });
+  //     console.error('Error exporting units:', error);
+  //   }
+  // };
+  // // const handleImportCSV = (event) => {
+  // //   const file = event.target.files[0];
+  // //   if (!file) {
+  // //     alert('No file selected.');
+  // //     return;
+  // //   }
+
+  // //   Papa.parse(file, {
+  // //     header: true,
+  // //     skipEmptyLines: true,
+  // //     complete: async (results) => {
+  // //       if (results.errors.length > 0) {
+  // //         console.error('Parsing errors:', results.errors);
+  // //         toast({
+  // //           variant: 'destructive',
+  // //           title: 'Invalid file format.',
+  // //           description: 'Please ensure the file is in CSV format.',
+  // //           status: 'error',
+  // //         });
+  // //         return;
+  // //       }
+
+  // //       // Convert necessary attributes from strings to integers
+  // //       const convertedData = results.data.map((property) => ({
+  // //         ...property,
+  // //         totalPrice: parseInt(property.totalPrice, 10),
+  // //         rooms: parseInt(property.rooms, 10),
+  // //         mobileNo: parseInt(property.rooms, 10),
+  // //         tel: parseInt(property.rooms, 10),
+  // //         propertyImage: property.propertyImage ? property.propertyImage.split(',') : [],
+  // //         links: property.links ? property.links.split(',') : [],
+  // //         inHome: property.inHome === 'TRUE',
+  // //         liked: property.liked === 'TRUE',
+  // //       }));
+
+  // //       try {
+  // //         await importProperties(convertedData);
+  // //         toast({
+  // //           variant: 'success',
+  // //           title: 'Success import Units',
+  // //           description: 'Units imported successfully!',
+  // //           status: 'success',
+  // //         });
+  // //       } catch (error) {
+  // //         console.error('Error importing units:', error);
+  // //         toast({
+  // //           variant: 'destructive',
+  // //           title: 'Error importing units:',
+  // //           description: error.message || 'Failed to import units.',
+  // //           status: 'error',
+  // //         });
+  // //       }
+  // //     },
+  // //     error: (error) => {
+  // //       console.error('Error parsing file:', error);
+  // //       toast({
+  // //         variant: 'destructive',
+  // //         title: 'Error importing units:',
+  // //         description: 'Failed to read the CSV file.',
+  // //         status: 'error',
+  // //       });
+  // //     },
+  // //   });
+  // // };
+  // const handleImportCSV = (event) => {
+  //   const file = event.target.files[0];
+  //   if (!file) {
+  //     alert('No file selected.');
+  //     return;
+  //   }
+
+  //   Papa.parse(file, {
+  //     header: true,
+  //     skipEmptyLines: true,
+  //     complete: async (results) => {
+  //       if (results.errors.length > 0) {
+  //         console.error('Parsing errors:', results.errors);
+  //         toast({
+  //           variant: 'destructive',
+  //           title: 'Invalid file format.',
+  //           description: 'Please ensure the file is in CSV format.',
+  //           status: 'error',
+  //         });
+  //         return;
+  //       }
+
+  //       const convertedData = results.data.map((property) => ({
+  //         ...property,
+  //         totalPrice: parseInt(property.totalPrice, 10),
+  //         rooms: parseInt(property.rooms, 10),
+  //         mobileNo: parseInt(property.mobileNo, 10),
+  //         tel: parseInt(property.tel, 10),
+  //         propertyImage: property.propertyImage ? property.propertyImage.split(',') : [],
+  //         links: property.links ? property.links.split(',') : [],
+  //         inHome: property.inHome === 'TRUE',
+  //         liked: property.liked === 'TRUE',
+  //       }));
+
+  //       try {
+  //         await importProperties(convertedData);
+  //         toast({
+  //           variant: 'success',
+  //           title: 'Success import Units',
+  //           description: 'Units imported successfully!',
+  //           status: 'success',
+  //         });
+  //       } catch (error) {
+  //         console.error('Error importing units:', error);
+  //         toast({
+  //           variant: 'destructive',
+  //           title: 'Error importing units:',
+  //           description: error.message || 'Failed to import units.',
+  //           status: 'error',
+  //         });
+  //       }
+  //     },
+  //     error: (error) => {
+  //       console.error('Error parsing file:', error);
+  //       toast({
+  //         variant: 'destructive',
+  //         title: 'Error importing units:',
+  //         description: 'Failed to read the CSV file.',
+  //         status: 'error',
+  //       });
+  //     },
+  //   });
+  // };
+  // const handleDeleteAllProperties = async () => {
+  //   try {
+  //     await deleteAllProperties();
+  //     toast({
+  //       variant: 'success',
+  //       title: 'Success Delete Units',
+  //       description: 'All units deleted successfully.',
+  //       status: 'success',
+  //     });
+  //     // fetchUnits(); // Refresh the state after deletion
+  //   } catch (error) {
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'Error Deleting Units',
+  //       description: error.message || 'An unexpected error occurred.',
+  //       status: 'error',
+  //     });
+  //     console.error('Error deleting units:', error);
+  //   }
+  // };
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value)
+    setCurrentPage(1)
+  }
+
+  useEffect(() => {
+    fetchUnits(currentPage, searchTerm)
+  }, [currentPage, searchTerm, UnitsPerPage])
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+    router.push(`?page=${page}&search=${searchTerm}`)
+    window.scrollTo(0, 0)
+  }
+
+  const onFilterChange = async (e, data) => {
+    console.log(e, data)
+    if (data === 'Category') {
+      const documents = await searchUnitByCategory(e)
+      setUnits(documents)
+      setTotalUnits(documents.length)
+      console.log(documents)
+    }
+    if (data === 'Property Types') {
+      const documents = await searchUnitByTypes(e)
+      setUnits(documents)
+      setTotalUnits(documents.length)
+      console.log(documents)
+    }
+  }
+
+  const handleLike = async (id) => {
+    const data = await togglePropertyLiked(id)
+    fetchUnits(currentPage, searchTerm)
+  }
+
+  const handleShowHome = async (id) => {
+    const data = await togglePropertyInHome(id)
+    fetchUnits(currentPage, searchTerm)
+  }
+
+  const handleCheckUnits = (id) => {
+    setUnitsTransfer((prev) => {
+      const exists = prev.some((unit) => unit.id === id)
+      if (exists) {
+        return prev.filter((unit) => unit.id !== id)
+      } else {
+        return [...prev, id]
+      }
+    })
+  }
+
+  const handleSelect = (userId) => {
+    setSelectedUsers((prevSelected) => {
+      const isSelected = prevSelected.includes(userId)
+      const updatedSelected = isSelected
+        ? prevSelected.filter((id) => id !== userId) // Remove if already selected
+        : [...prevSelected, userId] // Add if not selected
+      console.log('Selected Users:', updatedSelected) // Logging the selectedUsers state
+      return updatedSelected
+    })
+  }
+
+  const fetchUsers = async () => {
+    try {
+      const res = await getUsers()
+      setUsers(res.users)
+      console.log('Fetched Users:', res)
+    } catch (error) {
+      console.error('Error fetching users:', error)
+    }
+  }
+
+  const searchUsersForTransform = async (data) => {
+    try {
+      const res = await searchUsers(data)
+      setUsers(res)
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    console.log(unitsTransfer)
+  }, [unitsTransfer])
+
+  const handleTransferSubmit = async () => {
+    try {
+      await transferUnit(unitsTransfer, selectedUsers)
+      fetchUnits(currentPage, searchTerm) // Refresh the units after transfer
+      setSelectedUsers([]) // Optionally clear selections after transfer
+      toast({
+        variant: 'success',
+        title: 'Success',
+        description: 'Units transferred successfully.',
+        status: 'success',
+      })
+    } catch (error) {
+      console.error('Error transferring units:', error)
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: error.message || 'An unexpected error occurred.',
+        status: 'error',
+      })
+    }
+  }
+
   return (
-    <div className="py-2">
-      <div className="w-full flex flex-wrap justify-between items-start gap-3 max-md:gap-7 px-2 pt-2 max-[1200px]:px-7">
-        <div className="bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap justify-between max-[450px]:justify-center items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
-          <div className="w-3/4 h-max max-[450px]:w-full shadow-box_shadow dark:shadow-none rounded-xl">
-            <input
-              type="text"
-              className="w-full max-[450px]:w-full bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md p-2 max-[450px]:py-1"
-              placeholder={`${t("search_unit")} ...`}
+    <div className='p-6 min-h-screen bg-gray-100 dark:bg-gray-900'>
+      <div className='w-full flex flex-wrap justify-between items-start gap-3 px-2 pt-2 max-[1200px]:px-7'>
+        <Grid
+          item
+          xs={12}
+          sm={7}
+          md={11.3}
+          lg={11.4}
+          className='flex w-full justify-end'
+          dir='ltr'
+        >
+          <div
+            className={`head flex justify-between items-start w-full flex-col  md:flex-row-reverse gap-2 md:gap-5`}
+          >
+            <div
+              className={`flex items-center w-3/4 h-max max-[450px]:w-full dark:shadow-none rounded-xl bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus-within:border-black dark:hover:border-white dark:focus-within:border-white focus:outline-none px-2`}
+            >
+              <span
+                className={`text-gray-400 ${locale === 'ar' ? 'ml-2' : 'mr-2'}`}
+              >
+                <CiSearch />
+              </span>
+              <Input
+                dir={locale == 'ar' ? 'rtl' : 'ltr'}
+                type='text'
+                className='w-full bg-transparent focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 text-lg border-0 shadow-none'
+                placeholder={`${t('search_unit')} ...`}
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+            </div>
+            <div className='flex gap-1 md:gap-2 items-center justify-between w-full md:w-fit'>
+              {/* <div className='flex gap-1 md:gap-2 items-center justify-between w-full'> */}
+              <CustomButton
+                fun={() => router.push('/units/add-unit')}
+                // title={!isMobile && t('add_unit')}
+                title={t('add_unit')}
+                className='GreenButton'
+                icon={() => <IoMdAddCircle />}
+              />
+              <CustomButton
+                // title={!isMobile && t('clear_filter')}
+                title={t('clear_filter')}
+                icon={() => <CiFilter />}
+                className='GreenButton'
+                fun={() => {
+                  handleClearFilters()
+                  fetchUnits(1, '')
+                }}
+              />
+
+              <div>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant='outline'
+                      className='GreenButton'
+                      onClick={() => {
+                        fetchUsers()
+                      }}
+                    >
+                      Transform
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent  className="max-h-[80vh] ">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle> Transform Units </AlertDialogTitle>
+                      <AlertDialogDescription className="max-h-[65vh] py-2 min-h-[10vh] overflow-auto">
+                        <Input
+                          placeholder='Search Users'
+                          onChange={(e) =>
+                            searchUsersForTransform(e.target.value)
+                          }
+                          className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+                        />
+
+                        {users && users.length > 0 ? (
+                          <ul className='mt-4 space-y-2'>
+                            {users.map((user) => (
+                              <li
+                                key={user.userId}
+                                className='p-4 bg-white shadow rounded-lg flex items-center justify-between hover:bg-blue-50 transition dark:bg-gray-900 dark:text-white'
+                              >
+                                <div>
+                                  <p className='font-semibold text-gray-800 dark:text-white'>
+                                    {user.name}
+                                  </p>
+                                  <p className='text-sm text-gray-500 dark:text-white'>
+                                    {user.email}
+                                  </p>
+                                </div>
+                                <Button
+                                  className={`${
+                                    selectedUsers.includes(user.userId)
+                                      ? 'bg-green-500 hover:bg-green-600 text-white'
+                                      : 'bg-green-700 hover:bg-green-900 text-white'
+                                  }`}
+                                  onClick={() => handleSelect(user.userId)}
+                                >
+                                  {selectedUsers.includes(user.userId)
+                                    ? 'Selected'
+                                    : 'Select'}
+                                </Button>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className='mt-4 text-gray-600'>Not found</p>
+                        )}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel
+                        onClick={() => {
+                          setSelectedUsers([]) // Optionally clear selections on cancel
+                        }}
+                      >
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction onClick={handleTransferSubmit}>
+                        Submit
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+
+              {/* <DeleteButton
+                handleDelete={handleDeleteAllProperties}
+                title={!isMobile && t('delete_all_units')}
+                // afterDel={() => fetchUnits(currentPage, searchTerm)}
+              /> */}
+              {/* <div className="block md:hidden"> */}
+              {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />  */}
+              {/* </div> */}
+            </div>
+          </div>
+        </Grid>
+
+        <div
+          className='filter bg-Lightbg dark:bg-transparent rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex justify-end max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-0 md:px-3 shadow-box_shadow dark:shadow-none'
+          dir='rtl'
+        >
+          <div className='filter w-full md:w-full'>
+            <Filter
+              filterChange={onFilterChange}
+              filterValues={filterValues}
+              onFilterChange={handleFilterChange}
+              data={options}
+              col={5}
             />
           </div>
-          <div className="w-max max-[450px]:w-full">
-            <Link
-              href="/units/add-unit"
-              className="GreenButton dark flex justify-between items-center gap-1"
-            >
-              <IoMdAddCircle />
-              {t("add_unit")}
-            </Link>
+          <div className='flex gap-3'>
+            <Input
+              placeholder='To'
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+            />
+            <Input
+              placeholder='From'
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+            />
+            {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
           </div>
         </div>
-        <div className="filter bg-Lightbg dark:bg-cardbgDark rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-3 shadow-box_shadow dark:shadow-none">
-          <Filter data={filterData} />
-        </div>
-        <div className="w-full gap-2 gap-y-5 justify-items-center max-lg:px-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-  {ClientDetails.map((ele) => <CardUnitComponent key={ele.id} ele={ele} /> )}
-</div>
 
-        <div className="footer"></div>
+        <Grid container spacing={1} dir='ltr'>
+          {units.map((unit, index) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+              <CardProperty
+                property={unit}
+                handleLike={handleLike}
+                handleShowHome={handleShowHome}
+                handleCheckUnits={handleCheckUnits}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </div>
+      <div className='footer '>
+        <div className='flex justify-center items-center mt-4' dir='ltr'>
+          <Pagination
+            current={currentPage}
+            showSizeChanger
+            total={totalUnits}
+            pageSize={UnitsPerPage}
+            onShowSizeChange={handlePageSizeChange}
+            onChange={handlePageChange}
+            className='custom-pagination mt-0 mx-auto'
+          />
+        </div>
       </div>
     </div>
-  );
+  )
 }
-export default Page;
-
-
-
-
-
-// "use client";
-// import { useTranslation } from "@/app/context/TranslationContext";
-// import { Button } from "@/components/ui/button";
-// import { Grid } from "@mui/material";
-// import Link from "next/link";
-// import React from "react";
-// import {
-//   AiOutlineUserAdd,
-//   AiOutlineWhatsApp,
-// } from "react-icons/ai";
-// import { FaWhatsapp } from "react-icons/fa";
-// import { FiPhoneCall } from "react-icons/fi";
-// import { MdOutlineMail } from "react-icons/md";
-
-// // import imgg from "@/puplic/assets/images/default-user.jpg"
-
-// const ClientDetails = [
-//   { id: 1, href: '/path/to/image.jpg', name: 'Client 1', phone: '+123456789' },
-//   { id: 2, href: '/path/to/image2.jpg', name: 'Client 2', phone: '+987654321' },
-// ];
-
-// export default function Page() {
-//   const { t } = useTranslation();  
-
-//   const ClientDetails = [
-//     { id: 1, name: "Ahmed", phone: "01011001105", href: "https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600" },
-//   { id: 2, name: "ALi", phone: "01011424232", href: "https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=600" },
-//   { id: 3, name: "Khalid", phone: "01014303103", href: "https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=600" },
-//   { id: 4, name: "Khalid", phone: "01014303103", href: "https://images.pexels.com/photos/280222/pexels-photo-280222.jpeg?auto=compress&cs=tinysrgb&w=600" },
-//   { id: 5, name: "Khalid", phone: "01014303103", href: "https://images.pexels.com/photos/276724/pexels-photo-276724.jpeg?auto=compress&cs=tinysrgb&w=600" },
-//   { id: 6, name: "Khalid", phone: "01014303103", href: "https://images.pexels.com/photos/1396132/pexels-photo-1396132.jpeg?auto=compress&cs=tinysrgb&w=600" },
-//   { id: 7, name: "Khalid", phone: "01014303103", href: "https://images.pexels.com/photos/206172/pexels-photo-206172.jpeg?auto=compress&cs=tinysrgb&w=600" },
-//   { id: 8, name: "Khalid", phone: "01014303103", href: "https://images.unsplash.com/photo-1416331108676-a22ccb276e35?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHJlYWwlMjBzdGF0ZXxlbnwwfHwwfHx8MA%3D%3D" },
-//   { id: 9, name: "Khalid", phone: "01014303103", href: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVhbCUyMHN0YXRlfGVufDB8fDB8fHww" },
-//   { id: 10, name: "Khalid", phone: "01014303103", href: "https://media.istockphoto.com/id/1899637807/photo/cityscape-of-a-residential-area-with-modern-apartment-buildings-new-sustainable-urban.webp?a=1&b=1&s=612x612&w=0&k=20&c=il_mc160U9aObhGQRfbZyUSqPOxzpX4F9ATaR9HQ7_c=" },
-//   { id: 11, name: "Khalid", phone: "01014303103", href: "https://plus.unsplash.com/premium_photo-1684508638760-72ad80c0055f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aG9tZXxlbnwwfHwwfHx8MA%3D%3D" },
-//   { id: 12, name: "Khalid", phone: "01014303103", href: "https://images.unsplash.com/photo-1501183638710-841dd1904471?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGhvbWV8ZW58MHx8MHx8fDA%3D" },
-//   { id: 13, name: "Khalid", phone: "01014303103", href: "https://media.istockphoto.com/id/1288886616/photo/modern-apartment-building.webp?a=1&b=1&s=612x612&w=0&k=20&c=K0dOBLItQAhXHNiL-Ch2jcbMr1cmoDOvYyqRqWTJ_nw=" },
-//   { id: 14, name: "Khalid", phone: "01014303103", href: "https://media.gettyimages.com/id/1149958175/photo/modern-skyscrapers-in-midtown-manhattan.jpg?s=612x612&w=0&k=20&c=Q8y5mYKJKp2vm4g7VQsfTWKK6XdoLjVrXR4yBcNX724=" },
-//   { id: 15, name: "Khalid", phone: "01014303103", href: "https://media.gettyimages.com/id/1437086785/photo/multi-color-leaves-in-neighbourhood-park-at-weston-road-and-major-mackenzie-dr-woodbridge.jpg?s=612x612&w=0&k=20&c=1t0OVT0dmjCVZQgnBBD6qLXpN9vBlhC92hL-dHKZTFQ=" },
-//   { id: 16, name: "Khalid", phone: "01014303103", href: "https://media.gettyimages.com/id/1321598038/photo/modern-luxury-holiday-villa-at-seaside.jpg?s=612x612&w=0&k=20&c=teTOgGgaQaL3Et0-vUcFTKcGR5HegeBQjPfPC5Xo_o8=" },
-//   { id: 17, name: "Khalid", phone: "01014303103", href: "https://media.gettyimages.com/id/1435149042/photo/cityscape-of-a-residential-area-with-modern-apartment-buildings.jpg?s=612x612&w=0&k=20&c=ueetSwQs9VJ_qFpKOKaoDF8_tEEQcYDTGv43WD5HKyc=" },
-//   { id: 18, name: "Khalid", phone: "01014303103", href: "https://media.gettyimages.com/id/1990444472/photo/scandinavian-style-cozy-living-room-interior.jpg?s=612x612&w=0&k=20&c=qgzrs_4vKDrOVo6gVc0EVb9-PziE-REbV9DcM5ZAfig=" },
-//   { id: 19, name: "Khalid", phone: "01014303103", href: "https://media.gettyimages.com/id/1421422160/photo/interior-of-living-room.jpg?s=612x612&w=0&k=20&c=r8Hyrk-1JtHSJS8TA5BfostSuIEd6-L2fLYMoyEBf_E=" },
-//   { id: 20, name: "Khalid", phone: "01014303103", href: "https://media.gettyimages.com/id/1409181133/photo/large-home-exterior-nevada.jpg?s=612x612&w=0&k=20&c=BzNy8vfsAwfrRF_X9qhigJJUYTMqbcMEuA62LPGwi5o=" },
-//   ]
-//   return (
-//     <div className="py-2">
-//       <Grid container className="p-6 w-full">
-//         <Grid item className="flex gap-5 w-full">
-//           <input
-//             type="text"
-//             className="bg-white bg-Lightbg dark:bg-cardbgDark border border-[1px] hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md p-2 max-[450px]:py-1"
-//             style={{ borderColor: '#ccc', flexGrow: "1" }}
-//             placeholder={`${t("search_client")} ...`}
-//           />
-//           <Link
-//             href="/dashboard/leads/add-lead"
-//             className="GreenButton dark md:w-[130px] flex justify-between rounded items-center gap-1"
-//             style={{ borderRadius: "3px" }}
-//           >
-//             <AiOutlineUserAdd className="text-xl" /> {t("add_lead")}
-//           </Link>
-//         </Grid>
-//       </Grid>
-
-//       <Grid container className="flex gap-5 justify-between p-6" style={{ flexWrap: "wrap" }}>
-//         {ClientDetails.map((ele) => (
-//           <Grid item xs={12} sm={5.7} lg={2.8} key={ele.id}>
-//             <div className="rounded-t max-h-max hover:shadow duration-300 bg-Lightbg dark:bg-cardbgDark flex flex-col justify-between items-center gap-4 rounded-b">
-//               <div className="overflow-hidden w-full lg:h-[200px] sm:h-[230px]">
-//               <img className="rounded-t block bg-cover w-full h-full hover:scale-105 duration-500" src={ele.href} alt="User Image" />
-
-//                 {/* <img
-//                   className="rounded-t block bg-cover w-full h-full hover:scale-105 duration-500"
-//                   src={imgg.src} 
-//                   alt="Bold typography"
-//                 /> */}
-//                 {/* <img
-//                   className="rounded-t block bg-cover w-full h-full hover:scale-105 duration-500"
-//                   src={ele.href || '/path/to/default-image.jpg'} 
-//                   alt="Bold typography"
-//                 /> */}
-//               </div>
-//               <div className="w-full h-max flex flex-col justify-center items-start gap-2 p-3">
-//                 <p className="font-bold text-sm capitalize">{t("name")} : {ele.name}</p>
-//                 <p className="font-bold text-xs capitalize">{t("mobile_phone")}: {ele.phone}</p>
-//               </div>
-
-//               <div className="w-full flex justify-between items-center p-3">
-//                 <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border rounded border-gray-400 shadow">
-//                   {t("more_details")}
-//                 </button>
-
-//                 <div className="flex justify-start items-center gap-2">
-//                   <Link href={`tel:${ele.phone}`}>
-//                     <FaWhatsapp className="text-[#08521d] text-xl dark:text-white hover:scale-125 duration-300" />
-//                   </Link>
-//                   <Link href={`tel:${ele.phone}`}>
-//                     <FiPhoneCall className="text-[#08521d] dark:text-white text-xl hover:scale-125 duration-300" />
-//                   </Link>
-//                   <Link href={`mailto:${ele.email}`}>
-//                     <MdOutlineMail className="text-[#08521d] dark:text-white text-xl hover:scale-125 duration-300" />
-//                   </Link>
-//                 </div>
-//               </div>
-//             </div>
-//           </Grid>
-//         ))}
-//       </Grid>
-//     </div>
-//   );
-// }
+export default Page
