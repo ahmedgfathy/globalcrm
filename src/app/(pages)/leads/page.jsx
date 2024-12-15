@@ -7,6 +7,8 @@ import { filterData } from "./data";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Spin } from "antd";
 import { MdDeleteForever } from "react-icons/md"; // Correct import
+import { FaFileImport, FaFileExport } from 'react-icons/fa';
+import { MdOutlineTransform } from 'react-icons/md';
 
 import {
   getAllLeads,
@@ -263,78 +265,103 @@ function Page() {
   return (
     <ProtectedRoute>
       <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
-        <Grid className="w-full my-2" dir="ltr">
-          <Grid
-            item
-            xs={12}
-            sm={7}
-            md={11.3}
-            lg={11.4}
-            className="flex items-center justify-end gap-2"
-          >
-            <div
-              className={`head flex justify-between items-start w-full flex-row-reverse gap-5`}
-            >
-              <div
-                className={`flex items-center w-3/4 h-max max-[450px]:w-full dark:shadow-none rounded-xl bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus-within:border-black dark:hover:border-white dark:focus-within:border-white focus:outline-none px-2`}
-              >
-                <span
-                  className={`text-gray-400 ${
-                    locale === "ar" ? "ml-2" : "mr-2"
-                  }`}
-                >
-                  <CiSearch />
+        {/* Modified Header Section - More Compact */}
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <h1 className="text-lg font-medium text-gray-800 dark:text-white">{t('leads_List')}</h1>
+            <span className="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm text-gray-600 dark:text-gray-300">
+              {totalLeads}
+            </span>
+          </div>
+        </div>
+
+        {/* Modified Action Bar */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-6">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            {/* Search Bar */}
+            <div className="w-full md:w-1/3">
+              <div className="relative">
+                <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
+                  <CiSearch className="text-gray-500" />
                 </span>
                 <Input
                   dir={locale == "ar" ? "rtl" : "ltr"}
                   type="text"
-                  className="w-full bg-transparent focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 text-lg border-0 shadow-none"
-                  placeholder={`${t("search_client")} ...`}
+                  className="w-full pl-10 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded-lg"
+                  placeholder={`${t('search_client')}...`}
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />
               </div>
-              <div className="flex gap-2 items-center">
-                <CustomButton
-                  fun={() => router.push("/leads/add-lead")}
-                  title={!isMobile && t("add_lead")}
-                  className="GreenButton p-2"
-                  icon={() => <IoMdAddCircle />}
-                />
-
-                <CustomButton
-                  title={!isMobile && t("clear_filter")}
-                  icon={() => <CiFilter />}
-                  className="GreenButton w-full md:w-fit"
-                  fun={() => {
-                    handleClearFilters();
-                    fetchLeads(1, "");
-                  }}
-                />
-                <DeleteButton
-              // handleDelete={deleteAllLeads}
-              handleDelete={()=>console.log("no thing")}
-              title={!isMobile && t('delete_all_leads')}
-                afterDel={()=>fetchLeads(
-                  currentPage,
-                  searchTerm,
-                  typeFilter,
-                  customerSourceFilter
-                )}
-              />
-              </div>
             </div>
-          </Grid>
-        </Grid>
+
+            {/* Action Buttons - Modified section */}
+            <div className="flex gap-3 w-full md:w-auto justify-end items-center">
+              {/* Add Lead Button */}
+              <CustomButton
+                fun={() => router.push("/leads/add-lead")}
+                title={t("add_lead")}
+                className="bg-primary hover:bg-primary/90 text-white"
+                icon={() => <IoMdAddCircle className="w-5 h-5" />}
+              />
+              
+              {/* Import Button */}
+              <label className="cursor-pointer">
+                <input
+                  type="file"
+                  onChange={handleImportCSV}
+                  className="hidden"
+                  accept=".csv"
+                />
+                <CustomButton
+                  title={t("import")}
+                  className="border border-blue-500 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                  icon={() => <FaFileImport className="w-5 h-5" />}
+                />
+              </label>
+
+              {/* Export Button */}
+              <CustomButton
+                fun={handleExportCSV}
+                title={t("export")}
+                className="border border-green-500 text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20"
+                icon={() => <FaFileExport className="w-5 h-5" />}
+              />
+
+              {/* Transform Button */}
+              <CustomButton
+                fun={() => router.push("/leads/transform")}
+                title={t("transform")}
+                className="border border-purple-500 text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20"
+                icon={() => <MdOutlineTransform className="w-5 h-5" />}
+              />
+
+              {/* Clear Filter Button */}
+              <CustomButton
+                title={t("clear_filter")}
+                icon={() => <CiFilter className="w-5 h-5" />}
+                className="border border-gray-300 dark:border-gray-600"
+                fun={handleClearFilters}
+              />
+
+              {/* Delete All Button */}
+              <DeleteButton
+                handleDelete={()=>console.log("no thing")}
+                title={t('delete_all_leads')}
+                afterDel={()=>fetchLeads(currentPage, searchTerm)}
+                className="bg-red-500 hover:bg-red-600 text-white"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Leads Table/Grid */}
         {isLoading ? (
-          <div className="flex justify-center items-center h-full">
-            <Spin className="mt-5" size="large" />
+          <div className="flex justify-center items-center h-64">
+            <Spin size="large" />
           </div>
         ) : (
-          <div
-            className="w-full bg-Lightbg dark:bg-cardbgDark shadow rounded-lg overflow-hidden"
-            dir="rtl"
-          >
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
             <ClientTable
               clients={leads}
               handleExportCSV={handleExportCSV}
@@ -350,11 +377,15 @@ function Page() {
               handleFilterChange={handleFilterChange}
               selectedLeads={selectedLeads}
               setSelectedLeads={setSelectedLeads}
+              className="w-full"
+              showActions={false} // Add this prop to hide the three dots menu
             />
           </div>
         )}
-        {!isLoading && (
-          <div className="flex mt-4" dir="ltr">
+
+        {/* Pagination */}
+        {!isLoading && totalLeads > 0 && (
+          <div className="mt-6 flex justify-center">
             <Pagination
               current={currentPage}
               showSizeChanger
@@ -362,7 +393,22 @@ function Page() {
               pageSize={leadsPerPage}
               onShowSizeChange={handlePageSizeChange}
               onChange={handlePageChange}
-              className="custom-pagination "
+              className="custom-pagination bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm"
+            />
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!isLoading && totalLeads === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 dark:text-gray-400 text-lg">
+              {t('no_leads_found')}
+            </p>
+            <CustomButton
+              fun={() => router.push("/leads/add-lead")}
+              title={t("add_lead")}
+              className="mt-4 bg-primary hover:bg-primary/90 text-white"
+              icon={() => <IoMdAddCircle />}
             />
           </div>
         )}
