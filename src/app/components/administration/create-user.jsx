@@ -38,7 +38,7 @@ export default function CreateUser() {
 
     try {
       // Simulate API call
-      const response = await createUser(email, password, `${firstName} ${lastName}`, role);
+      const response = await createUser(email, password, `${firstName} ${lastName}`, role, phone, address, gender);
       setMessage("User created successfully!");
       console.log(response);
     } catch (error) {
