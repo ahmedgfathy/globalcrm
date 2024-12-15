@@ -1,15 +1,17 @@
 "use client";
 import { useTranslation } from "@/app/context/TranslationContext";
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Box, Grid, Tab, Tabs } from "@mui/material";
 import DetailsPageUnits from "@/app/components/units/DetailsPageUnits";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { addProperty, deletePropertyImage, deletePropertyVideo, uploadPropertyImages, uploadPropertyVideo } from "@/actions/propertiesAction";
 import { useRouter } from "next/navigation";
+import { UserContext } from "@/app/context/UserContext";
 
 function Page() {
   const { locale, t } = useTranslation();
+  const [state] = useContext(UserContext)
   const [selectedTab, setSelectedTab] = useState(0);
   const { toast } = useToast();
   const [images, setImages] = useState([]);
@@ -39,7 +41,7 @@ const router = useRouter();
     unitNo: "",
     callUpdate: "",
     forUpdate: "",
-    handler: "",
+    handler: state?.name || "",
     sales: "",
     category: "",
     landArea: "",
@@ -82,6 +84,7 @@ const router = useRouter();
     }
   };
   const handleChange = (_, field, value) => {
+    console.log(state)
     setUnit((prevLead) => ({
       ...prevLead,
       [field]: field === "number" ? parseInt(value, 10) : value,
@@ -161,7 +164,7 @@ const router = useRouter();
 
   const handleError = (error) => {
     // Default error description
-    let description = "There was an issue creating the unit.";
+    let description = error.message;
     console.log(error.message)
 
     // Check for specific error message
@@ -184,19 +187,40 @@ const router = useRouter();
   };
 
   const handleSubmit = async () => {
+
+    if (
+      !unit.unitFor || 
+      !unit.name || 
+      !unit.area || 
+      !unit.propertyOfferedBy || 
+      !unit.compoundName
+    ) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Please fill in all required fields.",
+      });
+      return;
+    }
+    
+
     const currentDateTime = new Date().toLocaleString();
     const modifiedUnit = { ...unit };
-    modifiedUnit.rooms = parseInt(modifiedUnit.rooms, 10)
-    modifiedUnit.totalPrice = parseInt(modifiedUnit.totalPrice, 10)
-    modifiedUnit.PricePerMeter = parseInt(modifiedUnit.PricePerMeter, 10)
-
-    modifiedUnit.videos = JSON.stringify(modifiedUnit.videos)
-    modifiedUnit.propertyImage = JSON.stringify(modifiedUnit.propertyImage)
-    console.log(unit)
+  
+    modifiedUnit.mobileNo = modifiedUnit.mobileNo || `default-mobile-${Date.now()}`;
+    modifiedUnit.tel = modifiedUnit.tel || `default-tel-${Date.now()}`;
+  
+    modifiedUnit.rooms = parseInt(modifiedUnit.rooms, 10) || null;
+    modifiedUnit.totalPrice = parseInt(modifiedUnit.totalPrice, 10) || null;
+    modifiedUnit.PricePerMeter = parseInt(modifiedUnit.PricePerMeter, 10) || null;
+  
+    modifiedUnit.videos = JSON.stringify(modifiedUnit.videos);
+    modifiedUnit.propertyImage = JSON.stringify(modifiedUnit.propertyImage);
+  
     try {
       const response = await addProperty(modifiedUnit);
       console.log("Unit created successfully:", response);
-      console.log(response.$id);
+  
       setUnit({
         building: "",
         unitFor: "",
@@ -230,8 +254,9 @@ const router = useRouter();
         rentTo: "",
         compoundName: "",
         propertyImage: [],
+        videos: []
       });
-
+  
       toast({
         variant: "success",
         title: "Unit Created",
@@ -246,9 +271,10 @@ const router = useRouter();
         ),
       });
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
   };
+  
   
 
   return (

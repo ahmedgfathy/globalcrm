@@ -15,16 +15,6 @@ export function FileCard({ name, onDelete, onDownload, onPreview }) {
         </div>
         <div className="flex items-center gap-2">
             <TooltipProvider>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={onPreview}>
-                <Eye className="h-4 w-4" />
-                <span className="sr-only">Preview file</span>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Preview</TooltipContent>
-          </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon" onClick={onDownload}>
