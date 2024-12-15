@@ -9,7 +9,7 @@ import { uploadImageToBucket } from "@/actions/leadsAction";
 
 
 
-export default function LeadDetails({ page, setIsDisabled, isDisabled, ...props }) {
+export default function LeadDetails({ page, setIsDisabled, isDisabled, actionIcons, ...props }) {
   const [defaultImage, setDefaultImage] = useState("/assets/images/default-user.jpg");
   const { t } = useTranslation();
 
@@ -80,6 +80,9 @@ export default function LeadDetails({ page, setIsDisabled, isDisabled, ...props 
     handleDeleteImage={props.handleDeleteImage}
     isDisabled={isDisabled}
   />
+  <div className="mt-2 flex justify-center">
+    {actionIcons}
+  </div>
   </div>
 </CardContent>
 
