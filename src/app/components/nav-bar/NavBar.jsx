@@ -13,14 +13,14 @@ function NavBar() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 p-6 bg-white dark:bg-dark"
+      className="fixed top-0 right-[250px] left-0 p-6 bg-white dark:bg-dark" // Changed from "right-0" to "right-[250px]"
       style={{
         zIndex: "200",
         backgroundColor: pathName === "/login" ? "transparent" : undefined,
       }}
       dir="ltr"
     >
-      <div className="">
+      <div className="pr-8"> {/* Added right padding */}
         <div className="flex items-center h-10">
             {pathName !== "/login" && pathName !== "/" ? (
       <>

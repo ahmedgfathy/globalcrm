@@ -71,7 +71,7 @@ function SideBar() {
       <Link
         href={`/${item.link}`}
         onClick={() => isMobile && setIsOpen(false)}
-        className={`flex items-center w-full p-3 text-gray-900 dark:text-gray-200 transition duration-100 rounded-lg group 
+        className={`flex items-center w-full p-1 text-gray-900 dark:text-gray-200 transition duration-100 rounded-lg group 
           ${isExpanded ? "text-xl font-semibold" : "text-base font-medium justify-center"}
           ${isActive(item.link)
             ? "bg-dark_link_active dark:bg-dark_link_active text-text_link_active_l dark:text-text_link_active"
