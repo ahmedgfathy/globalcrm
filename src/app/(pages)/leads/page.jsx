@@ -279,7 +279,7 @@ function Page() {
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-6">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             {/* Search Bar */}
-            <div className="w-full md:w-1/3">
+            <div className="w-full md:w-1/2">
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
                   <CiSearch className="text-gray-500" />
@@ -287,7 +287,7 @@ function Page() {
                 <Input
                   dir={locale == "ar" ? "rtl" : "ltr"}
                   type="text"
-                  className="w-full pl-10 bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded-lg"
+                  className="w-full pl-10 border-gray-300 dark:border-gray-600 rounded-lg"
                   placeholder={`${t('search_client')}...`}
                   value={searchTerm}
                   onChange={handleSearchChange}
@@ -301,7 +301,7 @@ function Page() {
               <CustomButton
                 fun={() => router.push("/leads/add-lead")}
                 title={t("add_lead")}
-                className="bg-primary hover:bg-primary/90 text-white"
+                className="bg-orange-700 hover:bg-primary/90 text-white"
                 icon={() => <IoMdAddCircle className="w-5 h-5" />}
               />
               
