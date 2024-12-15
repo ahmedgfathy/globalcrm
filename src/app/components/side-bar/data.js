@@ -49,13 +49,13 @@ export const links = [
     link: "projects",
     icon: () => <GoProject className="text-2xl" />,
   },
-  {
-    id: 5,
-    title: "calls",
-    displayTitle: t => t("calls"),
-    icon: () => <IoCallOutline />,
-    link: "calls"
-  },
+  // {
+  //   id: 5,
+  //   title: "calls",
+  //   displayTitle: t => t("calls"),
+  //   icon: () => <IoCallOutline />,
+  //   link: "calls"
+  // },
   // {
   //   id: 7,
   //   title: "reports",
