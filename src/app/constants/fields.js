@@ -13,6 +13,12 @@ export const LEAD_FIELDS = [
     { fieldId: 'modifiedTime', fieldName: 'modified_time' },
     { fieldId: 'createdTime', fieldName: 'created_time' }
   ];
+export const PROJECT_FIELDS = [
+    { fieldId: 'projectInfo', fieldName: 'projectInformation' },
+    { fieldId: 'projectName', fieldName: 'projectName' },
+    { fieldId: 'companyName', fieldName: 'companyName' },
+    { fieldId: 'companyInfo', fieldName: 'companyInformation' },
+  ];
   
   export const UNIT_FIELDS = [
     { fieldId: 'area', fieldName: 'area' },
@@ -48,7 +54,8 @@ export const LEAD_FIELDS = [
   
   export const ENTITY_TITLES = {
     lead: 'leads',
-    unit: 'units'
+    unit: 'units',
+    project: 'project'
   };
   
   export const getFieldsByEntity = (entityType) => {
@@ -57,6 +64,8 @@ export const LEAD_FIELDS = [
         return LEAD_FIELDS;
       case 'unit':
         return UNIT_FIELDS;
+      case 'project':
+        return PROJECT_FIELDS;
       default:
         return [];
     }
