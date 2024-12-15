@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EntityPermissions } from "./entity-permissions";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2 } from "lucide-react";
+import { Edit, Trash2 } from 'lucide-react';
 import {
   Table,
   TableBody,
@@ -18,9 +18,12 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslation } from "@/app/context/TranslationContext";
 import PermissionsModal from "./permissions-modal";
 
-import { LEAD_FIELDS, UNIT_FIELDS } from "@/app/constants/fields";
+import {
+  LEAD_FIELDS,
+  PROJECT_FIELDS,
+  UNIT_FIELDS,
+} from "@/app/constants/fields";
 import { Label } from "@/components/ui/label";
-
 
 const DEFAULT_PERMISSIONS = [
   ...LEAD_FIELDS.map((field) => ({
@@ -37,7 +40,15 @@ const DEFAULT_PERMISSIONS = [
     canView: false,
     canEdit: false,
   })),
+  ...PROJECT_FIELDS.map((field) => ({
+    fieldId: field.fieldId,
+    fieldName: field.fieldName,
+    entityType: "project",
+    canView: false,
+    canEdit: false,
+  })),
 ];
+
 export default function RoleManagement() {
   const { t } = useTranslation();
   const { toast } = useToast();
@@ -46,11 +57,44 @@ export default function RoleManagement() {
     id: "",
     name: "",
     permissions: [...DEFAULT_PERMISSIONS],
+    canDeleteLead: false,
+    canDeleteUnit: false,
+    canDeleteProject: false,
   });
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState("lead");
   const [selectedRole, setSelectedRole] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSelectAll = (entityType, type) => {
+    setCurrentRole((prev) => {
+      const allChecked = prev.permissions
+        .filter((permission) => permission.entityType === entityType)
+        .every((permission) => permission[type]);
+  
+      return {
+        ...prev,
+        permissions: prev.permissions.map((permission) =>
+          permission.entityType === entityType
+            ? {
+                ...permission,
+                [type]: !allChecked,
+                ...(type === "canView" && allChecked ? { canEdit: false } : {}),
+                ...(type === "canEdit" && !allChecked ? { canView: true } : {}),
+              }
+            : permission
+        ),
+      };
+    });
+  };
+  
+
+  const handleDeletePermissionChange = (entityType, value) => {
+    setCurrentRole((prev) => ({
+      ...prev,
+      [`canDelete${entityType.charAt(0).toUpperCase() + entityType.slice(1)}`]: value,
+    }));
+  };
 
   const handleShowPermissions = (role) => {
     setSelectedRole(role);
@@ -76,7 +120,11 @@ export default function RoleManagement() {
 
   const handleSave = () => {
     if (!currentRole.name.trim()) {
-      toast({ title: "Error", description: "Please enter a role name", variant: "destructive" });
+      toast({
+        title: "Error",
+        description: "Please enter a role name",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -88,7 +136,9 @@ export default function RoleManagement() {
 
     toast({
       title: isEditing ? "Updated" : "Added",
-      description: isEditing ? "Role updated successfully" : "Role added successfully",
+      description: isEditing
+        ? "Role updated successfully"
+        : "Role added successfully",
       variant: "success",
     });
 
@@ -102,11 +152,22 @@ export default function RoleManagement() {
 
   const handleDelete = (deleteRoleId) => {
     setRoles((prev) => prev.filter((role) => role.id !== deleteRoleId));
-    toast({ title: t("Deleted"), description: t("Role_Deleted"), variant: "success" });
+    toast({
+      title: t("Deleted"),
+      description: t("Role_Deleted"),
+      variant: "success",
+    });
   };
 
   const resetForm = () => {
-    setCurrentRole({ id: "", name: "", permissions: [...DEFAULT_PERMISSIONS] });
+    setCurrentRole({
+      id: "",
+      name: "",
+      permissions: [...DEFAULT_PERMISSIONS],
+      canDeleteLead: false,
+      canDeleteUnit: false,
+      canDeleteProject: false,
+    });
     setIsEditing(false);
   };
 
@@ -114,7 +175,9 @@ export default function RoleManagement() {
     <div className="container mx-auto">
       <Card className="bg-Lightbg dark:bg-cardbgDark">
         <CardHeader>
-          <CardTitle>{isEditing ? t("Edit_Role") : t("Add_New_Role")}</CardTitle>
+          <CardTitle>
+            {isEditing ? t("Edit_Role") : t("Add_New_Role")}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="mb-2">
@@ -128,23 +191,61 @@ export default function RoleManagement() {
             />
           </div>
 
-          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value)}>
+          <Tabs
+            value={activeTab}
+            onValueChange={(value) => setActiveTab(value)}
+          >
             <TabsList>
-              <TabsTrigger value="lead" className="data-[state=active]:dark:bg-[#5be49b1a] data-[state=active]:dark:text-[#5be49b]">{t("leads")}</TabsTrigger>
-              <TabsTrigger value="unit" className="data-[state=active]:dark:bg-[#5be49b1a] data-[state=active]:dark:text-[#5be49b]">{t("units")}</TabsTrigger>
+              <TabsTrigger
+                value="lead"
+                className="data-[state=active]:dark:bg-[#5be49b1a] data-[state=active]:dark:text-[#5be49b]"
+              >
+                {t("leads")}
+              </TabsTrigger>
+              <TabsTrigger
+                value="unit"
+                className="data-[state=active]:dark:bg-[#5be49b1a] data-[state=active]:dark:text-[#5be49b]"
+              >
+                {t("units")}
+              </TabsTrigger>
+              <TabsTrigger
+                value="project"
+                className="data-[state=active]:dark:bg-[#5be49b1a] data-[state=active]:dark:text-[#5be49b]"
+              >
+                {t("projects")}
+              </TabsTrigger>
             </TabsList>
+
             <TabsContent value="lead">
               <EntityPermissions
                 entityType="lead"
                 permissions={currentRole.permissions}
                 onPermissionChange={handlePermissionChange}
+                onSelectAll={handleSelectAll}
+                canDelete={currentRole.canDeleteLead}
+                onDeletePermissionChange={(value) => handleDeletePermissionChange("lead", value)}
               />
             </TabsContent>
+
             <TabsContent value="unit">
               <EntityPermissions
                 entityType="unit"
                 permissions={currentRole.permissions}
                 onPermissionChange={handlePermissionChange}
+                onSelectAll={handleSelectAll}
+                canDelete={currentRole.canDeleteUnit}
+                onDeletePermissionChange={(value) => handleDeletePermissionChange("unit", value)}
+              />
+            </TabsContent>
+
+            <TabsContent value="project">
+              <EntityPermissions
+                entityType="project"
+                permissions={currentRole.permissions}
+                onPermissionChange={handlePermissionChange}
+                onSelectAll={handleSelectAll}
+                canDelete={currentRole.canDeleteProject}
+                onDeletePermissionChange={(value) => handleDeletePermissionChange("project", value)}
               />
             </TabsContent>
           </Tabs>
