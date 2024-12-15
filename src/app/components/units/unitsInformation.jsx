@@ -3,221 +3,212 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
-import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
-import ImageSection from "../user-components/utils/ImageSection";
+// import { Button } from "@/components/ui/button";
+// import { Pencil, Trash2 } from "lucide-react";
 import CardHeader from "./utils/CardHeader";
-import VideoSection from "./utils/VideoSection";
+// import VideoSection from "./utils/VideoSection";
+// import MultibleImages from "./utils/MultibleImages";
+// import { uploadPropertyImages } from "@/actions/propertiesAction";
 
 
 
 export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...props }) {
     const { t } = useTranslation();
-    const [image, setImage] = useState("/assets/images/unit-image.jpeg");
-    const [video, setVideo] = useState("/assets/videos/units-video.mp4");  // Default video path
-  
+    const [images, setImages] = useState([]);
+    // const [video, setVideo] = useState("/assets/videos/units-video.mp4");
+
     useEffect(() => {
-      const defaultImage = "/assets/images/unit-image.jpeg";
-      setImage(defaultImage);
-      setIsDisabled(page === "add" ? false : isDisabled);
+        const defaultImage = ["/assets/images/unit-image.jpeg"];
+        setImages(defaultImage);
+        setIsDisabled(page === "add" ? false : isDisabled);
     }, [page, setIsDisabled, isDisabled]);
-  
-    const handleImageChange = (event) => {
-      const file = event.target.files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => setImage(e.target.result);
-        reader.readAsDataURL(file);
-      }
-    };
-  
-    const handleDeleteImage = () => setImage("/assets/images/unit-image.jpeg");
-  
-    const handleVideoChange = (event) => {
-      const file = event.target.files?.[0];
-      if (file) {
-        setVideo(URL.createObjectURL(file));
-      }
-    };
-  
-    const handleDeleteVideo = () => {
-      setVideo("/assets/videos/units-video.mp4");  // Reset to default video
-    };
-  
+
+    // const handleImageChange = (e, index) => {
+    //     const files = Array.from(e.target.files);
+    //     if (files && files.length > 0) {
+    //         const newImages = [...images];
+    //         if (index >= 0 && index < images.length) {
+    //             newImages[index] = URL.createObjectURL(files[0]);
+    //         } else {
+    //             files.forEach((file) => {
+    //                 newImages.push(URL.createObjectURL(file));
+    //             });
+    //         }
+    //         setImages(newImages);
+    //     }
+    // };
+
+    // const handleImageChange = async (event, index = null) => {
+    //     const files = event.target.files;
+    //     if (files && files.length > 0) {
+    //       const uploadedFiles = Array.from(files);
+      
+    //       try {
+    //         const uploadedImages = await uploadPropertyImages(uploadedFiles);
+      
+    //         const imageUrls = uploadedImages.map((file) => file.fileUrl);
+      
+    //         setUnit((prevUnit) => ({
+    //           ...prevUnit,
+    //           UnitImages: index === null 
+    //             ? [...(prevUnit.UnitImages || []), ...imageUrls] 
+    //             : prevUnit.UnitImages.map((img, i) => (i === index ? imageUrls[0] : img)),
+    //         }));
+      
+    //         const imagePreviews = uploadedFiles.map((file) => URL.createObjectURL(file));
+    //         setImages((prevImages) => 
+    //           index === null 
+    //             ? [...prevImages, ...imagePreviews]
+    //             : prevImages.map((img, i) => (i === index ? imagePreviews[0] : img))
+    //         );
+      
+    //         setImagesFile((prevImagesFile) => 
+    //           index === null 
+    //             ? [...prevImagesFile, ...uploadedFiles]
+    //             : prevImagesFile.map((file, i) => (i === index ? uploadedFiles[0] : file))
+    //         );
+      
+    //         console.log("Images uploaded successfully:", uploadedImages);
+    //       } catch (error) {
+    //         console.error("Error uploading image:", error);
+    //         toast({
+    //           variant: "destructive",
+    //           title: "Error Uploading Image",
+    //           description: "There was an error uploading the images.",
+    //         });
+    //       }
+    //     }
+    //   };
+      
+    // const handleDeleteImage = (index) => {
+    //     setImages((prev) => prev.filter((_, i) => i !== index));
+    // };
+    // const handleVideoChange = (event) => {
+    //     const file = event.target.files?.[0];
+    //     if (file) {
+    //         setVideo(URL.createObjectURL(file));
+    //     }
+    // };
+
+    // const handleDeleteVideo = () => {
+    //     setVideo("/assets/videos/units-video.mp4");
+    // };
+    
     const fieldsData = [
-        { id: 1, type: 'input', label: 'property_number', idField: 'propertyNumber', defaultValue: page !== "add" ? "PRO11760" : "" },
+        { id: 25, type: 'input', label: 'property_name_compound_name', idField: 'compoundName', defaultValue: props?.unit?.compoundName },
+        { id: 1, type: 'input', label: 'property_number', idField: 'propertyNumber', defaultValue: props?.unit?.propertyNumber },
+        { id: 17, type: 'input', label: 'unit_no', idField: 'unitNo', defaultValue: props?.unit?.unitNo },
         {
             id: 2,
             type: 'select',
             label: 'unit_for',
             idField: 'unitFor',
-            defaultValue: page !== "add" ? 'New rented' : "",
-            options: [
-                { value: 'New rented', label: 'New rented' },
-                { value: 'Hold now', label: 'Hold now' },
-                { value: 'For sale', label: 'For sale' },
-                { value: 'Sold out', label: 'Sold out' },
-                { value: 'Recycle', label: 'Recycle' },
-            ],
+            defaultValue: props?.unit?.unitFor,
+            options: props?.options?.UnitFor,
         },
         {
             id: 3,
             type: 'select',
             label: 'area',
             idField: 'area',
-            defaultValue: page !== "add" ? '' : "",
-            options: [
-                { value: 'الرحاب', label: 'الرحاب' },
-                { value: 'المعادي', label: 'المعادي' },
-                { value: 'التجمع الاول', label: 'التجمع الاول' },
-                { value: 'اللوتس الشمالية', label: 'اللوتس الشمالية' }
-            ],
+            defaultValue: props?.unit?.area,
+            options: props?.options?.area,
         },
         {
             id: 4,
             type: 'select',
             label: 'rooms',
             idField: 'rooms',
-            defaultValue: page !== "add" ? '3' : "",
-            options: [
-                { value: '1', label: '1' },
-                { value: '2', label: '2' },
-                { value: '3', label: '3' },
-                { value: '4', label: '4' },
-                { value: '5', label: '5' },
-                { value: '6', label: '6' },
-                { value: '7', label: '7' },
-                { value: '8', label: '8' },
-                { value: '9', label: '9' },
-            ],
+            defaultValue: props?.unit?.rooms,
+            options: props?.options?.rooms,
         },
         {
             id: 5,
             type: 'select',
             label: 'phase',
             idField: 'phase',
-            defaultValue: page !== "add" ? '3' : "",
-            options: [
-                { value: '1', label: '1' },
-                { value: '2', label: '2' },
-                { value: '3', label: '3' },
-                { value: '4', label: '4' },
-                { value: '5', label: '5' },
-                { value: '6', label: '6' },
-                { value: '7', label: '7' },
-                { value: '8', label: '8' },
-                { value: '9', label: '9' },
-                { value: 'الحي الاول', label: 'الحي الاول' },
-                { value: 'الحي الثاني', label: 'الحي الثاني' },
-                { value: 'الحي الثالث', label: 'الحي الثالث' },
-                { value: 'الحي الرابع', label: 'الحي الرابع' },
-                { value: '20', label: '20' },
-                { value: '21', label: '21' },
-                { value: '22', label: '22' },
-            ],
+            defaultValue: props?.unit?.phase,
+            options: props?.options?.phase,
         },
         {
             id: 6,
             type: 'select',
             label: 'type',
             idField: 'type',
-            defaultValue: page !== "add" ? 'Twin House' : "",
-            options: [
-                { value: 'Stand alone Compound', label: 'Stand alone Compound' },
-                { value: 'Twin House', label: 'Twin House' },
-                { value: 'Town House CORNER', label: 'Town House CORNER' },
-                { value: 'Town House . M', label: 'Town House . M' },
-                { value: 'APARTMENT COMPOUND', label: 'APARTMENT COMPOUND' },
-                { value: 'ViLLA OUT', label: 'ViLLA OUT' },
-                { value: 'APARTMENT OUT', label: 'APARTMENT OUT' },
-                { value: 'STUDIO', label: 'STUDIO' },
-                { value: 'BESMENT', label: 'BESMENT' },
-                { value: 'DUPLEX G+B', label: 'DUPLEX G+B' },
-                { value: 'DUPLEX G+F', label: 'DUPLEX G+F' },
-                { value: 'DUPLEX ROOF', label: 'DUPLEX ROOF' },
-                { value: 'ROOF', label: 'ROOF' },
-                { value: 'OFFICE SPACE', label: 'OFFICE SPACE' },
-                { value: 'RETAIL', label: 'RETAIL' },
-                { value: 'ADMIN BUILDING', label: 'ADMIN BUILDING' },
-                { value: 'CLINIC', label: 'CLINIC' },
-                { value: 'I VILLA G', label: 'I VILLA G' },
-                { value: 'I VILLA R', label: 'I VILLA R' },
-                { value: 'شاليه', label: 'شاليه' },
-                { value: 'عماره', label: 'عماره' },
-                { value: 'اراضي', label: 'اراضي' },
-                { value: 'مبني تجاري', label: 'مبني تجاري' },
-                { value: 'مبني تجاري - إداري', label: 'مبني تجاري - إداري' },
-                { value: 'صيدليات', label: 'صيدليات' },
-                { value: 'بنزينه', label: 'بنزينه' },
-                { value: 'مستشفيات', label: 'مستشفيات' },
-                { value: 'مصانع', label: 'مصانع' },
-                { value: 'دوبلكس متكرر', label: 'دوبلكس متكرر' }
-            ],
+            defaultValue: props?.unit?.type,
+            options: props?.options?.type,
         },
-        { id: 7, type: 'input', label: 'building', idField: 'building', defaultValue: page !== "add" ? "" : "" },
-        { id: 8, type: 'input', label: 'the_floors', idField: 'theFloors', defaultValue: page !== "add" ? "أول" : "" },
+        { id: 7, type: 'input', label: 'building', idField: 'building', defaultValue: props?.unit?.building },
+        {
+            id: 8,
+            type: "multiselect",
+            label: "the_floors",
+            idField: "theFloors",
+            defaultValue: props?.unit?.theFloors,
+            options: props?.options?.theFloors,
+        },
         {
             id: 9,
             type: 'select',
             label: 'finished',
             idField: 'finished',
-            defaultValue: page !== "add" ? 'SEMI FINISHED' : "",
-            options: [
-                { value: 'SEMI FINISHED', label: 'SEMI FINISHED' },
-                { value: 'FULLY FINISHED', label: 'FULLY FINISHED' },
-                { value: 'Skeleton هيكل خرساني', label: 'Skeleton هيكل خرساني' },
-                { value: 'fully finished & furnished', label: 'fully finished & furnished' },
-                { value: 'SEMI FURNITURE', label: 'SEMI FURNITURE' }
-
-            ],
+            defaultValue: props?.unit?.finished,
+            options: props?.options?.finished,
         },
-        { id: 10, type: 'input', label: 'props_of_unit', idField: 'propsOfUnit', defaultValue: page !== "add" ? "غاز طبيعي" : "" },
+        { id: 10, type: 'input', label: 'props_of_unit', idField: 'unitFeatures', defaultValue: props?.unit?.unitFeatures },
         {
             id: 11,
             type: 'select',
             label: 'inside_outside',
-            idField: 'Inside_Outside',
-            defaultValue: page !== "add" ? 'داخل كمبوند' : "",
-            options: [
-                { value: 'داخل كمبوند', label: 'داخل كمبوند' },
-                { value: 'خارج كمبوند', label: 'خارج كمبوند' },
-                { value: 'مناطق تجاريه', label: 'مناطق تجاريه' }
-            ],
+            idField: 'inOrOutSideCompound',
+            defaultValue: props?.unit?.inOrOutSideCompound,
+            options: props?.options?.inOrOutSideCompound,
         },
-        { id: 12, type: 'input', label: 'total_price', idField: 'totalPrice', defaultValue: page !== "add" ? "20000" : "" },
-        { id: 13, type: 'textarea', label: 'descriptions', idField: 'descriptions', defaultValue: page !== "add" ? '...' : "" },
-        { id: 14, type: 'date', label: 'last_follow_up', idField: 'LastFollowUp', defaultValue: page !== "add" ? '2022-08-30' : "" },
+        { id: 12, type: 'input', label: 'total_price', idField: 'totalPrice', defaultValue: props?.unit?.totalPrice },
+        { id: 24, type: 'input', label: 'Meter price', idField: 'PricePerMeter', defaultValue: props?.unit?.totalPrice },
+        {
+            id: 21,
+            type: 'select',
+            label: 'currency',
+            idField: 'currency',
+            defaultValue: props?.unit?.currency,
+            options: props?.options?.currency,
+        },
+        { id: 14, type: 'date', label: 'last_follow_up', idField: 'lastFollowIn', defaultValue: props?.unit?.lastFollowIn },
         {
             id: 15,
             type: 'select',
             label: 'activity',
             idField: 'activity',
-            defaultValue: page !== "add" ? 'سكني' : "",
-            options: [
-                { value: 'سكني', label: 'سكني' },
-                { value: 'اداري مرخص', label: 'اداري مرخص' },
-                { value: 'اداري غير مرخص', label: 'اداري غير مرخص' },
-                { value: 'تجاري', label: 'تجاري' },
-                { value: 'طبي', label: 'طبي' }
-            ],
+            defaultValue: props?.unit?.activity,
+            options: props?.options?.activity,
         },
-        { id: 16, type: 'input', label: 'status', idField: 'status', defaultValue: page !== "add" ? 'Clinics' : "" },
+        { id: 16, type: 'input', label: 'status', idField: 'status', defaultValue: props?.unit?.status },
+       
+        { id: 22, type: 'date', label: 'rent_from', idField: 'rentFrom', defaultValue: props?.unit?.rentFrom },
+        { id: 23, type: 'date', label: 'rent_to', idField: 'rentTo', defaultValue: props?.unit?.rentTo },
+        { id: 20, type: 'input', label: 'land_area', idField: 'landArea', defaultValue: props?.unit?.landArea },
+        { id: 18, type: 'date', label: 'created_time', idField: 'createdTime', defaultValue: props?.unit?.createdTime },
+        { id: 19, type: 'date', label: 'modified_time', idField: 'modifiedTime', defaultValue: props?.unit?.modifiedTime },
+        { id: 13, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props?.unit?.description },
     ];
 
     return (
-        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-4 overflow-x-hidden">
+        <Card className="menu-drawer w-full h-max bg-Lightbg dark:bg-cardbgDark shadow-box_shadow dark:shadow-none py-4 overflow-x-hidden" >
             <CardHeader
                 handleSubmit={props.handleSubmit}
                 title={props.title}
+                isDisabled={isDisabled}
                 description={props.description}
+                unit={props.unit}
                 page={page}
                 setIsDisabled={setIsDisabled}
                 t={t}
             />
 
-            <CardContent className="w-full overflow-x-hidden lg:grid gap-2 gap-y-8 lg:grid-cols-4 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
-                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} />
-                <Card className="h-max bg-transparent pt-5">
+            <CardContent className="w-full overflow-x-hidden d gap-2 gap-y-8 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
+                <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} col={true} />
+                {/* <Card className="h-max bg-transparent pt-5">
                     <CardContent className="bg-transparent p-0 space-y-2">
                         <div className="relative h-48 lg:h-40 p-0">
                             <iframe
@@ -251,9 +242,9 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                                 </div>
                             </div>
                         </div>
-                        <ImageSection
-                            image={image}
-                            handleImageChange={handleImageChange}
+                        <MultibleImages
+                            images={props?.unit?.propertyImage || images}
+                            handleImageChange={props?.handleImageChange}
                             handleDeleteImage={handleDeleteImage}
                             isDisabled={isDisabled}
                         />
@@ -264,7 +255,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                             isDisabled={isDisabled}
                         />
                     </CardContent>
-                </Card>
+                </Card> */}
             </CardContent>
         </Card>
     );

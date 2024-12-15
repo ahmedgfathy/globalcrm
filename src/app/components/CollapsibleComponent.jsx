@@ -40,9 +40,9 @@ const CollapsibleComponent = ({ items }) => {
   }));
 
   return (
-    <div>
+    <div className="">
       {updatedItems.map((item) => (
-        <div className="pb-4" key={item.key}>{item.children}</div>
+        <div className="pb-4 w-full" key={item.key}>{item.children}</div>
       ))}
     </div>
   );

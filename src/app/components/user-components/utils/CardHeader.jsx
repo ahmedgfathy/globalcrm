@@ -26,10 +26,17 @@ function CardHeader({ title, description, page, setIsDisabled, t, handleSubmit, 
               className="GreenButton dark"
               onClick={() => {isDisabled ?  setIsDisabled(false) : handleSubmit()}}
             >
-              {t("Update")}
+              {isDisabled ?  t("Update") : t("save")}
+            </Button>
+            <Button
+              className=""
+              variant="secondary"
+              onClick={() => {!isDisabled ?  setIsDisabled(true) : router.back()}}
+            >
+              {!isDisabled ?  t("exit") : t("back")}
             </Button>
             <DeleteButton
-              handleDelete={() => deleteLead(lead.$id)} afterDel={()=>router.push("/leads")}
+              handleDelete={() => deleteLead(lead.$id)} afterDel={()=>router.back()}
               className="DeleteButton dark"
             >
               {t("Delete")}

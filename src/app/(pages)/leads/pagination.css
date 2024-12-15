@@ -1,0 +1,46 @@
+.custom-pagination .ant-pagination-item {
+  border: none;
+  background-color: #10b981; /* Green background */
+  color: white;
+  font-weight: bold;
+}
+
+.custom-pagination .ant-pagination-item a {
+  color: white;
+}
+
+.custom-pagination .ant-pagination-item-active {
+  background-color: #047857; /* Darker green for active item */
+}
+
+.custom-pagination .ant-pagination-item:hover {
+  background-color: #059669; /* Hover effect */
+}
+
+.custom-pagination .ant-pagination-item a:hover {
+  color: white;
+}
+
+.custom-pagination .ant-pagination-prev,
+.custom-pagination .ant-pagination-next {
+  border: none;
+  background-color: #10b981; /* Green background */
+  color: white;
+}
+
+.custom-pagination .ant-pagination-prev:hover,
+.custom-pagination .ant-pagination-next:hover {
+  background-color: #059669; /* Hover effect */
+}
+
+.custom-pagination .ant-pagination-prev a,
+.custom-pagination .ant-pagination-next a {
+  color: white;
+}
+
+.custom-pagination .ant-pagination-prev a:hover,
+.custom-pagination .ant-pagination-next a:hover {
+  color: white;
+}
+
+/* Add this to your CSS file */

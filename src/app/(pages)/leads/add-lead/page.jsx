@@ -1,9 +1,9 @@
 "use client";
 import Details from "@/app/components/user-components/Details";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { Grid, Tab, Tabs, Box } from "@mui/material";
-import { addLead } from "@/actions/leadsAction";
+import { addLead, uploadImageToBucket } from "@/actions/leadsAction";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
@@ -13,6 +13,8 @@ function Page() {
   const { toast } = useToast();
   const [selectedTab, setSelectedTab] = useState(0);
   const router = useRouter();
+  const [image, setImage] = useState("/");
+  const [imageFile, setImageFile] = useState(null); 
   const [lead, setLead] = useState({
     name: "",
     leadNumber: "",
@@ -25,17 +27,20 @@ function Page() {
     customerSource: "",
     type: "",
     leadStatus: "",
-    modifiedTime: "",
-    createdTime: "",
+    leadImage:""
   });
   const handleChange = (_, field, value) => {
     setLead((prevLead) => ({
       ...prevLead,
-      [field]: field === "number" ? parseInt(value, 10) : value,
+      [field]:  value,
     }));
   };
-
-  const handleTabChange = (newValue) => {
+  const handleDeleteImage = () => {
+    setImage("/assets/images/default-user.jpg");
+    setLead({...lead, leadImage: "/assets/images/default-user.jpg"})
+    setImageFile(null); 
+  };
+  const handleTabChange = (_, newValue) => {
     setSelectedTab(newValue);
   };
 
@@ -43,8 +48,6 @@ function Page() {
     const currentDateTime = new Date().toLocaleString();
     try {
       const response = await addLead(lead);
-      console.log("Lead created successfully:", response);
-      console.log(response.$id);
       setLead({
         name: "",
         leadNumber: "",
@@ -57,8 +60,6 @@ function Page() {
         customerSource: "",
         type: "",
         leadStatus: "",
-        modifiedTime: "",
-        createdTime: "",
       });
 
       toast({
@@ -89,14 +90,29 @@ function Page() {
       });
     }
   };
-
+  const handleImageChange = async (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setImage(e.target.result);
+      reader.readAsDataURL(file);
+      setImageFile(file);
+      try {
+        const response = await uploadImageToBucket(file);
+        setLead({...lead, leadImage: response.fileUrl});
+        console.log("Image uploaded successfully:", response);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
       <Grid
         container
         direction="row"
         wrap="nowrap"
-        className="gap-6 max-sm:gap-1 py-6 px-4"
+        className="gap-6 max-sm:gap-1 py-6 px-4 min-h-screen"
       >
         <Grid
           item
@@ -117,10 +133,22 @@ function Page() {
             style={{ height: "100%", paddingTop: 16 }}
           >
             <Tab
-              label="Lead Details"
+              label={t("Lead_Details")}
               sx={{
+                color: "#5be49b",
                 "&.Mui-selected": {
                   color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
+                },
+              }}
+            />
+            <Tab
+              label={t("Lead_History")}
+              sx={{
+                color: "#5be49b",
+                "&.Mui-selected": {
+                  color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
                 },
               }}
             />
@@ -135,7 +163,28 @@ function Page() {
           {selectedTab === 0 && (
             <Details
               handleChange={handleChange}
+              image={lead.leadImage || image}
+              setImage={setImage}
+              imageFile={imageFile}
+              setImageFile={setImageFile}
               handleSubmit={handleSubmit}
+              handleDeleteImage={handleDeleteImage}
+              handleImageChange={handleImageChange}
+              page="add"
+              title={t("Lead_Details")}
+              description={t("Lead_descriptions")}
+            />
+          )}
+          {selectedTab === 1 && (
+            <Details
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              image={image}
+              setImage={setImage}
+              imageFile={imageFile}
+              setImageFile={setImageFile}
+              handleImageChange={handleImageChange}
+              handleDeleteImage={handleDeleteImage}
               page="add"
               title={t("Lead_Details")}
               description={t("Lead_descriptions")}

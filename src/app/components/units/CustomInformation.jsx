@@ -4,7 +4,6 @@ import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
 
 
-
 export default function CustomInformation({ page, setIsDisabled, isDisabled, ...props }) {
     const { t } = useTranslation();
 
@@ -14,45 +13,28 @@ export default function CustomInformation({ page, setIsDisabled, isDisabled, ...
             type: 'select',
             label: 'property_offered_by',
             idField: 'propertyOfferedBy',
-            defaultValue: page !== "add" ? 'مالك' : "",
-            options: [
-                { value: 'مالك', label: 'مالك' },
-                { value: 'مسؤول طرف المالك', label: 'مسؤول طرف المالك' },
-                { value: 'مكتب عقاري', label: 'مكتب عقاري' },
-                { value: 'حارس العقار', label: 'حارس العقار' }
-            ],
+            defaultValue: props?.unit?.propertyOfferedBy,
+            options: props?.options?.propertyOfferedBy,
         },
-        { id: 2, type: 'input', label: 'name', idField: 'name', defaultValue: page !== "add" ? "khalid" : "" },
-        { id: 3, type: 'input', label: 'unit_no', idField: 'unitNo', defaultValue: page !== "add" ? "1010" : "" },
+        { id: 2, type: 'input', label: 'name', idField: 'name', defaultValue: props?.unit?.name },
+        
         {
             id: 4,
             type: 'select',
             label: 'update',
-            idField: 'update',
-            defaultValue: page !== "add" ? 'New rented' : "",
-            options: [
-                { value: 'Want Upadate', label: 'Want Upadate' },
-                { value: 'Hidden', label: 'Hidden' }
-            ],
+            idField: 'forUpdate',
+            defaultValue: props?.unit?.forUpdate,
+            options: props?.options?.forUpdate,
         },
-        { id: 5, type: 'input', label: 'mobile_no', idField: 'mobileNo', defaultValue: page !== "add" ? "01087559165" : "" },
-        { id: 6, type: 'input', label: 'tel', idField: 'tel', defaultValue: page !== "add" ? "" : "" },
+        { id: 5, type: 'input', label: 'mobile_no', idField: 'mobileNo', defaultValue: props?.unit?.mobileNo },
+        { id: 6, type: 'input', label: 'tel', idField: 'tel', defaultValue: props?.unit?.tel },
         {
             id: 7,
             type: 'select',
             label: 'update_calls',
-            idField: 'updateCalls',
-            defaultValue: page !== "add" ? 'تم الرد' : "",
-            options: [
-                { value: 'تم الرد', label: 'تم الرد' },
-                { value: 'لا يرد', label: 'لا يرد' },
-                { value: 'مغلق', label: 'مغلق' },
-                { value: 'رقم دولي', label: 'رقم دولي' },
-                { value: 'بيكنسل', label: 'بيكنسل' },
-                { value: 'غير موجود بالخدمه', label: 'غير موجود بالخدمة' },
-                { value: 'بدون رقم موبايل', label: 'بدون رقم موبايل' },
-                { value: 'الرقم غلط', label: 'الرقم غلط' }
-            ]
+            idField: 'callUpdate',
+            defaultValue: props?.unit?.callUpdate,
+            options: props?.options?.callUpdate
         },
     ];
 

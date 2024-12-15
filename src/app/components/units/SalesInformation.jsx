@@ -2,6 +2,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 
 
@@ -13,49 +15,33 @@ export default function SalesInformation({ page, setIsDisabled, isDisabled, ...p
             id: 1,
             type: 'select',
             label: 'handler',
-            idField: 'handeler',
-            defaultValue: page !== "add" ? 'Group' : "",
-            options: [
-                { value: 'Group', label: 'Group' },
-                { value: 'Users', label: 'Users' },
-            ],
+            idField: 'handler',
+            defaultValue: props?.unit?.handler,
+            options: props?.options?.handler,
         },
         {
             id: 2,
             type: 'select',
             label: 'sales',
             idField: 'sales',
-            defaultValue: page !== "add" ? 'alaa zaki' : "",
-            options: [
-                { value: 'basma', label: 'بسماء' },
-                { value: 'EMAN', label: ' إيمان' },
-                { value: 'ASHOR', label: 'أشرف' },
-                { value: 'amgd', label: 'عماد' },
-                { value: 'abd elrhman ra2ft', label: 'عبد الرحمن رفعت' },
-                { value: 'romany magdy', label: 'روماني مجدي' },
-                { value: 'rahma', label: 'رحمة' },
-                { value: 'ahmed abd elatef', label: 'أحمد عبد العاطي' },
-                { value: 'alaa zaki', label: 'علاء زكي' },
-                { value: 'mohamed zaki', label: 'محمد زكي' },
-                { value: 'abd elrhman zaki', label: 'عبد الرحمن زكي' },
-                { value: 'abullah reda', label: 'عبد الله رضا' },
-                { value: 'yousef mohamed', label: 'يوسف محمد' },
-                { value: 'mustafa ashour', label: 'مصطفى أشرف' },
-                { value: 'doaa reda', label: 'دعاء رضا' },
-                { value: 'maii', label: 'مايا' },
-                { value: 'shahd', label: 'شهد' },
-                { value: 'ahmed hany', label: 'أحمد هاني' }
-            ],
+            defaultValue: props?.unit?.sales,
+            options: props?.options?.sales,
         },
         {
             id: 3,
             type: 'select',
             label: 'category',
             idField: 'category',
-            defaultValue: page !== "add" ? 'Stars' : "",
-            options: [
-                { value: 'Stars', label: 'Stars' },
-            ],
+            defaultValue: props?.unit?.category,
+            options: props?.options?.category,
+        },
+        {
+            id: 4,
+            type: 'textarea',
+            label: 'Sales Notes',
+            idField: 'note',
+            defaultValue: props?.unit?.note,
+            options: props?.options?.note,
         },
     ];
 

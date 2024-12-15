@@ -3,21 +3,24 @@ import Details from "@/app/components/user-components/Details";
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { Tabs, Tab, Box, Grid } from "@mui/material";
-import { getLeadById, updateLeadByID } from "@/actions/leadsAction";
+import { getLeadById, updateLeadByID, uploadImageToBucket } from "@/actions/leadsAction";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-
+import { useRouter, useSearchParams } from 'next/navigation';
 function Page({ params }) { 
+  const searchParams = useSearchParams();
+const currentPage = searchParams.get('page') || '1';
   const { toast } = useToast()
   const { locale, t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(0);
   const [lead, setLead] = useState({}); 
   const router = useRouter();
+  const [image, setImage] = useState("/");
+  const [imageFile, setImageFile] = useState(null); 
   const handleChange = (_, field, value) => {
     setLead((prevLead) => ({
       ...prevLead,
-      [field]: field === "number" ? parseInt(value, 10) : value,
+      [field] : value,
     }));
   };
 
@@ -37,12 +40,30 @@ function Page({ params }) {
   useEffect(() => {
     if (params.id) fetchLead(); 
   }, [params]);
-
+  const handleImageChange = async (event) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => setImage(e.target.result);
+      reader.readAsDataURL(file);
+      setImageFile(file);
+      try {
+        const response = await uploadImageToBucket(file);
+        setLead({...lead, leadImage: response.fileUrl});
+        console.log("Image uploaded successfully:", response);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
+  const handleDeleteImage = () => {
+    setImage("/assets/images/default-user.jpg");
+    setImageFile(null);
+  };
   const handleSubmit = async () => {
     const currentDateTime = new Date().toLocaleString();
     try {
       const response = await updateLeadByID(params.id,lead);
-      console.log("Lead created successfully:", response);
       setLead({
         name: "",
         leadNumber: "",
@@ -55,8 +76,6 @@ function Page({ params }) {
         customerSource: "",
         type: "",
         leadStatus: "",
-        modifiedTime: "",
-        createdTime: "",
       });
       toast({
         title: "Lead Updated",
@@ -64,13 +83,12 @@ function Page({ params }) {
         action: (
           <ToastAction
             altText="ok"
-            onClick={() => router.push(`/leads/${response.$id}`)}
+            onClick={() => router.back()}
           >
             Show Details
           </ToastAction>
         ),
       });
-      router.push("/leads")
     } catch (error) {
       console.error("Error Updating lead:", error);
 
@@ -103,10 +121,22 @@ function Page({ params }) {
             style={{ height: "100%", paddingTop: 16 }}
           >
             <Tab
-              label={t("Lead_Details")} 
+              label={t("Lead_Details")}
               sx={{
+                color: "#5be49b",
                 "&.Mui-selected": {
                   color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
+                },
+              }}
+            />
+            <Tab
+              label={t("Lead_History")}
+              sx={{
+                color: "#5be49b",
+                "&.Mui-selected": {
+                  color: "#5be49b",
+                  backgroundColor: "rgba(91, 228, 155, 0.1)"
                 },
               }}
             />
@@ -118,6 +148,27 @@ function Page({ params }) {
             <Details
               handleChange={handleChange}
               handleSubmit={handleSubmit}
+              handleDeleteImage={handleDeleteImage}
+              setImage={setImage}
+              imageFile={imageFile}
+              image={image}
+              setImageFile={setImageFile}
+              handleImageChange={handleImageChange}
+              lead={lead}
+              page="view"
+              title={t("Lead_Details")}
+              description={t("Lead_descriptions")}
+            />
+          )}
+          {selectedTab === 1 && (
+            <Details
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              handleDeleteImage={handleDeleteImage}
+              setImage={setImage}
+              imageFile={imageFile}
+              setImageFile={setImageFile}
+              handleImageChange={handleImageChange}
               lead={lead}
               page="view"
               title={t("Lead_Details")}

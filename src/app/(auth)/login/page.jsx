@@ -1,19 +1,38 @@
 "use client";
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext , useEffect} from "react";
 import style from "./page.module.css";
 import { useRouter } from "next/navigation";
 import FormComponent from "@/app/components/FormComponent/FormComponent";
 import Image from "next/image";
 import { Grid } from "@mui/material";
+import { signIn } from "@/actions/auth";
+import { useToast } from "@/hooks/use-toast";
+import { UserContext } from "@/app/context/UserContext";
 
 function Page() {
+  const {toast} = useToast()
   const router = useRouter();
+  const [state, setState] = useContext(UserContext)
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+
+    const session = localStorage.getItem('session'); 
+    
+
+  
+    // Or check for a specific condition in your user state
+    if (session || state?.userData?.token) {
+      router.push("/dashboard");
+    }
+  }, [state, router]);
+
+
   const togglePasswordVisibility = useCallback(() => {
     setShowPassword((prevShow) => !prevShow);
   }, []);
@@ -25,18 +44,60 @@ function Page() {
     }));
   }, []);
 
+  
+  const handleLoginUser = async (e) => {
+    e.preventDefault();
+    if (!formData.email || !formData.password) {
+      toast({
+        variant: "destructive",
+        title: "Missing Credentials",
+        description: "Please enter both email and password.",
+        status: "error",
+      });
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      console.log(formData.email, formData.password);
+      const { userData } = await signIn(formData.email, formData.password);
+      console.log(userData);
+      setState({ userData });
+      toast({
+        variant: "success",
+        title: "Success Login User",
+        description: `Welcome back ${userData?.name || ""}`,
+        status: "success",
+      });
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Error logging in user:", error);
+      toast({
+        variant: "destructive",
+        title: "Error Login User",
+        description: error.message || "There was an issue logging in.",
+        status: "error",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+
+
+  
   return (
     <div className="login">
-      <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center ">
+      <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
         <div className="grid lg:grid-cols-[1fr_2fr] max-sm:grid-cols-1 w-full">
           <div className="bg-[#eee] dark:text-anti-flash_white dark:bg-dark min-h-screen w-full hidden lg:flex flex-col justify-evenly items-center">
             <div className="flex flex-col justify-evenly items-center h-[50vh]">
               <div className="title">
-                <h1 className="text-2xl font-bold">Vision Integration</h1>
+                <h1 className="text-2xl font-bold">رؤية جديدة</h1>
               </div>
               <div className="text">
                 <h3>
-                  تقدم الحل الأمثل لسير العمل بأعلى مستويات التقانة والتحليل
+                  {/* تقدم الحل الأمثل لسير العمل بأعلى مستويات التقانة والتحليل */}
+                  جلوبال ماركيتنج العقارية , الحل الامثل للتسويق العقاري
                 </h3>
               </div>
               <div className="img relative w-full h-[300px]">
@@ -60,11 +121,10 @@ function Page() {
                     show={showPassword}
                     changeType={togglePasswordVisibility}
                     handleChange={handleChange}
-                    handleSubmit={() => router.push("/dashboard")}
+                    handleSubmit={handleLoginUser}
                     disable={isSubmitting}
                   />
                 </div>
-
               </Grid>
             </Grid>
           </div>
