@@ -602,10 +602,10 @@ function Page() {
                       Transform
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent>
+                  <AlertDialogContent  className="max-h-[80vh] ">
                     <AlertDialogHeader>
                       <AlertDialogTitle> Transform Units </AlertDialogTitle>
-                      <AlertDialogDescription>
+                      <AlertDialogDescription className="max-h-[65vh] py-2 min-h-[10vh] overflow-auto">
                         <Input
                           placeholder='Search Users'
                           onChange={(e) =>

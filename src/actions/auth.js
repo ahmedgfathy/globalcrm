@@ -35,6 +35,7 @@ export const signIn = async (email, password) => {
       userEmail: userDocument.email,
       role: userDocument.role,
       userId: user.$id,
+      name: user.name
     };
 
     localStorage.setItem('session', JSON.stringify({ userData }));
