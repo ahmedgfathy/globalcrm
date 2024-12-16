@@ -13,7 +13,7 @@ function NavBar() {
 
   return (
     <nav
-      className="fixed top-0 right-[90px] left-0 p-7 bg-white dark:bg-gray-800"
+      className="fixed top-0 right-[90px] left-0 p-7 bg-white dark:bg-gray-900"
       style={{
         zIndex: "200",
         backgroundColor: pathName === "/login" ? "transparent" : undefined,
