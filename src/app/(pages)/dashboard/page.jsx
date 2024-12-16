@@ -33,42 +33,37 @@ function Page() {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchDashboardData = async () => {
+  const fetchData = async () => {
     try {
-      setLoading(true);
-      // Use the new optimized dashboard stats endpoint
-      const dashboardStats = await getDashboardStats();
-      
-      const settings = await getAllSettings();
-      const dataJson = JSON.parse(settings[0]?.leadSettings || "{}");
-      const customerSources = dataJson.customerSource || [];
-      
-      setData({
-        social_media_leads: dashboardStats.sourceData['Social Media'] || 0,
-        company_leads: dashboardStats.sourceData['Company'] || 0,
-        partner_leads: dashboardStats.leadsCount
-      });
-      
-      // Fetch units data separately as it might be less frequently updated
-      const units = await getPropertiesActivity();
-      setUnitsCount(units);
-      
-      setChartData(prepareChartData(customerSources, dashboardStats.sourceData));
+      const count = await getLastMonthLeadsCount();
+      setData((prevData) => ({ ...prevData, partner_leads: count }));
     } catch (error) {
-      console.error("Dashboard data fetch error:", error);
-    } finally {
-      setLoading(false);
+      console.error("Error fetching leads count:", error);
     }
   };
 
-  // Add debouncing to prevent multiple rapid fetches
-  useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      fetchDashboardData();
-    }, 300);
+  const fetchUnitData = async () => {
+    try {
+      const units = await getPropertiesActivity();
+      setUnitsCount(units);
+    } catch (error) {
+      console.error("Error fetching unit data:", error);
+    }
+  };
 
-    return () => clearTimeout(debounceTimer);
-  }, []);
+  const fetchSources = async () => {
+    try {
+      const documents = await getAllSettings();
+      const dataJson = JSON.parse(documents[0]?.leadSettings || "{}");
+      setSources(dataJson.customerSource || []);
+
+      const res = await getLeadsBySource();
+      const updatedSources = prepareChartData(dataJson.customerSource, res);
+      setChartData(updatedSources);
+    } catch (error) {
+      console.error("Error fetching sources:", error);
+    }
+  };
 
   const prepareChartData = (sources = [], apiResponse = {}) => {
     const colors = ["#007867", "#ff5630", "#5f942e", "#ffc107", "#6a1b9a", "#00838f", "#c0ca33", "#8e24aa"];
@@ -79,6 +74,14 @@ function Page() {
     }));
   };
 
+  useEffect(() => {
+    const fetchAllData = async () => {
+      setLoading(true);
+      await Promise.all([fetchData(), fetchUnitData(), fetchSources()]);
+      setLoading(false);
+    };
+    fetchAllData();
+  }, []);
   const unitsInfo = [
     { id: 1, title: "residential", number: unitsCount["سكني"] || 0, time: "last_s_days", percent: "+٢٫٦%", color: "#007867" },
     { id: 3, title: "administrative", number: unitsCount["اداري"] || 0, time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" },

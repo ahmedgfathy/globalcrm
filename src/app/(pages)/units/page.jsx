@@ -24,7 +24,8 @@ import {
   searchUnitByCategory,
   searchUnitByTypes,
   transferUnit,
-  getAllPropertiesForTeamLead
+  getAllPropertiesForTeamLead,
+  searchPropertyByNameForAdmin
 } from '@/actions/propertiesAction'
 import { UserContext } from '@/app/context/UserContext'
 import DeleteButton from '@/app/components/delete-button/DeleteButton'
@@ -134,8 +135,13 @@ function Page() {
       try {
         const { parsedFrom, parsedTo } = parseFromTo()
         if (searchTerm) {
-          const propertiesByName = await searchPropertyByName(searchTerm)
-          console.log('Fetched properties by name:', propertiesByName)
+          let propertiesByName;
+          if (role === 'admin') {
+            propertiesByName = await searchPropertyByNameForAdmin(searchTerm);
+          } else {
+            propertiesByName = await searchPropertyByName(searchTerm);
+          }
+          console.log('Fetched properties by name:', propertiesByName);
         }
         if (parsedFrom || parsedTo) {
           const { properties, total } = await searchPropertyByRange(
@@ -182,10 +188,15 @@ function Page() {
       let totalProperties = 0
 
       if (search) {
-        const propertiesByName = await searchPropertyByName(search)
-        properties = propertiesByName
-        totalProperties = propertiesByName.length
-      } else if (range.from || range.to) {
+        let propertiesByName;
+        if (role === 'admin') {
+          propertiesByName = await searchPropertyByNameForAdmin(search);
+        } else {
+          propertiesByName = await searchPropertyByName(search);
+        }
+        properties = propertiesByName;
+        totalProperties = propertiesByName.length;
+      }else if (range.from || range.to) {
         const { properties: propertiesByRange, total } =
           await searchPropertyByRange(
             range.from,
