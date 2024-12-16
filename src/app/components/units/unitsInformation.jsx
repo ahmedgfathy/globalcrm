@@ -3,99 +3,35 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
+import { IconButton, Button } from '@mui/material';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import CallIcon from '@mui/icons-material/Call';
+import EmailIcon from '@mui/icons-material/Email';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 // import { Button } from "@/components/ui/button";
 // import { Pencil, Trash2 } from "lucide-react";
 import CardHeader from "./utils/CardHeader";
-// import VideoSection from "./utils/VideoSection";
-// import MultibleImages from "./utils/MultibleImages";
-// import { uploadPropertyImages } from "@/actions/propertiesAction";
+import { getProjects } from "@/actions/projectAction";
 
-
-
-export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...props }) {
+export default function UnitsInformation({ page, setIsDisabled, isDisabled, handleWhatsApp, handleCall, handleEmail, handlePDF, ...props }) {
     const { t } = useTranslation();
     const [images, setImages] = useState([]);
-    // const [video, setVideo] = useState("/assets/videos/units-video.mp4");
+    const [projects, setProjects] = useState([])
 
     useEffect(() => {
         const defaultImage = ["/assets/images/unit-image.jpeg"];
         setImages(defaultImage);
         setIsDisabled(page === "add" ? false : isDisabled);
     }, [page, setIsDisabled, isDisabled]);
-
-    // const handleImageChange = (e, index) => {
-    //     const files = Array.from(e.target.files);
-    //     if (files && files.length > 0) {
-    //         const newImages = [...images];
-    //         if (index >= 0 && index < images.length) {
-    //             newImages[index] = URL.createObjectURL(files[0]);
-    //         } else {
-    //             files.forEach((file) => {
-    //                 newImages.push(URL.createObjectURL(file));
-    //             });
-    //         }
-    //         setImages(newImages);
-    //     }
-    // };
-
-    // const handleImageChange = async (event, index = null) => {
-    //     const files = event.target.files;
-    //     if (files && files.length > 0) {
-    //       const uploadedFiles = Array.from(files);
-      
-    //       try {
-    //         const uploadedImages = await uploadPropertyImages(uploadedFiles);
-      
-    //         const imageUrls = uploadedImages.map((file) => file.fileUrl);
-      
-    //         setUnit((prevUnit) => ({
-    //           ...prevUnit,
-    //           UnitImages: index === null 
-    //             ? [...(prevUnit.UnitImages || []), ...imageUrls] 
-    //             : prevUnit.UnitImages.map((img, i) => (i === index ? imageUrls[0] : img)),
-    //         }));
-      
-    //         const imagePreviews = uploadedFiles.map((file) => URL.createObjectURL(file));
-    //         setImages((prevImages) => 
-    //           index === null 
-    //             ? [...prevImages, ...imagePreviews]
-    //             : prevImages.map((img, i) => (i === index ? imagePreviews[0] : img))
-    //         );
-      
-    //         setImagesFile((prevImagesFile) => 
-    //           index === null 
-    //             ? [...prevImagesFile, ...uploadedFiles]
-    //             : prevImagesFile.map((file, i) => (i === index ? uploadedFiles[0] : file))
-    //         );
-      
-    //         console.log("Images uploaded successfully:", uploadedImages);
-    //       } catch (error) {
-    //         console.error("Error uploading image:", error);
-    //         toast({
-    //           variant: "destructive",
-    //           title: "Error Uploading Image",
-    //           description: "There was an error uploading the images.",
-    //         });
-    //       }
-    //     }
-    //   };
-      
-    // const handleDeleteImage = (index) => {
-    //     setImages((prev) => prev.filter((_, i) => i !== index));
-    // };
-    // const handleVideoChange = (event) => {
-    //     const file = event.target.files?.[0];
-    //     if (file) {
-    //         setVideo(URL.createObjectURL(file));
-    //     }
-    // };
-
-    // const handleDeleteVideo = () => {
-    //     setVideo("/assets/videos/units-video.mp4");
-    // };
-    
+    useEffect(()=>{
+        const fetchData = async ()=>{
+            const res = await getProjects();
+            setProjects(res.projects)
+        }
+        fetchData()
+    },[])
     const fieldsData = [
-        { id: 25, type: 'input', label: 'property_name_compound_name', idField: 'compoundName', defaultValue: props?.unit?.compoundName },
+        { id: 25, type: 'input', label: 'property_name_compound_name', idField: 'compoundName', defaultValue: props?.unit?.compoundName, required:true },
         { id: 1, type: 'input', label: 'property_number', idField: 'propertyNumber', defaultValue: props?.unit?.propertyNumber },
         { id: 17, type: 'input', label: 'unit_no', idField: 'unitNo', defaultValue: props?.unit?.unitNo },
         {
@@ -105,6 +41,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             idField: 'unitFor',
             defaultValue: props?.unit?.unitFor,
             options: props?.options?.UnitFor,
+            required:true
         },
         {
             id: 3,
@@ -113,6 +50,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             idField: 'area',
             defaultValue: props?.unit?.area,
             options: props?.options?.area,
+            required:true
         },
         {
             id: 4,
@@ -137,6 +75,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             idField: 'type',
             defaultValue: props?.unit?.type,
             options: props?.options?.type,
+            required:true
         },
         { id: 7, type: 'input', label: 'building', idField: 'building', defaultValue: props?.unit?.building },
         {
@@ -174,6 +113,14 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
             defaultValue: props?.unit?.currency,
             options: props?.options?.currency,
         },
+        {
+            id: 26,
+            type: 'select',
+            label: 'project',
+            idField: 'project',
+            defaultValue: props?.unit?.project,
+            options: projects.map((project)=> project.projectName),
+        },
         { id: 14, type: 'date', label: 'last_follow_up', idField: 'lastFollowIn', defaultValue: props?.unit?.lastFollowIn },
         {
             id: 15,
@@ -203,9 +150,12 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                 unit={props.unit}
                 page={page}
                 setIsDisabled={setIsDisabled}
+                handleWhatsApp={handleWhatsApp}
+                handleCall={handleCall}
+                handleEmail={handleEmail}
+                handlePDF={handlePDF}
                 t={t}
             />
-
             <CardContent className="w-full overflow-x-hidden d gap-2 gap-y-8 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
                 <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} col={true} />
                 {/* <Card className="h-max bg-transparent pt-5">

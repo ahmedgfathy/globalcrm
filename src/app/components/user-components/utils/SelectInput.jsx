@@ -3,14 +3,14 @@ import React from 'react';
 import { SelectFiled } from '../../Select-Filed/SelectFiled';
 import { useTranslation } from '@/app/context/TranslationContext';
 
-function SelectInput({ label, id, isDisabled, data, defaultValue, handleChange, section, value }) {
+function SelectInput({ label, id, isDisabled, data, defaultValue, handleChange, section, value, required }) {
   const { locale } = useTranslation();
 
   return (
     <div className="space-y-2 lg:w-[220px] sm:w-full">
       <Label htmlFor={id} className="font-semibold lg:w-[220px] sm:w-full " dir={locale === "ar" ? "rtl" : "ltr"}>
         <p className='lg:w-[220px] sm:w-full'>
-          {label}
+          {label} {required && (<span className="text-red-500">*</span>)}
         </p>
       </Label>
       <SelectFiled

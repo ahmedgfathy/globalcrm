@@ -50,7 +50,8 @@ const router = useRouter();
     rentTo: "",
     compoundName: "",
     propertyImage: [],
-    videos: []
+    videos: [],
+    project: ""
   });
   const [videos, setVideos] = useState([]);
 

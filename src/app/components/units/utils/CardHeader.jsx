@@ -5,6 +5,11 @@ import DeleteButton from "../../delete-button/DeleteButton";
 import { IoMdAddCircle } from "react-icons/io";
 import { deleteProperty } from "@/actions/propertiesAction";
 import { useRouter } from "next/navigation";
+import { IconButton } from '@mui/material';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import CallIcon from '@mui/icons-material/Call';
+import EmailIcon from '@mui/icons-material/Email';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 
 function CardHeader({
   title,
@@ -15,6 +20,10 @@ function CardHeader({
   handleSubmit,
   isDisabled,
   unit,
+  handleWhatsApp,
+  handleCall,
+  handleEmail,
+  handlePDF,
 }) {
   const router = useRouter();
   return (
@@ -27,6 +36,30 @@ function CardHeader({
         <CardDescription>{description}</CardDescription>
       </div>
       <div className="w-max flex justify-between items-center gap-2 buttons">
+        <IconButton 
+          className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-18q7h3i"
+          onClick={handleWhatsApp}
+        >
+          <WhatsAppIcon style={{ color: '#25D366' }} fontSize="medium" />
+        </IconButton>
+        <IconButton 
+          className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-18q7h3i"
+          onClick={handleCall}
+        >
+          <CallIcon style={{ color: '#2196F3' }} fontSize="medium" />
+        </IconButton>
+        <IconButton 
+          className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-18q7h3i"
+          onClick={handleEmail}
+        >
+          <EmailIcon style={{ color: '#EA4335' }} fontSize="medium" />
+        </IconButton>
+        <IconButton 
+          className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorPrimary MuiIconButton-sizeMedium css-18q7h3i"
+          onClick={handlePDF}
+        >
+          <PictureAsPdfIcon style={{ color: '#DB4437' }} fontSize="medium" />
+        </IconButton>
         {page === "add" ? (
           <Button
             className="GreenButton dark p-1  flex justify-between items-center gap-1"

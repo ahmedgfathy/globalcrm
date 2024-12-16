@@ -102,19 +102,19 @@ function SideBar() {
           ref={sidebarRef}
           className={`${styles.sidebar} ${styles.sidebarOpen} h-screen bg-white dark:bg-gray-900 transition-all duration-300`}
         >
-          <div className={`h-full px-3 py-4 overflow-y-auto bg-white dark:bg-gray-900 border-x border-gray-200 dark:border-gray-700 shadow-sm fixed right-0 ${styles.sidebar} ${styles.sidebarOpen}`}>
+          <div className={`h-full px-2 py-3 overflow-y-auto bg-white dark:bg-gray-900 border-x border-gray-200 dark:border-gray-700 shadow-sm fixed right-0 ${styles.sidebar} ${styles.sidebarOpen}`}>
             {/* Logo and title section */}
-            <div className="flex flex-col items-center gap-3 mb-8"> {/* Increased gap and margin */}
+            <div className="flex flex-col items-center gap-2 mb-4">
               <Image
-                width={180} // Increased logo size
-                height={180} // Increased logo size
+                width={120}
+                height={120}
                 alt="logo"
                 src="/assets/logo/logo.png"
                 className="mx-auto"
               />
               {isExpanded && (
                 <div className="text-center transition-opacity duration-200">
-                  <h1 className="text-xl font-bold text-gray-900 dark:text-white"> {/* Increased title size */}
+                  <h1 className="text-xl font-bold text-gray-900 dark:text-white">
                     {t("global_crm")}
                   </h1>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -125,7 +125,7 @@ function SideBar() {
             </div>
 
             {/* Navigation links */}
-            <ul className="space-y-3"> {/* Increased spacing between items */}
+            <ul className="space-y-3">
               {links.map((item) => (
                 <li key={item.id}>
                   {renderNavLink(item)}
