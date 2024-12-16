@@ -1,0 +1,72 @@
+.toastui-calendar-layout {
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.toastui-calendar-day-name {
+  background-color: #f8fafc !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+  height: 40px !important;
+}
+
+.toastui-calendar-weekend {
+  color: #ef4444 !important;
+}
+
+.calendar-event {
+  padding: 6px 8px;
+  border-radius: 6px;
+  margin: 1px 0;
+}
+
+.calendar-event.meetings {
+  background-color: #0ea5e920;
+  border-left: 3px solid #0ea5e9;
+}
+
+.calendar-event.calls {
+  background-color: #22c55e20;
+  border-left: 3px solid #22c55e;
+}
+
+.calendar-event.reminders {
+  background-color: #f59e0b20;
+  border-left: 3px solid #f59e0b;
+}
+
+.event-title {
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 2px;
+}
+
+.event-time {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.event-attendees {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+/* Dark mode */
+.dark .toastui-calendar-layout {
+  border-color: #374151;
+}
+
+.dark .toastui-calendar-day-name {
+  background-color: #1f2937 !important;
+  color: #e5e7eb !important;
+}
+
+.dark .event-title {
+  color: #e5e7eb;
+}
+
+.dark .event-time,
+.dark .event-attendees {
+  color: #9ca3af;
+}

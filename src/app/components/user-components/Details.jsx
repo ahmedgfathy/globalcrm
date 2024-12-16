@@ -5,7 +5,7 @@ import CollapsibleComponent from "../CollapsibleComponent";
 import "./style.css";
 import { getAllSettings } from "@/actions/filterSettings";
 
-const App = ({ page, handleChange,handleSubmit, title, lead, handleImageChange, image, setImage,imageFile, setImageFile, handleDeleteImage }) => {
+const App = ({ page, handleChange,handleSubmit, title, lead, handleImageChange, image, setImage,imageFile, setImageFile, handleDeleteImage, actionIcons }) => {
   const [options, setOptions] = useState("")
   useEffect(()=>{
     const fetchOptions = async ()=>{
@@ -32,6 +32,7 @@ const App = ({ page, handleChange,handleSubmit, title, lead, handleImageChange, 
        setImage={setImage}
        imageFile={imageFile}
        setImageFile={setImageFile}
+       actionIcons={actionIcons} // Pass actionIcons to LeadDetails
        />,
     },
     {
