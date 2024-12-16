@@ -1,7 +1,7 @@
 import { useTranslation } from "@/app/context/TranslationContext";
 import { Label } from "@/components/ui/label";
 
-export default function TextAreaField({ label, id, defaultValue, isDisabled, section, handleChange }) {
+export default function TextAreaField({ label, id, defaultValue, isDisabled, section, handleChange, required }) {
   const { locale} = useTranslation();
 
   return (
@@ -9,7 +9,7 @@ export default function TextAreaField({ label, id, defaultValue, isDisabled, sec
       <Label htmlFor={id} className="font-semibold w-full " dir={locale === "ar" ? "rtl" : "ltr"}
       >
         <p className='w-full'>
-          {label}
+          {label} {required && (<span className="text-red-500">*</span>)}
         </p>
       </Label> 
       <textarea

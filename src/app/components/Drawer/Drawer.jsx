@@ -11,8 +11,8 @@ import ControlCard from "../control-card/ControlCard";
 function Drawer() {
   const { setTheme } = useTheme();
   const [showDrawer, setShowDrawer] = useState(false);
-  const { t, changeLanguage } = useTranslation();
-  const [lang, setLang] = useState("en");
+  const { t, changeLanguage, locale } = useTranslation();
+  const [lang, setLang] = useState(locale);
   const [mode, setMode] = useState(() => localStorage.getItem("theme") || "light");
   const drawerRef = useRef(null);
 

@@ -24,6 +24,7 @@ function FormFields({ fields, isDisabled, handleChange, section, col }) {
           const commonProps = {
             label: t(field.label),
             id: field.idField,
+            required: field.required,
             defaultValue: field.defaultValue,
             isDisabled,
             handleChange,

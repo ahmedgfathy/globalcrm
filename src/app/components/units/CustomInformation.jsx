@@ -15,8 +15,9 @@ export default function CustomInformation({ page, setIsDisabled, isDisabled, ...
             idField: 'propertyOfferedBy',
             defaultValue: props?.unit?.propertyOfferedBy,
             options: props?.options?.propertyOfferedBy,
+            required: true
         },
-        { id: 2, type: 'input', label: 'name', idField: 'name', defaultValue: props?.unit?.name },
+        { id: 2, type: 'input', label: 'name', idField: 'name', defaultValue: props?.unit?.name, required: true },
         
         {
             id: 4,

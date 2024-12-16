@@ -11,6 +11,7 @@ function DateInput({
   isDisabled,
   handleChange,
   section,
+  required
 }) {
   const dateFormat = "YYYY-MM-DD";
   const formattedDefaultValue = defaultValue
@@ -31,7 +32,7 @@ function DateInput({
     <div className="space-y-2 flex flex-col">
       <Label htmlFor={id} className="font-semibold lg:w-[220px] sm:w-full " dir={locale === "ar" ? "rtl" : "ltr"}>
         <p className='lg:w-[220px] sm:w-full'>
-          {label}
+          {label} {required && (<span className="text-red-500">*</span>)}
         </p>
       </Label>
       <DatePicker
