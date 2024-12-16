@@ -3,6 +3,11 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
+import { IconButton, Button } from '@mui/material';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import CallIcon from '@mui/icons-material/Call';
+import EmailIcon from '@mui/icons-material/Email';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 // import { Button } from "@/components/ui/button";
 // import { Pencil, Trash2 } from "lucide-react";
 import CardHeader from "./utils/CardHeader";
@@ -12,7 +17,7 @@ import CardHeader from "./utils/CardHeader";
 
 
 
-export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...props }) {
+export default function UnitsInformation({ page, setIsDisabled, isDisabled, handleWhatsApp, handleCall, handleEmail, handlePDF, ...props }) {
     const { t } = useTranslation();
     const [images, setImages] = useState([]);
     // const [video, setVideo] = useState("/assets/videos/units-video.mp4");
@@ -203,9 +208,12 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, ...p
                 unit={props.unit}
                 page={page}
                 setIsDisabled={setIsDisabled}
+                handleWhatsApp={handleWhatsApp}
+                handleCall={handleCall}
+                handleEmail={handleEmail}
+                handlePDF={handlePDF}
                 t={t}
             />
-
             <CardContent className="w-full overflow-x-hidden d gap-2 gap-y-8 md:gap-3 max-sm:flex max-sm:flex-col-reverse pt-4" dir="rtl">
                 <FormFields fields={fieldsData} isDisabled={isDisabled} handleChange={props.handleChange} section={props.section} col={true} />
                 {/* <Card className="h-max bg-transparent pt-5">
