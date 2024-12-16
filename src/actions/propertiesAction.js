@@ -33,33 +33,34 @@ export const addProperty = async (propertyData) => {
 
     // Step 2: Create the new property
     const propertyResponse = await databases.createDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // Your database ID
-      process.env.NEXT_PUBLIC_PROPERTIES, // Properties collection ID
-      ID.unique(), // Generate a unique ID for the property
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_PROPERTIES, 
+      ID.unique(), 
       {
-        ...propertyData, // The property data you want to save
-        users: [userId], // Add the current user to the `users` field
+        ...propertyData, 
+        propertyNumber,   // Add unique property number
+        users: [userId], 
       }
-    )
+    );
 
-    const propertyId = propertyResponse.$id
+    const propertyId = propertyResponse.$id;
 
     // Step 3: Update the user's `properties` relationship
     await databases.updateDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, // Your database ID
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, // Users collection ID
-      userId, // Current user's document ID
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
+      userId, 
       {
-        properties: [propertyId], // Add the new property to the user's `properties` field
+        properties: [propertyId], 
       }
-    )
+    );
 
-    return propertyResponse
+    return propertyResponse;
   } catch (error) {
-    console.error('Error adding property:', error)
-    throw error
+    console.error('Error adding property:', error);
+    throw error;
   }
-}
+};
 
 export const getAllPropertiesForSales = async (limit = 12, offset = 0) => {
   try {
