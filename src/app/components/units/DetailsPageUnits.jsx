@@ -1,4 +1,9 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { IconButton, Button } from '@mui/material';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import CallIcon from '@mui/icons-material/Call';
+import EmailIcon from '@mui/icons-material/Email';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import "./Style.css"
 
 import UnitsInformation from "./unitsInformation";
@@ -21,7 +26,11 @@ const DetailsPageUnits = ({
     images,
     handleVideoUpload,
     videos,
-    handleDeleteVideo
+    handleDeleteVideo,
+    handleWhatsApp,
+    handleCall,
+    handleEmail,
+    handlePDF
 }) => {
     const [options, setOptions] = useState("")
   useEffect(()=>{
@@ -36,16 +45,16 @@ const DetailsPageUnits = ({
             key: "1",
             label: "Unit Informations",
             children: <UnitsInformation
-            options={options}
-            page={page}
-            handleSubmit={handleSubmit}
-            handleChange={handleChange}
-            title={title}
-            unit={unit}
-            // images={images}
-            // handleImageChange={handleImageChange}
-            // handleDeleteImage={handleDeleteImage}
-
+                options={options}
+                page={page}
+                handleSubmit={handleSubmit}
+                handleChange={handleChange}
+                title={title}
+                unit={unit}
+                handleWhatsApp={handleWhatsApp}
+                handleCall={handleCall}
+                handleEmail={handleEmail}
+                handlePDF={handlePDF}
             />,
         },
         {
@@ -75,7 +84,11 @@ const DetailsPageUnits = ({
         },
     ];
 
-    return <CollapsibleComponent items={items} />;
+    return (
+      <div>
+        <CollapsibleComponent items={items} />
+      </div>
+    );
 };
 
 export default DetailsPageUnits;
