@@ -301,6 +301,7 @@ const searchProperties = async (name, userId = null) => {
           Query.contains('mobileNo', name),
           Query.contains('tel', name),
           Query.contains('compoundName', name),
+          Query.equal('propertyNumber', name),
         ])
       );
     }
