@@ -47,7 +47,7 @@ const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterV
               {t("mobile_phone")}
             </TableHead>
             <TableHead className="min-w-fit text-nowrap p-3 text-start text-dark dark:text-white text-base font-bold ">
-              {t("status")}
+              {t("Assigned To")}
             </TableHead>
             <TableHead className="min-w-fit text-nowrap p-3 text-start text-dark dark:text-white text-base font-bold">
               {t("source")}
