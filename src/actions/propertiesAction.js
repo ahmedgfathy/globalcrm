@@ -27,19 +27,35 @@ const getCurrentUserId = async () => {
 
 export const addProperty = async (propertyData) => {
   try {
-    // Step 1: Get the current user's account
+    
+    const userId = await getCurrentUserId();
 
-    const userId = await getCurrentUserId()
+    const latestProperty = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      [Query.orderDesc('propertyNumber'), Query.limit(1)] // Sort by propertyNumber descending
+    );
 
-    // Step 2: Create the new property
+    let nextPropertyNumber = 'PRO1'; // Default for the first property
+
+    if (latestProperty.total > 0) {
+      // Extract the numeric part from the latest propertyNumber (e.g., 'PRO12' → 12)
+      const lastPropertyNumber = latestProperty.documents[0].propertyNumber;
+      const numericPart = parseInt(lastPropertyNumber.replace('PRO', ''), 10);
+      
+      // Increment the number and create the next propertyNumber
+      nextPropertyNumber = `PRO${numericPart + 1}`;
+    }
+
+    // Step 3: Create the new property
     const propertyResponse = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, 
       process.env.NEXT_PUBLIC_PROPERTIES, 
       ID.unique(), 
       {
-        ...propertyData, 
-        propertyNumber,   // Add unique property number
-        users: [userId], 
+        ...propertyData,
+        propertyNumber: nextPropertyNumber, // Add unique property number
+        users: [userId],
       }
     );
 
