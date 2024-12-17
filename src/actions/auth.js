@@ -306,7 +306,9 @@ export const deleteUser = async (id) => {
       process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
       id
     );
+    const res = await account.deleteIdentity(id);
     console.log('User deleted successfully from Auth and DB');
+    return res;
   } catch (error) {
     console.error('Error deleting user:', error);
     throw error;
