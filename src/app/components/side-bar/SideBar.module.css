@@ -1,10 +1,11 @@
 .sidebar {
   transition: width 0.3s;
   direction: rtl;
+  width: 240px; /* Decrease from whatever the current width is */
 }
 
 .sidebarOpen {
-  width: 250px;
+  width: 240px; /* Decrease from whatever the current width is */
 }
 
 .sidebarClosed {

@@ -47,7 +47,7 @@ const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterV
               {t("mobile_phone")}
             </TableHead>
             <TableHead className="min-w-fit text-nowrap p-3 text-start text-dark dark:text-white text-base font-bold ">
-              {t("status")}
+              {t("Assigned To")}
             </TableHead>
             <TableHead className="min-w-fit text-nowrap p-3 text-start text-dark dark:text-white text-base font-bold">
               {t("source")}
@@ -58,10 +58,10 @@ const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterV
             <TableHead className="min-w-fit text-nowrap p-3 text-start text-dark dark:text-white text-base font-bold">
               {t("action")}
             </TableHead>
-            <TableHead className="min-w-fit text-nowrap p-3 text-end flex h-auto justify-around items-center">
+            {/* <TableHead className="min-w-fit text-nowrap p-3 text-end flex h-auto justify-around items-center">
               <DropdownMenImportExport t={t} handleExportCSV={()=>console.log("no thing")} handleImportCSV={()=>console.log("no thing")} searchUsersForTransform={searchUsersForTransform} users={users} />
-              {/* <DropdownMenImportExport t={t} handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} searchUsersForTransform={searchUsersForTransform} users={users} /> */}
-            </TableHead>
+             <DropdownMenImportExport t={t} handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} searchUsersForTransform={searchUsersForTransform} users={users} />
+            </TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>

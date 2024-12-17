@@ -10,7 +10,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { MdOutlineRecentActors } from "react-icons/md";
 import RecentChart from "@/app/components/dashboard/RecentChart";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
-import { getLastMonthLeadsCount, getLeadsBySource } from "@/actions/leadsAction";
+import { getLastMonthLeadsCount, getLeadsBySource, getDashboardStats } from "@/actions/leadsAction";
 import { getAllSettings } from "@/actions/filterSettings";
 import { getPropertiesActivity } from "@/actions/propertiesAction";
 import dynamic from "next/dynamic";
@@ -33,36 +33,37 @@ function Page() {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchDashboardData = async () => {
+  const fetchData = async () => {
     try {
-      setLoading(true);
-      const [leadsCount, units, settings, sourceData] = await Promise.all([
-        getLastMonthLeadsCount(),
-        getPropertiesActivity(),
-        getAllSettings(),
-        getLeadsBySource(),
-      ]);
-
-      const dataJson = JSON.parse(settings[0]?.leadSettings || "{}");
-      const customerSources = dataJson.customerSource || [];
-      
-      setData({
-        social_media_leads: 0,
-        company_leads: 485,
-        partner_leads: leadsCount
-      });
-      setUnitsCount(units);
-      setChartData(prepareChartData(customerSources, sourceData));
+      const count = await getLastMonthLeadsCount();
+      setData((prevData) => ({ ...prevData, partner_leads: count }));
     } catch (error) {
-      console.error("Dashboard data fetch error:", error);
-    } finally {
-      setLoading(false);
+      console.error("Error fetching leads count:", error);
     }
   };
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
+  const fetchUnitData = async () => {
+    try {
+      const units = await getPropertiesActivity();
+      setUnitsCount(units);
+    } catch (error) {
+      console.error("Error fetching unit data:", error);
+    }
+  };
+
+  const fetchSources = async () => {
+    try {
+      const documents = await getAllSettings();
+      const dataJson = JSON.parse(documents[0]?.leadSettings || "{}");
+      setSources(dataJson.customerSource || []);
+
+      const res = await getLeadsBySource();
+      const updatedSources = prepareChartData(dataJson.customerSource, res);
+      setChartData(updatedSources);
+    } catch (error) {
+      console.error("Error fetching sources:", error);
+    }
+  };
 
   const prepareChartData = (sources = [], apiResponse = {}) => {
     const colors = ["#007867", "#ff5630", "#5f942e", "#ffc107", "#6a1b9a", "#00838f", "#c0ca33", "#8e24aa"];
@@ -73,6 +74,14 @@ function Page() {
     }));
   };
 
+  useEffect(() => {
+    const fetchAllData = async () => {
+      setLoading(true);
+      await Promise.all([fetchData(), fetchUnitData(), fetchSources()]);
+      setLoading(false);
+    };
+    fetchAllData();
+  }, []);
   const unitsInfo = [
     { id: 1, title: "residential", number: unitsCount["سكني"] || 0, time: "last_s_days", percent: "+٢٫٦%", color: "#007867" },
     { id: 3, title: "administrative", number: unitsCount["اداري"] || 0, time: "last_s_days", percent: "+٢٫٦%", color: "#ff5630" },

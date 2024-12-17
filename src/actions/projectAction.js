@@ -23,8 +23,8 @@ export const addProject = async (project) => {
         process.env.NEXT_PUBLIC_DATABASE_ID,
         process.env.NEXT_PUBLIC_PROJECTS,
         [
-          Query.limit(limit),
-          Query.offset(offset),
+          // Query.limit(limit),
+          // Query.offset(offset),
           Query.orderDesc('$createdAt')
         ]
       );
@@ -32,17 +32,16 @@ export const addProject = async (project) => {
       const totalResponse = await databases.listDocuments(
         process.env.NEXT_PUBLIC_DATABASE_ID,
         process.env.NEXT_PUBLIC_PROJECTS,
-        [
-          Query.limit(1),
-          Query.offset(0)
-        ]
+        // [
+        //   Query.limit(1),
+        //   Query.offset(0)
+        // ]
       );
   
       const totalProjects = totalResponse.total;
   
       const projects = response.documents.map(({ collectionId, databaseId, ...rest }) => rest);
   
-      console.log(projects);
       return { projects, totalProjects };
     } catch (error) {
       console.error('Error getting projects:', error);

@@ -24,7 +24,8 @@ import {
   searchUnitByCategory,
   searchUnitByTypes,
   transferUnit,
-  getAllPropertiesForTeamLead
+  getAllPropertiesForTeamLead,
+  searchPropertyByNameForAdmin
 } from '@/actions/propertiesAction'
 import { UserContext } from '@/app/context/UserContext'
 import DeleteButton from '@/app/components/delete-button/DeleteButton'
@@ -134,8 +135,13 @@ function Page() {
       try {
         const { parsedFrom, parsedTo } = parseFromTo()
         if (searchTerm) {
-          const propertiesByName = await searchPropertyByName(searchTerm)
-          console.log('Fetched properties by name:', propertiesByName)
+          let propertiesByName;
+          if (role === 'admin') {
+            propertiesByName = await searchPropertyByNameForAdmin(searchTerm);
+          } else {
+            propertiesByName = await searchPropertyByName(searchTerm);
+          }
+          console.log('Fetched properties by name:', propertiesByName);
         }
         if (parsedFrom || parsedTo) {
           const { properties, total } = await searchPropertyByRange(
@@ -182,10 +188,15 @@ function Page() {
       let totalProperties = 0
 
       if (search) {
-        const propertiesByName = await searchPropertyByName(search)
-        properties = propertiesByName
-        totalProperties = propertiesByName.length
-      } else if (range.from || range.to) {
+        let propertiesByName;
+        if (role === 'admin') {
+          propertiesByName = await searchPropertyByNameForAdmin(search);
+        } else {
+          propertiesByName = await searchPropertyByName(search);
+        }
+        properties = propertiesByName;
+        totalProperties = propertiesByName.length;
+      }else if (range.from || range.to) {
         const { properties: propertiesByRange, total } =
           await searchPropertyByRange(
             range.from,
@@ -413,26 +424,26 @@ function Page() {
   //     },
   //   });
   // };
-  // const handleDeleteAllProperties = async () => {
-  //   try {
-  //     await deleteAllProperties();
-  //     toast({
-  //       variant: 'success',
-  //       title: 'Success Delete Units',
-  //       description: 'All units deleted successfully.',
-  //       status: 'success',
-  //     });
-  //     // fetchUnits(); // Refresh the state after deletion
-  //   } catch (error) {
-  //     toast({
-  //       variant: 'destructive',
-  //       title: 'Error Deleting Units',
-  //       description: error.message || 'An unexpected error occurred.',
-  //       status: 'error',
-  //     });
-  //     console.error('Error deleting units:', error);
-  //   }
-  // };
+  const handleDeleteAllProperties = async () => {
+    try {
+      await deleteAllProperties();
+      toast({
+        variant: 'success',
+        title: 'Success Delete Units',
+        description: 'All units deleted successfully.',
+        status: 'success',
+      });
+      // fetchUnits(); // Refresh the state after deletion
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error Deleting Units',
+        description: error.message || 'An unexpected error occurred.',
+        status: 'error',
+      });
+      console.error('Error deleting units:', error);
+    }
+  };
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value)
     setCurrentPage(1)
@@ -591,6 +602,12 @@ function Page() {
                   handleClearFilters()
                   fetchUnits(1, '')
                 }}
+              />
+
+              <DeleteButton
+                handleDelete={handleDeleteAllProperties}
+                title={!isMobile && t('delete_all_units')}
+                afterDel={() => fetchUnits(currentPage, searchTerm)}
               />
 
               <div>
