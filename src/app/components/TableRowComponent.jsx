@@ -44,7 +44,7 @@ const TableRowComponent = ({ client, t, afterDel, selectedLeads, setSelectedLead
       <TableCell className="p-3 text-base font-semibold">{client.leadNumber}</TableCell>
       <TableCell className="p-3 text-base font-semibold">{client.name}</TableCell>
       <TableCell className="p-3 text-base font-semibold">{client.number}</TableCell>
-      <TableCell className="p-3 text-base font-semibold">{client.leadStatus}</TableCell>
+      <TableCell className="p-3 text-base font-semibold">{client.assignedTo}</TableCell>
       <TableCell className="p-3 text-base font-semibold">{client.customerSource}</TableCell>
       <TableCell className="p-3 text-base font-semibold">{client.type}</TableCell>
 

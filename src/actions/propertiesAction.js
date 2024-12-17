@@ -213,7 +213,7 @@ export const getAllPropertiesForAdmin = async (limit = 12, offset = 0) => {
 export const deleteAllProperties = async () => {
   try {
     let hasMoreDocuments = true
-    const limit = 100 // الحد الأقصى للعناصر لكل طلب
+    const limit = 1000 // الحد الأقصى للعناصر لكل طلب
 
     while (hasMoreDocuments) {
       // Fetch a batch of documents

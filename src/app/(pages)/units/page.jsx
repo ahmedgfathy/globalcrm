@@ -424,26 +424,26 @@ function Page() {
   //     },
   //   });
   // };
-  // const handleDeleteAllProperties = async () => {
-  //   try {
-  //     await deleteAllProperties();
-  //     toast({
-  //       variant: 'success',
-  //       title: 'Success Delete Units',
-  //       description: 'All units deleted successfully.',
-  //       status: 'success',
-  //     });
-  //     // fetchUnits(); // Refresh the state after deletion
-  //   } catch (error) {
-  //     toast({
-  //       variant: 'destructive',
-  //       title: 'Error Deleting Units',
-  //       description: error.message || 'An unexpected error occurred.',
-  //       status: 'error',
-  //     });
-  //     console.error('Error deleting units:', error);
-  //   }
-  // };
+  const handleDeleteAllProperties = async () => {
+    try {
+      await deleteAllProperties();
+      toast({
+        variant: 'success',
+        title: 'Success Delete Units',
+        description: 'All units deleted successfully.',
+        status: 'success',
+      });
+      // fetchUnits(); // Refresh the state after deletion
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Error Deleting Units',
+        description: error.message || 'An unexpected error occurred.',
+        status: 'error',
+      });
+      console.error('Error deleting units:', error);
+    }
+  };
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value)
     setCurrentPage(1)
@@ -602,6 +602,12 @@ function Page() {
                   handleClearFilters()
                   fetchUnits(1, '')
                 }}
+              />
+
+              <DeleteButton
+                handleDelete={handleDeleteAllProperties}
+                title={!isMobile && t('delete_all_units')}
+                afterDel={() => fetchUnits(currentPage, searchTerm)}
               />
 
               <div>
