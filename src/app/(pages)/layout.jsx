@@ -7,7 +7,7 @@ export default function RootLayout({ children }) {
   const { locale } = useTranslation();
   return (
     <main
-      className={`flex w-full bg-white ${locale === "en" ? "flex-row-reverse" : "flex-row"
+      className={`flex w-full bg-white  dark:bg-gray-900 ${locale === "en" ? "flex-row-reverse" : "flex-row"
         }`}
     >
       <div className="nav">

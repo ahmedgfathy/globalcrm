@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getUser, updateUser } from '@/actions/auth'
 
-export function UserModal({ isOpen, onClose, user }) {
+export function UserModal({ isOpen, onClose, user, fetchUsers }) {
   const [account, setAccount] = useState({})
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
