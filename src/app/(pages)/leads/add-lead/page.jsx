@@ -1,12 +1,13 @@
 "use client";
 import Details from "@/app/components/user-components/Details";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { Grid, Tab, Tabs, Box } from "@mui/material";
 import { addLead, uploadImageToBucket } from "@/actions/leadsAction";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
+import { UserContext } from "@/app/context/UserContext";
 
 function Page() {
   const { t } = useTranslation();
@@ -14,6 +15,7 @@ function Page() {
   const [selectedTab, setSelectedTab] = useState(0);
   const router = useRouter();
   const [image, setImage] = useState("/");
+  const [state] = useContext(UserContext)
   const [imageFile, setImageFile] = useState(null); 
   const [lead, setLead] = useState({
     name: "",

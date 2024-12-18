@@ -40,7 +40,7 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     if (!isStateInitialized) return;
 
-    const excludedPaths = ["login", "test"];
+    const excludedPaths = ["login", "test", "add-lead", "add-unit"];
     const isExcludedPath = excludedPaths.some((excludedPath) =>
       pathName.includes(excludedPath)
     );
