@@ -33,7 +33,7 @@ export const addProperty = async (propertyData) => {
     const latestProperty = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
-      [Query.orderDesc('propertyNumber'), Query.limit(1)] // Sort by propertyNumber descending
+      [Query.orderDesc('createdAt'), Query.limit(1)] // Sort by propertyNumber descending
     );
 
     let nextPropertyNumber = 'PRO1'; // Default for the first property
