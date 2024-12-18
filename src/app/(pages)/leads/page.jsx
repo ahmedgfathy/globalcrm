@@ -1,6 +1,7 @@
 "use client";
+import { UserContext } from "@/app/context/UserContext";
 import { useTranslation } from "@/app/context/TranslationContext";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useContext } from "react";
 import { Pagination } from "antd";
 import ClientTable from "@/app/components/ClientTable";
 import { filterData } from "./data";
@@ -12,6 +13,7 @@ import { MdOutlineTransform } from 'react-icons/md';
 
 import {
   getAllLeads,
+  getAllLeadsForUser,
   importLeads,
   searchLeads,
   searchLeadsByCustomerSource,
@@ -36,18 +38,20 @@ import { searchUsers } from "@/actions/auth";
 
 function Page() {
   const { toast } = useToast();
-
+  const [currentUser, setCurrentUser] = useContext(UserContext);
+  const role = currentUser.userData.role;
+  const userId = currentUser.userData.userId
+  console.log(role);
+  console.log(currentUser)
   const router = useRouter();
   const isMobile = useIsMobile();
   const urlParams = useSearchParams();
   const [users, setUsers] = useState([]);
   const { t, locale } = useTranslation();
   const [leads, setLeads] = useState([]);
-  // Replace the existing currentPage initialization
   const initialPage = parseInt(urlParams.get("page") || "1", 10);
   const [selectedLeads, setSelectedLeads] = useState([]);
   const [currentPage, setCurrentPage] = useState(initialPage);
-
   const [totalLeads, setTotalLeads] = useState(0);
   const [typeFilter, setTypeFilter] = useState("");
   const [customerSourceFilter, setCustomerSourceFilter] = useState("");
@@ -72,22 +76,33 @@ function Page() {
       optionData: [],
     },
   ]);
-  // const leadsPerPage = 10
 
   const fetchLeads = async (page = 1, search = "") => {
     const offset = (page - 1) * leadsPerPage;
     setIsLoading(true);
     try {
+      let leadsData;
       if (search) {
         console.log("Fetching leads with search term:", search);
-        const leads = await searchLeads(search);
-        setLeads(leads);
-        setTotalLeads(leads.length);
+        if (role === 'admin') {
+          leadsData = await searchLeads(search);
+        } else {
+          const userId = currentUser.userData.userId;
+          leadsData = await searchLeads(search, userId);
+        }
+        setLeads(leadsData);
+        setTotalLeads(leadsData.length);
       } else {
         console.log("Fetching all leads");
-        const { leads, totalLeads } = await getAllLeads(leadsPerPage, offset);
-        setLeads(leads);
-        setTotalLeads(totalLeads);
+        if (role === 'admin') {
+          const { leads, totalLeads } = await getAllLeads(leadsPerPage, offset);
+          setLeads(leads);
+          setTotalLeads(totalLeads);
+        } else {
+          const { leads, totalLeads } = await getAllLeadsForUser(leadsPerPage, offset);
+          setLeads(leads);
+          setTotalLeads(totalLeads);
+        }
       }
     } catch (error) {
       console.error("Error fetching leads:", error);
@@ -95,19 +110,26 @@ function Page() {
       setIsLoading(false); // Set loading state to false
     }
   };
+
   const onFilterChange = async (e, data) => {
     console.log(e, data);
+    let documents;
     if (data === "Request type") {
-      const documents = await searchLeadsByType(e);
-      setLeads(documents);
-      console.log(documents);
+      if (role === 'admin') {
+        documents = await searchLeadsByType(e);
+      } else {
+        documents = await searchLeadsByType(e, currentUser.userData.$id);
+      }
     }
     if (data === "Leads Source") {
-      console.log("dddd");
-      const documents = await searchLeadsByCustomerSource(e);
-      setLeads(documents);
-      console.log(documents);
+      if (role === 'admin') {
+        documents = await searchLeadsByCustomerSource(e);
+      } else {
+        documents = await searchLeadsByCustomerSource(e, currentUser.userData.$id);
+      }
     }
+    setLeads(documents);
+    console.log(documents);
   };
 
   useEffect(() => {
