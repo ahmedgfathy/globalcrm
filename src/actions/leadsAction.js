@@ -1,15 +1,26 @@
-import { databases, ID ,storage } from '@/services/appwrite/client';
+import { databases, ID ,storage ,account } from '@/services/appwrite/client';
 import {Query} from "appwrite"
+
+const getCurrentUserId = async () => {
+  try {
+    const currentUser = await account.get()
+    return currentUser.$id
+  } catch (error) {
+    console.error('Error fetching current user:', error)
+    throw error
+  }
+}
 
 export const addLead = async (lead) => {
   try {
+    const id = await getCurrentUserId()
     // Fetch the latest lead
     const latestLead = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_LEADS,
-      [Query.orderDesc('leadNumber'), Query.limit(1)] // Sort by leadNumber descending
+      [Query.orderDesc('$createdAt'), Query.limit(1)] // Sort by leadNumber descending
     );
-
+    console.log(latestLead)
     let nextLeadNumber = 'LEA1'; 
 
     if (latestLead.total > 0) {
@@ -22,7 +33,7 @@ export const addLead = async (lead) => {
     }
 
     // Add the new lead document
-    const leadWithNumber = { ...lead, leadNumber: nextLeadNumber };
+    const leadWithNumber = { ...lead, leadNumber: nextLeadNumber,userId:[id] };
 
     const response = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID,
