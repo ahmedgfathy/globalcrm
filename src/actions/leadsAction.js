@@ -1,25 +1,28 @@
 import { databases, ID ,storage } from '@/services/appwrite/client';
 import {Query} from "appwrite"
+
 export const addLead = async (lead) => {
   try {
-    // Fetch the total number of leads
-    const totalLeadsResponse = await databases.listDocuments(
+    // Fetch the latest lead
+    const latestLead = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_LEADS,
-      [
-        Query.limit(1),
-        Query.offset(0)
-      ]
+      [Query.orderDesc('leadNumber'), Query.limit(1)] // Sort by leadNumber descending
     );
 
-    const totalLeads = totalLeadsResponse.total + 10000;
-    const currentNumber = totalLeads + 1;
+    let nextLeadNumber = 'LEA1'; 
 
-    const leadNumber = `LEA${currentNumber}`;
-    console.log('New leadNumber:', leadNumber);
+    if (latestLead.total > 0) {
+
+      const lastLeadNumber = latestLead.documents[0].leadNumber;
+      const numericPart = parseInt(lastLeadNumber.replace('LEA', ''), 10);
+      
+      // Increment the number and create the next leadNumber
+      nextLeadNumber = `LEA${numericPart + 1}`;
+    }
 
     // Add the new lead document
-    const leadWithNumber = { ...lead, leadNumber };
+    const leadWithNumber = { ...lead, leadNumber: nextLeadNumber };
 
     const response = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID,
