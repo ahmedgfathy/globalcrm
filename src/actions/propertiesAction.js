@@ -473,13 +473,12 @@ export const uploadPropertyImages = async (files) => {
       files // File to upload
     )
 
-    // Get the view URL
     const fileUrl = storage.getFileView(
-      process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, // Bucket ID
-      response.$id // File ID
-    )
+      process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, 
+      response.$id
+    ).toString()
 
-    return { id: response.$id, fileUrl: fileUrl.href }
+    return { id: response.$id, fileUrl }
   } catch (error) {
     console.error('Error uploading image:', error)
     throw error
