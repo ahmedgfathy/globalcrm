@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { links } from "./data";
 import styles from "./SideBar.module.css";
 import Link from "next/link";
@@ -15,11 +15,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { UserContext } from "@/app/context/UserContext";
 
 function SideBar() {
   const isMobile = useIsMobile();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const [state] = useContext(UserContext)
   const pathName = usePathname();
   const sidebarRef = useRef(null);
 
@@ -82,7 +84,6 @@ function SideBar() {
       </Link>
     );
   };
-
   return (
     <div className="relative z-50">
       {isMobile && !isOpen && (
@@ -125,13 +126,15 @@ function SideBar() {
             </div>
 
             {/* Navigation links */}
-            <ul className="space-y-3">
+            {state?.userData?.userId && (
+              <ul className="space-y-3">
               {links.map((item) => (
                 <li key={item.id}>
-                  {renderNavLink(item)}
+                  {state?.userData?.role !== "admin" && item.link == "administration" ? "" : renderNavLink(item) }
                 </li>
               ))}
             </ul>
+            )}
           </div>
         </aside>
       )}
