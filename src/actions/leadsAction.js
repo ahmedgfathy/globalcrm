@@ -4,12 +4,13 @@ import { Query } from "appwrite";
 const getCurrentUserId = async () => {
   try {
     const currentUser = await account.get();
-    return currentUser.$id;
+    return currentUser.$id || "";
   } catch (error) {
-    console.error('Error fetching current user:', error);
-    throw error;
+    console.warn('No user logged in, continuing without user ID.');
+    return ""
   }
 };
+
 
 export const addLead = async (lead) => {
   try {
