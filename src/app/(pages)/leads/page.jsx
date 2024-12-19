@@ -318,11 +318,11 @@ function Page() {
             </div>
 
             {/* Action Buttons - Modified section */}
-            <div className="flex gap-3 w-full md:w-auto justify-end items-center">
+            <div className="grid grid-cols-6 md:flex gap-3 w-full md:w-auto justify-end items-center ">
               {/* Add Lead Button */}
               <CustomButton
                 fun={() => router.push("/leads/add-lead")}
-                title={t("add_lead")}
+                title={!isMobile && t("add_lead")}
                 className="bg-orange-700 hover:bg-primary/90 text-white"
                 icon={() => <IoMdAddCircle className="w-5 h-5" />}
               />
@@ -336,8 +336,8 @@ function Page() {
                   accept=".csv"
                 />
                 <CustomButton
-                  title={t("import")}
-                  className="border border-blue-500 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                  title={!isMobile && t("import")}
+                  className={`border border-blue-500 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 w-full `}
                   icon={() => <FaFileImport className="w-5 h-5" />}
                 />
               </label>
@@ -345,7 +345,7 @@ function Page() {
               {/* Export Button */}
               <CustomButton
                 fun={handleExportCSV}
-                title={t("export")}
+                title={!isMobile && t("export")}
                 className="border border-green-500 text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20"
                 icon={() => <FaFileExport className="w-5 h-5" />}
               />
@@ -353,14 +353,14 @@ function Page() {
               {/* Transform Button */}
               <CustomButton
                 fun={() => router.push("/leads/transform")}
-                title={t("transform")}
+                title={!isMobile && t("transform")}
                 className="border border-purple-500 text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20"
                 icon={() => <MdOutlineTransform className="w-5 h-5" />}
               />
 
               {/* Clear Filter Button */}
               <CustomButton
-                title={t("clear_filter")}
+                title={!isMobile && t("clear_filter")}
                 icon={() => <CiFilter className="w-5 h-5" />}
                 className="border border-gray-300 dark:border-gray-600"
                 fun={handleClearFilters}
@@ -369,7 +369,7 @@ function Page() {
               {/* Delete All Button */}
               <DeleteButton
                 handleDelete={()=>console.log("no thing")}
-                title={t('delete_all_leads')}
+                title={!isMobile && t('delete_all_leads')}
                 afterDel={()=>fetchLeads(currentPage, searchTerm)}
                 className="bg-red-500 hover:bg-red-600 text-white"
               />

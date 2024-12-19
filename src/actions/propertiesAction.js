@@ -27,6 +27,7 @@ const getCurrentUserId = async () => {
 // }
 
 export const addProperty = async (propertyData) => {
+  console.log(propertyData)
   try {
     
     const userId = await getCurrentUserId();
@@ -34,7 +35,7 @@ export const addProperty = async (propertyData) => {
     const latestProperty = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
-      [Query.orderDesc('createdAt'), Query.limit(1)] // Sort by propertyNumber descending
+      [Query.orderDesc('$createdAt'), Query.limit(1)] // Sort by propertyNumber descending
     );
 
     let nextPropertyNumber = 'PRO1'; // Default for the first property
@@ -63,14 +64,17 @@ export const addProperty = async (propertyData) => {
     const propertyId = propertyResponse.$id;
 
     // Step 3: Update the user's `properties` relationship
-    await databases.updateDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, 
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
-      userId, 
-      {
-        properties: [propertyId], 
-      }
-    );
+    if (userId){
+      await databases.updateDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID, 
+        process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
+        userId, 
+        {
+          properties: [propertyId], 
+        }
+      );
+    }
+  
 
     return propertyResponse;
   } catch (error) {
