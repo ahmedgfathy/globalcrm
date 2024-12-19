@@ -4,12 +4,13 @@ import { Query } from "appwrite";
 const getCurrentUserId = async () => {
   try {
     const currentUser = await account.get();
-    return currentUser.$id;
+    return currentUser.$id || "";
   } catch (error) {
-    console.error('Error fetching current user:', error);
-    throw error;
+    console.warn('No user logged in, continuing without user ID.');
+    return ""
   }
 };
+
 
 export const addLead = async (lead) => {
   try {
@@ -178,6 +179,20 @@ export const updateLeadByID = async (leadId, updatedData) => {
     return response;
   } catch (error) {
     console.error('Error updating lead:', error);
+    throw error;
+  }
+};
+
+export const deleteLead = async (leadId) => {
+  try {
+    const response = await databases.deleteDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
+      process.env.NEXT_PUBLIC_LEADS, // Collection ID
+      leadId // Document ID
+    );
+    return response;
+  } catch (error) {
+    console.error('Error deleting lead:', error);
     throw error;
   }
 };

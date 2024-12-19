@@ -3,13 +3,14 @@ import { Query } from 'appwrite'
 
 const getCurrentUserId = async () => {
   try {
-    const currentUser = await account.get()
-    return currentUser.$id
+    const currentUser = await account.get();
+    return currentUser.$id || "";
   } catch (error) {
-    console.error('Error fetching current user:', error)
-    throw error
+    console.warn('No user logged in, continuing without user ID.');
+    return ""
   }
-}
+};
+
 // export const addProperty = async (property) => {
 //   try {
 //     const response = await databases.createDocument(
@@ -26,6 +27,7 @@ const getCurrentUserId = async () => {
 // }
 
 export const addProperty = async (propertyData) => {
+  console.log(propertyData)
   try {
     
     const userId = await getCurrentUserId();
@@ -33,7 +35,7 @@ export const addProperty = async (propertyData) => {
     const latestProperty = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
-      [Query.orderDesc('createdAt'), Query.limit(1)] // Sort by propertyNumber descending
+      [Query.orderDesc('$createdAt'), Query.limit(1)] // Sort by propertyNumber descending
     );
 
     let nextPropertyNumber = 'PRO1'; // Default for the first property
@@ -62,14 +64,17 @@ export const addProperty = async (propertyData) => {
     const propertyId = propertyResponse.$id;
 
     // Step 3: Update the user's `properties` relationship
-    await databases.updateDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, 
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
-      userId, 
-      {
-        properties: [propertyId], 
-      }
-    );
+    if (userId){
+      await databases.updateDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID, 
+        process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
+        userId, 
+        {
+          properties: [propertyId], 
+        }
+      );
+    }
+  
 
     return propertyResponse;
   } catch (error) {

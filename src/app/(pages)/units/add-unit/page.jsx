@@ -34,14 +34,14 @@ const router = useRouter();
     lastFollowIn: "",
     status: "",
     activity: "",
-    propertyOfferedBy: "",
+    propertyOfferedBy: state?.userData?.userId ? "" : "Agent",
     mobileNo: 0,
     name: "",
     tel: 0,
     unitNo: "",
     callUpdate: "",
     forUpdate: "",
-    handler: state?.name || "",
+    handler: state?.userData?.name || "",
     sales: "",
     category: "",
     landArea: "",
@@ -188,12 +188,12 @@ const router = useRouter();
   };
 
   const handleSubmit = async () => {
-
+    
     if (
       !unit.unitFor || 
+      !unit.propertyOfferedBy || 
       !unit.name || 
       !unit.area || 
-      !unit.propertyOfferedBy || 
       !unit.compoundName
     ) {
       toast({
