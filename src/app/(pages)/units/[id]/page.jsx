@@ -211,7 +211,6 @@ function Page({ params }) {
           </ToastAction>
         ),
       });
-      router.back();
     } catch (error) {
       console.error("Error Updating unit:", error);
 
