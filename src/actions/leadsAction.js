@@ -197,4 +197,65 @@ export const deleteLead = async (leadId) => {
   }
 };
 
-// Other functions remain unchanged...
+
+
+export const deleteAllLeads = async () => {
+  try {
+    let hasMoreDocuments = true;
+    const limit = 1000; // Maximum items per request
+
+    while (hasMoreDocuments) {
+      // Fetch a batch of documents
+      const response = await databases.listDocuments(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_LEADS,
+        [Query.limit(limit)]
+      );
+
+      // Check if there are documents to delete
+      if (response.documents.length === 0) {
+        hasMoreDocuments = false;
+        break;
+      }
+
+      // Delete each lead individually
+      const deletePromises = response.documents.map((document) =>
+        databases.deleteDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID,
+          process.env.NEXT_PUBLIC_LEADS,
+          document.$id
+        )
+      );
+
+      // Wait for all delete operations to complete
+      await Promise.all(deletePromises);
+    }
+
+    console.log('All leads deleted successfully.');
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting all leads:', error);
+    throw error;
+  }
+};
+
+export const uploadImageToBucket = async (file) => {
+  try {
+    const response = await storage.createFile(
+      process.env.NEXT_PUBLIC_LEADS_BUCKET, // Bucket ID
+      ID.unique(), // Unique file ID
+      file // File to upload
+    );
+
+    // Get the view URL
+    const fileUrl = storage.getFileView(
+      process.env.NEXT_PUBLIC_LEADS_BUCKET, // Bucket ID
+      response.$id // File ID
+    );
+
+    return { id: response.$id, fileUrl }
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    throw error;
+  }
+};
