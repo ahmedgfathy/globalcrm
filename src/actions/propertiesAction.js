@@ -33,7 +33,7 @@ export const addProperty = async (propertyData) => {
     const latestProperty = await databases.listDocuments(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_PROPERTIES,
-      [Query.orderDesc('propertyNumber'), Query.limit(1)] // Sort by propertyNumber descending
+      [Query.orderDesc('createdAt'), Query.limit(1)] // Sort by propertyNumber descending
     );
 
     let nextPropertyNumber = 'PRO1'; // Default for the first property
@@ -473,13 +473,12 @@ export const uploadPropertyImages = async (files) => {
       files // File to upload
     )
 
-    // Get the view URL
     const fileUrl = storage.getFileView(
-      process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, // Bucket ID
-      response.$id // File ID
-    )
+      process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, 
+      response.$id
+    ).toString()
 
-    return { id: response.$id, fileUrl: fileUrl.href }
+    return { id: response.$id, fileUrl }
   } catch (error) {
     console.error('Error uploading image:', error)
     throw error

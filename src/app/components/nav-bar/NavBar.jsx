@@ -1,26 +1,28 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import Drawer from "../Drawer/Drawer";
 import Menu from "../menu/Menu";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { data } from "./data";
 import Link from "next/link";
+import { UserContext } from "@/app/context/UserContext";
 
 function NavBar() {
   const pathName = usePathname();
   const { t } = useTranslation();
-
+  const [state] = useContext(UserContext)
+  if(!state?.userData?.userId) return null
   return (
     <nav
-      className="fixed top-0 right-[90px] left-0 p-7 bg-white dark:bg-gray-900"
+      className="fixed top-0 right-0 md:right-[90px] left-0 p-7 bg-white dark:bg-gray-900"
       style={{
         zIndex: "200",
         backgroundColor: pathName === "/login" ? "transparent" : undefined,
       }}
       dir="ltr"
     >
-      <div className="pr-8"> {/* Added right padding */}
+      <div className="pr-8">
         <div className="flex items-center h-10">
             {pathName !== "/login" && pathName !== "/" ? (
       <>
