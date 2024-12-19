@@ -149,4 +149,37 @@ export const searchLeadsByClass = async (searchTerm) => {
   return searchLeadsGeneric(searchTerm, null, 'class');
 };
 
+export const getLeadById = async (leadId) => {
+  try {
+    const response = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_LEADS,
+      leadId
+    );
+    return response;
+  } catch (error) {
+    console.error('Error fetching lead:', error);
+    throw error;
+  }
+};
+
+export const updateLeadByID = async (leadId, updatedData) => {
+  try {
+    const sanitizedData = { ...updatedData };
+    delete sanitizedData.$collectionId;
+    delete sanitizedData.$databaseId; 
+    delete sanitizedData.$id; 
+    const response = await databases.updateDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_LEADS, 
+      leadId, 
+      sanitizedData 
+    );
+    return response;
+  } catch (error) {
+    console.error('Error updating lead:', error);
+    throw error;
+  }
+};
+
 // Other functions remain unchanged...
