@@ -183,4 +183,18 @@ export const updateLeadByID = async (leadId, updatedData) => {
   }
 };
 
+export const deleteLead = async (leadId) => {
+  try {
+    const response = await databases.deleteDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID, // Database ID
+      process.env.NEXT_PUBLIC_LEADS, // Collection ID
+      leadId // Document ID
+    );
+    return response;
+  } catch (error) {
+    console.error('Error deleting lead:', error);
+    throw error;
+  }
+};
+
 // Other functions remain unchanged...
