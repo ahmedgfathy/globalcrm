@@ -1,16 +1,16 @@
-'use client'
-import { useTranslation } from '@/app/context/TranslationContext'
-import React, { useState, useEffect,useContext } from 'react'
-import { ClientDetails, filterData } from './data'
-import CardProperty from '@/app/components/units-components/CardComponent'
-import { IoMdAddCircle } from 'react-icons/io'
-import Filter from '@/app/components/Filter'
-import { Pagination } from 'antd'
-import { Grid } from '@mui/material'
-import { useRouter, useSearchParams } from 'next/navigation'
-import CustomButton from '@/app/components/CustomButton'
-import { GrTransaction } from 'react-icons/gr'
-import DropdownMenImportExport from '@/app/components/leadImport-Export/ImportExport'
+"use client";
+import { useTranslation } from "@/app/context/TranslationContext";
+import React, { useState, useEffect, useContext } from "react";
+import { ClientDetails, filterData } from "./data";
+import CardProperty from "@/app/components/units-components/CardComponent";
+import { IoMdAddCircle } from "react-icons/io";
+import Filter from "@/app/components/Filter";
+import { Pagination } from "antd";
+import { Grid } from "@mui/material";
+import { useRouter, useSearchParams } from "next/navigation";
+import CustomButton from "@/app/components/CustomButton";
+import { GrTransaction } from "react-icons/gr";
+import DropdownMenImportExport from "@/app/components/leadImport-Export/ImportExport";
 import {
   exportProperties,
   searchPropertyByRange,
@@ -25,16 +25,16 @@ import {
   searchUnitByTypes,
   transferUnit,
   getAllPropertiesForTeamLead,
-  searchPropertyByNameForAdmin
-} from '@/actions/propertiesAction'
-import { UserContext } from '@/app/context/UserContext'
-import DeleteButton from '@/app/components/delete-button/DeleteButton'
-import { CiFilter, CiSearch } from 'react-icons/ci'
-import { Input } from '@/components/ui/input'
-import { useIsMobile } from '@/hooks/use-mobile'
-import { useToast } from '@/hooks/use-toast'
-import Papa from 'papaparse'
-import { getAllSettings } from '@/actions/filterSettings'
+  searchPropertyByNameForAdmin,
+} from "@/actions/propertiesAction";
+import { UserContext } from "@/app/context/UserContext";
+import DeleteButton from "@/app/components/delete-button/DeleteButton";
+import { CiFilter, CiSearch } from "react-icons/ci";
+import { Input } from "@/components/ui/input";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useToast } from "@/hooks/use-toast";
+import Papa from "papaparse";
+import { getAllSettings } from "@/actions/filterSettings";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -45,187 +45,192 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { searchUsers, getUsers,getCurrentUser } from '@/actions/auth'
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { searchUsers, getUsers, getCurrentUser } from "@/actions/auth";
+import TransformComponent from "@/app/components/TransformComponent";
 
 function Page() {
-  const [from, setFrom] = useState('')
-  const [currentUser, setCurrentUser] = useContext(UserContext)
-  const role = currentUser.userData.role
-  const id = currentUser.userData.userId
-  const [to, setTo] = useState('')
-  const { toast } = useToast()
-  const router = useRouter()
-  const isMobile = useIsMobile()
-  const { t, locale } = useTranslation()
-  const [units, setUnits] = useState([])
-  const urlParams = useSearchParams()
-  const initialPage = parseInt(urlParams.get('page') || '1', 10)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [totalUnits, setTotalUnits] = useState(0)
-  const [UnitsPerPage, setUnitsPerPage] = useState(12)
-  const [searchTerm, setSearchTerm] = useState('')
-  const [unitsTransfer, setUnitsTransfer] = useState([])
-  const [users, setUsers] = useState([])
+  const [from, setFrom] = useState("");
+  const [currentUser, setCurrentUser] = useContext(UserContext);
+  const role = currentUser.userData.role;
+  const id = currentUser.userData.userId;
+  const [to, setTo] = useState("");
+  const { toast } = useToast();
+  const router = useRouter();
+  const isMobile = useIsMobile();
+  const { t, locale } = useTranslation();
+  const [units, setUnits] = useState([]);
+  const urlParams = useSearchParams();
+  const initialPage = parseInt(urlParams.get("page") || "1", 10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalUnits, setTotalUnits] = useState(0);
+  const [UnitsPerPage, setUnitsPerPage] = useState(12);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [unitsTransfer, setUnitsTransfer] = useState([]);
+  const [users, setUsers] = useState([]);
   const [filterValues, setFilterValues] = useState(
     filterData.reduce((acc, ele) => {
-      acc[ele.filterName] = ''
-      return acc
+      acc[ele.filterName] = "";
+      return acc;
     }, {})
-  )
-  console.log(role)
-  console.log(id)
-  const [selectedUsers, setSelectedUsers] = useState([])
+  );
+  console.log(role);
+  console.log(id);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [options, setOptions] = useState([
-    { id: 1, filterName: 'Property Types', data: 'type', optionData: [] },
+    { id: 1, filterName: "Property Types", data: "type", optionData: [] },
     {
       id: 2,
-      filterName: 'in-side / Out Side',
-      data: 'inOrOutSideCompound',
+      filterName: "in-side / Out Side",
+      data: "inOrOutSideCompound",
       optionData: [],
     },
-    { id: 3, filterName: 'Sales', data: 'sales', optionData: [] },
-    { id: 4, filterName: 'Category', data: 'category', optionData: [] },
-    { id: 5, filterName: 'Range', data: 'range', optionData: [] },
-  ])
+    { id: 3, filterName: "Sales", data: "sales", optionData: [] },
+    { id: 4, filterName: "Category", data: "category", optionData: [] },
+    { id: 5, filterName: "Range", data: "range", optionData: [] },
+  ]);
 
   const parseFromTo = () => {
-    const parsedFrom = from ? Number(from) : undefined
-    const parsedTo = to ? Number(to) : undefined
-    return { parsedFrom, parsedTo }
-  }
+    const parsedFrom = from ? Number(from) : undefined;
+    const parsedTo = to ? Number(to) : undefined;
+    return { parsedFrom, parsedTo };
+  };
 
   useEffect(() => {
     const fetchOptions = async () => {
       try {
-        const res = await getAllSettings()
+        const res = await getAllSettings();
 
         if (res && res.length > 0 && res[0].unitSettings) {
-          const data = JSON.parse(res[0].unitSettings)
-          console.log('Fetched Data:', data)
+          const data = JSON.parse(res[0].unitSettings);
+          console.log("Fetched Data:", data);
 
           setOptions((prev) =>
             prev.map((option) => {
-              const matchedData = data[option.data]
+              const matchedData = data[option.data];
               return {
                 ...option,
                 optionData:
                   matchedData && matchedData.length > 0
                     ? matchedData
-                    : option.data === 'range'
-                    ? ['Total Price', 'Unit price per square meter']
+                    : option.data === "range"
+                    ? ["Total Price", "Unit price per square meter"]
                     : [],
-              }
+              };
             })
-          )
+          );
         } else {
-          console.warn('No settings found.')
+          console.warn("No settings found.");
         }
       } catch (error) {
-        console.error('Failed to fetch options:', error)
+        console.error("Failed to fetch options:", error);
       }
-    }
+    };
 
-    fetchOptions()
-  }, [])
+    fetchOptions();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { parsedFrom, parsedTo } = parseFromTo()
+        const { parsedFrom, parsedTo } = parseFromTo();
         if (searchTerm) {
           let propertiesByName;
-          if (role === 'admin') {
+          if (role === "admin") {
             propertiesByName = await searchPropertyByNameForAdmin(searchTerm);
           } else {
             propertiesByName = await searchPropertyByName(searchTerm);
           }
-          console.log('Fetched properties by name:', propertiesByName);
+          console.log("Fetched properties by name:", propertiesByName);
         }
         if (parsedFrom || parsedTo) {
           const { properties, total } = await searchPropertyByRange(
             parsedFrom,
             parsedTo
-          )
-          console.log('Fetched properties by range:', properties)
-          setUnits(properties)
-          setTotalUnits(total)
+          );
+          console.log("Fetched properties by range:", properties);
+          setUnits(properties);
+          setTotalUnits(total);
         }
       } catch (error) {
-        console.error('Error fetching properties:', error)
+        console.error("Error fetching properties:", error);
       }
-    }
+    };
 
-    fetchData()
-  }, [from, to, searchTerm])
+    fetchData();
+  }, [from, to, searchTerm]);
 
   const handleFilterChange = (value, filterName) => {
-    const updatedFilters = { ...filterValues, [filterName]: value }
-    console.log(updatedFilters)
-    setFilterValues(updatedFilters)
+    const updatedFilters = { ...filterValues, [filterName]: value };
+    console.log(updatedFilters);
+    setFilterValues(updatedFilters);
     // onFilterChange(updatedFilters);
-  }
+  };
 
   const handleClearFilters = () => {
     const resetFilters = Object.keys(filterValues).reduce((acc, key) => {
-      acc[key] = ''
-      return acc
-    }, {})
-    setFilterValues(resetFilters)
+      acc[key] = "";
+      return acc;
+    }, {});
+    setFilterValues(resetFilters);
     // onFilterChange(resetFilters);
-  }
-  const fetchUnits = async (page = 1, search = '', range = {}) => {
-    const offset = (page - 1) * UnitsPerPage
+  };
+  const fetchUnits = async (page = 1, search = "", range = {}) => {
+    const offset = (page - 1) * UnitsPerPage;
 
     if (!UnitsPerPage || UnitsPerPage <= 0) {
-      console.error('Invalid UnitsPerPage value')
-      return
+      console.error("Invalid UnitsPerPage value");
+      return;
     }
 
     try {
-      let properties = []
-      let totalProperties = 0
+      let properties = [];
+      let totalProperties = 0;
 
       if (search) {
         let propertiesByName;
-        if (role === 'admin') {
+        if (role === "admin") {
           propertiesByName = await searchPropertyByNameForAdmin(search);
         } else {
           propertiesByName = await searchPropertyByName(search);
         }
         properties = propertiesByName;
         totalProperties = propertiesByName.length;
-      }else if (range.from || range.to) {
+      } else if (range.from || range.to) {
         const { properties: propertiesByRange, total } =
           await searchPropertyByRange(
             range.from,
             range.to,
             currentPage,
             UnitsPerPage
-          )
-        properties = propertiesByRange
-        totalProperties = total
+          );
+        properties = propertiesByRange;
+        totalProperties = total;
       } else {
         let response;
-        if (role === 'admin') {
+        if (role === "admin") {
           response = await getAllPropertiesForAdmin(UnitsPerPage, offset);
-        } else if (role === 'user') {
+        } else if (role === "user") {
           response = await getAllPropertiesForSales(UnitsPerPage, offset);
         } else if (role === "teamLead") {
-          response = await getAllPropertiesForTeamLead(id,UnitsPerPage, offset)
+          response = await getAllPropertiesForTeamLead(
+            id,
+            UnitsPerPage,
+            offset
+          );
         }
         const { properties: allProperties, totalProperties: total } = response;
         properties = allProperties;
         totalProperties = total;
       }
 
-      setUnits(properties)
-      setTotalUnits(totalProperties)
+      setUnits(properties);
+      setTotalUnits(totalProperties);
     } catch (error) {
-      console.error('Error fetching units', error)
+      console.error("Error fetching units", error);
     }
-  }
+  };
 
   // const fetchUnits = async (page = 1, search = "") => {
   //   const offset = (page - 1) * UnitsPerPage;
@@ -252,10 +257,10 @@ function Page() {
   // };
 
   const handlePageSizeChange = (current, size) => {
-    setUnitsPerPage(size)
-    setCurrentPage(1)
-    console.log(size)
-  }
+    setUnitsPerPage(size);
+    setCurrentPage(1);
+    console.log(size);
+  };
 
   // const handleExportCSV = async () => {
   //   try {
@@ -428,141 +433,141 @@ function Page() {
     try {
       await deleteAllProperties();
       toast({
-        variant: 'success',
-        title: 'Success Delete Units',
-        description: 'All units deleted successfully.',
-        status: 'success',
+        variant: "success",
+        title: "Success Delete Units",
+        description: "All units deleted successfully.",
+        status: "success",
       });
       // fetchUnits(); // Refresh the state after deletion
     } catch (error) {
       toast({
-        variant: 'destructive',
-        title: 'Error Deleting Units',
-        description: error.message || 'An unexpected error occurred.',
-        status: 'error',
+        variant: "destructive",
+        title: "Error Deleting Units",
+        description: error.message || "An unexpected error occurred.",
+        status: "error",
       });
-      console.error('Error deleting units:', error);
+      console.error("Error deleting units:", error);
     }
   };
   const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value)
-    setCurrentPage(1)
-  }
+    setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
 
   useEffect(() => {
-    fetchUnits(currentPage, searchTerm)
-  }, [currentPage, searchTerm, UnitsPerPage])
+    fetchUnits(currentPage, searchTerm);
+  }, [currentPage, searchTerm, UnitsPerPage]);
 
   const handlePageChange = (page) => {
-    setCurrentPage(page)
-    router.push(`?page=${page}&search=${searchTerm}`)
-    window.scrollTo(0, 0)
-  }
+    setCurrentPage(page);
+    router.push(`?page=${page}&search=${searchTerm}`);
+    window.scrollTo(0, 0);
+  };
 
   const onFilterChange = async (e, data) => {
-    console.log(e, data)
-    if (data === 'Category') {
-      const documents = await searchUnitByCategory(e)
-      setUnits(documents)
-      setTotalUnits(documents.length)
-      console.log(documents)
+    console.log(e, data);
+    if (data === "Category") {
+      const documents = await searchUnitByCategory(e);
+      setUnits(documents);
+      setTotalUnits(documents.length);
+      console.log(documents);
     }
-    if (data === 'Property Types') {
-      const documents = await searchUnitByTypes(e)
-      setUnits(documents)
-      setTotalUnits(documents.length)
-      console.log(documents)
+    if (data === "Property Types") {
+      const documents = await searchUnitByTypes(e);
+      setUnits(documents);
+      setTotalUnits(documents.length);
+      console.log(documents);
     }
-  }
+  };
 
   const handleLike = async (id) => {
-    const data = await togglePropertyLiked(id)
-    fetchUnits(currentPage, searchTerm)
-  }
+    const data = await togglePropertyLiked(id);
+    fetchUnits(currentPage, searchTerm);
+  };
 
   const handleShowHome = async (id) => {
-    const data = await togglePropertyInHome(id)
-    fetchUnits(currentPage, searchTerm)
-  }
+    const data = await togglePropertyInHome(id);
+    fetchUnits(currentPage, searchTerm);
+  };
 
   const handleCheckUnits = (id) => {
     setUnitsTransfer((prev) => {
-      const exists = prev.some((unit) => unit.id === id)
+      const exists = prev.some((unit) => unit.id === id);
       if (exists) {
-        return prev.filter((unit) => unit.id !== id)
+        return prev.filter((unit) => unit.id !== id);
       } else {
-        return [...prev, id]
+        return [...prev, id];
       }
-    })
-  }
+    });
+  };
 
   const handleSelect = (userId) => {
     setSelectedUsers((prevSelected) => {
-      const isSelected = prevSelected.includes(userId)
+      const isSelected = prevSelected.includes(userId);
       const updatedSelected = isSelected
         ? prevSelected.filter((id) => id !== userId) // Remove if already selected
-        : [...prevSelected, userId] // Add if not selected
-      console.log('Selected Users:', updatedSelected) // Logging the selectedUsers state
-      return updatedSelected
-    })
-  }
+        : [...prevSelected, userId]; // Add if not selected
+      console.log("Selected Users:", updatedSelected); // Logging the selectedUsers state
+      return updatedSelected;
+    });
+  };
 
   const fetchUsers = async () => {
     try {
-      const res = await getUsers()
-      setUsers(res.users)
-      console.log('Fetched Users:', res)
+      const res = await getUsers();
+      setUsers(res.users);
+      console.log("Fetched Users:", res);
     } catch (error) {
-      console.error('Error fetching users:', error)
+      console.error("Error fetching users:", error);
     }
-  }
+  };
 
   const searchUsersForTransform = async (data) => {
     try {
-      const res = await searchUsers(data)
-      setUsers(res)
-      console.log(res)
+      const res = await searchUsers(data);
+      setUsers(res);
+      console.log(res);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   useEffect(() => {
-    console.log(unitsTransfer)
-  }, [unitsTransfer])
+    console.log(unitsTransfer);
+  }, [unitsTransfer]);
 
   const handleTransferSubmit = async () => {
     try {
-      await transferUnit(unitsTransfer, selectedUsers)
-      fetchUnits(currentPage, searchTerm) // Refresh the units after transfer
-      setSelectedUsers([]) // Optionally clear selections after transfer
+      await transferUnit(unitsTransfer, selectedUsers);
+      fetchUnits(currentPage, searchTerm); // Refresh the units after transfer
+      setSelectedUsers([]); // Optionally clear selections after transfer
       toast({
-        variant: 'success',
-        title: 'Success',
-        description: 'Units transferred successfully.',
-        status: 'success',
-      })
+        variant: "success",
+        title: "Success",
+        description: "Units transferred successfully.",
+        status: "success",
+      });
     } catch (error) {
-      console.error('Error transferring units:', error)
+      console.error("Error transferring units:", error);
       toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: error.message || 'An unexpected error occurred.',
-        status: 'error',
-      })
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "An unexpected error occurred.",
+        status: "error",
+      });
     }
-  }
+  };
 
   return (
-    <div className='p-6 min-h-screen bg-gray-100 dark:bg-gray-900'>
-      <div className='w-full flex flex-wrap justify-between items-start gap-3 px-2 pt-2 max-[1200px]:px-7'>
+    <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="w-full flex flex-wrap justify-between items-start gap-3 px-2 pt-2 max-[1200px]:px-7">
         <Grid
           item
           xs={12}
           sm={7}
           md={11.3}
           lg={11.4}
-          className='flex w-full justify-end'
-          dir='ltr'
+          className="flex w-full justify-end"
+          dir="ltr"
         >
           <div
             className={`head flex justify-between items-start w-full flex-col  md:flex-row-reverse gap-2 md:gap-5`}
@@ -571,47 +576,47 @@ function Page() {
               className={`flex items-center w-3/4 h-max max-[450px]:w-full dark:shadow-none rounded-xl bg-Lightbg dark:bg-cardbgDark border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus-within:border-black dark:hover:border-white dark:focus-within:border-white focus:outline-none px-2`}
             >
               <span
-                className={`text-gray-400 ${locale === 'ar' ? 'ml-2' : 'mr-2'}`}
+                className={`text-gray-400 ${locale === "ar" ? "ml-2" : "mr-2"}`}
               >
                 <CiSearch />
               </span>
               <Input
-                dir={locale == 'ar' ? 'rtl' : 'ltr'}
-                type='text'
-                className='w-full bg-transparent focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 text-lg border-0 shadow-none'
-                placeholder={`${t('search_unit')} ...`}
+                dir={locale == "ar" ? "rtl" : "ltr"}
+                type="text"
+                className="w-full bg-transparent focus:outline-none focus-visible:outline-none focus:ring-0 focus-visible:ring-0 text-lg border-0 shadow-none"
+                placeholder={`${t("search_unit")} ...`}
                 value={searchTerm}
                 onChange={handleSearchChange}
               />
             </div>
-            <div className='flex gap-1 md:gap-2 items-center justify-between w-full md:w-fit'>
+            <div className="flex gap-1 md:gap-2 items-center justify-between w-full md:w-fit">
               {/* <div className='flex gap-1 md:gap-2 items-center justify-between w-full'> */}
               <CustomButton
-                fun={() => router.push('/units/add-unit')}
+                fun={() => router.push("/units/add-unit")}
                 // title={!isMobile && t('add_unit')}
-                title={t('add_unit')}
-                className='GreenButton'
+                title={t("add_unit")}
+                className="GreenButton"
                 icon={() => <IoMdAddCircle />}
               />
               <CustomButton
                 // title={!isMobile && t('clear_filter')}
-                title={t('clear_filter')}
+                title={t("clear_filter")}
                 icon={() => <CiFilter />}
-                className='GreenButton'
+                className="GreenButton"
                 fun={() => {
-                  handleClearFilters()
-                  fetchUnits(1, '')
+                  handleClearFilters();
+                  fetchUnits(1, "");
                 }}
               />
 
               <DeleteButton
                 handleDelete={handleDeleteAllProperties}
-                title={!isMobile && t('delete_all_units')}
+                title={!isMobile && t("delete_all_units")}
                 afterDel={() => fetchUnits(currentPage, searchTerm)}
               />
 
               <div>
-                <AlertDialog>
+                {/* <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button
                       variant='outline'
@@ -683,7 +688,17 @@ function Page() {
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
-                </AlertDialog>
+                </AlertDialog> */}
+                <TransformComponent
+                  title="Transform Units"
+                  users={users}
+                  handleTransferSubmit={handleTransferSubmit}
+                  handleClick={fetchUsers}
+                  handleChange={searchUsersForTransform}
+                  selectedUsers={selectedUsers}
+                  handleSelect={handleSelect}
+                  handleCancel={() => setSelectedUsers([])}
+                />
               </div>
 
               {/* <DeleteButton
@@ -699,10 +714,10 @@ function Page() {
         </Grid>
 
         <div
-          className='filter bg-Lightbg dark:bg-transparent rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex justify-end max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-0 md:px-3 shadow-box_shadow dark:shadow-none'
-          dir='rtl'
+          className="filter bg-Lightbg dark:bg-transparent rounded-xl w-full h-[60px] max-[450px]:h-max max-[450px]:py-2 flex justify-end max-[450px]:flex-wrap items-center mb-5 max-[450px]:mb-0 gap-3 px-0 md:px-3 shadow-box_shadow dark:shadow-none"
+          dir="rtl"
         >
-          <div className='filter w-full md:w-full'>
+          <div className="filter w-full md:w-full">
             <Filter
               filterChange={onFilterChange}
               filterValues={filterValues}
@@ -711,14 +726,14 @@ function Page() {
               col={5}
             />
           </div>
-          <div className='flex gap-3'>
+          <div className="flex gap-3">
             <Input
-              placeholder='To'
+              placeholder="To"
               value={to}
               onChange={(e) => setTo(e.target.value)}
             />
             <Input
-              placeholder='From'
+              placeholder="From"
               value={from}
               onChange={(e) => setFrom(e.target.value)}
             />
@@ -726,7 +741,7 @@ function Page() {
           </div>
         </div>
 
-        <Grid container spacing={1} dir='ltr'>
+        <Grid container spacing={1} dir="ltr">
           {units.map((unit, index) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
               <CardProperty
@@ -739,8 +754,8 @@ function Page() {
           ))}
         </Grid>
       </div>
-      <div className='footer '>
-        <div className='flex justify-center items-center mt-4' dir='ltr'>
+      <div className="footer ">
+        <div className="flex justify-center items-center mt-4" dir="ltr">
           <Pagination
             current={currentPage}
             showSizeChanger
@@ -748,11 +763,11 @@ function Page() {
             pageSize={UnitsPerPage}
             onShowSizeChange={handlePageSizeChange}
             onChange={handlePageChange}
-            className='custom-pagination mt-0 mx-auto'
+            className="custom-pagination mt-0 mx-auto"
           />
         </div>
       </div>
     </div>
-  )
+  );
 }
-export default Page
+export default Page;

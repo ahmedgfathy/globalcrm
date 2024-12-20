@@ -8,8 +8,8 @@ import { filterData } from "./data";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Spin } from "antd";
 import { MdDeleteForever } from "react-icons/md"; // Correct import
-import { FaFileImport, FaFileExport } from 'react-icons/fa';
-import { MdOutlineTransform } from 'react-icons/md';
+import { FaFileImport, FaFileExport } from "react-icons/fa";
+import { MdOutlineTransform } from "react-icons/md";
 
 import {
   getAllLeads,
@@ -20,6 +20,7 @@ import {
   searchLeadsByType,
   exportLeads,
   deleteAllLeads,
+  transferLead
 } from "@/actions/leadsAction";
 import { Grid } from "@mui/material";
 import { Input } from "@/components/ui/input";
@@ -34,23 +35,27 @@ import { useToast } from "@/hooks/use-toast";
 import DeleteButton from "../../components/delete-button/DeleteButton";
 import { getAllSettings } from "@/actions/filterSettings";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
-import { searchUsers } from "@/actions/auth";
+import { getUsers, searchUsers } from "@/actions/auth";
+import TransformComponent from "@/app/components/TransformComponent";
 
 function Page() {
   const { toast } = useToast();
   const [currentUser, setCurrentUser] = useContext(UserContext);
   const role = currentUser.userData.role;
-  const userId = currentUser.userData.userId
+  const userId = currentUser.userData.userId;
   console.log(role);
-  console.log(currentUser)
+  console.log(currentUser);
   const router = useRouter();
   const isMobile = useIsMobile();
   const urlParams = useSearchParams();
   const [users, setUsers] = useState([]);
   const { t, locale } = useTranslation();
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
   const [leads, setLeads] = useState([]);
   const initialPage = parseInt(urlParams.get("page") || "1", 10);
   const [selectedLeads, setSelectedLeads] = useState([]);
+  console.log(selectedLeads);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [totalLeads, setTotalLeads] = useState(0);
   const [typeFilter, setTypeFilter] = useState("");
@@ -84,7 +89,7 @@ function Page() {
       let leadsData;
       if (search) {
         console.log("Fetching leads with search term:", search);
-        if (role === 'admin') {
+        if (role === "admin") {
           leadsData = await searchLeads(search);
         } else {
           const userId = currentUser.userData.userId;
@@ -94,12 +99,15 @@ function Page() {
         setTotalLeads(leadsData.length);
       } else {
         console.log("Fetching all leads");
-        if (role === 'admin') {
+        if (role === "admin") {
           const { leads, totalLeads } = await getAllLeads(leadsPerPage, offset);
           setLeads(leads);
           setTotalLeads(totalLeads);
         } else {
-          const { leads, totalLeads } = await getAllLeadsForUser(leadsPerPage, offset);
+          const { leads, totalLeads } = await getAllLeadsForUser(
+            leadsPerPage,
+            offset
+          );
           setLeads(leads);
           setTotalLeads(totalLeads);
         }
@@ -115,17 +123,20 @@ function Page() {
     console.log(e, data);
     let documents;
     if (data === "Request type") {
-      if (role === 'admin') {
+      if (role === "admin") {
         documents = await searchLeadsByType(e);
       } else {
         documents = await searchLeadsByType(e, currentUser.userData.$id);
       }
     }
     if (data === "Leads Source") {
-      if (role === 'admin') {
+      if (role === "admin") {
         documents = await searchLeadsByCustomerSource(e);
       } else {
-        documents = await searchLeadsByCustomerSource(e, currentUser.userData.$id);
+        documents = await searchLeadsByCustomerSource(
+          e,
+          currentUser.userData.$id
+        );
       }
     }
     setLeads(documents);
@@ -284,13 +295,56 @@ function Page() {
       console.log(error);
     }
   };
+  const handleSelect = (userId) => {
+    setSelectedUsers((prevSelected) => {
+      const isSelected = prevSelected.includes(userId);
+      const updatedSelected = isSelected
+        ? prevSelected.filter((id) => id !== userId) // Remove if already selected
+        : [...prevSelected, userId]; // Add if not selected
+      console.log("Selected Users:", updatedSelected); // Logging the selectedUsers state
+      return updatedSelected;
+    });
+  };
+  const fetchUsers = async () => {
+    try {
+      const res = await getUsers();
+      setUsers(res.users);
+      console.log("Fetched Users:", res);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  const handleTransferSubmit = async () => {
+    try {
+      await transferLead(selectedLeads, selectedUsers);
+      toast({
+        variant: "success",
+        title: "Success",
+        description: "Leads transferred successfully.",
+        status: "success",
+      });
+      fetchLeads(currentPage, searchTerm); // Fetch leads again
+    } catch (error) {
+      console.error("Error transferring leads:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to transfer leads.",
+        status: "error",
+      });
+    }
+  };
+
   return (
     <ProtectedRoute>
       <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
         {/* Modified Header Section - More Compact */}
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <h1 className="text-lg font-medium text-gray-800 dark:text-white">{t('leads_List')}</h1>
+            <h1 className="text-lg font-medium text-gray-800 dark:text-white">
+              {t("leads_List")}
+            </h1>
             <span className="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm text-gray-600 dark:text-gray-300">
               {totalLeads}
             </span>
@@ -310,7 +364,7 @@ function Page() {
                   dir={locale == "ar" ? "rtl" : "ltr"}
                   type="text"
                   className="w-full pl-10 border-gray-300 dark:border-gray-600 rounded-lg"
-                  placeholder={`${t('search_client')}...`}
+                  placeholder={`${t("search_client")}...`}
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />
@@ -326,7 +380,7 @@ function Page() {
                 className="bg-orange-700 hover:bg-primary/90 text-white"
                 icon={() => <IoMdAddCircle className="w-5 h-5" />}
               />
-              
+
               {/* Import Button */}
               <label className="cursor-pointer">
                 <input
@@ -351,11 +405,15 @@ function Page() {
               />
 
               {/* Transform Button */}
-              <CustomButton
-                fun={() => router.push("/leads/transform")}
-                title={t("transform")}
-                className="border border-purple-500 text-purple-500 hover:bg-purple-50 dark:hover:bg-purple-900/20"
-                icon={() => <MdOutlineTransform className="w-5 h-5" />}
+              <TransformComponent
+                title="Transform Leads"
+                users={users}
+                handleTransferSubmit={handleTransferSubmit}
+                handleClick={fetchUsers}
+                handleChange={searchUsersForTransform}
+                selectedUsers={selectedUsers}
+                handleSelect={handleSelect}
+                handleCancel={() => setSelectedUsers([])}
               />
 
               {/* Clear Filter Button */}
@@ -424,7 +482,7 @@ function Page() {
         {!isLoading && totalLeads === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-500 dark:text-gray-400 text-lg">
-              {t('no_leads_found')}
+              {t("no_leads_found")}
             </p>
             <CustomButton
               fun={() => router.push("/leads/add-lead")}

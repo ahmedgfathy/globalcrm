@@ -197,6 +197,59 @@ export const deleteLead = async (leadId) => {
   }
 };
 
+export const getLeadsBySource = async () => {
+  try {
+    let allLeads = [];
+    let lastBatchSize = 0;
+    let offset = 0;
+    const limit = 100;
+    do {
+      const response = await databases.listDocuments(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_LEADS,
+        [
+          Query.limit(limit),
+          Query.offset(offset),
+        ]
+      );
+      allLeads = [...allLeads, ...response.documents];
+      lastBatchSize = response.documents.length;
+      offset += lastBatchSize;
+    } while (lastBatchSize > 0); 
+    const leadsBySource = allLeads.reduce((acc, lead) => {
+      const source = lead.customerSource || "Unknown";
+      acc[source] = (acc[source] || 0) + 1;
+      return acc;
+    }, {});
+    console.log(leadsBySource);
+    return leadsBySource;
+  } catch (error) {
+    console.error("Error fetching leads by source:", error);
+    throw error;
+  }
+};
+
+export const getLastMonthLeadsCount = async () => {
+  try {
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+    const oneMonthAgoISO = oneMonthAgo.toISOString();
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_LEADS, 
+      [
+        Query.greaterThan("$createdAt", oneMonthAgoISO),
+      ]
+    );
+    const totalLeadsLastMonth = response.total;
+    console.log(`Total leads added in the last month: ${totalLeadsLastMonth}`);
+    return totalLeadsLastMonth;
+  } catch (error) {
+    console.error("Error fetching leads from the last month:", error);
+    throw error;
+  }
+};
+
 
 
 export const deleteAllLeads = async () => {
@@ -256,6 +309,60 @@ export const uploadImageToBucket = async (file) => {
     return { id: response.$id, fileUrl }
   } catch (error) {
     console.error('Error uploading image:', error);
+    throw error;
+  }
+};
+
+
+
+
+export const transferLead = async (leadIds, targetUserIds) => {
+  try {
+    // Ensure `leadIds` and `targetUserIds` are arrays of strings
+    if (
+      !Array.isArray(leadIds) ||
+      !leadIds.every((id) => typeof id === 'string')
+    ) {
+      throw new Error('Invalid leadIds: All elements must be strings');
+    }
+
+    if (
+      !Array.isArray(targetUserIds) ||
+      !targetUserIds.every((id) => typeof id === 'string')
+    ) {
+      throw new Error('Invalid targetUserIds: All elements must be strings');
+    }
+
+    // Step 1: Get the current user's account
+    const currentUserId = await getCurrentUserId();
+
+    // Step 2: Update each lead document
+    for (const leadId of leadIds) {
+      const leadDoc = await databases.getDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_LEADS,
+        leadId
+      );
+
+      // Remove the current user from the lead's userId array
+      const updatedUserIds = leadDoc.userId.filter((id) => id !== currentUserId);
+
+      // Add the target users to the lead's userId array
+      const newUserIds = [...new Set([...updatedUserIds, ...targetUserIds])]; // Prevent duplicates
+
+      console.log('Updated Users for Lead:', leadId, newUserIds);
+
+      await databases.updateDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_LEADS,
+        leadId,
+        { userId: newUserIds } // Use a flat array of strings
+      );
+    }
+
+    console.log('Leads transferred successfully.');
+  } catch (error) {
+    console.error('Error transferring leads:', error);
     throw error;
   }
 };
