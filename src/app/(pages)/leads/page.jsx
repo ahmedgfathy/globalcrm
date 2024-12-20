@@ -20,6 +20,7 @@ import {
   searchLeadsByType,
   exportLeads,
   deleteAllLeads,
+  transferLead
 } from "@/actions/leadsAction";
 import { Grid } from "@mui/material";
 import { Input } from "@/components/ui/input";
@@ -54,6 +55,7 @@ function Page() {
   const [leads, setLeads] = useState([]);
   const initialPage = parseInt(urlParams.get("page") || "1", 10);
   const [selectedLeads, setSelectedLeads] = useState([]);
+  console.log(selectedLeads);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [totalLeads, setTotalLeads] = useState(0);
   const [typeFilter, setTypeFilter] = useState("");
@@ -312,9 +314,26 @@ function Page() {
       console.error("Error fetching users:", error);
     }
   };
-  
+
   const handleTransferSubmit = async () => {
-    console.log(handleTransferSubmit);
+    try {
+      await transferLead(selectedLeads, selectedUsers);
+      toast({
+        variant: "success",
+        title: "Success",
+        description: "Leads transferred successfully.",
+        status: "success",
+      });
+      fetchLeads(currentPage, searchTerm); // Fetch leads again
+    } catch (error) {
+      console.error("Error transferring leads:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to transfer leads.",
+        status: "error",
+      });
+    }
   };
 
   return (
