@@ -197,6 +197,59 @@ export const deleteLead = async (leadId) => {
   }
 };
 
+export const getLeadsBySource = async () => {
+  try {
+    let allLeads = [];
+    let lastBatchSize = 0;
+    let offset = 0;
+    const limit = 100;
+    do {
+      const response = await databases.listDocuments(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_LEADS,
+        [
+          Query.limit(limit),
+          Query.offset(offset),
+        ]
+      );
+      allLeads = [...allLeads, ...response.documents];
+      lastBatchSize = response.documents.length;
+      offset += lastBatchSize;
+    } while (lastBatchSize > 0); 
+    const leadsBySource = allLeads.reduce((acc, lead) => {
+      const source = lead.customerSource || "Unknown";
+      acc[source] = (acc[source] || 0) + 1;
+      return acc;
+    }, {});
+    console.log(leadsBySource);
+    return leadsBySource;
+  } catch (error) {
+    console.error("Error fetching leads by source:", error);
+    throw error;
+  }
+};
+
+export const getLastMonthLeadsCount = async () => {
+  try {
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+    const oneMonthAgoISO = oneMonthAgo.toISOString();
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID, 
+      process.env.NEXT_PUBLIC_LEADS, 
+      [
+        Query.greaterThan("$createdAt", oneMonthAgoISO),
+      ]
+    );
+    const totalLeadsLastMonth = response.total;
+    console.log(`Total leads added in the last month: ${totalLeadsLastMonth}`);
+    return totalLeadsLastMonth;
+  } catch (error) {
+    console.error("Error fetching leads from the last month:", error);
+    throw error;
+  }
+};
+
 
 
 export const deleteAllLeads = async () => {
