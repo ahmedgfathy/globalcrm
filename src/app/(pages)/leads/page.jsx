@@ -14,6 +14,7 @@ import { MdOutlineTransform } from "react-icons/md";
 import {
   getAllLeads,
   getAllLeadsForUser,
+  getAllLeadsForTeamLead,
   importLeads,
   searchLeads,
   searchLeadsByCustomerSource,
@@ -103,7 +104,12 @@ function Page() {
           const { leads, totalLeads } = await getAllLeads(leadsPerPage, offset);
           setLeads(leads);
           setTotalLeads(totalLeads);
-        } else {
+        } else if (role === "teamLead") {
+          const { allLeads, totalLeads } = await getAllLeadsForTeamLead(leadsPerPage, offset);
+          setLeads(allLeads);
+          setTotalLeads(totalLeads);
+        }
+        else {
           const { leads, totalLeads } = await getAllLeadsForUser(
             leadsPerPage,
             offset
