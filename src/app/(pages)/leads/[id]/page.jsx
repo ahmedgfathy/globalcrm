@@ -61,7 +61,8 @@ function Page({ params }) {
   };
   const handleDeleteImage = () => {
     setImage("/assets/images/default-user.jpg");
-    setImageFile(null);
+    setLead({...lead, leadImage: "/assets/images/default-user.jpg"})
+    setImageFile(null); 
   };
   const handleSubmit = async () => {
     const currentDateTime = new Date().toLocaleString();

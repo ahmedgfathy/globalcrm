@@ -20,6 +20,7 @@ import {
   searchLeadsByType,
   exportLeads,
   deleteAllLeads,
+  transferLead
 } from "@/actions/leadsAction";
 import { Grid } from "@mui/material";
 import { Input } from "@/components/ui/input";
@@ -54,6 +55,7 @@ function Page() {
   const [leads, setLeads] = useState([]);
   const initialPage = parseInt(urlParams.get("page") || "1", 10);
   const [selectedLeads, setSelectedLeads] = useState([]);
+  console.log(selectedLeads);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [totalLeads, setTotalLeads] = useState(0);
   const [typeFilter, setTypeFilter] = useState("");
@@ -312,9 +314,28 @@ function Page() {
       console.error("Error fetching users:", error);
     }
   };
+
   const handleTransferSubmit = async () => {
-    console.log(handleTransferSubmit);
+    try {
+      await transferLead(selectedLeads, selectedUsers);
+      toast({
+        variant: "success",
+        title: "Success",
+        description: "Leads transferred successfully.",
+        status: "success",
+      });
+      fetchLeads(currentPage, searchTerm); // Fetch leads again
+    } catch (error) {
+      console.error("Error transferring leads:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to transfer leads.",
+        status: "error",
+      });
+    }
   };
+
   return (
     <ProtectedRoute>
       <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -351,11 +372,11 @@ function Page() {
             </div>
 
             {/* Action Buttons - Modified section */}
-            <div className="grid grid-cols-6 md:flex gap-3 w-full md:w-auto justify-end items-center ">
+            <div className="flex gap-3 w-full md:w-auto justify-end items-center">
               {/* Add Lead Button */}
               <CustomButton
                 fun={() => router.push("/leads/add-lead")}
-                title={!isMobile && t("add_lead")}
+                title={t("add_lead")}
                 className="bg-orange-700 hover:bg-primary/90 text-white"
                 icon={() => <IoMdAddCircle className="w-5 h-5" />}
               />
@@ -369,8 +390,8 @@ function Page() {
                   accept=".csv"
                 />
                 <CustomButton
-                  title={!isMobile && t("import")}
-                  className={`border border-blue-500 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 w-full `}
+                  title={t("import")}
+                  className="border border-blue-500 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                   icon={() => <FaFileImport className="w-5 h-5" />}
                 />
               </label>
@@ -378,7 +399,7 @@ function Page() {
               {/* Export Button */}
               <CustomButton
                 fun={handleExportCSV}
-                title={!isMobile && t("export")}
+                title={t("export")}
                 className="border border-green-500 text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20"
                 icon={() => <FaFileExport className="w-5 h-5" />}
               />
@@ -397,7 +418,7 @@ function Page() {
 
               {/* Clear Filter Button */}
               <CustomButton
-                title={!isMobile && t("clear_filter")}
+                title={t("clear_filter")}
                 icon={() => <CiFilter className="w-5 h-5" />}
                 className="border border-gray-300 dark:border-gray-600"
                 fun={handleClearFilters}
@@ -405,9 +426,9 @@ function Page() {
 
               {/* Delete All Button */}
               <DeleteButton
-                handleDelete={() => console.log("no thing")}
-                title={!isMobile && t("delete_all_leads")}
-                afterDel={() => fetchLeads(currentPage, searchTerm)}
+                handleDelete={deleteAllLeads}
+                title={t('delete_all_leads')}
+                afterDel={()=>fetchLeads(currentPage, searchTerm)}
                 className="bg-red-500 hover:bg-red-600 text-white"
               />
             </div>

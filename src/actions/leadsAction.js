@@ -250,4 +250,119 @@ export const getLastMonthLeadsCount = async () => {
   }
 };
 
-// Other functions remain unchanged...
+
+
+export const deleteAllLeads = async () => {
+  try {
+    let hasMoreDocuments = true;
+    const limit = 1000; // Maximum items per request
+
+    while (hasMoreDocuments) {
+      // Fetch a batch of documents
+      const response = await databases.listDocuments(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_LEADS,
+        [Query.limit(limit)]
+      );
+
+      // Check if there are documents to delete
+      if (response.documents.length === 0) {
+        hasMoreDocuments = false;
+        break;
+      }
+
+      // Delete each lead individually
+      const deletePromises = response.documents.map((document) =>
+        databases.deleteDocument(
+          process.env.NEXT_PUBLIC_DATABASE_ID,
+          process.env.NEXT_PUBLIC_LEADS,
+          document.$id
+        )
+      );
+
+      // Wait for all delete operations to complete
+      await Promise.all(deletePromises);
+    }
+
+    console.log('All leads deleted successfully.');
+    return { success: true };
+  } catch (error) {
+    console.error('Error deleting all leads:', error);
+    throw error;
+  }
+};
+
+export const uploadImageToBucket = async (file) => {
+  try {
+    const response = await storage.createFile(
+      process.env.NEXT_PUBLIC_LEADS_BUCKET, // Bucket ID
+      ID.unique(), // Unique file ID
+      file // File to upload
+    );
+
+    // Get the view URL
+    const fileUrl = storage.getFileView(
+      process.env.NEXT_PUBLIC_LEADS_BUCKET, // Bucket ID
+      response.$id // File ID
+    );
+
+    return { id: response.$id, fileUrl }
+  } catch (error) {
+    console.error('Error uploading image:', error);
+    throw error;
+  }
+};
+
+
+
+
+export const transferLead = async (leadIds, targetUserIds) => {
+  try {
+    // Ensure `leadIds` and `targetUserIds` are arrays of strings
+    if (
+      !Array.isArray(leadIds) ||
+      !leadIds.every((id) => typeof id === 'string')
+    ) {
+      throw new Error('Invalid leadIds: All elements must be strings');
+    }
+
+    if (
+      !Array.isArray(targetUserIds) ||
+      !targetUserIds.every((id) => typeof id === 'string')
+    ) {
+      throw new Error('Invalid targetUserIds: All elements must be strings');
+    }
+
+    // Step 1: Get the current user's account
+    const currentUserId = await getCurrentUserId();
+
+    // Step 2: Update each lead document
+    for (const leadId of leadIds) {
+      const leadDoc = await databases.getDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_LEADS,
+        leadId
+      );
+
+      // Remove the current user from the lead's userId array
+      const updatedUserIds = leadDoc.userId.filter((id) => id !== currentUserId);
+
+      // Add the target users to the lead's userId array
+      const newUserIds = [...new Set([...updatedUserIds, ...targetUserIds])]; // Prevent duplicates
+
+      console.log('Updated Users for Lead:', leadId, newUserIds);
+
+      await databases.updateDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID,
+        process.env.NEXT_PUBLIC_LEADS,
+        leadId,
+        { userId: newUserIds } // Use a flat array of strings
+      );
+    }
+
+    console.log('Leads transferred successfully.');
+  } catch (error) {
+    console.error('Error transferring leads:', error);
+    throw error;
+  }
+};
