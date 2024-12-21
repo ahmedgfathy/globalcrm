@@ -3,13 +3,14 @@ import { Query } from 'appwrite'
 
 const getCurrentUserId = async () => {
   try {
-    const currentUser = await account.get()
-    return currentUser.$id
+    const currentUser = await account.get();
+    return currentUser.$id || "";
   } catch (error) {
-    console.error('Error fetching current user:', error)
-    throw error
+    console.warn('No user logged in, continuing without user ID.');
+    return ""
   }
-}
+};
+
 // export const addProperty = async (property) => {
 //   try {
 //     const response = await databases.createDocument(
@@ -26,34 +27,54 @@ const getCurrentUserId = async () => {
 // }
 
 export const addProperty = async (propertyData) => {
+  console.log(propertyData)
   try {
-    // Step 1: Get the current user's account
+    
+    const userId = await getCurrentUserId();
 
-    const userId = await getCurrentUserId()
+    const latestProperty = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      [Query.orderDesc('$createdAt'), Query.limit(1)] // Sort by propertyNumber descending
+    );
 
-    // Step 2: Create the new property
+    let nextPropertyNumber = 'PRO1'; // Default for the first property
+
+    if (latestProperty.total > 0) {
+      // Extract the numeric part from the latest propertyNumber (e.g., 'PRO12' → 12)
+      const lastPropertyNumber = latestProperty.documents[0].propertyNumber;
+      const numericPart = parseInt(lastPropertyNumber.replace('PRO', ''), 10);
+      
+      // Increment the number and create the next propertyNumber
+      nextPropertyNumber = `PRO${numericPart + 1}`;
+    }
+
+    // Step 3: Create the new property
     const propertyResponse = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID, 
       process.env.NEXT_PUBLIC_PROPERTIES, 
       ID.unique(), 
       {
-        ...propertyData, 
-        propertyNumber,   // Add unique property number
-        users: [userId], 
+        ...propertyData,
+        propertyNumber: nextPropertyNumber, // Add unique property number
+        users: [userId],
       }
     );
 
     const propertyId = propertyResponse.$id;
 
     // Step 3: Update the user's `properties` relationship
-    await databases.updateDocument(
-      process.env.NEXT_PUBLIC_DATABASE_ID, 
-      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
-      userId, 
-      {
-        properties: [propertyId], 
-      }
-    );
+    if (userId){
+      await databases.updateDocument(
+        process.env.NEXT_PUBLIC_DATABASE_ID, 
+        process.env.NEXT_PUBLIC_USERS_COLLECTION_ID, 
+        userId, 
+        {
+          properties: [propertyId], 
+        }
+      );
+    }
+  
 
     return propertyResponse;
   } catch (error) {
@@ -301,6 +322,7 @@ const searchProperties = async (name, userId = null) => {
           Query.contains('mobileNo', name),
           Query.contains('tel', name),
           Query.contains('compoundName', name),
+          Query.equal('propertyNumber', name),
         ])
       );
     }
@@ -456,13 +478,12 @@ export const uploadPropertyImages = async (files) => {
       files // File to upload
     )
 
-    // Get the view URL
     const fileUrl = storage.getFileView(
-      process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, // Bucket ID
-      response.$id // File ID
-    )
+      process.env.NEXT_PUBLIC_PROPERTIES_BUCKET, 
+      response.$id
+    ).toString()
 
-    return { id: response.$id, fileUrl: fileUrl.href }
+    return { id: response.$id, fileUrl }
   } catch (error) {
     console.error('Error uploading image:', error)
     throw error

@@ -1,12 +1,13 @@
 "use client";
 import Details from "@/app/components/user-components/Details";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useTranslation } from "@/app/context/TranslationContext";
 import { Grid, Tab, Tabs, Box } from "@mui/material";
 import { addLead, uploadImageToBucket } from "@/actions/leadsAction";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { useRouter } from "next/navigation";
+import { UserContext } from "@/app/context/UserContext";
 
 function Page() {
   const { t } = useTranslation();
@@ -14,6 +15,8 @@ function Page() {
   const [selectedTab, setSelectedTab] = useState(0);
   const router = useRouter();
   const [image, setImage] = useState("/");
+  const [state] = useContext(UserContext)
+  const [refreshKey, setRefreshKey] = useState(0);
   const [imageFile, setImageFile] = useState(null); 
   const [lead, setLead] = useState({
     name: "",
@@ -29,17 +32,20 @@ function Page() {
     leadStatus: "",
     leadImage:""
   });
+
   const handleChange = (_, field, value) => {
     setLead((prevLead) => ({
       ...prevLead,
       [field]:  value,
     }));
   };
+
   const handleDeleteImage = () => {
     setImage("/assets/images/default-user.jpg");
     setLead({...lead, leadImage: "/assets/images/default-user.jpg"})
     setImageFile(null); 
   };
+
   const handleTabChange = (_, newValue) => {
     setSelectedTab(newValue);
   };
@@ -48,7 +54,8 @@ function Page() {
     const currentDateTime = new Date().toLocaleString();
     try {
       const response = await addLead(lead);
-      setLead({
+      setLead((prevLead) => ({
+        ...prevLead,
         name: "",
         leadNumber: "",
         number: "",
@@ -60,11 +67,13 @@ function Page() {
         customerSource: "",
         type: "",
         leadStatus: "",
-      });
+      }));
+      setRefreshKey((prevKey) => prevKey + 1);
 
       toast({
         title: "Lead Created",
         description: `Lead created successfully on ${currentDateTime}`,
+        duration: 60000,
         action: (
           <ToastAction
             altText="ok"
@@ -74,6 +83,7 @@ function Page() {
           </ToastAction>
         ),
       });
+      
     } catch (error) {
       console.error("Error creating lead:", error);
 
@@ -162,9 +172,11 @@ function Page() {
         >
           {selectedTab === 0 && (
             <Details
+            key={refreshKey} 
               handleChange={handleChange}
               image={lead.leadImage || image}
               setImage={setImage}
+              lead={lead}
               imageFile={imageFile}
               setImageFile={setImageFile}
               handleSubmit={handleSubmit}

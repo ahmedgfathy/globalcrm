@@ -62,6 +62,7 @@ export default function AccountsTable({account, fetchUsers}) {
       <UserModal
         user={selectedUser}
         isOpen={isModalOpen}
+      fetchUsers={fetchUsers}
         onClose={() => {
           setIsModalOpen(false)
           setSelectedUser(null)

@@ -34,14 +34,14 @@ const router = useRouter();
     lastFollowIn: "",
     status: "",
     activity: "",
-    propertyOfferedBy: "",
+    propertyOfferedBy: state?.userData?.userId ? "" : "Agent",
     mobileNo: 0,
     name: "",
     tel: 0,
     unitNo: "",
     callUpdate: "",
     forUpdate: "",
-    handler: state?.name || "",
+    handler: state?.userData?.name || "",
     sales: "",
     category: "",
     landArea: "",
@@ -188,12 +188,12 @@ const router = useRouter();
   };
 
   const handleSubmit = async () => {
-
+    
     if (
       !unit.unitFor || 
+      !unit.propertyOfferedBy || 
       !unit.name || 
       !unit.area || 
-      !unit.propertyOfferedBy || 
       !unit.compoundName
     ) {
       toast({
@@ -279,7 +279,7 @@ const router = useRouter();
   
 
   return (
-    <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
+    <Box className="add-unit min-h-screen flex justify-center items-center bg-Lightbg dark:bg-gray-900" dir="ltr">
       <Grid container direction="row" wrap="nowrap" className="gap-6 max-sm:gap-1 py-6 px-4">
         <Grid item xs={3} md={2} className="bg-Lightbg dark:bg-cardbgDark my-2 rounded-md max-sm:hidden">
           <Tabs
