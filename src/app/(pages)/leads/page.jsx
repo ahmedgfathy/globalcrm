@@ -47,11 +47,9 @@ function Page() {
   const [users, setUsers] = useState([]);
   const { t, locale } = useTranslation();
   const [selectedUsers, setSelectedUsers] = useState([]);
-
   const [leads, setLeads] = useState([]);
   const initialPage = parseInt(urlParams.get("page") || "1", 10);
   const [selectedLeads, setSelectedLeads] = useState([]);
-  console.log(selectedLeads);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [totalLeads, setTotalLeads] = useState(0);
   const [typeFilter, setTypeFilter] = useState("");
@@ -433,7 +431,7 @@ function Page() {
               />
 
               {/* Delete All Button */}
-              {currentUser?.userData?.email === "admin@admin.com" && (
+              {currentUser?.userData?.userEmail === "admin@admin.com" && (
 
                 <DeleteButton
                 handleDelete={deleteAllLeads}

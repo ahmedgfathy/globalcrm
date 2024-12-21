@@ -607,7 +607,7 @@ function Page() {
                   fetchUnits(1, "");
                 }}
               />
-                            {currentUser?.userData?.email === "admin@admin.com" && (
+                            {currentUser?.userData?.userEmail === "admin@admin.com" && (
 
               <DeleteButton
                 handleDelete={handleDeleteAllProperties}
