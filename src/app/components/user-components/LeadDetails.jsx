@@ -9,7 +9,7 @@ import { uploadImageToBucket } from "@/actions/leadsAction";
 
 
 
-export default function LeadDetails({ page, setIsDisabled, isDisabled, actionIcons, ...props }) {
+export default function LeadDetails({ page, setIsDisabled, isDisabled, refreshKey, actionIcons, ...props }) {
   const [defaultImage, setDefaultImage] = useState("/assets/images/default-user.jpg");
   const { t } = useTranslation();
 
@@ -19,26 +19,22 @@ export default function LeadDetails({ page, setIsDisabled, isDisabled, actionIco
     props?.setImage(defaultImage);
     console.log(defaultImage)
     setIsDisabled(page === "add" ? false : isDisabled);
-  }, [page, setIsDisabled, isDisabled, props, defaultImage]);
+  }, [page, setIsDisabled, isDisabled, props, defaultImage, refreshKey]);
 
 
 
-  const handleDeleteImage = () => {
-    props?.setImage("/assets/images/default-user.jpg");
-    props?.setImageFile(null);
-  };
   const fieldsData = [
-    { id: 1, type: 'input', label: 'name_client', idField: 'name', defaultValue: props.lead?.name },
-    { id: 2, type: 'input', label: 'lead_number', idField: 'leadNumber', defaultValue: props.lead?.leadNumber },
-    { id: 3, type: 'input', label: 'Number', idField: 'number', defaultValue: props.lead?.number },
-    { id: 5, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props.lead?.description},
-    { id: 4, type: 'date', label: 'Last_Follow_up', idField: 'lastFollowUp', defaultValue: props.lead?.lastFollowUp},
+    { id: 1, type: 'input', label: 'name_client', idField: 'name', defaultValue: props.lead?.name||"" },
+    { id: 2, type: 'input', label: 'lead_number', idField: 'leadNumber', defaultValue: props.lead?.leadNumber||"" },
+    { id: 3, type: 'input', label: 'Number', idField: 'number', defaultValue: props.lead?.number|| "" },
+    { id: 5, type: 'textarea', label: 'descriptions', idField: 'description', defaultValue: props.lead?.description || ""},
+    { id: 4, type: 'date', label: 'Last_Follow_up', idField: 'lastFollowUp', defaultValue: props.lead?.lastFollowUp || ""},
     {
       id: 6,
       type: 'select',
       label: 'Client_follow_up',
       idField: 'clientFollowUp',
-      defaultValue: props.lead?.clientFollowUp,
+      defaultValue: props.lead?.clientFollowUp || "",
       options: props?.options?.clientFollowUp,
     },
     {
@@ -46,7 +42,7 @@ export default function LeadDetails({ page, setIsDisabled, isDisabled, actionIco
       type: 'select',
       label: 'class',
       idField: 'class',
-      defaultValue: props.lead?.class,
+      defaultValue: props.lead?.class || "",
       options: props?.options?.class,
     },
   ];

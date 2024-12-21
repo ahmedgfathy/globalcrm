@@ -16,6 +16,7 @@ function Page() {
   const router = useRouter();
   const [image, setImage] = useState("/");
   const [state] = useContext(UserContext)
+  const [refreshKey, setRefreshKey] = useState(0);
   const [imageFile, setImageFile] = useState(null); 
   const [lead, setLead] = useState({
     name: "",
@@ -31,17 +32,20 @@ function Page() {
     leadStatus: "",
     leadImage:""
   });
+
   const handleChange = (_, field, value) => {
     setLead((prevLead) => ({
       ...prevLead,
       [field]:  value,
     }));
   };
+
   const handleDeleteImage = () => {
     setImage("/assets/images/default-user.jpg");
     setLead({...lead, leadImage: "/assets/images/default-user.jpg"})
     setImageFile(null); 
   };
+
   const handleTabChange = (_, newValue) => {
     setSelectedTab(newValue);
   };
@@ -50,7 +54,8 @@ function Page() {
     const currentDateTime = new Date().toLocaleString();
     try {
       const response = await addLead(lead);
-      setLead({
+      setLead((prevLead) => ({
+        ...prevLead,
         name: "",
         leadNumber: "",
         number: "",
@@ -62,11 +67,14 @@ function Page() {
         customerSource: "",
         type: "",
         leadStatus: "",
-      });
+      }));
+      
+      setRefreshKey((prevKey) => prevKey + 1);
 
       toast({
         title: "Lead Created",
         description: `Lead created successfully on ${currentDateTime}`,
+        duration: 60000,
         action: (
           <ToastAction
             altText="ok"
@@ -76,6 +84,7 @@ function Page() {
           </ToastAction>
         ),
       });
+      
     } catch (error) {
       console.error("Error creating lead:", error);
 
@@ -167,6 +176,7 @@ function Page() {
               handleChange={handleChange}
               image={lead.leadImage || image}
               setImage={setImage}
+              lead={lead}
               imageFile={imageFile}
               setImageFile={setImageFile}
               handleSubmit={handleSubmit}
@@ -180,6 +190,7 @@ function Page() {
           {selectedTab === 1 && (
             <Details
               handleChange={handleChange}
+              key={refreshKey} 
               handleSubmit={handleSubmit}
               image={image}
               setImage={setImage}
