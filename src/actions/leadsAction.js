@@ -92,6 +92,67 @@ export const getAllLeadsForUser = async (limit = 10, offset = 0) => {
   return fetchLeads(queries);
 };
 
+export const getAllLeadsForTeamLead = async (limit = 10, offset = 0) => {
+  try {
+    // Step 1: Get the current user's ID
+    const id = await getCurrentUserId();
+    
+    // Step 2: Fetch the current user document to get their salesmen array
+    const res = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_USERS_COLLECTION_ID,
+      id
+    );
+
+    // Step 3: Extract the salesMen array from the user's document
+    const salesMenArr = res.salesMen;
+    salesMenArr.push(id) // important to get also the lead created by the team lead
+    const allLeads = [];  
+    let totalLeads = 0;   
+
+    // Step 4: Loop over each salesman and fetch leads for them
+    for (let i = 0; i < salesMenArr.length; i++) {
+      const salesmanId = salesMenArr[i];  // Assuming salesmanId is used to filter leads
+
+      // Step 5: Create query for each salesman
+      const queries = [
+        Query.equal('userId', salesmanId),  
+        Query.limit(limit),                 
+        Query.offset(offset),               
+        Query.orderDesc('$createdAt')       
+      ];
+
+      // Step 6: Fetch leads for the current salesman using the fetchLeads helper function
+      const { leads, totalLeads: leadsCount } = await fetchLeads(queries);
+
+
+      allLeads.push(...leads);
+
+
+      totalLeads += leadsCount;
+
+
+      console.log(`Total leads for salesman ${salesmanId}:`, leadsCount);
+    }
+
+    // Step 8: Remove duplicates using a Map (lead.id as key)
+    const uniqueLeads = Array.from(
+      new Map(allLeads.map(lead => [lead.$id, lead])).values()
+    );
+
+
+    console.log('Unique leads for team lead:', uniqueLeads);
+    return { allLeads: uniqueLeads, totalLeads };
+
+  } catch (error) {
+    console.error('Error fetching leads for team lead:', error);
+    throw new Error('Failed to fetch leads');
+  }
+};
+
+
+
+
 const searchLeadsGeneric = async (searchTerm, userId = null, field = 'name') => {
   try {
     console.log(`Searching for leads with term: ${searchTerm}`);
