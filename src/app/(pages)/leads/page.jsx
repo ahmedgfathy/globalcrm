@@ -431,7 +431,7 @@ function Page() {
               />
 
               {/* Delete All Button */}
-              {currentUser?.userData?.email === "admin@admin.com" && (
+              {currentUser?.userData?.userEmail === "admin@admin.com" && (
 
                 <DeleteButton
                 handleDelete={deleteAllLeads}

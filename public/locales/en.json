@@ -162,5 +162,11 @@
   "sheet": "Sheets",
   "transform": "Transform",
   "global_crm": "Global CRM",
-  "admin_panel": "Admin Panel"
+  "admin_panel": "Admin Panel",
+  "account_settings": "Account Settings",
+  "name": "Name",
+  "phone": "Phone",
+  "role": "Role",
+  "save_changes": "Save Changes",
+  "changes_saved": "Changes Saved"
 }
