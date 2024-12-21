@@ -72,10 +72,11 @@ function Page() {
     },
     {
       id: 4,
-      filterName: "Leads Classification",
-      data: "class",
+      filterName: "Leads Assign to",
+      data: "assignedTo",
       optionData: [],
     },
+
   ]);
 
   const fetchLeads = async (page = 1, search = "") => {
