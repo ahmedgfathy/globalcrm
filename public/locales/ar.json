@@ -167,6 +167,7 @@
   "admin_panel": "لوحة الإدارة",
   "saved": "تم الحفظ",
   "not_saved": "لم يتم الحفظ",
-  "call": "اتصال"
-  
+  "call_duration": "مدة المكالمة",
+  "call": "اتصال",
+  "no_leads_found": "لا توجد عملاء"
 }
