@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,10 +12,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useTranslation } from "@/app/context/TranslationContext";
+import { UserContext } from "@/app/context/UserContext";
 
 function DeleteButton({ handleDelete, title, afterDel, className }) {
   const { locale, t } = useTranslation();
-
+  const [state] = useContext(UserContext)
   // const onOk = () => {
   //   return handleDelete()
   //     .then(() => {
@@ -50,6 +51,9 @@ function DeleteButton({ handleDelete, title, afterDel, className }) {
     }
   };
   
+  if (!["admin", "teamLead"].includes(state?.userData?.role)) {
+    return null;
+  }
   return (
 <Dialog>
   <DialogTrigger

@@ -8,23 +8,10 @@ import {
 } from "../../../../public/assets/icons";
 export const lists = [
   {
-    id: 1,
-    name: "home",
-    link: "",
-    icon: () => <HomeIcon />,
-  },
-  {
     id: 2,
     name: "profile",
     link: "profile",
     icon: () => <ProfileIcon />,
-  },
-  { id: 3, name: "projects", link: "projects", icon: () => <ProjectIcon /> },
-  {
-    id: 4,
-    name: "subscription",
-    link: "subscription",
-    icon: () => <SubscriptionIcon />,
   },
   {
     id: 5,

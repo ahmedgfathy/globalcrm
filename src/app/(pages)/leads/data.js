@@ -177,7 +177,7 @@ export const filterData =
     {id:2, name: "whatsapp", value: "whatsapp"},
     {id:3, name: "youtupe", value: "youtupe"},
   ]},
-  {id:4, filterName: "Leads Classification", optionData: [
+  {id:4, filterName: "Leads Assign to", optionData: [
     {id:1, name: "Apartment", value: "apartment"},
     {id:2, name: "Villa", value: "villa"},
     {id:3, name: "Twinhouse", value: "twinhouse"},

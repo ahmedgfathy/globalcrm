@@ -7,9 +7,7 @@ import ClientTable from "@/app/components/ClientTable";
 import { filterData } from "./data";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Spin } from "antd";
-import { MdDeleteForever } from "react-icons/md"; // Correct import
 import { FaFileImport, FaFileExport } from "react-icons/fa";
-import { MdOutlineTransform } from "react-icons/md";
 
 import {
   getAllLeads,
@@ -23,9 +21,7 @@ import {
   deleteAllLeads,
   transferLead
 } from "@/actions/leadsAction";
-import { Grid } from "@mui/material";
 import { Input } from "@/components/ui/input";
-import EmptyPage from "@/app/components/EmptyPage";
 import "./pagination.css";
 import { CiFilter, CiSearch } from "react-icons/ci";
 import CustomButton from "@/app/components/CustomButton";
@@ -38,25 +34,22 @@ import { getAllSettings } from "@/actions/filterSettings";
 import ProtectedRoute from "@/app/components/ProtectedRoute";
 import { getUsers, searchUsers } from "@/actions/auth";
 import TransformComponent from "@/app/components/TransformComponent";
+import { checkRole } from "@/app/functions/check-role";
 
 function Page() {
   const { toast } = useToast();
   const [currentUser, setCurrentUser] = useContext(UserContext);
   const role = currentUser.userData.role;
   const userId = currentUser.userData.userId;
-  console.log(role);
-  console.log(currentUser);
   const router = useRouter();
   const isMobile = useIsMobile();
   const urlParams = useSearchParams();
   const [users, setUsers] = useState([]);
   const { t, locale } = useTranslation();
   const [selectedUsers, setSelectedUsers] = useState([]);
-
   const [leads, setLeads] = useState([]);
   const initialPage = parseInt(urlParams.get("page") || "1", 10);
   const [selectedLeads, setSelectedLeads] = useState([]);
-  console.log(selectedLeads);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [totalLeads, setTotalLeads] = useState(0);
   const [typeFilter, setTypeFilter] = useState("");
@@ -77,10 +70,11 @@ function Page() {
     },
     {
       id: 4,
-      filterName: "Leads Classification",
-      data: "class",
+      filterName: "Leads Assign to",
+      data: "assignedTo",
       optionData: [],
     },
+
   ]);
 
   const fetchLeads = async (page = 1, search = "") => {
@@ -388,39 +382,45 @@ function Page() {
               />
 
               {/* Import Button */}
-              <label className="cursor-pointer">
+              {checkRole(role, ["admin"]) && (
+                
+                <>
+                <label className="cursor-pointer">
                 <input
                   type="file"
                   onChange={handleImportCSV}
                   className="hidden"
                   accept=".csv"
-                />
+                  />
                 <CustomButton
                   title={t("import")}
                   className="border border-blue-500 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                   icon={() => <FaFileImport className="w-5 h-5" />}
-                />
+                  />
               </label>
 
-              {/* Export Button */}
               <CustomButton
-                fun={handleExportCSV}
-                title={t("export")}
-                className="border border-green-500 text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20"
-                icon={() => <FaFileExport className="w-5 h-5" />}
+              fun={handleExportCSV}
+              title={t("export")}
+              className="border border-green-500 text-green-500 hover:bg-green-50 dark:hover:bg-green-900/20"
+              icon={() => <FaFileExport className="w-5 h-5" />}
               />
+</>
+       )}
 
-              {/* Transform Button */}
-              <TransformComponent
-                title="Transform Leads"
-                users={users}
-                handleTransferSubmit={handleTransferSubmit}
-                handleClick={fetchUsers}
-                handleChange={searchUsersForTransform}
-                selectedUsers={selectedUsers}
-                handleSelect={handleSelect}
-                handleCancel={() => setSelectedUsers([])}
-              />
+       {checkRole(role, ["admin", "teamLead"]) && (
+
+         <TransformComponent
+         title="Transform Leads"
+         users={users}
+         handleTransferSubmit={handleTransferSubmit}
+         handleClick={fetchUsers}
+         handleChange={searchUsersForTransform}
+         selectedUsers={selectedUsers}
+         handleSelect={handleSelect}
+         handleCancel={() => setSelectedUsers([])}
+         />
+        )}
 
               {/* Clear Filter Button */}
               <CustomButton
@@ -431,12 +431,15 @@ function Page() {
               />
 
               {/* Delete All Button */}
-              <DeleteButton
+              {currentUser?.userData?.userEmail === "admin@admin.com" && (
+
+                <DeleteButton
                 handleDelete={deleteAllLeads}
                 title={t('delete_all_leads')}
                 afterDel={()=>fetchLeads(currentPage, searchTerm)}
                 className="bg-red-500 hover:bg-red-600 text-white"
-              />
+                />
+              )}
             </div>
           </div>
         </div>
