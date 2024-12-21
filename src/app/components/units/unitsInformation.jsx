@@ -77,7 +77,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, hand
             options: props?.options?.type,
             required:true
         },
-        { id: 7, type: 'input', label: 'building', idField: 'building', defaultValue: props?.unit?.building },
+        { id: 7, type: 'input', label: 'Building space', idField: 'building', defaultValue: props?.unit?.building },
         {
             id: 8,
             type: "multiselect",

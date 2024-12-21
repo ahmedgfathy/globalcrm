@@ -82,7 +82,7 @@ function Page() {
     { id: 1, filterName: "Property Types", data: "type", optionData: [] },
     {
       id: 2,
-      filterName: "in-side / Out Side",
+      filterName: "Compound",
       data: "inOrOutSideCompound",
       optionData: [],
     },
