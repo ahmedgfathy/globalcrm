@@ -167,11 +167,7 @@
   "admin_panel": "لوحة الإدارة",
   "saved": "تم الحفظ",
   "not_saved": "لم يتم الحفظ",
+  "call_duration": "مدة المكالمة",
   "call": "اتصال",
-  "account_settings": "اعدادات الحساب",
-  "name": "الاسم",
-  "phone": "رقم الهاتف",
-  "role": "الدور",
-  "save_changes": "حفظ التغييرات",
-  "changes_saved": "تم حفظ التغييرات بنجاح"
+  "no_leads_found": "لا توجد عملاء"
 }
