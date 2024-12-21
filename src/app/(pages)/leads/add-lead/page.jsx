@@ -68,7 +68,6 @@ function Page() {
         type: "",
         leadStatus: "",
       }));
-      
       setRefreshKey((prevKey) => prevKey + 1);
 
       toast({
@@ -173,6 +172,7 @@ function Page() {
         >
           {selectedTab === 0 && (
             <Details
+            key={refreshKey} 
               handleChange={handleChange}
               image={lead.leadImage || image}
               setImage={setImage}
@@ -190,7 +190,6 @@ function Page() {
           {selectedTab === 1 && (
             <Details
               handleChange={handleChange}
-              key={refreshKey} 
               handleSubmit={handleSubmit}
               image={image}
               setImage={setImage}

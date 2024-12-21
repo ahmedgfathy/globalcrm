@@ -9,7 +9,7 @@ import { uploadImageToBucket } from "@/actions/leadsAction";
 
 
 
-export default function LeadDetails({ page, setIsDisabled, isDisabled, refreshKey, actionIcons, ...props }) {
+export default function LeadDetails({ page, setIsDisabled, isDisabled, actionIcons, ...props }) {
   const [defaultImage, setDefaultImage] = useState("/assets/images/default-user.jpg");
   const { t } = useTranslation();
 
@@ -19,7 +19,7 @@ export default function LeadDetails({ page, setIsDisabled, isDisabled, refreshKe
     props?.setImage(defaultImage);
     console.log(defaultImage)
     setIsDisabled(page === "add" ? false : isDisabled);
-  }, [page, setIsDisabled, isDisabled, props, defaultImage, refreshKey]);
+  }, [page, setIsDisabled, isDisabled, props, defaultImage]);
 
 
 
