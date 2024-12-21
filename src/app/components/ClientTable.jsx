@@ -7,12 +7,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import TableRowComponent from "./TableRowComponent";
-import { CiFilter } from "react-icons/ci";
-import CustomButton from "@/app/components/CustomButton";
 import Filter from "./Filter";
-import  DropdownMenImportExport  from "./leadImport-Export/ImportExport";
 
-const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterValues,handleFilterChange, handleImportCSV, handleExportCSV,selectedLeads, setSelectedLeads, searchUsersForTransform, users  }) => {
+const ClientTable = ({ clients, t, afterDel, onFilterChange, filterData, filterValues,handleFilterChange,selectedLeads, setSelectedLeads  }) => {
 
   return (
     <div
