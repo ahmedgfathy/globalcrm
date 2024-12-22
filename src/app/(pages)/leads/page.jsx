@@ -23,6 +23,8 @@ import {
   deleteAllLeads,
   transferLead
 } from "@/actions/leadsAction";
+
+import { countLeadsByCustomerSource,generateLeadsReport,countForTeamLead} from "@/actions/report";
 import { Grid } from "@mui/material";
 import { Input } from "@/components/ui/input";
 import EmptyPage from "@/app/components/EmptyPage";
@@ -132,7 +134,7 @@ function Page() {
       if (role === "admin") {
         documents = await searchLeadsByType(e);
       } else {
-        documents = await searchLeadsByType(e, currentUser.userData.$id);
+        documents = await searchLeadsByType(e, userId);
       }
     }
     if (data === "Leads Source") {
@@ -141,7 +143,7 @@ function Page() {
       } else {
         documents = await searchLeadsByCustomerSource(
           e,
-          currentUser.userData.$id
+          userId
         );
       }
     }
@@ -341,6 +343,9 @@ function Page() {
       });
     }
   };
+  console.log(countLeadsByCustomerSource('whatsApp Leads',userId))
+  console.log(generateLeadsReport(userId))
+  console.log(countForTeamLead())
 
   return (
     <ProtectedRoute>

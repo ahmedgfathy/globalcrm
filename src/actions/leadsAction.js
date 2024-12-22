@@ -195,20 +195,20 @@ export const searchLeads = async (searchTerm, userId = null) => {
   return searchLeadsGeneric(searchTerm, userId);
 };
 
-export const searchLeadsByType = async (searchTerm) => {
-  return searchLeadsGeneric(searchTerm, null, 'type');
+export const searchLeadsByType = async (searchTerm ,userId = null) => {
+  return searchLeadsGeneric(searchTerm, userId, 'type');
 };
 
-export const searchLeadsByCustomerSource = async (searchTerm) => {
-  return searchLeadsGeneric(searchTerm, null, 'customerSource');
+export const searchLeadsByCustomerSource = async (searchTerm ,userId = null) => {
+  return searchLeadsGeneric(searchTerm, userId, 'customerSource');
 };
 
-export const searchLeadsByLeadStatus = async (searchTerm) => {
-  return searchLeadsGeneric(searchTerm, null, 'leadStatus');
+export const searchLeadsByLeadStatus = async (searchTerm ,userId = null) => {
+  return searchLeadsGeneric(searchTerm, userId, 'leadStatus');
 };
 
-export const searchLeadsByClass = async (searchTerm) => {
-  return searchLeadsGeneric(searchTerm, null, 'class');
+export const searchLeadsByClass = async (searchTerm ,userId = null) => {
+  return searchLeadsGeneric(searchTerm, userId, 'class');
 };
 
 export const getLeadById = async (leadId) => {
