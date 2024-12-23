@@ -345,7 +345,7 @@ function Page() {
   };
   console.log(countLeadsByCustomerSource('whatsApp Leads',userId))
   console.log(generateLeadsReport(userId))
-  console.log(countForTeamLead())
+
 
   return (
     <ProtectedRoute>
