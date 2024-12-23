@@ -1,15 +1,24 @@
 'use client';
 
 import { Building2, Users, FileText, Table2 } from 'lucide-react';
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
+import { UserContext } from '@/app/context/UserContext';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
 import UnitReports from '@/app/components/reports/unit-reports';
 import { getAllSettings } from '@/actions/filterSettings';
+import {generateLeadsReport} from '@/actions/report';
+import { countLeadsByCustomerSource } from '@/actions/report';
 import LeadReports from '@/app/components/reports/lead-reports';
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
+
 
 export default function SelectionType() {
   const [selected, setSelected] = useState(null);
+  const [currentUser, setCurrentUser] = useContext(UserContext);
+  const role = currentUser.userData.role;
+  const userId = currentUser.userData.userId;
   const [options, setOptions] = useState({})
   const [format, setFormat] = useState(null);
   const [unitsOptions, setUnitsOptions] = useState({})
@@ -28,6 +37,7 @@ export default function SelectionType() {
           ...prev,
           [field]: value,
       }));
+      console.log(report)
   };
   const handleNext = () => {
     if (step < 3) {
@@ -40,9 +50,32 @@ export default function SelectionType() {
       setStep(step - 1);
     }
   };
-const handleSave = async()=>{
-  console.log(report)
-}
+
+  const handleSave = async () => {
+    const data = await generateLeadsReport();
+    const doc = new jsPDF();
+  
+    // Suppose data.customerSources looks like this:
+    // {
+    //   "Agent Leads": 3,
+    //   "Facebook Leads": 2,
+    //   "WhatsApp Leads": 4
+    // }
+  
+    // Convert the object into an array for autoTable
+    const rows = Object.entries(data.customerSources);
+  
+    doc.text("Customer Sources Report", 14, 20);
+  
+    // Create a simple table with two columns: "Source" and "Count"
+    doc.autoTable({
+      startY: 30,
+      head: [["Source", "Count"]],
+      body: rows.map(([source, count]) => [source, count]),
+    });
+  
+    doc.save("report.pdf");
+  };
   return (
     <div className="w-full max-w-5xl mx-auto p-6">
       <div className="space-y-8">
