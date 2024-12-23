@@ -1,177 +1,206 @@
-"use client";
-import React, { useState, useEffect, useRef } from "react";
-import Calendar from "@toast-ui/calendar";
-import "@toast-ui/calendar/dist/toastui-calendar.min.css";
+"use client"
+import React, { useState, useEffect } from "react";
+import {
+  formatDate,
+} from "@fullcalendar/core";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { addEvent, deleteEvent, getEventsForUser, updateEvent } from "@/actions/event";
 
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Phone, Video, Users, Bell, Plus } from "lucide-react";
-import "./calendar.css";
+const Calendar = () => {
+  const [currentEvents, setCurrentEvents] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newEventTitle, setNewEventTitle] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
 
-export default function CalendarDashboard() {
-  const calendarRef = useRef(null);
-  const [activeView, setActiveView] = useState('month');
-  const [upcomingEvents, setUpcomingEvents] = useState([]);
-
-  const calendarTypes = [
-    { id: 'meetings', name: 'Meetings', color: '#0ea5e9', icon: <Users className="h-5 w-5" /> },
-    { id: 'calls', name: 'Calls', color: '#22c55e', icon: <Phone className="h-5 w-5" /> },
-    { id: 'reminders', name: 'Reminders', color: '#f59e0b', icon: <Bell className="h-5 w-5" /> }
-  ];
-
-  const formatTime = (date) => {
-    return new Date(date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
+  const fetchEvents = async ()=>{
+    try{
+      const data = await getEventsForUser()
+      setCurrentEvents(data)
+      console.log(data)
+    }catch(error){console.error(error)}
+  }
 
   useEffect(() => {
-    const calendar = new Calendar(calendarRef.current, {
-      usageStatistics: false,
-      useFormPopup: true,
-      useDetailPopup: true,
-      defaultView: activeView,
+    fetchEvents()
+  }, []);
 
-      month: {
-        dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        isAlways6Weeks: false,
-        workweek: false
-      },
-      week: {
-        hourStart: 8,
-        hourEnd: 20,
-      },
-      calendars: calendarTypes,
-      template: {
-        time(event) {
-          return `
-            <div class="calendar-event ${event.calendarId}">
-              <div class="event-title">${event.title}</div>
-              <div class="event-time">${formatTime(event.start)} - ${formatTime(event.end)}</div>
-              ${event.attendees ? `<div class="event-attendees">${event.attendees.join(', ')}</div>` : ''}
-            </div>
-          `;
-        },
-        allday(event) {
-          return `
-            <div class="calendar-event ${event.calendarId}">
-              <div class="event-title">${event.title}</div>
-            </div>
-          `;
-        }
-      }
-    });
+  const handleEventDrop = async (eventDropInfo) => {
+    const { event } = eventDropInfo;
+  
+    const updatedEvent = {
+      description: event.title, 
+      mettingDate: event.start.toISOString(),
+    };
+  
+    try {
 
-    // Example events - Replace with your actual data
-    const sampleEvents = [
-      {
-        id: '1',
-        calendarId: 'meetings',
-        title: 'Team Meeting',
-        category: 'time',
-        start: new Date(),
-        end: new Date(new Date().getTime() + 60 * 60 * 1000),
-        attendees: ['John', 'Sarah']
-      },
-      {
-        id: '2',
-        calendarId: 'calls',
-        title: 'Client Call',
-        category: 'time',
-        start: new Date(new Date().getTime() + 2 * 60 * 60 * 1000),
-        end: new Date(new Date().getTime() + 3 * 60 * 60 * 1000),
-        attendees: ['Client A']
-      }
-    ];
+      await updateEvent(event.id,updatedEvent); 
+      console.log("Event updated:", updatedEvent);
+      fetchEvents(); 
+    } catch (error) {
+      console.error("Error updating event:", error);
+  
 
-    calendar.createEvents(sampleEvents);
-    setUpcomingEvents(sampleEvents);
+      eventDropInfo.revert();
+    }
+  };
+  
 
-    return () => calendar.destroy();
-  }, [activeView]);
+  const sendData = async (newEventTitle, selectedDate) => {
+    const currentData = {description: newEventTitle, mettingDate: selectedDate}
+    try{
+      const data = await addEvent(currentData)
+      console.log(data)
+      fetchEvents()
+    }catch(error){
+      console.error(error)
+    }
+  }
+
+  const handleDateClick = (selected) => {
+    setSelectedDate(selected);
+    setIsDialogOpen(true);
+  };
+const handleDelete = async(id)=>{
+  try{
+    const data = await deleteEvent(id)
+    console.log(data)
+    fetchEvents()
+  }catch(error){
+    console.error(error)
+  }
+}
+  const handleEventClick = (selected) => {
+    if (
+      window.confirm(
+        `Are you sure you want to delete the event "${selected.event.title}"?`
+      )
+    ) {
+      // selected.event.remove();
+      handleDelete(selected.event.id)
+    }
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+    setNewEventTitle("");
+  };
+
+  const handleAddEvent = (e) => {
+    e.preventDefault();
+    if (newEventTitle && selectedDate) {
+      const calendarApi = selectedDate.view.calendar; 
+      calendarApi.unselect();
+
+      const newEvent = {
+        id: `${selectedDate.start.toISOString()}-${newEventTitle}`,
+        title: newEventTitle,
+        start: selectedDate.start,
+        end: selectedDate.end,
+        allDay: selectedDate.allDay,
+      };
+
+      calendarApi.addEvent(newEvent);
+      handleCloseDialog();
+      sendData(newEventTitle, selectedDate.start)
+    }
+  };
 
   return (
-    <div className="p-6 space-y-6 bg-gray-50 dark:bg-gray-900">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Calendar Dashboard</h1>
-        <Button onClick={() => {}} className="bg-primary text-white">
-          <Plus className="h-4 w-4 mr-2" />
-          Add Event
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {/* Sidebar */}
-        <div className="space-y-4">
-          {/* Calendar Types */}
-          <Card>
-            <CardContent className="p-4">
-              <h3 className="font-semibold mb-3">Event Types</h3>
-              <div className="space-y-3">
-                {calendarTypes.map(type => (
-                  <div key={type.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
-                    <div className="p-2 rounded-lg" style={{ backgroundColor: `${type.color}20` }}>
-                      {React.cloneElement(type.icon, { className: `h-5 w-5`, style: { color: type.color } })}
-                    </div>
-                    <div>
-                      <div className="font-medium">{type.name}</div>
-                      <div className="text-sm text-gray-500">5 upcoming</div>
-                    </div>
-                  </div>
-                ))}
+    <div>
+      <div className="flex w-full px-10 justify-start items-start gap-8">
+        <div className="w-3/12">
+          <div className="py-10 text-2xl font-extrabold px-7">
+            Calendar Events
+          </div>
+          <ul className="space-y-4">
+            {currentEvents.length <= 0 && (
+              <div className="italic text-center text-gray-400">
+                No Events Present
               </div>
-            </CardContent>
-          </Card>
+            )}
 
-          {/* Upcoming Events */}
-          <Card>
-            <CardContent className="p-4">
-              <h3 className="font-semibold mb-3">Upcoming Events</h3>
-              <div className="space-y-3">
-                {upcomingEvents.map((event, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
-                    <div className={`p-2 rounded-lg bg-${event.calendarId}-100 dark:bg-${event.calendarId}-900/20`}>
-                      {calendarTypes.find(type => type.id === event.calendarId)?.icon}
-                    </div>
-                    <div>
-                      <div className="font-medium">{event.title}</div>
-                      <div className="text-sm text-gray-500">{formatTime(event.start)}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+            {currentEvents.length > 0 &&
+              currentEvents.map((event) => (
+                <li
+                  className="border border-gray-200 shadow px-4 py-2 rounded-md text-blue-800"
+                  key={event?.$id}
+                >
+                  {event?.description}
+                  <br />
+                  <label className="text-slate-950">
+                    {formatDate(event?.mettingDate, {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}{" "}
+                  </label>
+                </li>
+              ))}
+          </ul>
         </div>
 
-        {/* Main Calendar */}
-        <Card className="md:col-span-3">
-          <CardContent className="p-4">
-            <div className="flex justify-end gap-2 mb-4">
-              <Button
-                variant="outline"
-                onClick={() => setActiveView('month')}
-                className={activeView === 'month' ? 'bg-primary text-white' : ''}
-              >
-                Month
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setActiveView('week')}
-                className={activeView === 'week' ? 'bg-primary text-white' : ''}
-              >
-                Week
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setActiveView('day')}
-                className={activeView === 'day' ? 'bg-primary text-white' : ''}
-              >
-                Day
-              </Button>
-            </div>
-            <div ref={calendarRef} className="min-h-[800px]" />
-          </CardContent>
-        </Card>
+        <div className="w-9/12 mt-8">
+        <FullCalendar
+  height={"85vh"}
+  plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]} 
+  headerToolbar={{
+    left: "prev,next today",
+    center: "title",
+    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+  }} 
+  initialView="dayGridMonth"
+  editable={true} 
+  selectable={true} 
+  selectMirror={true} 
+  dayMaxEvents={true} 
+  select={handleDateClick}
+  eventDrop={handleEventDrop}
+  eventClick={handleEventClick} 
+  events={currentEvents?.map(event => ({
+    id: event.$id,
+    title: event.description,
+    start: event.mettingDate,
+    allDay: true 
+  }))}
+/>
+
+        </div>
       </div>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add New Event Details</DialogTitle>
+          </DialogHeader>
+          <form className="space-x-5 mb-4" onSubmit={handleAddEvent}>
+            <input
+              type="text"
+              placeholder="Event Title"
+              value={newEventTitle}
+              onChange={(e) => setNewEventTitle(e.target.value)}
+              required
+              className="border border-gray-200 p-3 rounded-md text-lg"
+            />
+            <button
+              className="bg-green-500 text-white p-3 mt-5 rounded-md"
+              type="submit"
+            >
+              Add
+            </button>{" "}
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
-}
+};
+
+export default Calendar;
