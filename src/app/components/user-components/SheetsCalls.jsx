@@ -4,9 +4,12 @@ import { CardContent } from "@/components/ui/card";
 import React from "react";
 import SelectInput from "./utils/SelectInput";
 import DateInput from "./utils/DateInput";
+import {useContext} from "react"
+import { UserContext } from "@/app/context/UserContext";
 
 function SheetCalls({ isDisabled, handleChange, lead, options }) {
   const { t, locale } = useTranslation();
+  const [state] = useContext(UserContext)
 
 
   return (
@@ -26,9 +29,9 @@ function SheetCalls({ isDisabled, handleChange, lead, options }) {
           <SelectInput
             label={t("Customer_Source")}
             id="customerSource"
-            value={lead?.customerSource}
+            value={state?.userData?.userId ? lead?.customerSource: "Agent Leads"}
             data={options?.customerSource}
-            isDisabled={isDisabled}
+            isDisabled={isDisabled || !state?.userData?.userId}
             section="sheetsCalls"
             handleChange={handleChange}
           />

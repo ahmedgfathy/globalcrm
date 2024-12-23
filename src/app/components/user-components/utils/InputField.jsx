@@ -16,7 +16,7 @@ import React from 'react'
 //   </div>
 //   )
 // }
-function InputField({ label, id, defaultValue, isDisabled, section, handleChange }) {
+function InputField({ label, id, defaultValue, isDisabled, section, handleChange, required }) {
   const { locale } = useTranslation()
   return (
     <div className="space-y-2 lg:w-[220px] sm:w-full"
@@ -24,11 +24,11 @@ function InputField({ label, id, defaultValue, isDisabled, section, handleChange
       <Label htmlFor={id} className="font-semibold lg:w-[220px] sm:w-full " dir={locale === "ar" ? "rtl" : "ltr"}
       >
         <p className='lg:w-[220px] sm:w-full'>
-          {label}
+          {label} {required && (<span className="text-red-500">*</span>)}
         </p>
       </Label>
       <Input
-        disabled={isDisabled || id === "leadNumber"}
+        disabled={isDisabled || id === "leadNumber" || id === "propertyNumber"}
         onChange={(e) => handleChange(section || null, id, e.target.value)}
         id={id}
         className="dark:bg-[#141a21] border-[1px] border-borderSearchInputLight dark:border-borderSearchInputDark hover:border-black focus:border-black dark:hover:border-white dark:focus:border-white focus:outline-none rounded-md lg:w-[220px] sm:w-full"

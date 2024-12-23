@@ -1,9 +1,13 @@
 .sidebar {
-  transition: width 0.5s ease;
+  transition: width 0.3s;
+  direction: rtl;
+  width: 240px; /* Decrease from whatever the current width is */
 }
+
 .sidebarOpen {
-  width: 14rem;
+  width: 240px; /* Decrease from whatever the current width is */
 }
+
 .sidebarClosed {
-  width: 8.5rem;
+  width: 250px;
 }

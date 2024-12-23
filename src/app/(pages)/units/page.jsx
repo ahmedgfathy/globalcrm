@@ -1,6 +1,6 @@
 "use client";
 import { useTranslation } from "@/app/context/TranslationContext";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { ClientDetails, filterData } from "./data";
 import CardProperty from "@/app/components/units-components/CardComponent";
 import { IoMdAddCircle } from "react-icons/io";
@@ -14,7 +14,8 @@ import DropdownMenImportExport from "@/app/components/leadImport-Export/ImportEx
 import {
   exportProperties,
   searchPropertyByRange,
-  getAllProperties,
+  getAllPropertiesForSales,
+  getAllPropertiesForAdmin,
   deleteAllProperties,
   importProperties,
   searchPropertyByName,
@@ -22,7 +23,11 @@ import {
   togglePropertyLiked,
   searchUnitByCategory,
   searchUnitByTypes,
+  transferUnit,
+  getAllPropertiesForTeamLead,
+  searchPropertyByNameForAdmin,
 } from "@/actions/propertiesAction";
+import { UserContext } from "@/app/context/UserContext";
 import DeleteButton from "@/app/components/delete-button/DeleteButton";
 import { CiFilter, CiSearch } from "react-icons/ci";
 import { Input } from "@/components/ui/input";
@@ -42,10 +47,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { searchUsers } from "@/actions/auth";
+import { searchUsers, getUsers, getCurrentUser } from "@/actions/auth";
+import TransformComponent from "@/app/components/TransformComponent";
+import { checkRole } from "@/app/functions/check-role";
 
 function Page() {
   const [from, setFrom] = useState("");
+  const [currentUser, setCurrentUser] = useContext(UserContext);
+  const role = currentUser.userData.role;
+  const id = currentUser.userData.userId;
   const [to, setTo] = useState("");
   const { toast } = useToast();
   const router = useRouter();
@@ -66,6 +76,7 @@ function Page() {
       return acc;
     }, {})
   );
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const [options, setOptions] = useState([
     { id: 1, filterName: "Property Types", data: "type", optionData: [] },
     {
@@ -124,7 +135,12 @@ function Page() {
       try {
         const { parsedFrom, parsedTo } = parseFromTo();
         if (searchTerm) {
-          const propertiesByName = await searchPropertyByName(searchTerm);
+          let propertiesByName;
+          if (role === "admin") {
+            propertiesByName = await searchPropertyByNameForAdmin(searchTerm);
+          } else {
+            propertiesByName = await searchPropertyByName(searchTerm);
+          }
           console.log("Fetched properties by name:", propertiesByName);
         }
         if (parsedFrom || parsedTo) {
@@ -172,7 +188,12 @@ function Page() {
       let totalProperties = 0;
 
       if (search) {
-        const propertiesByName = await searchPropertyByName(search);
+        let propertiesByName;
+        if (role === "admin") {
+          propertiesByName = await searchPropertyByNameForAdmin(search);
+        } else {
+          propertiesByName = await searchPropertyByName(search);
+        }
         properties = propertiesByName;
         totalProperties = propertiesByName.length;
       } else if (range.from || range.to) {
@@ -186,8 +207,19 @@ function Page() {
         properties = propertiesByRange;
         totalProperties = total;
       } else {
-        const { properties: allProperties, totalProperties: total } =
-          await getAllProperties(UnitsPerPage, offset);
+        let response;
+        if (role === "admin") {
+          response = await getAllPropertiesForAdmin(UnitsPerPage, offset);
+        } else if (role === "user") {
+          response = await getAllPropertiesForSales(UnitsPerPage, offset);
+        } else if (role === "teamLead") {
+          response = await getAllPropertiesForTeamLead(
+            id,
+            UnitsPerPage,
+            offset
+          );
+        }
+        const { properties: allProperties, totalProperties: total } = response;
         properties = allProperties;
         totalProperties = total;
       }
@@ -211,7 +243,8 @@ function Page() {
   //       console.log(properties);
   //     } else {
   //       console.log("Fetching all units");
-  //       const { properties, totalProperties } = await getAllProperties(UnitsPerPage, offset);
+  //       const { properties, totalProperties } = await getAllPropertiesForSales(
+  // UnitsPerPage, offset);
   //       setUnits(properties);
   //       setTotalUnits(totalProperties);
   //     }
@@ -228,46 +261,110 @@ function Page() {
     console.log(size);
   };
 
-  const handleExportCSV = async () => {
-    try {
-      const  {properties}  = await exportProperties();
-      console.log(properties)
-      if (!properties || properties.length === 0) {
-        toast({
-          variant: 'destructive',
-          title: 'Error Export Units',
-          description: 'No units available to export.', 
-          status: 'error',
-        });
-        return;
-      }
+  // const handleExportCSV = async () => {
+  //   try {
+  //     const  {properties}  = await exportProperties();
+  //     console.log(properties)
+  //     if (!properties || properties.length === 0) {
+  //       toast({
+  //         variant: 'destructive',
+  //         title: 'Error Export Units',
+  //         description: 'No units available to export.',
+  //         status: 'error',
+  //       });
+  //       return;
+  //     }
 
-      const csv = Papa.unparse(properties);
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = 'units.csv';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+  //     const csv = Papa.unparse(properties);
+  //     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  //     const url = URL.createObjectURL(blob);
+  //     const link = document.createElement('a');
+  //     link.href = url;
+  //     link.download = 'units.csv';
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
 
-      toast({
-        variant: 'success',
-        title: 'Success Export Units',
-        description: 'Units exported successfully.',
-        status: 'success',
-      });
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Error Exporting Units',
-        description: error.message || 'An unexpected error occurred.', // الآن error معرف هنا
-        status: 'error',
-      });
-      console.error('Error exporting units:', error);
-    }
-  };
+  //     toast({
+  //       variant: 'success',
+  //       title: 'Success Export Units',
+  //       description: 'Units exported successfully.',
+  //       status: 'success',
+  //     });
+  //   } catch (error) {
+  //     toast({
+  //       variant: 'destructive',
+  //       title: 'Error Exporting Units',
+  //       description: error.message || 'An unexpected error occurred.', // الآن error معرف هنا
+  //       status: 'error',
+  //     });
+  //     console.error('Error exporting units:', error);
+  //   }
+  // };
+  // // const handleImportCSV = (event) => {
+  // //   const file = event.target.files[0];
+  // //   if (!file) {
+  // //     alert('No file selected.');
+  // //     return;
+  // //   }
+
+  // //   Papa.parse(file, {
+  // //     header: true,
+  // //     skipEmptyLines: true,
+  // //     complete: async (results) => {
+  // //       if (results.errors.length > 0) {
+  // //         console.error('Parsing errors:', results.errors);
+  // //         toast({
+  // //           variant: 'destructive',
+  // //           title: 'Invalid file format.',
+  // //           description: 'Please ensure the file is in CSV format.',
+  // //           status: 'error',
+  // //         });
+  // //         return;
+  // //       }
+
+  // //       // Convert necessary attributes from strings to integers
+  // //       const convertedData = results.data.map((property) => ({
+  // //         ...property,
+  // //         totalPrice: parseInt(property.totalPrice, 10),
+  // //         rooms: parseInt(property.rooms, 10),
+  // //         mobileNo: parseInt(property.rooms, 10),
+  // //         tel: parseInt(property.rooms, 10),
+  // //         propertyImage: property.propertyImage ? property.propertyImage.split(',') : [],
+  // //         links: property.links ? property.links.split(',') : [],
+  // //         inHome: property.inHome === 'TRUE',
+  // //         liked: property.liked === 'TRUE',
+  // //       }));
+
+  // //       try {
+  // //         await importProperties(convertedData);
+  // //         toast({
+  // //           variant: 'success',
+  // //           title: 'Success import Units',
+  // //           description: 'Units imported successfully!',
+  // //           status: 'success',
+  // //         });
+  // //       } catch (error) {
+  // //         console.error('Error importing units:', error);
+  // //         toast({
+  // //           variant: 'destructive',
+  // //           title: 'Error importing units:',
+  // //           description: error.message || 'Failed to import units.',
+  // //           status: 'error',
+  // //         });
+  // //       }
+  // //     },
+  // //     error: (error) => {
+  // //       console.error('Error parsing file:', error);
+  // //       toast({
+  // //         variant: 'destructive',
+  // //         title: 'Error importing units:',
+  // //         description: 'Failed to read the CSV file.',
+  // //         status: 'error',
+  // //       });
+  // //     },
+  // //   });
+  // // };
   // const handleImportCSV = (event) => {
   //   const file = event.target.files[0];
   //   if (!file) {
@@ -290,13 +387,12 @@ function Page() {
   //         return;
   //       }
 
-  //       // Convert necessary attributes from strings to integers
   //       const convertedData = results.data.map((property) => ({
   //         ...property,
   //         totalPrice: parseInt(property.totalPrice, 10),
   //         rooms: parseInt(property.rooms, 10),
-  //         mobileNo: parseInt(property.rooms, 10),
-  //         tel: parseInt(property.rooms, 10),
+  //         mobileNo: parseInt(property.mobileNo, 10),
+  //         tel: parseInt(property.tel, 10),
   //         propertyImage: property.propertyImage ? property.propertyImage.split(',') : [],
   //         links: property.links ? property.links.split(',') : [],
   //         inHome: property.inHome === 'TRUE',
@@ -332,88 +428,26 @@ function Page() {
   //     },
   //   });
   // };
-  const handleImportCSV = (event) => {
-    const file = event.target.files[0];
-    if (!file) {
-      alert('No file selected.');
-      return;
+  const handleDeleteAllProperties = async () => {
+    try {
+      await deleteAllProperties();
+      toast({
+        variant: "success",
+        title: "Success Delete Units",
+        description: "All units deleted successfully.",
+        status: "success",
+      });
+      // fetchUnits(); // Refresh the state after deletion
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error Deleting Units",
+        description: error.message || "An unexpected error occurred.",
+        status: "error",
+      });
+      console.error("Error deleting units:", error);
     }
-
-    Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
-      complete: async (results) => {
-        if (results.errors.length > 0) {
-          console.error('Parsing errors:', results.errors);
-          toast({
-            variant: 'destructive',
-            title: 'Invalid file format.',
-            description: 'Please ensure the file is in CSV format.',
-            status: 'error',
-          });
-          return;
-        }
-
-        const convertedData = results.data.map((property, index) => ({
-          ...property,
-          totalPrice: parseInt(property.totalPrice, 10),
-          rooms: parseInt(property.rooms, 10),
-          mobileNo: property.mobileNo || String(index),
-          tel: property.tel || String(index) ,
-          propertyImage: property.propertyImage ? property.propertyImage : "", 
-          inHome: property.inHome === 'TRUE',
-          liked: property.liked === 'TRUE',
-        }));
-
-        try {
-          await importProperties(convertedData);
-          toast({
-            variant: 'success',
-            title: 'Success import Units',
-            description: 'Units imported successfully!',
-            status: 'success',
-          });
-        } catch (error) {
-          console.error('Error importing units:', error);
-          toast({
-            variant: 'destructive',
-            title: 'Error importing units:',
-            description: error.message || 'Failed to import units.',
-            status: 'error',
-          });
-        }
-      },
-      error: (error) => {
-        console.error('Error parsing file:', error);
-        toast({
-          variant: 'destructive',
-          title: 'Error importing units:',
-          description: 'Failed to read the CSV file.',
-          status: 'error',
-        });
-      },
-    });
   };
-  // const handleDeleteAllProperties = async () => {
-  //   try {
-  //     await deleteAllProperties();
-  //     toast({
-  //       variant: 'success',
-  //       title: 'Success Delete Units',
-  //       description: 'All units deleted successfully.',
-  //       status: 'success',
-  //     });
-  //     // fetchUnits(); // Refresh the state after deletion
-  //   } catch (error) {
-  //     toast({
-  //       variant: 'destructive',
-  //       title: 'Error Deleting Units',
-  //       description: error.message || 'An unexpected error occurred.',
-  //       status: 'error',
-  //     });
-  //     console.error('Error deleting units:', error);
-  //   }
-  // };
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1);
@@ -461,10 +495,32 @@ function Page() {
       if (exists) {
         return prev.filter((unit) => unit.id !== id);
       } else {
-        return [...prev, { id, note: false }];
+        return [...prev, id];
       }
     });
   };
+
+  const handleSelect = (userId) => {
+    setSelectedUsers((prevSelected) => {
+      const isSelected = prevSelected.includes(userId);
+      const updatedSelected = isSelected
+        ? prevSelected.filter((id) => id !== userId) // Remove if already selected
+        : [...prevSelected, userId]; // Add if not selected
+      console.log("Selected Users:", updatedSelected); // Logging the selectedUsers state
+      return updatedSelected;
+    });
+  };
+
+  const fetchUsers = async () => {
+    try {
+      const res = await getUsers();
+      setUsers(res.users);
+      console.log("Fetched Users:", res);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
   const searchUsersForTransform = async (data) => {
     try {
       const res = await searchUsers(data);
@@ -477,6 +533,28 @@ function Page() {
   useEffect(() => {
     console.log(unitsTransfer);
   }, [unitsTransfer]);
+
+  const handleTransferSubmit = async () => {
+    try {
+      await transferUnit(unitsTransfer, selectedUsers);
+      fetchUnits(currentPage, searchTerm); // Refresh the units after transfer
+      setSelectedUsers([]); // Optionally clear selections after transfer
+      toast({
+        variant: "success",
+        title: "Success",
+        description: "Units transferred successfully.",
+        status: "success",
+      });
+    } catch (error) {
+      console.error("Error transferring units:", error);
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "An unexpected error occurred.",
+        status: "error",
+      });
+    }
+  };
 
   return (
     <div className="p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -529,18 +607,37 @@ function Page() {
                   fetchUnits(1, "");
                 }}
               />
+                            {currentUser?.userData?.email === "admin@admin.com" && (
 
               <DeleteButton
-                // handleDelete={handleDeleteAllProperties}
-                handleDelete={()=>console.log("no thing")}
-                title={!isMobile && t('delete_all_units')}
+                handleDelete={handleDeleteAllProperties}
+                title={!isMobile && t("delete_all_units")}
                 afterDel={() => fetchUnits(currentPage, searchTerm)}
               />
-              <div className="block md:hidden">
-              {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
-              {/* <DropdownMenImportExport  handleExportCSV={()=>console.log("no thing")} handleImportCSV={()=>console.log("no thing")} /> */}
-        <DropdownMenImportExport handleExportCSV={()=>console.log("no thing")} handleImportCSV={()=>console.log("no thing")} searchUsersForTransform={searchUsersForTransform} users={users} />
+                            )}
+                                                      {checkRole(role, ["admin", "teamLead"]) && (              
+
+              <div>
+                <TransformComponent
+                  title="Transform Units"
+                  users={users}
+                  handleTransferSubmit={handleTransferSubmit}
+                  handleClick={fetchUsers}
+                  handleChange={searchUsersForTransform}
+                  selectedUsers={selectedUsers}
+                  handleSelect={handleSelect}
+                  handleCancel={() => setSelectedUsers([])}
+                />
               </div>
+                                                      )}
+              {/* <DeleteButton
+                handleDelete={handleDeleteAllProperties}
+                title={!isMobile && t('delete_all_units')}
+                // afterDel={() => fetchUnits(currentPage, searchTerm)}
+              /> */}
+              {/* <div className="block md:hidden">
+              <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> 
+              </div> */}
             </div>
           </div>
         </Grid>
@@ -569,10 +666,10 @@ function Page() {
               value={from}
               onChange={(e) => setFrom(e.target.value)}
             />
-              <div className="hidden md:block">
-            {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} searchUsersForTransform={searchUsersForTransform} users={users} /> */}
-            <DropdownMenImportExport handleExportCSV={()=>console.log("no thing")} handleImportCSV={()=>console.log("no thing")} searchUsersForTransform={searchUsersForTransform} users={users} />
-          </div>
+            {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
+                          {checkRole(role, ["admin"]) && (              
+                            <DropdownMenImportExport handleExportCSV={()=>{}} handleImportCSV={()=>{}} />
+            )}
           </div>
         </div>
 
@@ -588,9 +685,8 @@ function Page() {
             </Grid>
           ))}
         </Grid>
-
       </div>
-        <div className="footer ">
+      <div className="footer ">
         <div className="flex justify-center items-center mt-4" dir="ltr">
           <Pagination
             current={currentPage}
@@ -599,12 +695,10 @@ function Page() {
             pageSize={UnitsPerPage}
             onShowSizeChange={handlePageSizeChange}
             onChange={handlePageChange}
-            className="custom-pagination"
+            className="custom-pagination mt-0 mx-auto"
           />
         </div>
-
-
-        </div>
+      </div>
     </div>
   );
 }

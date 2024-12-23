@@ -2,21 +2,24 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useTranslation } from "@/app/context/TranslationContext";
 import FormFields from "../user-components/utils/FormFields";
+import { useContext } from "react";
+import { UserContext } from "@/app/context/UserContext";
 
 
 export default function CustomInformation({ page, setIsDisabled, isDisabled, ...props }) {
     const { t } = useTranslation();
-
+    const [state] = useContext(UserContext)
     const fieldsData = [
         {
             id: 1,
             type: 'select',
             label: 'property_offered_by',
             idField: 'propertyOfferedBy',
-            defaultValue: props?.unit?.propertyOfferedBy,
+            defaultValue: state?.userData?.userId ? props?.unit?.propertyOfferedBy : "Agent",
             options: props?.options?.propertyOfferedBy,
+            required: true
         },
-        { id: 2, type: 'input', label: 'name', idField: 'name', defaultValue: props?.unit?.name },
+        { id: 2, type: 'input', label: 'name', idField: 'name', defaultValue: props?.unit?.name, required: true },
         
         {
             id: 4,

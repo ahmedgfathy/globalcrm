@@ -7,10 +7,20 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 export function EntityPermissions({
   entityType,
   permissions,
-  onPermissionChange
+  onPermissionChange,
+  onSelectAll,
+  canDelete,
+  onDeletePermissionChange
 }) {
   const fields = getFieldsByEntity(entityType);
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+
+const allChecked = (type) => 
+  fields.every(({ fieldId }) => 
+    permissions.some(p => p.fieldId === fieldId && p.entityType === entityType && p[type])
+  );
+  const someChecked = (type) => permissions.some(p => p.entityType === entityType && p[type]);
+
   return (
     <div className="space-y-4">
       <div>
@@ -22,8 +32,28 @@ export function EntityPermissions({
         <TableHeader>
           <TableRow>
             <TableHead className="text-start">{t("Field_Name")}</TableHead>
-            <TableHead className="text-start">{t("view")}</TableHead>
-            <TableHead className="text-start">{t("edit")}</TableHead>
+            <TableHead className="text-start">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id={`selectAllView-${entityType}`}
+                  checked={allChecked('canView')}
+                  onCheckedChange={(checked) => onSelectAll(entityType, 'canView', checked)}
+                  className="data-[state=checked]:dark:bg-[#5be49b1a] data-[state=checked]:dark:text-[#5be49b] dark:border-[#5be49b]"
+                />
+                <label htmlFor={`selectAllView-${entityType}`}>{t("view")}</label>
+              </div>
+            </TableHead>
+            <TableHead className="text-start">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id={`selectAllEdit-${entityType}`}
+                  checked={allChecked('canEdit')}
+                  onCheckedChange={(checked) => onSelectAll(entityType, 'canEdit', checked)}
+                  className="data-[state=checked]:dark:bg-[#5be49b1a] data-[state=checked]:dark:text-[#5be49b] dark:border-[#5be49b]"
+                />
+                <label htmlFor={`selectAllEdit-${entityType}`}>{t("edit")}</label>
+              </div>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -42,7 +72,7 @@ export function EntityPermissions({
                     onCheckedChange={(checked) =>
                       onPermissionChange(fieldId, 'canView', checked)
                     }
-                    />
+                  />
                 </TableCell>
                 <TableCell className="text-start">
                   <Checkbox
@@ -59,6 +89,17 @@ export function EntityPermissions({
           })}
         </TableBody>
       </Table>
+      
+      <div className="flex items-center space-x-2 mt-4">
+        <Checkbox
+          id={`canDelete-${entityType}`}
+          checked={canDelete}
+          onCheckedChange={onDeletePermissionChange}
+          className="data-[state=checked]:dark:bg-[#5be49b1a] data-[state=checked]:dark:text-[#5be49b] dark:border-[#5be49b]"
+        />
+        <label htmlFor={`canDelete-${entityType}`}>{t(`Can Delete ${ENTITY_TITLES[entityType]}`)}</label>
+      </div>
     </div>
   );
 }
+

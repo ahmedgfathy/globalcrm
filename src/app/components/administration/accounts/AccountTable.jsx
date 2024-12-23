@@ -9,18 +9,30 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Settings, Trash2 } from 'lucide-react';
+import { UserModal } from '../UpdateUser';
+import { useState } from 'react';
+import { deleteUser } from '@/actions/auth';
+import DeleteButton from '../../delete-button/DeleteButton';
 
-export default function AccountsTable({account}) {
+export default function AccountsTable({account, fetchUsers}) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState(null)
 
-  const handleDelete = (id) => {
-    console.log(id);
-    
+
+  const handleDeleteUser = async (id) => {  
+  
+    try {
+      await deleteUser(id);
+      fetchUsers()
+    } catch (error) {
+      console.log(error)
+    } 
   };
 
-  const handleSettings = (id) => {
-    console.log(`Opening settings for account ${id}`);
-  };
-
+  const handleEditUser = (user) => {
+    setSelectedUser(user)
+    setIsModalOpen(true)
+  }
   return (
     <Table>
       <TableHeader>
@@ -36,16 +48,26 @@ export default function AccountsTable({account}) {
             <TableCell className="font-medium">{account?.name}</TableCell>
             <TableCell>{account?.email}</TableCell>
             <TableCell className="text-right">
-              <Button variant="ghost" size="icon" onClick={() => handleSettings(account.id)}>
+              <Button variant="secondary" size="icon" className="mx-3" onClick={() => handleEditUser(account.$id)}>
                 <Settings className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="icon" onClick={() => handleDelete(account.id)}>
-                <Trash2 className="h-4 w-4" />
-              </Button>
+              <DeleteButton
+              handleDelete={() => handleDeleteUser(account.$id)}
+                
+              />
             </TableCell>
           </TableRow>
         ))}
       </TableBody>
+      <UserModal
+        user={selectedUser}
+        isOpen={isModalOpen}
+      fetchUsers={fetchUsers}
+        onClose={() => {
+          setIsModalOpen(false)
+          setSelectedUser(null)
+        }}
+      />
     </Table>
   );
 }
