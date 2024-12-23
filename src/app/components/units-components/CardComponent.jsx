@@ -81,7 +81,7 @@ try {
       </button>
     </div>
         <Badge className="absolute top-2 left-2 bg-red-500 text-white dark:hover:text-dark">
-          For sell
+          For {property?.unitFor}
         </Badge>
         <div className="absolute top-2 right-2 flex space-x-2">
           <Button
@@ -140,7 +140,7 @@ try {
       </div>
       <div className="p-4">
         <h3 className="text-lg font-semibold mb-1 dark:text-dark">
-          {property?.name}
+          {property?.sales}
         </h3>
         <p className="text-sm text-gray-600 mb-2 dark:text-dark">
           {property?.location}
