@@ -1,9 +1,9 @@
 import { account, databases, ID } from '../services/appwrite/client.js';
 import { Query } from 'appwrite';
 
-export const getCurrentUserId = () => {
+export const getCurrentUserId = async () => {
   try {
-    const currentUser = account.get()
+    const currentUser = await account.get()
     return currentUser.$id
   } catch (error) {
     console.error('Error fetching current user:', error)
@@ -13,14 +13,14 @@ export const getCurrentUserId = () => {
 
 export const addEvent = async (event) => {
   try {
-    const id = getCurrentUserId();
+    const id = await getCurrentUserId();
     const response = await databases.createDocument(
       process.env.NEXT_PUBLIC_DATABASE_ID,
       process.env.NEXT_PUBLIC_EVENTS_COLLECTION_ID,
       ID.unique(),
       {
         ...event,
-        userId: id,
+        userId: [id],
       }
     );
     console.log('Event created successfully:', response);
@@ -77,10 +77,11 @@ export const getEventById = async (eventId) => {
   }
 }
 
-export const getEventsForUser = async (userId) => {
+export const getEventsForUser = async () => {
+  const userId = await getCurrentUserId();
   try {
     const queries = [
-      Query.equalTo('userId', userId),
+      Query.equal('userId', userId),
       Query.orderDesc('$createdAt'),
     ]
     const response = await databases.listDocuments(
