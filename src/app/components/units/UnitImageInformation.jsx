@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { ImagePlus, VideoIcon as VideoPlus, X } from "lucide-react";
-import { Image } from "antd";
+import { Image, Spin } from "antd";
 import {
   Carousel,
   CarouselContent,
@@ -24,6 +24,9 @@ export default function UnitImageInformation({
   const imageInputRef = useRef(null); // Image input ref
   const videoInputRef = useRef(null); // Video input ref
 
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isUploadingVideo, setIsUploadingVideo] = useState(false);
+
   const imagesUnit =
     typeof unit?.propertyImage === "string"
       ? JSON.parse(unit.propertyImage)
@@ -33,6 +36,18 @@ export default function UnitImageInformation({
     typeof unit?.videos === "string"
       ? JSON.parse(unit.videos)
       : unit?.videos || videos;
+
+  const handleImageUpload = async (event) => {
+    setIsUploadingImage(true);
+    await handleImageChange(event);
+    setIsUploadingImage(false);
+  };
+
+  const handleVideoUploadWrapper = async (event) => {
+    setIsUploadingVideo(true);
+    await handleVideoUpload(event);
+    setIsUploadingVideo(false);
+  };
 
   return (
     <Card
@@ -86,7 +101,7 @@ export default function UnitImageInformation({
                           className="hidden"
                           accept="image/*"
                           multiple
-                          onChange={handleImageChange}
+                          onChange={handleImageUpload}
                           ref={imageInputRef} // Assign ref
                         />
                       </label>
@@ -107,6 +122,11 @@ export default function UnitImageInformation({
                   Add More Images
                 </Button>
               </div>
+              {isUploadingImage && (
+                <div className="flex justify-center mt-4">
+                  <Spin size="large" />
+                </div>
+              )}
             </div>
 
             {/* Videos Section */}
@@ -146,7 +166,7 @@ export default function UnitImageInformation({
                         className="hidden"
                         accept="video/*"
                         multiple
-                        onChange={handleVideoUpload}
+                        onChange={handleVideoUploadWrapper}
                         ref={videoInputRef} // Assign ref
                       />
                     </label>
@@ -166,6 +186,11 @@ export default function UnitImageInformation({
                   Add More Videos
                 </Button>
               </div>
+              {isUploadingVideo && (
+                <div className="flex justify-center mt-4">
+                  <Spin size="large" />
+                </div>
+              )}
             </div>
           </div>
         </div>
