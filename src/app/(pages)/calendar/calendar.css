@@ -52,7 +52,6 @@
   margin-top: 2px;
 }
 
-/* Dark mode */
 .dark .toastui-calendar-layout {
   border-color: #374151;
 }
@@ -69,4 +68,16 @@
 .dark .event-time,
 .dark .event-attendees {
   color: #9ca3af;
+}
+
+.tui-calendar .tui-full-calendar-month-more-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.tui-calendar .tui-full-calendar-month-more-layer {
+  z-index: 1000; 
 }

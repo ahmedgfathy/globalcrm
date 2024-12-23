@@ -33,12 +33,12 @@ function MultiSelectInput({ label, id, defaultValue = [], options, handleChange,
         <SelectContent>
           {options?.map((option) => (
             <SelectItem
-              key={option.value}
-              value={option.value}
+              key={option.value || option}
+              value={option.value || option}
             //   onClick={(e) =>{ e.stopPropagation(); e.preventDefault(); toggleSelection(option.value)}}
               className={selectedValues.includes(option.value) ? "bg-gray-100" : ""}
             >
-              {option.label}
+              {option.label || option}
             </SelectItem>
           ))}
         </SelectContent>
