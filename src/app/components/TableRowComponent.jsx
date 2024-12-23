@@ -57,8 +57,8 @@ const TableRowComponent = ({ client, t, afterDel, selectedLeads, setSelectedLead
           <span className="hidden max-sm:inline-block">{t("more")}</span>
         </Link>
         <DeleteButton
-          handleDelete={(e) => {
-            deleteLead(client.$id);
+          handleDelete={async (e) => {
+            await deleteLead(client.$id);
           }}
           afterDel={afterDel}
           className="prevent-row-click"

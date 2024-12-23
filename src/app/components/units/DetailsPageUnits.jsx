@@ -37,6 +37,7 @@ const DetailsPageUnits = ({
     const fetchOptions = async ()=>{
       const res = await getAllSettings()
       setOptions(JSON.parse(res[0].unitSettings))
+      console.log(JSON.parse(res[0].unitSettings))
     }
     fetchOptions()
   }, [])
