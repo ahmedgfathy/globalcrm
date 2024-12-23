@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Calendar from "@toast-ui/calendar";
 import "@toast-ui/calendar/dist/toastui-calendar.min.css";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Phone, Video, Users, Bell, Plus } from "lucide-react";
@@ -28,10 +29,11 @@ export default function CalendarDashboard() {
       useFormPopup: true,
       useDetailPopup: true,
       defaultView: activeView,
+
       month: {
         dayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         isAlways6Weeks: false,
-        workweek: true
+        workweek: false
       },
       week: {
         hourStart: 8,

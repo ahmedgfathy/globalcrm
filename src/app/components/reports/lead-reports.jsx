@@ -12,12 +12,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useTranslation } from '@/app/context/TranslationContext';
 
 const selectBoxes = [
-  // { name: "clientFollowUp", label: "Client_follow_up" },
-  // { name: "assignedTo", label: "Assigned_To" },
+  { name: "clientFollowUp", label: "Client_follow_up" },
+  { name: "assignedTo", label: "Assigned_To" },
   { name: "customerSource", label: "Customer_Source" },
-  // { name: "type", label: "type" },
-  // { name: "leadStatus", label: "Lead_Status" },
-  // { name: "class", label: "category" },
+  { name: "type", label: "type" },
+  { name: "leadStatus", label: "Lead_Status" },
+  { name: "class", label: "category" },
 ];
 
 function LeadReports({ options, handleChange }) {
@@ -59,3 +59,4 @@ function LeadReports({ options, handleChange }) {
 }
 
 export default LeadReports;
+
