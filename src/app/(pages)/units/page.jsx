@@ -26,6 +26,7 @@ import {
   transferUnit,
   getAllPropertiesForTeamLead,
   searchPropertyByNameForAdmin,
+  filtersUnits,
 } from "@/actions/propertiesAction";
 import { UserContext } from "@/app/context/UserContext";
 import DeleteButton from "@/app/components/delete-button/DeleteButton";
@@ -463,22 +464,19 @@ function Page() {
     window.scrollTo(0, 0);
   };
 
-  const onFilterChange = async (e, data) => {
-    console.log(e, data);
-    if (data === "Category") {
-      const documents = await searchUnitByCategory(e);
+  const onFilterChange = async (filters) => {
+    try {
+      console.log("Filters:", filters);
+      const documents = await filtersUnits(filterValues);
       setUnits(documents);
       setTotalUnits(documents.length);
-      console.log(documents);
-    }
-    if (data === "Property Types") {
-      const documents = await searchUnitByTypes(e);
-      setUnits(documents);
-      setTotalUnits(documents.length);
-      console.log(documents);
+      console.log("Filtered documents:", documents);
+    } catch (error) {
+      console.error("Error during filtering:", error);
     }
   };
-
+  
+useEffect(()=>{onFilterChange()}, [filterValues])
   const handleLike = async (id) => {
     const data = await togglePropertyLiked(id);
     fetchUnits(currentPage, searchTerm);
@@ -648,7 +646,7 @@ function Page() {
         >
           <div className="filter w-full md:w-full">
             <Filter
-              filterChange={onFilterChange}
+              filterChange={()=>{}}
               filterValues={filterValues}
               onFilterChange={handleFilterChange}
               data={options}
