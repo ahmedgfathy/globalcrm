@@ -108,3 +108,23 @@ export const getAllEventsForAdmin = async () => {
     throw error;
   }
 }
+
+export const getEventsForLeadsOrUnits = async (id) => {
+  const userId = await getCurrentUserId();
+  try {
+    const queries = [
+      Query.equal('userId', userId),
+      Query.equal('eventFor', id),
+      Query.orderDesc('$createdAt'),
+    ]
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_EVENTS_COLLECTION_ID,
+      queries
+    );
+    return response.documents;
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    throw error;
+  }
+}
