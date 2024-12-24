@@ -77,20 +77,6 @@ const Calendar = () => {
       console.error(error);
     }
   };
-  
-  // const sendData = async (newEventTitle, selectedDate) => {
-  //   const currentData = {
-  //     description: newEventTitle,
-  //     mettingDate: selectedDate,
-  //   };
-  //   try {
-  //     const data = await addEvent(currentData);
-  //     console.log(data);
-  //     fetchEvents();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   const handleDateClick = (selected) => {
     setSelectedDate(selected);
@@ -142,27 +128,6 @@ const Calendar = () => {
       sendData(newEventTitle, newEvent.start, newEvent.end, eventType, description);
     }
   };
-  
-  // const handleAddEvent = (e) => {
-  //   e.preventDefault();
-  //   if (newEventTitle && selectedDate) {
-  //     const calendarApi = selectedDate.view.calendar;
-  //     calendarApi.unselect();
-
-  //     const newEvent = {
-  //       id: `${selectedDate.start.toISOString()}-${newEventTitle}`,
-  //       title: newEventTitle,
-  //       start: selectedDate.start,
-  //       end: selectedDate.end,
-  //       allDay: selectedDate.allDay,
-  //     };
-
-  //     calendarApi.addEvent(newEvent);
-  //     handleCloseDialog();
-  //     sendData(newEventTitle, selectedDate.start);
-  //   }
-  // };
-
   return (
     <div>
       <div className="flex w-full px-10 justify-start items-start gap-8">

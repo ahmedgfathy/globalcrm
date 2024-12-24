@@ -81,7 +81,7 @@ try {
       </button>
     </div>
         <Badge className="absolute top-2 left-2 bg-red-500 text-white dark:hover:text-dark">
-          For {property?.unitFor}
+          {property?.unitFor}
         </Badge>
         <div className="absolute top-2 right-2 flex space-x-2">
           <Button

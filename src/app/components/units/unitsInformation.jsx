@@ -104,7 +104,7 @@ export default function UnitsInformation({ page, setIsDisabled, isDisabled, hand
             options: props?.options?.inOrOutSideCompound,
         },
         { id: 12, type: 'input', label: 'total_price', idField: 'totalPrice', defaultValue: props?.unit?.totalPrice },
-        { id: 24, type: 'input', label: 'Meter price', idField: 'PricePerMeter', defaultValue: props?.unit?.totalPrice },
+        { id: 24, type: 'input', label: 'Meter price', idField: 'PricePerMeter', defaultValue: props?.unit?.PricePerMeter },
         {
             id: 21,
             type: 'select',
