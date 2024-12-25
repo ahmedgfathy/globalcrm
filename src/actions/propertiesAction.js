@@ -947,3 +947,55 @@ export const transferUnit = async (unitsId, targetUserIds) => {
     throw error
   }
 }
+
+const mapFilterKeyToSchema = (key) => {
+  const fieldMapping = {
+    "Property Types": "type",
+    "Bedrooms": "bedrooms",
+    "Price": "price",
+    "Compound": "inOrOutSideCompound",
+    "Category": "category",
+    "Sales": "sales",
+    "Range": "range",
+  };
+  return fieldMapping[key] || null;
+};
+
+
+export const filtersUnits = async (filters) => {
+  try {
+    const userId = await getCurrentUserId();
+    console.log("Searching for properties with filters:", filters);
+
+    const queries = [Query.equal("users", userId)]; 
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) {
+        const fieldName = mapFilterKeyToSchema(key);
+        if (fieldName) {
+          queries.push(Query.equal(fieldName, value));
+        } else {
+          console.warn(`Unknown filter key: ${key}`);
+        }
+      }
+    });
+
+    const response = await databases.listDocuments(
+      process.env.NEXT_PUBLIC_DATABASE_ID,
+      process.env.NEXT_PUBLIC_PROPERTIES,
+      queries
+    );
+
+    console.log("Raw response:", response);
+
+    const properties = response.documents.map(
+      ({ collectionId, databaseId, ...rest }) => rest
+    );
+
+    console.log("Processed properties:", properties);
+    return properties;
+  } catch (error) {
+    console.error("Error searching for properties:", error);
+    throw error;
+  }
+};

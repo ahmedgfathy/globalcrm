@@ -5,7 +5,7 @@ import CollapsibleComponent from "../CollapsibleComponent";
 import "./style.css";
 import { getAllSettings } from "@/actions/filterSettings";
 
-const App = ({ page, handleChange,handleSubmit, title, lead, handleImageChange, image, setImage,imageFile, setImageFile, handleDeleteImage, actionIcons }) => {
+const App = ({ page, handleChange,handleSubmit, title, lead, handleImageChange, image, setImage,imageFile, setImageFile, handleDeleteImage, actionIcons,key }) => {
   const [options, setOptions] = useState("")
   useEffect(()=>{
     const fetchOptions = async ()=>{
@@ -14,7 +14,7 @@ const App = ({ page, handleChange,handleSubmit, title, lead, handleImageChange, 
     }
     fetchOptions()
     // console.log(options)
-  }, [])
+  }, [key])
   const items = [
     {
       key: "1",

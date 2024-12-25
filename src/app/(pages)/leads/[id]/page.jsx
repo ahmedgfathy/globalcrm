@@ -8,7 +8,10 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { WhatsApp, Call, Email, PictureAsPdf } from '@mui/icons-material';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import html2pdf from 'html2pdf.js';
+import Modal from "@/app/components/calender/Modal";
+import { addEvent } from "@/actions/event";
 
 function Page({ params }) { 
   const searchParams = useSearchParams();
@@ -242,7 +245,6 @@ function Page({ params }) {
       });
     }
   };
-
   return (
     <Box className="add-unit min-h-screen flex justify-center items-center" dir="ltr">
       <Grid container direction="row" wrap="nowrap" className="gap-6 max-sm:gap-1 py-6 px-4">
@@ -315,6 +317,11 @@ function Page({ params }) {
                   <Tooltip title="Generate PDF">
                     <IconButton onClick={generatePDF} color="primary">
                       <PictureAsPdf />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Add Event">
+                    <IconButton onClick={()=>router.push(`/calendar/${params.id}`)} color="primary">
+                      <CalendarTodayIcon />
                     </IconButton>
                   </Tooltip>
                 </div>

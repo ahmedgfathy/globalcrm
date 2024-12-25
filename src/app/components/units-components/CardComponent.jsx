@@ -144,6 +144,9 @@ try {
         </div>
       </div>
       <div className="p-4">
+        <h3 className="text-lg font-semibold mb-1 dark:text-dark">
+          {property?.name}
+        </h3>
         <p className="text-sm text-gray-600 mb-2 dark:text-dark">
           {property?.location}
         </p>

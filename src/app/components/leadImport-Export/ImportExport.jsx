@@ -51,12 +51,6 @@ const DropdownMenImportExport = ({
             >
               {t("Export")}
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className="hover:bg-transparent text-bold"
-              onClick={() => setIsTransform(true)}
-            >
-              {t("transform")}
-            </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

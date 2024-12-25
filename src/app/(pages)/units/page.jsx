@@ -26,6 +26,7 @@ import {
   transferUnit,
   getAllPropertiesForTeamLead,
   searchPropertyByNameForAdmin,
+  filtersUnits,
 } from "@/actions/propertiesAction";
 import { UserContext } from "@/app/context/UserContext";
 import DeleteButton from "@/app/components/delete-button/DeleteButton";
@@ -49,6 +50,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { searchUsers, getUsers, getCurrentUser } from "@/actions/auth";
 import TransformComponent from "@/app/components/TransformComponent";
+import { checkRole } from "@/app/functions/check-role";
 
 function Page() {
   const [from, setFrom] = useState("");
@@ -75,8 +77,6 @@ function Page() {
       return acc;
     }, {})
   );
-  console.log(role);
-  console.log(id);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [options, setOptions] = useState([
     { id: 1, filterName: "Property Types", data: "type", optionData: [] },
@@ -464,22 +464,19 @@ function Page() {
     window.scrollTo(0, 0);
   };
 
-  const onFilterChange = async (e, data) => {
-    console.log(e, data);
-    if (data === "Category") {
-      const documents = await searchUnitByCategory(e);
+  const onFilterChange = async (filters) => {
+    try {
+      console.log("Filters:", filters);
+      const documents = await filtersUnits(filterValues);
       setUnits(documents);
       setTotalUnits(documents.length);
-      console.log(documents);
-    }
-    if (data === "Property Types") {
-      const documents = await searchUnitByTypes(e);
-      setUnits(documents);
-      setTotalUnits(documents.length);
-      console.log(documents);
+      console.log("Filtered documents:", documents);
+    } catch (error) {
+      console.error("Error during filtering:", error);
     }
   };
-
+  
+useEffect(()=>{onFilterChange()}, [filterValues])
   const handleLike = async (id) => {
     const data = await togglePropertyLiked(id);
     fetchUnits(currentPage, searchTerm);
@@ -608,87 +605,17 @@ function Page() {
                   fetchUnits(1, "");
                 }}
               />
+                            {currentUser?.userData?.userEmail === "admin@admin.com" && (
 
               <DeleteButton
                 handleDelete={handleDeleteAllProperties}
                 title={!isMobile && t("delete_all_units")}
                 afterDel={() => fetchUnits(currentPage, searchTerm)}
               />
+                            )}
+                                                      {checkRole(role, ["admin", "teamLead"]) && (              
 
               <div>
-                {/* <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button
-                      variant='outline'
-                      className='GreenButton'
-                      onClick={() => {
-                        fetchUsers()
-                      }}
-                    >
-                      Transform
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent  className="max-h-[80vh] ">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle> Transform Units </AlertDialogTitle>
-                      <AlertDialogDescription className="max-h-[65vh] py-2 min-h-[10vh] overflow-auto">
-                        <Input
-                          placeholder='Search Users'
-                          onChange={(e) =>
-                            searchUsersForTransform(e.target.value)
-                          }
-                          className='w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
-                        />
-
-                        {users && users.length > 0 ? (
-                          <ul className='mt-4 space-y-2'>
-                            {users.map((user) => (
-                              <li
-                                key={user.userId}
-                                className='p-4 bg-white shadow rounded-lg flex items-center justify-between hover:bg-blue-50 transition dark:bg-gray-900 dark:text-white'
-                              >
-                                <div>
-                                  <p className='font-semibold text-gray-800 dark:text-white'>
-                                    {user.name}
-                                  </p>
-                                  <p className='text-sm text-gray-500 dark:text-white'>
-                                    {user.email}
-                                  </p>
-                                </div>
-                                <Button
-                                  className={`${
-                                    selectedUsers.includes(user.userId)
-                                      ? 'bg-green-500 hover:bg-green-600 text-white'
-                                      : 'bg-green-700 hover:bg-green-900 text-white'
-                                  }`}
-                                  onClick={() => handleSelect(user.userId)}
-                                >
-                                  {selectedUsers.includes(user.userId)
-                                    ? 'Selected'
-                                    : 'Select'}
-                                </Button>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p className='mt-4 text-gray-600'>Not found</p>
-                        )}
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel
-                        onClick={() => {
-                          setSelectedUsers([]) // Optionally clear selections on cancel
-                        }}
-                      >
-                        Cancel
-                      </AlertDialogCancel>
-                      <AlertDialogAction onClick={handleTransferSubmit}>
-                        Submit
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog> */}
                 <TransformComponent
                   title="Transform Units"
                   users={users}
@@ -700,15 +627,15 @@ function Page() {
                   handleCancel={() => setSelectedUsers([])}
                 />
               </div>
-
+                                                      )}
               {/* <DeleteButton
                 handleDelete={handleDeleteAllProperties}
                 title={!isMobile && t('delete_all_units')}
                 // afterDel={() => fetchUnits(currentPage, searchTerm)}
               /> */}
-              {/* <div className="block md:hidden"> */}
-              {/* <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} />  */}
-              {/* </div> */}
+              {/* <div className="block md:hidden">
+              <DropdownMenImportExport  handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> 
+              </div> */}
             </div>
           </div>
         </Grid>
@@ -719,7 +646,7 @@ function Page() {
         >
           <div className="filter w-full md:w-full">
             <Filter
-              filterChange={onFilterChange}
+              filterChange={()=>{}}
               filterValues={filterValues}
               onFilterChange={handleFilterChange}
               data={options}
@@ -738,6 +665,9 @@ function Page() {
               onChange={(e) => setFrom(e.target.value)}
             />
             {/* <DropdownMenImportExport handleExportCSV={handleExportCSV} handleImportCSV={handleImportCSV} /> */}
+                          {checkRole(role, ["admin"]) && (              
+                            <DropdownMenImportExport handleExportCSV={()=>{}} handleImportCSV={()=>{}} />
+            )}
           </div>
         </div>
 
