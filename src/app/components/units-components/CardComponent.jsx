@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa6";
 import { MdOutlineBedroomChild } from "react-icons/md";
+
+import { MdAttachMoney } from 'react-icons/md';
+import { FiTag } from 'react-icons/fi';
+import { FaBuilding } from 'react-icons/fa';
+
 import { CiLocationOn } from "react-icons/ci";
 import { HiMiniCurrencyDollar } from "react-icons/hi2";
 import { Heart, Home, ExternalLink, Phone } from "lucide-react";
@@ -81,7 +86,7 @@ try {
       </button>
     </div>
         <Badge className="absolute top-2 left-2 bg-red-500 text-white dark:hover:text-dark">
-          For {property?.unitFor}
+        {property.unitFor}
         </Badge>
         <div className="absolute top-2 right-2 flex space-x-2">
           <Button
@@ -140,31 +145,56 @@ try {
       </div>
       <div className="p-4">
         <h3 className="text-lg font-semibold mb-1 dark:text-dark">
-          {property?.sales}
+          {property?.name}
         </h3>
         <p className="text-sm text-gray-600 mb-2 dark:text-dark">
           {property?.location}
         </p>
-        <div className="flex justify-between mb-2 dark:text-dark">
-          <div className="flex items-center">
-            <HiMiniCurrencyDollar className="w-5 h-5 mr-1" />
-            <span className="text-sm">{property?.currency}</span>
-          </div>
-          <div className="flex items-center">
-            <MdOutlineBedroomChild className="w-5 h-5 mr-1" />
-            <span className="text-sm">{property?.rooms} Rooms</span>
-          </div>
-          <div className="flex items-center">
-            <CiLocationOn className="w-5 h-5 mr-1" />
-            <span className="text-sm">{property?.area}</span>
-          </div>
-        </div>
+
+        <div className="grid grid-cols-3 gap-4 mb-2 dark:text-dark">
+  {/* First row: 3 items */}
+  <div className="flex items-center">
+    <HiMiniCurrencyDollar className="w-5 h-5 mr-1" />
+    <span className="text-sm">{property?.currency}</span>
+  </div>
+  <div className="flex items-center">
+    <MdOutlineBedroomChild className="w-5 h-5 mr-1" />
+    <span className="text-sm">{property?.rooms} Rooms</span>
+  </div>
+  <div className="flex items-center">
+    <CiLocationOn className="w-5 h-5 mr-1" />
+    <span className="text-sm">{property?.area}</span>
+  </div>
+</div>
+
+<div className="grid grid-cols-2 gap-4 mb-2 dark:text-dark">
+  {/* Second row: 2 items */}
+  <div className="flex items-center">
+    <MdAttachMoney className="w-5 h-5 mr-1" />
+    <span className="text-sm">{property?.sales}</span>
+  </div>
+  <div className="flex items-center">
+    <FiTag className="w-5 h-5 mr-1" />
+    <span className="text-sm">{property?.propertyNumber}</span>
+  </div>
+</div>
+
+<div className="grid grid-cols-1 gap-4 mb-2 dark:text-dark">
+  {/* Third row: 1 item */}
+  <div className="flex items-center">
+    <FaBuilding className="w-5 h-5 mr-1" />
+    <span className="text-sm">{property?.compoundName}</span>
+  </div>
+</div>
+
+
+
         <div className="mb-2">
           <p className="text-sm text-gray-600">
             {/* {property.monthlyPrice.toLocaleString()} Monthly / {property.leaseDuration} Years */}
           </p>
           <p className="text-lg font-bold dark:text-dark">
-            {property?.totalPrice?.toLocaleString()} EGP
+                        {property?.totalPrice?.toString().replace(/0/g, "")} EGP
           </p>
         </div>
         <div className="flex justify-between">
