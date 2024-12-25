@@ -8,12 +8,12 @@ import interactionPlugin from "@fullcalendar/interaction";
 import {
   addEvent,
   deleteEvent,
-  getEventsForUser,
+  getEventsForLeadsOrUnits,
   updateEvent,
 } from "@/actions/event";
 import Modal from "@/app/components/calender/Modal";
 
-const Calendar = () => {
+const Calendar =   ({params }) => {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newEventTitle, setNewEventTitle] = useState("");
@@ -23,10 +23,9 @@ const Calendar = () => {
   const [endDate, setEndDate] = useState("");
   const [description, setDescription] = useState("");
 
-
   const fetchEvents = async () => {
     try {
-      const data = await getEventsForUser();
+      const data = await getEventsForLeadsOrUnits(params.id);
       setCurrentEvents(data);
       console.log(data);
     } catch (error) {
@@ -63,6 +62,7 @@ const Calendar = () => {
       endDate: end,
       type: type,
       details: description,
+      eventFor: params.id,
     };
     try {
       const data = await addEvent(eventData);
@@ -77,20 +77,6 @@ const Calendar = () => {
       console.error(error);
     }
   };
-  
-  // const sendData = async (newEventTitle, selectedDate) => {
-  //   const currentData = {
-  //     description: newEventTitle,
-  //     mettingDate: selectedDate,
-  //   };
-  //   try {
-  //     const data = await addEvent(currentData);
-  //     console.log(data);
-  //     fetchEvents();
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
 
   const handleDateClick = (selected) => {
     setSelectedDate(selected);
@@ -111,7 +97,6 @@ const Calendar = () => {
         `Are you sure you want to delete the event "${selected.event.title}"?`
       )
     ) {
-      // selected.event.remove();
       handleDelete(selected.event.id);
     }
   };
@@ -142,26 +127,6 @@ const Calendar = () => {
       sendData(newEventTitle, newEvent.start, newEvent.end, eventType, description);
     }
   };
-  
-  // const handleAddEvent = (e) => {
-  //   e.preventDefault();
-  //   if (newEventTitle && selectedDate) {
-  //     const calendarApi = selectedDate.view.calendar;
-  //     calendarApi.unselect();
-
-  //     const newEvent = {
-  //       id: `${selectedDate.start.toISOString()}-${newEventTitle}`,
-  //       title: newEventTitle,
-  //       start: selectedDate.start,
-  //       end: selectedDate.end,
-  //       allDay: selectedDate.allDay,
-  //     };
-
-  //     calendarApi.addEvent(newEvent);
-  //     handleCloseDialog();
-  //     sendData(newEventTitle, selectedDate.start);
-  //   }
-  // };
 
   return (
     <div>
